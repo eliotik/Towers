@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npcs>
+
+	<npc 
+		id="soldier" 
+		type="base"
+		name="Soldier" 
+		tile_x="0"
+		tile_y="0"
+		health="100"
+		armour="100"
+		speed="2"
+		damage="0"
+		width="1"
+		height="1"
+		/>
+
+</npcs>

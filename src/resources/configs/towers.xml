@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<towers>
+
+	<tower 
+		id="machinegun" 
+		type="base"
+		name="Machinegun" 
+		tile_x="0"
+		tile_y="0"
+		health="100"
+		armour="100"
+		speed="5"
+		damage="15"
+		width="4"
+		height="4"
+		radius="10"
+		/>
+
+</towers>
