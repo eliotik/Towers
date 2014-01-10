@@ -21,7 +21,7 @@ public class XmlReader {
 	
     public static void getStreamFromFile(String fileName) {
         try {
-            String file = format("%s%s", Config.xmlFilePath, fileName);
+            String file = format("%s%s", Config.XML_FILE_PATH, fileName);
             out = new DataInputStream( new BufferedInputStream( Config.class.getResourceAsStream(file) ) );
         } catch (Exception e) {
         	e.printStackTrace();

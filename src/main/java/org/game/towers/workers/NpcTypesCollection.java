@@ -12,8 +12,8 @@ public class NpcTypesCollection {
 	private static ArrayList<NpcType> items = new ArrayList<NpcType>();
 
     public static void load() {
-        XmlReader.getStreamFromFile(Config.npcsFile);
-        NodeList listOfElements = XmlReader.read(Config.npcNodeName);
+        XmlReader.getStreamFromFile(Config.NPCS_FILE);
+        NodeList listOfElements = XmlReader.read(Config.NPC_NODE_NAME);
         
         for( int j=0; j < listOfElements.getLength(); ++j ) {
             Node firstNode=listOfElements.item(j);

@@ -7,13 +7,13 @@ import org.w3c.dom.NodeList;
 import java.awt.Rectangle;
 import java.util.*;
 
-public class TowersTypesCollection {
+public class TowerTypesCollection {
 	
 	private static ArrayList<TowerType> items = new ArrayList<TowerType>();
 
     public static void load() {
-        XmlReader.getStreamFromFile(Config.towersFile);
-        NodeList listOfElements = XmlReader.read(Config.towerNodeName);
+        XmlReader.getStreamFromFile(Config.TOWERS_FILE);
+        NodeList listOfElements = XmlReader.read(Config.TOWER_NODE_NAME);
         
         for( int j=0; j < listOfElements.getLength(); ++j ) {
             Node firstNode=listOfElements.item(j);
