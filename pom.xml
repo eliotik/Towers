@@ -68,7 +68,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>org.game.towers.App</mainClass>
+							<mainClass>org.game.towers.game.Game</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -80,6 +80,8 @@
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
+					<fork>true</fork>
+                	<executable>C:\Program Files\Java\jdk1.7.0_45\bin\javac.exe</executable>
 				</configuration>
 			</plugin>
 		</plugins>
