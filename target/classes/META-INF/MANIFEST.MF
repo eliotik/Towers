@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
-Built-By: Alena
 Build-Jdk: 1.7.0_45
+Built-By: Alena
 Created-By: Maven Integration for Eclipse
+Main-Class: org.game.towers.App
 
