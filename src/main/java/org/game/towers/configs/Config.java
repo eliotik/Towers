@@ -8,9 +8,11 @@ public class Config {
 	
 	public static final String NPCS_FILE = "npcs.xml";
 	public static final String TOWERS_FILE = "towers.xml";
+	public static final String BUILDINGS_FILE = "buildings.xml";
 
 	public static final String NPC_NODE_NAME = "npc";
 	public static final String TOWER_NODE_NAME = "tower";
+	public static final String BUILDING_NODE_NAME = "building";
 
 	public static final int SCREEN_WIDTH = 160;
 	public static final int SCREEN_HEIGHT = SCREEN_WIDTH/12*9;

@@ -1,9 +1,11 @@
 /**
  * 
  */
-package org.game.towers.workers;
+package org.game.towers.npcs;
 
 import java.util.ArrayList;
+
+import org.game.towers.units.Unit;
 
 /**
  * @author eliotik

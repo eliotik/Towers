@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.game.towers.workers;
+package org.game.towers.units;
 
 import java.awt.Rectangle;
 

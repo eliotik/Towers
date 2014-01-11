@@ -1,7 +1,9 @@
 /**
  * 
  */
-package org.game.towers.workers;
+package org.game.towers.towers;
+
+import org.game.towers.units.Unit;
 
 /**
  * @author eliotik
