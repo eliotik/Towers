@@ -1,19 +1,19 @@
 package org.game.towers.grid;
 
-import org.game.towers.game.Game;
+import org.game.towers.configs.Config;
 
 public class Grid {
-//    private int xPixelSize = Game.screenWidth / Game.countHorizontalPix;
-//    private int yPixelSize = Game.screenHeight / Game.countVerticalPix;
-//    public Cell[][] cells = new Cell[Game.countHorizontalPix][Game.countVerticalPix];
+    private int xPixelSize = Config.SCREEN_WIDTH / Config.AMOUNT_HORIZONTAL_PIX;
+    private int yPixelSize = Config.SCREEN_HEIGHT / Config.AMOUNT_VERTICAL_PIX;
+    public Cell[][] cells = new Cell[Config.AMOUNT_HORIZONTAL_PIX][Config.AMOUNT_VERTICAL_PIX];
 
     public Grid() {
-//        for(int x = 0; x < Game.countHorizontalPix; x++) {
-//            for(int y = 0; y < Game.countVerticalPix; y++) {
-//                int X = x * xPixelSize;
-//                int Y = y * yPixelSize;
-//                cells[x][y] = new Cell(X, xPixelSize, Y, yPixelSize);
-//            }
-//        }
+        for(int x = 0; x < Config.AMOUNT_HORIZONTAL_PIX; x++) {
+            for(int y = 0; y < Config.AMOUNT_VERTICAL_PIX; y++) {
+                int X = x * xPixelSize;
+                int Y = y * yPixelSize;
+                cells[x][y] = new Cell(X, xPixelSize, Y, yPixelSize, x, y);
+            }
+        }
     }
 }
