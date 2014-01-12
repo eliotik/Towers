@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import org.game.towers.configs.Config;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.SpriteSheet;
+import org.game.towers.grid.Grid;
 
 public class Game extends Canvas implements Runnable {
 
@@ -28,7 +29,8 @@ public class Game extends Canvas implements Runnable {
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	
 	private Screen screen;
-	
+	public static Grid grid = new Grid();
+
 	public Game() {
 		setMinimumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
 		setMaximumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));

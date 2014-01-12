@@ -1,6 +1,7 @@
 package org.game.towers.grid;
 
-import org.game.towers.workers.Unit;
+
+import org.game.towers.units.Unit;
 
 public class Cell {
     private int x;
