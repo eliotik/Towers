@@ -12,6 +12,8 @@ import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
 import org.game.towers.configs.Config;
+import org.game.towers.gfx.Screen;
+import org.game.towers.gfx.SpriteSheet;
 
 public class Game extends Canvas implements Runnable {
 
@@ -24,6 +26,8 @@ public class Game extends Canvas implements Runnable {
 	
 	private BufferedImage image = new BufferedImage(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	
+	private Screen screen;
 	
 	public Game() {
 		setMinimumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
@@ -51,6 +55,8 @@ public class Game extends Canvas implements Runnable {
 		int frames = 0;
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
+		
+		initScreen();
 		
 		while(isRunning()) {
 			long now = System.nanoTime();
@@ -88,9 +94,12 @@ public class Game extends Canvas implements Runnable {
 	private void tick() {
 		ticksCount++;
 		
-		for (int i = 0; i < pixels.length; i++) {
-			pixels[i] = i + ticksCount;
-		}
+//		screen.xOffset++;
+//		screen.yOffset++;
+		
+//		for (int i = 0; i < pixels.length; i++) {
+//			pixels[i] = i + ticksCount;
+//		}
 	}
 
 	private void render() {
@@ -100,6 +109,8 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		
+		screen.render(pixels, 0, Config.SCREEN_WIDTH);
+		
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		g.setColor(Color.BLACK);
@@ -108,6 +119,10 @@ public class Game extends Canvas implements Runnable {
 		bs.show();
 	}
 
+	private void initScreen() {
+		screen = new Screen(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, new SpriteSheet(Config.SPRITESHEET_FILE));
+	}
+	
 	private synchronized void start() {
 		setRunning(true);
 		new Thread(this).start();
