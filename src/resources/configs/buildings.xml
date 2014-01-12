@@ -2,9 +2,9 @@
 <buildings>
 
 	<building 
-		id="electricity_tower" 
+		id="electricity_station" 
 		type="base"
-		name="Electricity tower" 
+		name="Electricity station" 
 		tile_x="0"
 		tile_y="0"
 		health="100"
