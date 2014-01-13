@@ -19,7 +19,7 @@ public class Unit implements IUnit {
 	private double speed;
 	private String type;
 	private String typeName;
-	private Rectangle size;
+	private Rectangle geo;
 	private int tileX;
 	private int tileY;
 
@@ -129,17 +129,17 @@ public class Unit implements IUnit {
 	 * @see org.game.towers.interfaces.IUnit#setSize(java.awt.Rectangle)
 	 */
 	@Override
-	public IUnit setSize(Rectangle cell) {
-		this.size = cell;
+	public IUnit setGeo(Rectangle cell) {
+		this.geo = cell;
 		return this;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.game.towers.interfaces.IUnit#getSize()
+	 * @see org.game.towers.interfaces.IUnit#getGeo()
 	 */
 	@Override
-	public Rectangle getSize() {
-		return size;
+	public Rectangle getGeo() {
+		return geo;
 	}
 
 	@Override
