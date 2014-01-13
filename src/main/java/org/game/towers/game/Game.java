@@ -30,6 +30,8 @@ public class Game extends Canvas implements Runnable {
 	private Screen screen;
 	
 	public Game() {
+		System.out.println(Config.SCREEN_WIDTH * Config.SCALE);
+		System.out.println(Config.SCREEN_HEIGHT * Config.SCALE);
 		setMinimumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
 		setMaximumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
 		setPreferredSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
@@ -93,7 +95,8 @@ public class Game extends Canvas implements Runnable {
 
 	private void tick() {
 		ticksCount++;
-		
+		screen.xOffset = 0;
+		screen.yOffset = 0;
 //		screen.xOffset++;
 //		screen.yOffset++;
 		

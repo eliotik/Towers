@@ -1,5 +1,7 @@
 package org.game.towers.gfx;
 
+import org.game.towers.configs.Config;
+
 public class Screen {
 
 	public static final int MAP_WIDTH = 64;
@@ -20,8 +22,8 @@ public class Screen {
 		this.width = width;
 		this.height = height;
 		this.sheet = sheet;
-		
-		for (int i = 0; i < MAP_WIDTH * MAP_WIDTH; i++) {
+		System.out.println(MAP_WIDTH * MAP_WIDTH - 3300);
+		for (int i = 0; i < MAP_WIDTH * MAP_WIDTH - 3300; i++) {
 			colors[i*4+0] = 0xff00ff;
 			colors[i*4+1] = 0x00ffff;
 			colors[i*4+2] = 0xffff00;
