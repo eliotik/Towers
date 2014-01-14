@@ -77,7 +77,7 @@ public class PathWorker {
 
     private List<Cell> getRectangleApexCell(Cell cell) {
         List<Cell> apex = new ArrayList<Cell>();
-        Rectangle size = cell.getType().getSize();
+        Rectangle size = cell.getType().getGeo();
         double unitX = size.getX();
         double unitY = size.getY();
         double unitWidth = size.getWidth();
@@ -98,8 +98,8 @@ public class PathWorker {
 
     private List<Cell> checkNeighborUnitCell(Cell cell){
         List<Cell> listNeighborUnitCell = new ArrayList<Cell>();
-        int towerWidth = (int)cell.getType().getSize().getWidth();
-        int towerHeight = (int)cell.getType().getSize().getHeight();
+        int towerWidth = (int)cell.getType().getGeo().getWidth();
+        int towerHeight = (int)cell.getType().getGeo().getHeight();
         int towerX = cell.getType().getTileX(); // если возвращает положение строения, то правильно
         int towerY = cell.getType().getTileY(); // если возвращает положение строения, то правильно
 
