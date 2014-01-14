@@ -39,4 +39,12 @@ public interface IUnit {
 	
 	public IUnit  setTileY(int tileY);
 	public int    getTileY();
+
+	public void  setX(int x);
+	public int    getX();
+
+	public void  setY(int y);
+	public int    getY();
+
+    public boolean isConstruction();
 }
