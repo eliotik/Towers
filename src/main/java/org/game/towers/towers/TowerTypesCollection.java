@@ -35,7 +35,9 @@ public class TowerTypesCollection {
                 item.setSpeed(Integer.parseInt(elemj.getAttribute("speed").toString()));
                 item.setDamage(Integer.parseInt(elemj.getAttribute("damage").toString()));
                 
-                item.setSize(new Rectangle(
+                item.setGeo(new Rectangle(
+                        0,
+                        0,
                 		Integer.parseInt(elemj.getAttribute("width").toString()), 
                 		Integer.parseInt(elemj.getAttribute("height").toString())
             		)

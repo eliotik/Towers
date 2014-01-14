@@ -12,6 +12,8 @@ import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
 import org.game.towers.configs.Config;
+import org.game.towers.gfx.Colors;
+import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.SpriteSheet;
 import org.game.towers.grid.Grid;
@@ -27,11 +29,14 @@ public class Game extends Canvas implements Runnable {
 	
 	private BufferedImage image = new BufferedImage(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	public int[] colors = new int[6 * 6 * 6];//6 different shades of color
 	
 	private Screen screen;
 	public static Grid grid = new Grid();
 
 	public Game() {
+		System.out.println(Config.SCREEN_WIDTH * Config.SCALE);
+		System.out.println(Config.SCREEN_HEIGHT * Config.SCALE);
 		setMinimumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
 		setMaximumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
 		setPreferredSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
@@ -58,6 +63,7 @@ public class Game extends Canvas implements Runnable {
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
 		
+		initColors();
 		initScreen();
 		
 		while(isRunning()) {
@@ -95,7 +101,8 @@ public class Game extends Canvas implements Runnable {
 
 	private void tick() {
 		ticksCount++;
-		
+		screen.xOffset = 0;
+		screen.yOffset = 0;
 //		screen.xOffset++;
 //		screen.yOffset++;
 		
@@ -111,7 +118,24 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		
-		screen.render(pixels, 0, Config.SCREEN_WIDTH);
+		for (int y = 0; y < 32; y++) {
+			for (int x = 0; x < 32; x++) {
+				boolean flipX = x % 2 == 1;
+				boolean flipY = y % 2 == 1;
+				screen.render(x << 3, y << 3, 0, Colors.get(555, 505, 055, 550), flipX, flipY);
+			}
+		}
+		
+//		String msg = "Hello World";
+//		Font.render(msg, screen, screen.xOffset + screen.width / 2 - (msg.length()*8)/2, screen.yOffset + screen.height / 2, Colors.get(-1, -1, -1, 000));
+		
+		for (int y = 0; y < screen.height; y++) {
+			for (int x = 0; x < screen.width; x++) {
+				int colorCode = screen.pixels[x + y * screen.width];
+				if (colorCode < 255) pixels[x + y * Config.SCREEN_WIDTH] = colors[colorCode];
+			}
+		}
+		
 		
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
@@ -123,6 +147,21 @@ public class Game extends Canvas implements Runnable {
 
 	private void initScreen() {
 		screen = new Screen(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, new SpriteSheet(Config.SPRITESHEET_FILE));
+	}
+
+	private void initColors() {
+		int index = 0;
+		for (int r = 0; r < 6; r++) {
+			for (int g = 0; g < 6; g++) {
+				for (int b = 0; b < 6; b++) {
+					int rr = (r * 255/5);
+					int gg = (g * 255/5);
+					int bb = (b * 255/5);
+					
+					colors[index++] = rr << 16 | gg << 8 | bb;
+				}
+			}
+		}
 	}
 	
 	private synchronized void start() {

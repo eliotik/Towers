@@ -31,8 +31,8 @@ public interface IUnit {
 	public IUnit  setTypeName(String typeName);
 	public String getTypeName();
 	
-	public IUnit     setSize(Rectangle cell);
-	public Rectangle getSize();
+	public IUnit     setGeo(Rectangle cell);
+	public Rectangle getGeo();
 	
 	public IUnit  setTileX(int tileX);
 	public int    getTileX();
