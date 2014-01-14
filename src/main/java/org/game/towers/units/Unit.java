@@ -11,7 +11,7 @@ import org.game.towers.interfaces.IUnit;
  * @author eliotik
  *
  */
-public class Unit implements IUnit {
+public abstract class Unit implements IUnit {
 	private String id;
 	private int armour;
 	private int health;

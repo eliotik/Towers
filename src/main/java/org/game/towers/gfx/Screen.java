@@ -4,8 +4,11 @@ import org.game.towers.configs.Config;
 
 public class Screen {
 
-	public static final int MAP_WIDTH = 64;
-	public static final int MAP_WIDTH_MASK = MAP_WIDTH - 1;
+//	public static final int MAP_WIDTH = 64;
+//	public static final int MAP_WIDTH_MASK = MAP_WIDTH - 1;
+	
+	public static final byte BIT_MIRROR_X = 0x01;
+	public static final byte BIT_MIRROR_Y = 0x02;
 	
 //	public int[] tiles = new int[MAP_WIDTH * MAP_WIDTH];
 	
@@ -28,12 +31,15 @@ public class Screen {
 	}
 
 	public void render(int xPos, int yPos, int tile, int color) {
-		render(xPos, yPos, tile, color, false, false);
+		render(xPos, yPos, tile, color, 0x00);
 	}
 	
-	public void render(int xPos, int yPos, int tile, int color, boolean mirrorX, boolean mirrorY) {
+	public void render(int xPos, int yPos, int tile, int color, int mirrorDir) {
 		xPos -= xOffset;
 		yPos -= yOffset;
+		
+		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
+		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
 		
 		int xTile = tile % 32;
 		int yTile = tile / 32;
@@ -52,5 +58,10 @@ public class Screen {
 				if (col < 255) pixels[(x + xPos) + (y + yPos) * width] = col;
 			}
 		}
+	}
+
+	public void setOffset(int xOffset, int yOffset) {
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 	}
 }
