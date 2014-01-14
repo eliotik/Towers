@@ -21,4 +21,8 @@ public class NpcType extends Unit {
 	public void setHands(ArrayList<String> hands) {
 		this.hands = hands;
 	}
+
+    public boolean isConstruction() {
+        return false;
+    }
 }

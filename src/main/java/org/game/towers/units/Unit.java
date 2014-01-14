@@ -20,6 +20,8 @@ public class Unit implements IUnit {
 	private String type;
 	private String typeName;
 	private Rectangle geo;
+    private int x;
+    private int y;
 	private int tileX;
 	private int tileY;
 
@@ -135,7 +137,7 @@ public class Unit implements IUnit {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.game.towers.interfaces.IUnit#getGeo()
+	 * @see org.game.towers.interfaces.IUnit#getSize()
 	 */
 	@Override
 	public Rectangle getGeo() {
@@ -174,5 +176,31 @@ public class Unit implements IUnit {
 	public int getTileY() {
 		return tileY;
 	}
+
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public int getY() {
+        return y;
+    }
+
+    @Override
+    public boolean isConstruction() {
+        return true;
+    }
+
 
 }
