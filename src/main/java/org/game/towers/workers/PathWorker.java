@@ -3,6 +3,7 @@ package org.game.towers.workers;
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.grid.Cell;
+import org.game.towers.units.Unit;
 import org.hamcrest.Matchers;
 
 import java.awt.*;
@@ -59,6 +60,20 @@ public class PathWorker {
         }
         return null;
     }
+
+    private Unit hasBarrier(int xStart, int xFinish, int yStart, int yFinish){
+
+
+        for (int x = xStart; x < xFinish; x++) {
+            for (int y = yStart; y < yFinish; y++) {
+                List<Unit> eTs = filter(having(on(Unit.class).getX(), Matchers.lessThanOrEqualTo(xFinish))
+                        .and(having(on(Unit.class).getX(), Matchers.lessThanOrEqualTo(xStart))),
+                        Game.grid.units);
+            }
+        }
+        return null;
+    }
+
 
     private List<Cell> getRectangleApexCell(Cell cell) {
         List<Cell> apex = new ArrayList<Cell>();
@@ -128,5 +143,12 @@ public class PathWorker {
             }
         }
         return neighborList;
+    }
+
+    private Unit getCollision() {
+        List<Unit> units = Game.grid.units;
+
+
+        return null;
     }
 }
