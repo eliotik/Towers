@@ -34,15 +34,24 @@ public class Level {
 		int exitY = Utils.randInt(1, Config.MAP_Y_SIZE-2);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				if (y == 0 || x == Config.MAP_X_SIZE-1 || y == Config.MAP_Y_SIZE-1 || x == 0) {
-					if ((x == 0 && y == entrenceY) || (x == Config.MAP_X_SIZE-1 && y == exitY)) {
+				if (y == 0 || 
+					x == Config.MAP_X_SIZE-1 || 
+					y == Config.MAP_Y_SIZE-1 || x == 0) {
+					
+					if ((x == 0 && y == entrenceY) || 
+						(x == Config.MAP_X_SIZE-1 && y == exitY)) {
 						tiles[x + y * width] = Tile.ENTRENCE.getId();
 					} else {
 						tiles[x + y * width] = Tile.BUSH.getId();												
 					}
+					
 				} else {
-					if (Utils.randInt(0, 88)==13 && (x != 1 && y != entrenceY) && (x != Config.MAP_X_SIZE-1 && y != exitY)) {
+					if (Utils.randInt(0, 88)==13 && 
+						(x != 1 && y != entrenceY) && 
+						(x != Config.MAP_X_SIZE-1 && y != exitY)) {
+						
 						tiles[x + y * width] = Tile.STONE.getId();
+						
 					} else {
 						tiles[x + y * width] = Tile.GRASS.getId();
 					}
