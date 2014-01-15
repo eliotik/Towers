@@ -16,11 +16,19 @@ public class Config {
 	public static final String TOWER_NODE_NAME = "tower";
 	public static final String BUILDING_NODE_NAME = "building";
 
-	public static final int SCREEN_WIDTH = 160;
+	public static final int SCREEN_WIDTH = 296;
 	public static final int SCREEN_HEIGHT = SCREEN_WIDTH/12*9;
 	public static final int SCALE = 3;
+	public static final int REAL_SCREEN_WIDTH = SCREEN_WIDTH * SCALE;
+	public static final int REAL_SCREEN_HEIGHT = SCREEN_HEIGHT * SCALE;
     
     public static final int AMOUNT_HORIZONTAL_PIX = 800;
     public static final int AMOUNT_VERTICAL_PIX = 800;
 	public static final int BUFFER_STRATEGY_BUFFERS = 3;
+	
+	public static final int BOX_SIZE = 8; 
+	public static final int MAP_X_SIZE = 37; 
+	public static final int MAP_Y_SIZE = 25;
+	
+	public static final boolean LEVEL_SHOW_IDS = false;
 }
