@@ -10,8 +10,6 @@ public class Screen {
 	public static final byte BIT_MIRROR_X = 0x01;
 	public static final byte BIT_MIRROR_Y = 0x02;
 	
-//	public int[] tiles = new int[MAP_WIDTH * MAP_WIDTH];
-	
 	public int[] pixels;
 	
 	public int xOffset = 0;

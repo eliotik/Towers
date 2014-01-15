@@ -1,7 +1,7 @@
 package org.game.towers.gfx;
 
 public class Font {
-	private static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXY       1234567890                      ";
+	private static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXY       1234567890.,:;'\"!?$%()-=+/       ";
 	
 	public static void render(String msg, Screen screen, int x, int y, int color) {
 		msg = msg.toUpperCase();

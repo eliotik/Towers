@@ -17,6 +17,7 @@ import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.SpriteSheet;
 import org.game.towers.grid.Grid;
+import org.game.towers.handlers.InputHandler;
 import org.game.towers.level.Level;
 
 public class Game extends Canvas implements Runnable {
@@ -35,13 +36,12 @@ public class Game extends Canvas implements Runnable {
 	private Screen screen;
 	public Level level;
 	public static Grid grid = new Grid();
+	public InputHandler input;
 
 	private int x = 0; 
 	private int y = 0;
 	
 	public Game() {
-		System.out.println(Config.SCREEN_WIDTH * Config.SCALE);
-		System.out.println(Config.SCREEN_HEIGHT * Config.SCALE);
 		setMinimumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
 		setMaximumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
 		setPreferredSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
@@ -68,9 +68,7 @@ public class Game extends Canvas implements Runnable {
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
 		
-		initColors();
-		initScreen();
-		initLevel();
+		init();
 		
 		while(isRunning()) {
 			long now = System.nanoTime();
@@ -105,19 +103,29 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
+	private void init() {
+		initColors();
+		initScreen();
+		initInput();
+		initLevel();
+	}
+
 	private void tick() {
 		ticksCount++;
 		level.tick();
 		
-//		screen.xOffset = 10;
-//		screen.yOffset = 10;
-//		
-//		screen.xOffset++;
-//		screen.yOffset++;
-		
-//		for (int i = 0; i < pixels.length; i++) {
-//			pixels[i] = i + ticksCount;
-//		}
+		if (input.up.isPressed()) {
+			screen.yOffset--;
+		}
+		if (input.down.isPressed()) {
+			screen.yOffset++;
+		}
+		if (input.left.isPressed()) {
+			screen.xOffset--;
+		}
+		if (input.right.isPressed()) {
+			screen.xOffset++;
+		}
 	}
 
 	private void render() {
@@ -170,7 +178,10 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void initLevel() {
-		level = new Level(10, 10);
+		level = new Level(64, 64);
+	}
+	private void initInput() {
+		input = new InputHandler(this);
 	}
 	
 	private void initColors() {
