@@ -89,6 +89,17 @@ public class Level {
 		for(int y = 0; y < height; y++) {
 			for(int x = 0; x < width; x++) {
 				Tile tile = getTile(x,y);
+				switch(tile.getId()) {
+					case 4://brush
+						tile.render(screen, this, x << 3, y << 3, (x + y % 10 > 0) ? 0x00 : 0x02);
+						break;
+					case 1://stone
+						tile.render(screen, this, x << 3, y << 3, (x * y % 10 == 0) ? 0x01 : 0x02);
+						break;	
+					default:
+						tile.render(screen, this, x << 3, y << 3);
+						break;
+				}
 				if (tile.getId() == 4) {
 //				if ((x == 0 && y == 10) || (x == Config.MAP_X_SIZE-1 && y == 10)) {
 					tile.render(screen, this, x << 3, y << 3, (x + y % 10 > 0) ? 0x00 : 0x02);
