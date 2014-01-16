@@ -42,9 +42,9 @@ public class Game extends Canvas implements Runnable {
 	private int y = 0;
 	
 	public Game() {
-		setMinimumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
-		setMaximumSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
-		setPreferredSize(new Dimension(Config.SCREEN_WIDTH * Config.SCALE, Config.SCREEN_HEIGHT * Config.SCALE));
+		setMinimumSize(new Dimension(Config.REAL_SCREEN_WIDTH, Config.REAL_SCREEN_HEIGHT));
+		setMaximumSize(new Dimension(Config.REAL_SCREEN_WIDTH, Config.REAL_SCREEN_HEIGHT));
+		setPreferredSize(new Dimension(Config.REAL_SCREEN_WIDTH, Config.REAL_SCREEN_HEIGHT));
 		
 		initFrame();
 	}
@@ -139,21 +139,6 @@ public class Game extends Canvas implements Runnable {
 		int yOffset = y - (screen.height / 2);
 		level.renderTiles(screen, xOffset, yOffset);
 		
-		for (int x = 0; x < level.width; x++) {
-			int color = Colors.get(-1, -1, -1, 000);
-			if(x % 10 == 0 && x != 0) {
-				color = Colors.get(-1, -1, -1, 500);
-			}
-			Font.render((x%10)+"", screen, 0 + (x * 8), 0, color);
-		}
-		for (int y = 0; y < level.height; y++) {
-			int color = Colors.get(-1, -1, -1, 000);
-			if(y % 10 == 0 && y != 0) {
-				color = Colors.get(-1, -1, -1, 500);
-			}
-			Font.render((y%10)+"", screen, 0, 0 + (y * 8), color);
-		}
-		
 //		String msg = "Hello World";
 //		Font.render(msg, screen, screen.xOffset + screen.width / 2 - (msg.length()*8)/2, screen.yOffset + screen.height / 2, Colors.get(-1, -1, -1, 000));
 		
@@ -178,7 +163,8 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void initLevel() {
-		level = new Level(64, 64);
+		level = new Level(Config.MAP_X_SIZE, Config.MAP_Y_SIZE);
+		level.setOffset(screen);
 	}
 	private void initInput() {
 		input = new InputHandler(this);
