@@ -34,7 +34,7 @@ public class Game extends Canvas implements Runnable {
 	public int[] colors = new int[6 * 6 * 6];//6 different shades of color
 	
 	private Screen screen;
-	public Level level;
+	public static Level level;
 	public static Grid grid = new Grid();
 	public InputHandler input;
 

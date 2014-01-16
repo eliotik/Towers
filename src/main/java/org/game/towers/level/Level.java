@@ -7,11 +7,16 @@ import org.game.towers.gfx.Colors;
 import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
 import org.game.towers.level.tiles.Tile;
+import org.game.towers.units.Unit;
 import org.game.towers.workers.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Level {
 
 	private byte[] tiles;
+    private List<Construction> constructions = new ArrayList<Construction>();
 	public int width;
 	public int height;
 	public int xOffset = 0;
@@ -136,6 +141,15 @@ public class Level {
 		return Tile.tiles[tiles[x + y * width]];
 	}
 
-	public void tick() {
+    public void addConstruction(int x, int y, int width, int height, Unit type) {
+        Construction construction = new Construction(x, y, width, height, type);
+        constructions.add(construction);
+    }
+
+    public List<Construction> getConstructions() {
+        return constructions;
+    }
+
+    public void tick() {
 	}
 }
