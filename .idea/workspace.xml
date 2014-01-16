@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="da3ba30c-8af8-486b-a87d-1a7ff8a8e948" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/game/towers/level/Construction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/game/towers/game/Game.java" afterPath="$PROJECT_DIR$/src/main/java/org/game/towers/game/Game.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/game/towers/level/Level.java" afterPath="$PROJECT_DIR$/src/main/java/org/game/towers/level/Level.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/game/towers/workers/PathWorker.java" afterPath="$PROJECT_DIR$/src/main/java/org/game/towers/workers/PathWorker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="da3ba30c-8af8-486b-a87d-1a7ff8a8e948" name="Default" comment="" />
     <ignored path="towers.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -74,7 +67,7 @@
       <file leaf-file-name="Game.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/game/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="19" selection-start="1120" selection-end="1120" vertical-scroll-proportion="0.0" vertical-offset="122" max-vertical-offset="3502">
+            <state line="36" column="19" selection-start="1120" selection-end="1120" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="3876">
               <folding />
             </state>
           </provider>
@@ -83,7 +76,7 @@
       <file leaf-file-name="Construction.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/level/Construction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="13" selection-start="82" selection-end="82" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1156">
+            <state line="5" column="13" selection-start="82" selection-end="82" vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="1564">
               <folding />
             </state>
           </provider>
@@ -116,24 +109,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PathWorker.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="PathWorker.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/workers/PathWorker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="112" column="0" selection-start="4180" selection-end="4180" vertical-scroll-proportion="2.978761" vertical-offset="0" max-vertical-offset="3672">
+            <state line="112" column="0" selection-start="4180" selection-end="4180" vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="3672">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Level.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Level.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/level/Level.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="29" selection-start="258" selection-end="270" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1156">
-              <folding>
-                <element signature="e#301#315#0" expanded="true" />
-                <element signature="e#1675#1676#0" expanded="true" />
-                <element signature="e#1711#1712#0" expanded="true" />
-              </folding>
+            <state line="12" column="29" selection-start="258" selection-end="270" vertical-scroll-proportion="0.21061946" vertical-offset="0" max-vertical-offset="1122">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -229,7 +218,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -630,6 +618,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -702,19 +691,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -740,6 +716,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -880,6 +869,55 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/game/Game.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="19" selection-start="1120" selection-end="1120" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="3876">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/level/Construction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="82" selection-end="82" vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="1564">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/npcs/NpcType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="31" selection-start="169" selection-end="169" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="578">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/units/Unit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="22" selection-start="166" selection-end="166" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="3604">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/buildings/BuildingTypesCollection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="89" selection-start="1245" selection-end="1245" vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="952">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/workers/PathWorker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="112" column="0" selection-start="4180" selection-end="4180" vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="3672">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/level/Level.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="29" selection-start="258" selection-end="270" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1241">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/game/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="180" column="16" selection-start="4668" selection-end="4668" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3876">
           <folding />
         </state>
@@ -923,11 +961,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/level/Level.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="61" column="29" selection-start="1706" selection-end="1706" vertical-scroll-proportion="0.0" vertical-offset="1037" max-vertical-offset="1241">
-          <folding>
-            <element signature="e#301#315#0" expanded="true" />
-            <element signature="e#1675#1676#0" expanded="true" />
-            <element signature="e#1711#1712#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1109,17 +1143,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/level/Level.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="29" selection-start="258" selection-end="270" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1156">
-          <folding>
-            <element signature="e#301#315#0" expanded="true" />
-            <element signature="e#1675#1676#0" expanded="true" />
-            <element signature="e#1711#1712#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.7.0_45/src.zip!/java/util/List.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="125" column="12" selection-start="4690" selection-end="4690" vertical-scroll-proportion="0.33274338" vertical-offset="1546" max-vertical-offset="9911">
@@ -1129,7 +1152,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/workers/PathWorker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="0" selection-start="4180" selection-end="4180" vertical-scroll-proportion="2.978761" vertical-offset="0" max-vertical-offset="3672">
+        <state line="112" column="0" selection-start="4180" selection-end="4180" vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="3672">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/game/towers/level/Level.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="29" selection-start="258" selection-end="270" vertical-scroll-proportion="0.21061946" vertical-offset="0" max-vertical-offset="1122">
           <folding />
         </state>
       </provider>
