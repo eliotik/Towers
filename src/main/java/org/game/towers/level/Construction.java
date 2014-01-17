@@ -3,6 +3,8 @@ package org.game.towers.level;
 
 import org.game.towers.units.Unit;
 
+import java.util.HashMap;
+
 public class Construction {
     private int apexAX;
     private int apexAY;
@@ -15,6 +17,7 @@ public class Construction {
     private int width;
     private int height;
     private Unit type;
+    private HashMap<Integer, Construction> neighbor = new HashMap<Integer, Construction>();
 
 
     public Construction(int x, int y, int width, int height, Unit type) {
@@ -82,5 +85,13 @@ public class Construction {
 
     public void setType(Unit type) {
         this.type = type;
+    }
+
+    public HashMap<Integer, Construction> getNeighbor() {
+        return neighbor;
+    }
+
+    public void setNeighbor(HashMap<Integer, Construction> neighbor) {
+        this.neighbor = neighbor;
     }
 }

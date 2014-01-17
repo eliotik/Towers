@@ -83,7 +83,6 @@ public class PathWorker {
                     temporaryConstructions.remove(construction);
                 }
             }
-
         }
 
         if ( (yFinish > yStart  && xFinish < xStart) || (yFinish < yStart  && xFinish > xStart) ) {
@@ -138,6 +137,18 @@ public class PathWorker {
         double r = Math.sqrt(Math.pow(x - xStart, 2) + Math.pow(y - yStart, 2));
         return r;
     }
+
+    private static void getNeighbor(Construction construction){
+        List<Construction> temporaryConstructions = Game.level.getConstructions();
+        temporaryConstructions.remove(construction);
+
+        for(Construction constrItem : temporaryConstructions) {
+
+        }
+
+//        return null;
+    }
+
 
 
 
