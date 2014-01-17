@@ -31,4 +31,8 @@ public class Config {
 	public static final int MAP_Y_SIZE = 25;
 	
 	public static final boolean LEVEL_SHOW_IDS = false;
+	public static final int DEFAULT_LEVEL_WIDTH = MAP_X_SIZE;
+	public static final int DEFAULT_LEVEL_HEIGHT = MAP_Y_SIZE;
+	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
+	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
 }

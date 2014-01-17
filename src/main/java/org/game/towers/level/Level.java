@@ -8,8 +8,13 @@ import org.game.towers.level.tiles.Tile;
 import org.game.towers.units.Unit;
 import org.game.towers.workers.Utils;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 public class Level {
 
@@ -19,12 +24,58 @@ public class Level {
 	public int height;
 	public int xOffset = 0;
 	public int yOffset = 0;
+	private String imagePath;
+	private BufferedImage image;
 	
-	public Level(int width, int height) {
-		tiles = new byte[width * height];
-		this.width = width;
-		this.height = height;
-		this.generateLevel();
+	public Level(String imagePath) {
+		if (imagePath != null) {
+			this.imagePath = imagePath;
+			loadLevelFromFile();
+		} else {
+			width = Config.DEFAULT_LEVEL_WIDTH;
+			height = Config.DEFAULT_LEVEL_HEIGHT;
+			tiles = new byte[width * height];
+			generateLevel();
+		}
+	}
+	
+	private void loadLevelFromFile() {
+		try {
+			image = ImageIO.read(Config.class.getResource(this.imagePath));
+			width = image.getWidth();
+			height = image.getHeight();
+			tiles = new byte [width * height];
+			loadTiles();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void loadTiles() {
+		int[] tileColors = image.getRGB(0, 0, width, height, null, 0, width);
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				tileCheck: for (Tile t : Tile.tiles) {
+					if (t != null && t.getLevelColor() == tileColors[x + y * width]) {
+						tiles[x + y * width] = t.getId();
+						break tileCheck;
+					}
+				}
+			}
+		}
+	}
+	
+	private void saveLevelToFile() {
+		try {
+			ImageIO.write(image, "png", new File(Level.class.getResource(imagePath).getFile()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void alterTile(int x, int y, Tile newTile) {
+		tiles[x + y * width] = newTile.getId();
+		image.setRGB(x, y, newTile.getLevelColor());
 	}
 	
 	public void setOffset(Screen screen) {
@@ -43,7 +94,7 @@ public class Level {
 					
 					if ((x == 0 && y == entrenceY) || 
 						(x == Config.MAP_X_SIZE-1 && y == exitY)) {
-						tiles[x + y * width] = Tile.ENTRENCE.getId();
+						tiles[x + y * width] = Tile.ENTRANCE.getId();
 					} else {
 						tiles[x + y * width] = Tile.BUSH.getId();												
 					}
@@ -149,5 +200,11 @@ public class Level {
     }
 
     public void tick() {
+    	for (Tile t : Tile.tiles) {
+    		if (t == null) {
+    			break;
+    		}
+    		t.tick();
+    	}
 	}
 }

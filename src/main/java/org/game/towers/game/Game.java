@@ -1,5 +1,7 @@
 package org.game.towers.game;
 
+import static java.lang.String.format;
+
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -163,7 +165,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void initLevel() {
-		level = new Level(Config.MAP_X_SIZE, Config.MAP_Y_SIZE);
+		level = new Level(format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME));
 		level.setOffset(screen);
 	}
 	private void initInput() {
