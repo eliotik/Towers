@@ -341,7 +341,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	public void focusLost(FocusEvent arg0) {
 		if (arg0.getID() == FocusEvent.FOCUS_LOST) {
 			if ((gui != null && !gui.pausesGame()) || gui == null) {
-				gui = new GuiPause(this, getWidth(), getHeight());
+				showGui(new GuiPause(this, getWidth(), getHeight()));
 			}
 			Game.debug(DebugLevel.INFO, "Lost the focus!");
 		}
