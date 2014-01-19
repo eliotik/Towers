@@ -68,7 +68,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>org.game.towers.game.Game</mainClass>
+							<mainClass>org.game.towers.game.GameLauncher</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

@@ -1,11 +1,18 @@
 package org.game.towers.level;
 
 import org.game.towers.configs.Config;
+import org.game.towers.game.Game;
 import org.game.towers.gfx.Colors;
 import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
+import org.game.towers.gui.GuiPause;
+import org.game.towers.handlers.InputHandler.GameActionListener;
+import org.game.towers.handlers.InputHandler.InputEvent;
+import org.game.towers.handlers.InputHandler.InputEventType;
 import org.game.towers.level.tiles.Tile;
 import org.game.towers.units.Unit;
+import org.game.towers.workers.NBTCapable;
+import org.game.towers.workers.Tag;
 import org.game.towers.workers.Utils;
 
 import java.awt.image.BufferedImage;
@@ -16,8 +23,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class Level {
+public class Level implements NBTCapable, GameActionListener {
 
+	private String name;
 	private byte[] tiles;
     private List<Construction> constructions = new ArrayList<Construction>();
 	public int width;
@@ -38,6 +46,11 @@ public class Level {
 			generateLevel();
 		}
 	}
+	
+	public Level(Tag tag) {
+		this.setName("LEVEL");
+		this.loadFromNBT(tag);
+	}	
 	
 	private void loadLevelFromFile() {
 		try {
@@ -206,5 +219,59 @@ public class Level {
     		}
     		t.tick();
     	}
+	}
+
+	public int getWidthInTiles() {
+		return width;
+	}
+
+	public int getHeightInTiles() {
+		return height;
+	}    
+    
+	public byte[] getTileIdArray() {
+		return tiles;
+	}	
+	
+	@Override
+	public void loadFromNBT(Tag tag) {
+		this.name = tag.findTagByName("NAME").getValue().toString();
+		this.width = (int) tag.findTagByName("WIDTH").getValue();
+		this.height = (int) tag.findTagByName("HEIGHT").getValue();
+		this.tiles = (byte[]) tag.findTagByName("TILES").getValue();
+		// this.meta = (byte[]) tag.findTagByName("META").getValue();
+		// this.overlay = (byte[]) tag.findTagByName("OVERLAY").getValue();
+		if (tiles.length != width * height) {
+			Game.debug(Game.DebugLevel.WARNING, "Tile data corrupted!");
+			Game.debug(Game.DebugLevel.ERROR, "Error while loading level \""
+					+ name + "\"!");
+		}
+	}
+
+	@Override
+	public Tag saveToNBT(Tag tag) {
+		tag.addTag(new Tag(Tag.Type.TAG_String, "NAME", this.getName()));
+		tag.addTag(new Tag(Tag.Type.TAG_Int, "WIDTH", this.getWidthInTiles()));
+		tag.addTag(new Tag(Tag.Type.TAG_Int, "HEIGHT", this.getHeightInTiles()));
+		tag.addTag(new Tag(Tag.Type.TAG_Byte_Array, "TILES", this
+				.getTileIdArray()));
+		tag.addTag(new Tag(Tag.Type.TAG_End, null, null));
+		return tag;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public void actionPerformed(InputEvent event) {
+		if (event.key.id == Game.instance.input.esc.id
+				&& event.type == InputEventType.PRESSED) {
+			Game.instance.showGui(new GuiPause(Game.instance, Game.instance.getWidth(), Game.instance.getHeight()));
+		}
 	}
 }
