@@ -40,12 +40,9 @@ public class GameLauncher extends Applet {
 //	}
 
 	public static void main(String[] args) {
-		System.out.println("GL main");
 		Game.instance = new Game();
 		game = Game.instance;
 		game.initLauncher();
 		game.start();
-		
-		Game.debug(Game.DebugLevel.INFO, "Game started");
 	}
 }

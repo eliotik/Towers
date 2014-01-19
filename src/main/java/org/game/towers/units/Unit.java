@@ -4,6 +4,7 @@
 package org.game.towers.units;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 import org.game.towers.gfx.Screen;
 import org.game.towers.interfaces.IUnit;
@@ -13,7 +14,9 @@ import org.game.towers.level.Level;
  * @author eliotik
  *
  */
-public abstract class Unit implements IUnit {
+public abstract class Unit implements IUnit, Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private int armour;
 	private int health;
@@ -26,19 +29,23 @@ public abstract class Unit implements IUnit {
     private double y;
 	private int tileX;
 	private int tileY;
-	private Level level;
+//	private Level level;
 	private int numSteps = 0;
 	private boolean isMoving;
 	private int movingDirection = 1;
 	private int scale = 1;
+	private int color;
 
-	public Unit(Level level) {
-		init(level);
+	public Unit() {
 	}
 	
-	public final void init(Level level) {
-		this.setLevel(level);
-	}
+//	public Unit(Level level) {
+//		init(level);
+//	}
+//	
+//	public final void init(Level level) {
+//		this.setLevel(level);
+//	}
 	
 	public abstract void tick();
 	
@@ -154,6 +161,8 @@ public abstract class Unit implements IUnit {
 	@Override
 	public IUnit setGeo(Rectangle cell) {
 		this.geo = cell;
+		this.x = cell.getX();
+		this.y = cell.getY();
 		return this;
 	}
 
@@ -255,11 +264,19 @@ public abstract class Unit implements IUnit {
 		this.numSteps = numSteps;
 	}
 
-	public Level getLevel() {
-		return level;
+//	public Level getLevel() {
+//		return level;
+//	}
+//
+//	public void setLevel(Level level) {
+//		this.level = level;
+//	}
+
+	public int getColor() {
+		return color;
 	}
 
-	public void setLevel(Level level) {
-		this.level = level;
+	public void setColor(int color) {
+		this.color = color;
 	}
 }

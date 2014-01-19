@@ -90,6 +90,7 @@ public class World implements NBTCapable {
 //			int xOffset = x - (getScreen().width / 2);
 //			int yOffset = y - (getScreen().height / 2);
 			level.renderTiles(screen, xOffset, yOffset);
+			level.renderNpcs(screen);
 		}
 	}
 

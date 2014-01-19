@@ -28,6 +28,7 @@ import org.game.towers.gui.GuiMainMenu;
 import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler;
 //import org.game.towers.level.Level;
+import org.game.towers.npcs.NpcTypesCollection;
 
 public class Game extends Canvas implements Runnable, FocusListener {
 
@@ -63,14 +64,12 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	private boolean launcherInited = false;
 
 	public void initSizes() {
-		System.out.println("GAME sizes");
 		setMinimumSize(Config.DIMENSIONS);
 		setMaximumSize(Config.DIMENSIONS);
 		setPreferredSize(Config.DIMENSIONS);
 	}
 	
 	public void initFrame() {
-		System.out.println("GAME frame");
 		frame = new JFrame(Config.GAME_NAME);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
@@ -83,7 +82,6 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 	
 	public void run() {
-		System.out.println("GAME run");
 		if (!launcherInited) {
 			debug(DebugLevel.WARNING, "Launcher was not correctly initiated!");
 			initLauncher();
@@ -142,6 +140,10 @@ public class Game extends Canvas implements Runnable, FocusListener {
 //		initLevel();
 		initMainMenu();
 	}	
+
+	private void initUnits() {
+		NpcTypesCollection.load();		
+	}
 
 	private void initMainMenu() {
 		showGui(new GuiMainMenu(this, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT));		
@@ -265,6 +267,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		setRunning(true);
 		thread = new Thread(this);
 		thread.start();
+		Game.debug(Game.DebugLevel.INFO, "Game started");
 	}
 	
 	public synchronized void stop() {
@@ -403,6 +406,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	public void setWorld(World world) {
 		this.world = world;
+		initUnits();
 	}
 
 	public void setLaucherInited(boolean isLauncherInited) {

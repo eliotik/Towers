@@ -37,6 +37,7 @@ public class GuiMainMenu extends Gui {
 			switch (action) {
 			case 0:
 				game.setWorld(new World(Config.DEFAULT_WORLD_NAME));
+				game.getWorld().getLevel().generateNpcs();
 				close();
 				break;
 			case 1:

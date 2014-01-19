@@ -5,6 +5,8 @@ package org.game.towers.interfaces;
 
 import java.awt.Rectangle;
 
+import org.game.towers.level.Level;
+
 /**
  * @author eliotik
  *
@@ -46,5 +48,23 @@ public interface IUnit {
 	public void  	setY(double y);
 	public double   getY();
 
+	public int 	getColor();
+	public void setColor(int color);
+	
+	public int 	getMovingDirection();
+	public void setMovingDirection(int movingDirection);
+
+	public int 	getScale();
+	public void setScale(int scale);
+
+	public boolean 	isMoving();
+	public void 	setMoving(boolean isMoving);
+
+	public int 	getNumSteps();
+	public void setNumSteps(int numSteps);
+
+//	public Level 	getLevel();
+//	public void 	setLevel(Level level);
+	
     public boolean isConstruction();
 }

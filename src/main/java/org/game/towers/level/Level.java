@@ -1,6 +1,7 @@
 package org.game.towers.level;
 
 import org.game.towers.configs.Config;
+import org.game.towers.configs.Npcs;
 import org.game.towers.game.Game;
 import org.game.towers.gfx.Colors;
 import org.game.towers.gfx.Font;
@@ -10,7 +11,9 @@ import org.game.towers.handlers.InputHandler.GameActionListener;
 import org.game.towers.handlers.InputHandler.InputEvent;
 import org.game.towers.handlers.InputHandler.InputEventType;
 import org.game.towers.level.tiles.Tile;
+import org.game.towers.npcs.NpcType;
 import org.game.towers.units.Unit;
+import org.game.towers.units.UnitFactory;
 import org.game.towers.workers.NBTCapable;
 import org.game.towers.workers.Tag;
 import org.game.towers.workers.Utils;
@@ -32,8 +35,10 @@ public class Level implements NBTCapable, GameActionListener {
 	public int height;
 	public int xOffset = 0;
 	public int yOffset = 0;
+	private int wave = 1;
 	private String imagePath;
 	private BufferedImage image;
+	public List<NpcType> npcs = new ArrayList<NpcType>();
 	
 	public Level(String imagePath) {
 		if (imagePath != null) {
@@ -47,6 +52,37 @@ public class Level implements NBTCapable, GameActionListener {
 		}
 	}
 	
+	public void generateNpcs() {
+		switch(wave) {
+			case 1:
+				NpcType tank1 = UnitFactory.getNpc(Npcs.TANK);
+				NpcType tank2 = UnitFactory.getNpc(Npcs.TANK);
+				NpcType tank3 = UnitFactory.getNpc(Npcs.TANK);
+				NpcType tank4 = UnitFactory.getNpc(Npcs.TANK);
+				if (tank1 != null) {
+					tank1.setX(8);
+					tank1.setY(152);
+					
+					addNpc(tank1);
+					
+					tank2.setX(250);
+					tank2.setY(100);
+					
+					addNpc(tank2);
+					
+					tank3.setX(150);
+					tank3.setY(152);
+					
+					addNpc(tank3);
+					
+					tank4.setX(80);
+					tank4.setY(80);
+					
+					addNpc(tank4);
+				}
+		}
+	}
+
 	public Level(Tag tag) {
 		this.setName("LEVEL");
 		this.loadFromNBT(tag);
@@ -219,8 +255,18 @@ public class Level implements NBTCapable, GameActionListener {
     		}
     		t.tick();
     	}
+    	
+    	for (NpcType n : npcs) {
+    		n.tick();
+    	}
 	}
 
+    public void renderNpcs(Screen screen) {
+    	for (NpcType n : npcs) {
+    		n.render(screen);
+    	}
+    }
+    
 	public int getWidthInTiles() {
 		return width;
 	}
@@ -273,5 +319,17 @@ public class Level implements NBTCapable, GameActionListener {
 				&& event.type == InputEventType.PRESSED) {
 			Game.instance.showGui(new GuiPause(Game.instance, Game.instance.getWidth(), Game.instance.getHeight()));
 		}
+	}
+	
+	public void addNpc(NpcType npc) {
+		npcs.add(npc);
+	}
+
+	public int getWave() {
+		return wave;
+	}
+
+	public void setWave(int wave) {
+		this.wave = wave;
 	}
 }

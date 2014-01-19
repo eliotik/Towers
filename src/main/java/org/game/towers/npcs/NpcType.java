@@ -15,9 +15,11 @@ import org.game.towers.units.Unit;
  */
 public class NpcType extends Unit {
 	
-	public NpcType(Level level) {
-		super(level);
-	}
+	private static final long serialVersionUID = 1L;
+
+//	public NpcType(Level level) {
+//		super(level);
+//	}
 
 	private ArrayList<String> hands;
 
@@ -37,12 +39,18 @@ public class NpcType extends Unit {
 	public void tick() {}
 
 	@Override
-	public void render(Screen screen) {}
+	public void render(Screen screen) {
+		int modifier = 8 * getScale();
+		int xOffset = (int) (getX() - modifier / 2);
+		int yOffset = (int) (getY() - modifier / 2);
+		
+		screen.render((int) getX(), (int) getY(), getTileX() + getTileY() * 32, getColor());
+	}
 	
 	public void move(int xa, int ya) {
 		if (xa != 0 && ya != 0) {
 			move(xa, 0);
-			move(ya, 0);
+			move(0, ya);
 			setNumSteps(getNumSteps() - 1);
 			return;
 		}

@@ -2,6 +2,8 @@ package org.game.towers.buildings;
 
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
+import org.game.towers.game.Game.DebugLevel;
+import org.game.towers.gfx.Colors;
 import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -44,8 +46,22 @@ public class BuildingTypesCollection {
             		)
                 );
                 
-                items.add(item);
+                item.setColor(
+            		Colors.get(
+        				Integer.parseInt(elemj.getAttribute("color_1").toString()), 
+        				Integer.parseInt(elemj.getAttribute("color_2").toString()), 
+        				Integer.parseInt(elemj.getAttribute("color_3").toString()), 
+        				Integer.parseInt(elemj.getAttribute("color_4").toString())
+    				)
+				);
+                
+                getItems().add(item);
             }
         }
+        Game.debug(DebugLevel.INFO, "Loaded Buildings types: " + getItems().size());
     }
+
+	public static ArrayList<BuildingType> getItems() {
+		return items;
+	}
 }
