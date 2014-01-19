@@ -18,7 +18,7 @@ import static ch.lambdaj.Lambda.*;
 public class PathWorker {
 
     private boolean isAvailable = true;
-    private Level level = Game.level;
+    private Level level = Game.instance.getWorld().getLevel();
 
     public boolean pathCheck() {
         return isAvailable;
@@ -65,7 +65,7 @@ public class PathWorker {
 //    }
 
     private Construction getBarrier(int xStart, int xFinish, int yStart, int yFinish){
-        List<Construction> temporaryConstructions = Game.level.getConstructions();
+        List<Construction> temporaryConstructions = Game.instance.getWorld().getLevel().getConstructions();
         if ( (yFinish > yStart  && xFinish > xStart) || (yFinish < yStart  && xFinish < xStart) ) {
             for(Construction construction : temporaryConstructions) {
                 int apexX = construction.getApexCX();
@@ -139,7 +139,7 @@ public class PathWorker {
     }
 
     private static void getNeighbor(Construction construction){
-        List<Construction> temporaryConstructions = Game.level.getConstructions();
+        List<Construction> temporaryConstructions = Game.instance.getWorld().getLevel().getConstructions();
         temporaryConstructions.remove(construction);
 
         for(Construction constrItem : temporaryConstructions) {

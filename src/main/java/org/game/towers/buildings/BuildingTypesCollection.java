@@ -1,6 +1,7 @@
 package org.game.towers.buildings;
 
 import org.game.towers.configs.Config;
+import org.game.towers.game.Game;
 import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -20,7 +21,7 @@ public class BuildingTypesCollection {
             Node firstNode=listOfElements.item(j);
             if( firstNode.getNodeType() == Node.ELEMENT_NODE ) {
                 org.w3c.dom.Element elemj = (org.w3c.dom.Element) firstNode;
-                BuildingType item = new BuildingType();
+                BuildingType item = new BuildingType(Game.instance.getWorld().getLevel());
 
                 item.setId(elemj.getAttribute("id").toString());
                 

@@ -30,9 +30,7 @@ public class GuiPause extends Gui{
 		list.render(this, 20, 30, 555);
 	}
 
-	public void tick(int ticks) {
-		
-	}
+	public void tick(int ticks) {}
 
 	public void guiActionPerformed(int elementId, int action) {
 		if(elementId == list.getId()) {

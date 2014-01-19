@@ -1,6 +1,7 @@
 package org.game.towers.npcs;
 
 import org.game.towers.configs.Config;
+import org.game.towers.game.Game;
 import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -21,7 +22,7 @@ public class NpcTypesCollection {
             if( firstNode.getNodeType() == Node.ELEMENT_NODE ) {
                 org.w3c.dom.Element elemj = (org.w3c.dom.Element) firstNode;
                 
-                NpcType item = new NpcType();
+                NpcType item = new NpcType(Game.instance.getWorld().getLevel());
 
                 item.setTypeName(elemj.getAttribute("name").toString());
                 item.setType(elemj.getAttribute("type").toString());

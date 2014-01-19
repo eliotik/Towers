@@ -5,7 +5,9 @@ package org.game.towers.units;
 
 import java.awt.Rectangle;
 
+import org.game.towers.gfx.Screen;
 import org.game.towers.interfaces.IUnit;
+import org.game.towers.level.Level;
 
 /**
  * @author eliotik
@@ -20,11 +22,30 @@ public abstract class Unit implements IUnit {
 	private String type;
 	private String typeName;
 	private Rectangle geo;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 	private int tileX;
 	private int tileY;
+	private Level level;
+	private int numSteps = 0;
+	private boolean isMoving;
+	private int movingDirection = 1;
+	private int scale = 1;
 
+	public Unit(Level level) {
+		init(level);
+	}
+	
+	public final void init(Level level) {
+		this.setLevel(level);
+	}
+	
+	public abstract void tick();
+	
+	public abstract void render(Screen screen);
+	
+	public abstract boolean hasCollided(int xa, int ya);
+	
 	/* (non-Javadoc)
 	 * @see org.game.towers.interfaces.IUnit#setArmour(int)
 	 */
@@ -178,22 +199,22 @@ public abstract class Unit implements IUnit {
 	}
 
     @Override
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
     @Override
-    public int getX() {
+    public double getX() {
         return x;
     }
 
     @Override
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -202,5 +223,43 @@ public abstract class Unit implements IUnit {
         return true;
     }
 
+	public int getMovingDirection() {
+		return movingDirection;
+	}
 
+	public void setMovingDirection(int movingDirection) {
+		this.movingDirection = movingDirection;
+	}
+
+	public int getScale() {
+		return scale;
+	}
+
+	public void setScale(int scale) {
+		this.scale = scale;
+	}
+
+	public boolean isMoving() {
+		return isMoving;
+	}
+
+	public void setMoving(boolean isMoving) {
+		this.isMoving = isMoving;
+	}
+
+	public int getNumSteps() {
+		return numSteps;
+	}
+
+	public void setNumSteps(int numSteps) {
+		this.numSteps = numSteps;
+	}
+
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
 }

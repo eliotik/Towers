@@ -91,8 +91,8 @@ public class InputHandler implements KeyListener {
 		public boolean gotPressed() {
 			return gotPressed;
 		}
-	}
-
+	}	
+	
 	public enum InputEventType {
 		PRESSED, RELEASED;
 	}
@@ -121,7 +121,6 @@ public class InputHandler implements KeyListener {
 
 	public void toggleKey(int keyCode, boolean pressed) {
 		actionPerformed = true;
-
 		if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			up.toggle(pressed);
 		}
@@ -134,7 +133,7 @@ public class InputHandler implements KeyListener {
 		if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
 			right.toggle(pressed);
 		}
-		if (keyCode == KeyEvent.VK_E) {
+		if (keyCode == KeyEvent.VK_E || keyCode == KeyEvent.VK_ENTER) {
 			action.toggle(pressed);
 		}
 		if (keyCode == KeyEvent.VK_ESCAPE) {

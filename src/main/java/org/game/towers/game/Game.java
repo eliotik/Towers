@@ -1,11 +1,11 @@
 package org.game.towers.game;
 
-import static java.lang.String.format;
+//import static java.lang.String.format;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
+//import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -17,8 +17,8 @@ import java.io.File;
 import javax.swing.JFrame;
 
 import org.game.towers.configs.Config;
-import org.game.towers.gfx.Colors;
-import org.game.towers.gfx.Font;
+//import org.game.towers.gfx.Colors;
+//import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.SpriteSheet;
 import org.game.towers.grid.Grid;
@@ -27,7 +27,7 @@ import org.game.towers.gui.GuiFocus;
 import org.game.towers.gui.GuiMainMenu;
 import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler;
-import org.game.towers.level.Level;
+//import org.game.towers.level.Level;
 
 public class Game extends Canvas implements Runnable, FocusListener {
 
@@ -51,14 +51,14 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	public int[] colors = new int[6 * 6 * 6];//6 different shades of color
 	
 	private Screen screen;
-	public static Level level;
+//	public static Level level;
 	public static Grid grid = new Grid();
 	public InputHandler input;
 	private Gui gui;
 	private World world;
 	
-	private int x = 0; 
-	private int y = 0;
+//	private int x = 0; 
+//	private int y = 0;
 
 	private boolean launcherInited = false;
 
@@ -96,7 +96,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		double delta = 0;
 		
 		init();
-		
+
 		while(isRunning()) {
 			if (!isVisible()) continue;
 			long now = System.nanoTime();
@@ -238,10 +238,10 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		setScreen(new Screen(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, new SpriteSheet(Config.SPRITESHEET_FILE)));
 	}
 
-	private void initLevel() {
-		level = new Level(format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME));
-		level.setOffset(getScreen());
-	}
+//	private void initLevel() {
+//		level = new Level(format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME));
+//		level.setOffset(getScreen());
+//	}
 	private void initInput() {
 		input = new InputHandler(this);
 	}
@@ -410,6 +410,9 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	public void initLauncher() {
+		if (Game.instance == null) {
+			Game.instance = this;
+		}
 		initSizes();
 		initFrame();
 		requestFocus();
