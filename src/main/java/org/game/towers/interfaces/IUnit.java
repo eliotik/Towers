@@ -5,7 +5,7 @@ package org.game.towers.interfaces;
 
 import java.awt.Rectangle;
 
-import org.game.towers.level.Level;
+//import org.game.towers.level.Level;
 
 /**
  * @author eliotik

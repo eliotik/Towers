@@ -71,7 +71,7 @@ public class Level implements NBTCapable, GameActionListener {
 					addNpc(tank2);
 					
 					tank3.setX(150);
-					tank3.setY(152);
+					tank3.setY(125);
 					
 					addNpc(tank3);
 					
@@ -222,14 +222,14 @@ public class Level implements NBTCapable, GameActionListener {
 				if(x % 10 == 0 && x != 0) {
 					color = Colors.get(-1, -1, -1, 500);
 				}
-				Font.render((x%10)+"", screen, 0 + (x * 8), 0, color);
+				Font.render((x%10)+"", screen, 0 + (x * 8), 0, color, 1);
 			}
 			for (int y = 0; y < height; y++) {
 				int color = Colors.get(-1, -1, -1, 000);
 				if(y % 10 == 0 && y != 0) {
 					color = Colors.get(-1, -1, -1, 500);
 				}
-				Font.render((y%10)+"", screen, 0, 0 + (y * 8), color);
+				Font.render((y%10)+"", screen, 0, 0 + (y * 8), color, 1);
 			}
 		}
 	}
