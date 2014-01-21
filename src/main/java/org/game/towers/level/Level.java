@@ -56,32 +56,32 @@ public class Level implements NBTCapable, GameActionListener {
 		switch(wave) {
 			case 1:
 				NpcType tank1 = UnitFactory.getNpc(Npcs.TANK);
-				NpcType tank2 = UnitFactory.getNpc(Npcs.TANK);
-				NpcType tank3 = UnitFactory.getNpc(Npcs.TANK);
-				NpcType tank4 = UnitFactory.getNpc(Npcs.TANK);
+//				NpcType tank2 = UnitFactory.getNpc(Npcs.TANK);
+//				NpcType tank3 = UnitFactory.getNpc(Npcs.TANK);
+//				NpcType tank4 = UnitFactory.getNpc(Npcs.TANK);
 				if (tank1 != null) {
 					tank1.setX(8);
-					tank1.setY(152);
+					tank1.setY(160-Config.BOX_SIZE);
 					
 					addNpc(tank1);
 					
-					tank2.setX(250);
-					tank2.setY(100);
-					tank2.setSpeed(1.5);
-					
-					addNpc(tank2);
-					
-					tank3.setX(150);
-					tank3.setY(125);
-					tank3.setSpeed(2);
-					
-					addNpc(tank3);
-					
-					tank4.setX(80);
-					tank4.setY(80);
-					tank4.setSpeed(1);
-					
-					addNpc(tank4);
+//					tank2.setX(250);
+//					tank2.setY(80-Config.BOX_SIZE);
+//					tank2.setSpeed(1.5);
+//					
+//					addNpc(tank2);
+//					
+//					tank3.setX(150);
+//					tank3.setY(120-Config.BOX_SIZE);
+//					tank3.setSpeed(2);
+//					
+//					addNpc(tank3);
+//					
+//					tank4.setX(80);
+//					tank4.setY(64-Config.BOX_SIZE);
+//					tank4.setSpeed(1);
+//					
+//					addNpc(tank4);
 				}
 		}
 	}
@@ -103,13 +103,45 @@ public class Level implements NBTCapable, GameActionListener {
 		}
 	}
 
+	public static class Portals {
+
+		public static final byte ENTRANCE = Tile.ENTRANCE.getId();
+		public static final byte EXIT = Tile.EXIT.getId();
+		
+		private static Tile entrance;
+		private static Tile exit;
+		
+		public Tile getEntrance() {
+			return entrance;
+		}
+		
+		public static void setEntrance(Tile ent) {
+			entrance = ent;
+		}
+		
+		public static Tile getExit() {
+			return exit;
+		}
+		
+		public static void setExit(Tile ex) {
+			exit = ex;
+		}
+	}	
+	
 	private void loadTiles() {
 		int[] tileColors = image.getRGB(0, 0, width, height, null, 0, width);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				tileCheck: for (Tile t : Tile.tiles) {
 					if (t != null && t.getLevelColor() == tileColors[x + y * width]) {
-						tiles[x + y * width] = t.getId();
+						byte tId = t.getId();
+						tiles[x + y * width] = tId;
+						if (tId == Portals.ENTRANCE) {
+							Portals.setEntrance(t);
+						}
+						if (tId == Portals.EXIT) {
+							Portals.setExit(t);
+						}
 						break tileCheck;
 					}
 				}
