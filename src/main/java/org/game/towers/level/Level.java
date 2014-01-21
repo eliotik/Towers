@@ -108,23 +108,57 @@ public class Level implements NBTCapable, GameActionListener {
 		public static final byte ENTRANCE = Tile.ENTRANCE.getId();
 		public static final byte EXIT = Tile.EXIT.getId();
 		
-		private static Tile entrance;
-		private static Tile exit;
+		private static Portal entrance = new Portal();
+		private static Portal exit = new Portal();
 		
-		public Tile getEntrance() {
+		private static class Portal {
+			private Tile tile;
+			private int x;
+			private int y;
+			
+			public Tile getTile() {
+				return tile;
+			}
+			
+			public void setTile(Tile tile) {
+				this.tile = tile;
+			}
+			
+			public int getX() {
+				return x;
+			}
+			
+			public void setX(int x) {
+				this.x = x;
+			}
+			
+			public int getY() {
+				return y;
+			}
+			
+			public void setY(int y) {
+				this.y = y;
+			}
+		}
+		
+		public Portal getEntrance() {
 			return entrance;
 		}
 		
-		public static void setEntrance(Tile ent) {
-			entrance = ent;
+		public static void setEntrance(Tile ent, int x, int y) {
+			entrance.setTile(ent);
+			entrance.setX(x);
+			entrance.setY(y);
 		}
 		
-		public static Tile getExit() {
+		public static Portal getExit() {
 			return exit;
 		}
 		
-		public static void setExit(Tile ex) {
-			exit = ex;
+		public static void setExit(Tile ex, int x, int y) {
+			exit.setTile(ex);
+			exit.setX(x);
+			exit.setY(y);
 		}
 	}	
 	
@@ -137,10 +171,10 @@ public class Level implements NBTCapable, GameActionListener {
 						byte tId = t.getId();
 						tiles[x + y * width] = tId;
 						if (tId == Portals.ENTRANCE) {
-							Portals.setEntrance(t);
+							Portals.setEntrance(t, x, y);
 						}
 						if (tId == Portals.EXIT) {
-							Portals.setExit(t);
+							Portals.setExit(t, x, y);
 						}
 						break tileCheck;
 					}
