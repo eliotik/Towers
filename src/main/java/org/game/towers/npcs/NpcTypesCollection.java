@@ -37,7 +37,7 @@ public class NpcTypesCollection {
                 
                 item.setHealth(Integer.parseInt(elemj.getAttribute("health").toString()));
                 item.setArmour(Integer.parseInt(elemj.getAttribute("armour").toString()));
-                item.setSpeed(Integer.parseInt(elemj.getAttribute("speed").toString()));
+                item.setSpeed(Double.parseDouble(elemj.getAttribute("speed").toString()));
                 item.setDamage(Integer.parseInt(elemj.getAttribute("damage").toString()));
                 
                 item.setGeo(new Rectangle(

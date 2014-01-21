@@ -14,7 +14,7 @@ import org.game.towers.units.Unit;
 public class TowerType extends Unit {
 	
 	public TowerType(Level level) {
-		//super(level);
+//		super(level);
 	}
 
 	private double radius;

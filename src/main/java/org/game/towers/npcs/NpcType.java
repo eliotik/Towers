@@ -5,6 +5,7 @@ package org.game.towers.npcs;
 
 import java.util.ArrayList;
 
+import org.game.towers.configs.Config;
 import org.game.towers.gfx.Screen;
 import org.game.towers.level.Level;
 import org.game.towers.units.Unit;
@@ -36,15 +37,53 @@ public class NpcType extends Unit {
     }
 
 	@Override
-	public void tick() {}
+	public void tick() {
+		int xa = 0;
+		
+		if (getMovingDirection() != 2)
+			setMovingDirection(3);
+		
+		if (getX() < Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
+			xa++;
+		} else if (getX() >= Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
+			setMovingDirection(2);
+		} else if (getX() > 8 && getMovingDirection() == 2) {
+			xa--;			
+		} else if (getX() <= 8 && getMovingDirection() == 2) {
+			setMovingDirection(3);
+		}
+		if (xa != 0) {
+			move(xa, 0);
+			setMoving(true);
+		} else {
+			setMoving(false);
+		}
+//		setNumSteps(16);
+//		setScale(1);
+	}
 
 	@Override
 	public void render(Screen screen) {
-		int modifier = 8 * getScale();
-		int xOffset = (int) (getX() - modifier / 2);
-		int yOffset = (int) (getY() - modifier / 2);
 		
-		screen.render((int) getX(), (int) getY(), getTileX() + getTileY() * 32, getColor());
+		int walkingSpeed = 4;
+		int flip = (getMovingDirection() - 1) % 2;
+		int shift = ((getNumSteps() >> walkingSpeed) & 1);
+		int xTile = getTileX() + shift;
+		
+		
+		if (getMovingDirection() == 1) {
+			xTile += 1 - shift * 2;
+			flip = (getMovingDirection() - 1) % 2;
+		} else if (getMovingDirection() > 1) {
+			xTile += 2;
+			flip = (getMovingDirection() - 1) % 2;
+		}
+//		System.out.println("dir = " +getMovingDirection()+ ", steps = "+ getNumSteps() + ", tile = "+ xTile+", flip = "+flip+", shift = "+shift);
+//		int modifier = 8 * getScale();		
+//		int xOffset = (int) (getX() - modifier / 2);
+//		int yOffset = (int) (getY() - modifier / 2);
+		
+		screen.render((int) getX(), (int) getY(), xTile + getTileY() * 32, getColor(), flip, getScale());
 	}
 	
 	public void move(int xa, int ya) {
