@@ -67,16 +67,19 @@ public class Level implements NBTCapable, GameActionListener {
 					
 					tank2.setX(250);
 					tank2.setY(100);
+					tank2.setSpeed(1.5);
 					
 					addNpc(tank2);
 					
 					tank3.setX(150);
 					tank3.setY(125);
+					tank3.setSpeed(2);
 					
 					addNpc(tank3);
 					
 					tank4.setX(80);
 					tank4.setY(80);
+					tank4.setSpeed(1);
 					
 					addNpc(tank4);
 				}
