@@ -125,7 +125,7 @@ public class Level implements NBTCapable, GameActionListener {
 			}
 			
 			public int getX() {
-				return x;
+				return x * Config.BOX_SIZE;
 			}
 			
 			public void setX(int x) {
@@ -133,7 +133,7 @@ public class Level implements NBTCapable, GameActionListener {
 			}
 			
 			public int getY() {
-				return y;
+				return y * Config.BOX_SIZE;
 			}
 			
 			public void setY(int y) {
@@ -141,7 +141,7 @@ public class Level implements NBTCapable, GameActionListener {
 			}
 		}
 		
-		public Portal getEntrance() {
+		public static Portal getEntrance() {
 			return entrance;
 		}
 		
@@ -181,6 +181,8 @@ public class Level implements NBTCapable, GameActionListener {
 				}
 			}
 		}
+//		System.out.println("entrance "+Portals.getEntrance().getX() +":"+ Portals.getEntrance().getY());
+//		System.out.println("exit "+Portals.getExit().getX() +":"+ Portals.getExit().getY());
 	}
 	
 	private void saveLevelToFile() {
