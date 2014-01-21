@@ -33,13 +33,13 @@ public class Screen {
 	}
 	
 	public void render(int xPos, int yPos, int tile, int color, int mirrorDir) {
-		xPos -= xOffset;
-		yPos -= yOffset;
-		
+//		xPos -= xOffset;
+//		yPos -= yOffset;
 		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
 		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
-		
-		int xTile = tile % 32;
+//        System.out.println(xPos);
+//        System.out.println(yPos);
+        int xTile = tile % 32;
 		int yTile = tile / 32;
 		int tileOffset = (xTile << 3) + (yTile << 3) * sheet.getWidth();
 		

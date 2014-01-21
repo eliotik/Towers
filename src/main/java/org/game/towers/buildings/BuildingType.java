@@ -13,7 +13,7 @@ import org.game.towers.units.Unit;
  */
 public class BuildingType extends Unit {
 	public BuildingType(Level level) {
-		super(level);
+//		super(level);
 	}
 
 	private double value;
