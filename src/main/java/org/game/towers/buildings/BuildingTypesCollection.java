@@ -35,7 +35,7 @@ public class BuildingTypesCollection {
                 
                 item.setHealth(Integer.parseInt(elemj.getAttribute("health").toString()));
                 item.setArmour(Integer.parseInt(elemj.getAttribute("armour").toString()));
-                item.setSpeed(Integer.parseInt(elemj.getAttribute("speed").toString()));
+                item.setSpeed(Double.parseDouble(elemj.getAttribute("speed").toString()));
                 item.setValue(Double.parseDouble(elemj.getAttribute("damage").toString()));
                 
                 item.setGeo(new Rectangle(
