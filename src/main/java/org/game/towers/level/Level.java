@@ -111,7 +111,8 @@ public class Level implements NBTCapable, GameActionListener {
 		private static Portal entrance = new Portal();
 		private static Portal exit = new Portal();
 		
-		private static class Portal {
+		public static class Portal {
+//		private static class Portal {
 			private Tile tile;
 			private int x;
 			private int y;
