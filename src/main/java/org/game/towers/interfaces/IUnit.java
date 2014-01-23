@@ -5,6 +5,8 @@ package org.game.towers.interfaces;
 
 import java.awt.Rectangle;
 
+import org.game.towers.level.Level;
+
 //import org.game.towers.level.Level;
 
 /**
@@ -63,8 +65,8 @@ public interface IUnit {
 	public int 	getNumSteps();
 	public void setNumSteps(int numSteps);
 
-//	public Level 	getLevel();
-//	public void 	setLevel(Level level);
+	public Level 	getLevel();
+	public void 	setLevel(Level level);
 	
     public boolean isConstruction();
 }

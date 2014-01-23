@@ -4,6 +4,7 @@ import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.game.Game.DebugLevel;
 import org.game.towers.gfx.Colors;
+import org.game.towers.level.Level;
 import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

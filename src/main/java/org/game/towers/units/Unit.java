@@ -9,6 +9,7 @@ import java.io.Serializable;
 import org.game.towers.gfx.Screen;
 import org.game.towers.interfaces.IUnit;
 import org.game.towers.level.Level;
+import org.game.towers.level.tiles.Tile;
 
 /**
  * @author eliotik
@@ -29,7 +30,7 @@ public abstract class Unit implements IUnit, Serializable {
     private double y;
 	private int tileX;
 	private int tileY;
-//	private Level level;
+	private Level level;
 	private int numSteps = 0;
 	private boolean isMoving;
 	private int movingDirection = 1;
@@ -52,6 +53,18 @@ public abstract class Unit implements IUnit, Serializable {
 	public abstract void render(Screen screen);
 	
 	public abstract boolean hasCollided(int xa, int ya);
+	
+	protected boolean isSolidTile(int xa, int ya, int x, int y) {
+		if (level == null) {
+			return false;
+		}
+		Tile lastTile = level.getTile((int)(this.x + x) >> 3, (int)(this.y + y) >> 3);
+		Tile newTile = level.getTile((int)(this.x + x + xa) >> 3, (int)(this.y + y + ya) >> 3);
+		if (!lastTile.equals(newTile) && newTile.isSolid()) {
+			return true;
+		}
+		return false;
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.game.towers.interfaces.IUnit#setArmour(int)
@@ -161,8 +174,8 @@ public abstract class Unit implements IUnit, Serializable {
 	@Override
 	public IUnit setGeo(Rectangle cell) {
 		this.geo = cell;
-		this.x = cell.getX();
-		this.y = cell.getY();
+		this.x = (int) cell.getX();
+		this.y = (int) cell.getY();
 		return this;
 	}
 
@@ -264,13 +277,13 @@ public abstract class Unit implements IUnit, Serializable {
 		this.numSteps = numSteps;
 	}
 
-//	public Level getLevel() {
-//		return level;
-//	}
-//
-//	public void setLevel(Level level) {
-//		this.level = level;
-//	}
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
 
 	public int getColor() {
 		return color;

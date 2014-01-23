@@ -7,7 +7,7 @@ import org.game.towers.level.Level;
 public abstract class Tile {
 
 	public static final Tile[] tiles = new Tile[256];
-	public static final Tile VOID = new BasicTile(0, 0, 0, Colors.get(000, -1, -1, -1), true, 0xFF000000);
+	public static final Tile VOID = new BasicSolidTile(0, 0, 0, Colors.get(000, -1, -1, -1), 0xFF000000);
 //	public static final Tile STONE = new BasicTile(1, 1, 0, Colors.get(131, 333, 339, 318), true, 0xFF555555);
 	public static final Tile STONE = new AnimatedTile(1, new int[][] {{0, 3}, {1, 3}, {2, 3}, {3, 3}, {0, 3}}, 
 			Colors.get(131, 333, 339, 318), true, 0xFF555555, 80, 4000);

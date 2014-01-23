@@ -60,8 +60,9 @@ public class Level implements NBTCapable, GameActionListener {
 //				NpcType tank3 = UnitFactory.getNpc(Npcs.TANK);
 //				NpcType tank4 = UnitFactory.getNpc(Npcs.TANK);
 				if (tank1 != null) {
+					tank1.setLevel(this);
 					tank1.setX(8);
-					tank1.setY(160-Config.BOX_SIZE);
+					tank1.setY(160-Config.BOX_SIZE*4);
 					
 					addNpc(tank1);
 					
@@ -306,8 +307,10 @@ public class Level implements NBTCapable, GameActionListener {
 		}
 	}
 
-	private Tile getTile(int x, int y) {
-		if (x < 0 || x > width || y < 0 || y > height) return Tile.VOID;
+	public Tile getTile(int x, int y) {
+		if (0 > x || x >= width || 0 > y || y >= height) {
+			return Tile.VOID;
+		}
 		return Tile.tiles[tiles[x + y * width]];
 	}
 

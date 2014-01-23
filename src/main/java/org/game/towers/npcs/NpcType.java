@@ -53,7 +53,18 @@ public class NpcType extends Unit {
 			setMovingDirection(3);
 		}
 		if (xa != 0) {
-			move(xa, 0);
+			if(!hasCollided(xa, 0)) {
+				move(xa, 0);
+			} else {
+				if (getMovingDirection() == 2) {
+					setMovingDirection(3);
+					move(xa++, 0);
+				} else {
+					setMovingDirection(2);
+					move(--xa, 0);
+				}
+			}
+			
 			setMoving(true);
 		} else {
 			setMoving(false);
@@ -116,6 +127,32 @@ public class NpcType extends Unit {
 
 	@Override
 	public boolean hasCollided(int xa, int ya) {
+		int xMin = 0;
+		int xMax = 7;
+		int yMin = 0;
+		int yMax = 7;
+		
+		for (int x = xMin; x < xMax; x++) {
+			if (isSolidTile(xa, ya, x, yMin)) {
+				return true;
+			}
+		}
+		for (int x = xMin; x < xMax; x++) {
+			if (isSolidTile(xa, ya, x, yMax)) {
+				return true;
+			}
+		}
+		for (int y = yMin; y < yMax; y++) {
+			if (isSolidTile(xa, ya, xMin, y)) {
+				return true;
+			}
+		}
+		for (int y = yMin; y < yMax; y++) {
+			if (isSolidTile(xa, ya, xMax, y)) {
+				return true;
+			}
+		}
+		
 		return false;
 	}
 }
