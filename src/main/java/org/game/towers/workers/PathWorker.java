@@ -149,8 +149,61 @@ public class PathWorker {
 //        return null;
     }
 
+    public Dimension getNextCoordinates(int x, int y){
+        int finishX = Level.Portals.getExit().getX();
+        int finishY = Level.Portals.getExit().getY();
+        Construction barrier = getBarrier(x, finishX, y, finishY);
+        double deltaX = (finishX - x);
+        double deltaY = (finishY - y);
+        Dimension dimension = new Dimension();
 
+        return dimension;
+    }
 
+    private int getLogicZone(int x, int y, Construction construction){
+        if (x < construction.getApexAX() && y < construction.getApexAY()) {
+            return 1; // north West
+        }
+
+        if (x < construction.getApexAX() && x > construction.getApexBX() && y < construction.getApexBY()) {
+            return 2; // north
+        }
+
+        if (x > construction.getApexBX() && y > construction.getApexBY()) {
+            return 3; // north-east
+        }
+
+        if (x > construction.getApexBX() && y < construction.getApexBY() && y > construction.getApexCY()) {
+            return 4; // east
+        }
+
+        if (x > construction.getApexCX() && y > construction.getApexCY()) {
+            return 5; // south east
+        }
+
+        if (x > construction.getApexDX() && x < construction.getApexCX() && y > construction.getApexCY()) {
+            return 6; // south
+        }
+
+        if (x < construction.getApexDX() && y > construction.getApexDY()) {
+            return 7; // south west
+        }
+
+        if (x < construction.getApexAX() && y > construction.getApexAY() && y < construction.getApexDY()) {
+            return 8; // west
+        }
+        return 0;
+    }
+
+    private int[] getIntermediateFinish(int x, int y, Construction construction) {
+        int logicZone = getLogicZone(x, y, construction);
+        switch (logicZone) {
+            case 1:
+
+                break;
+        }
+
+    }
 
 
 
