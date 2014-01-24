@@ -39,19 +39,19 @@ public class Level implements NBTCapable, GameActionListener {
 	private String imagePath;
 	private BufferedImage image;
 	public List<NpcType> npcs = new ArrayList<NpcType>();
-	
+
 	public Level(String imagePath) {
-		if (imagePath != null) {
+//		if (imagePath != null) {
 			this.imagePath = imagePath;
 			loadLevelFromFile();
-		} else {
-			width = Config.DEFAULT_LEVEL_WIDTH;
-			height = Config.DEFAULT_LEVEL_HEIGHT;
-			tiles = new byte[width * height];
-			generateLevel();
-		}
+//		} else {
+//			width = Config.DEFAULT_LEVEL_WIDTH;
+//			height = Config.DEFAULT_LEVEL_HEIGHT;
+//			tiles = new byte[width * height];
+//			generateLevel();
+//		}
 	}
-	
+
 	public void generateNpcs() {
 		switch(wave) {
 			case 1:
@@ -63,25 +63,25 @@ public class Level implements NBTCapable, GameActionListener {
 					tank1.setLevel(this);
 					tank1.setX(8);
 					tank1.setY(160-Config.BOX_SIZE*4);
-					
+
 					addNpc(tank1);
-					
+
 //					tank2.setX(250);
 //					tank2.setY(80-Config.BOX_SIZE);
 //					tank2.setSpeed(1.5);
-//					
+//
 //					addNpc(tank2);
-//					
+//
 //					tank3.setX(150);
 //					tank3.setY(120-Config.BOX_SIZE);
 //					tank3.setSpeed(2);
-//					
+//
 //					addNpc(tank3);
-//					
+//
 //					tank4.setX(80);
 //					tank4.setY(64-Config.BOX_SIZE);
 //					tank4.setSpeed(1);
-//					
+//
 //					addNpc(tank4);
 				}
 		}
@@ -90,8 +90,8 @@ public class Level implements NBTCapable, GameActionListener {
 	public Level(Tag tag) {
 		this.setName("LEVEL");
 		this.loadFromNBT(tag);
-	}	
-	
+	}
+
 	private void loadLevelFromFile() {
 		try {
 			image = ImageIO.read(Config.class.getResource(this.imagePath));
@@ -108,62 +108,61 @@ public class Level implements NBTCapable, GameActionListener {
 
 		public static final byte ENTRANCE = Tile.ENTRANCE.getId();
 		public static final byte EXIT = Tile.EXIT.getId();
-		
+
 		private static Portal entrance = new Portal();
 		private static Portal exit = new Portal();
-		
+
 		public static class Portal {
-//		private static class Portal {
 			private Tile tile;
 			private int x;
 			private int y;
-			
+
 			public Tile getTile() {
 				return tile;
 			}
-			
+
 			public void setTile(Tile tile) {
 				this.tile = tile;
 			}
-			
+
 			public int getX() {
 				return x * Config.BOX_SIZE;
 			}
-			
+
 			public void setX(int x) {
 				this.x = x;
 			}
-			
+
 			public int getY() {
 				return y * Config.BOX_SIZE;
 			}
-			
+
 			public void setY(int y) {
 				this.y = y;
 			}
 		}
-		
+
 		public static Portal getEntrance() {
 			return entrance;
 		}
-		
+
 		public static void setEntrance(Tile ent, int x, int y) {
 			entrance.setTile(ent);
 			entrance.setX(x);
 			entrance.setY(y);
 		}
-		
+
 		public static Portal getExit() {
 			return exit;
 		}
-		
+
 		public static void setExit(Tile ex, int x, int y) {
 			exit.setTile(ex);
 			exit.setX(x);
 			exit.setY(y);
 		}
-	}	
-	
+	}
+
 	private void loadTiles() {
 		int[] tileColors = image.getRGB(0, 0, width, height, null, 0, width);
 		for (int y = 0; y < height; y++) {
@@ -186,7 +185,7 @@ public class Level implements NBTCapable, GameActionListener {
 //		System.out.println("entrance "+Portals.getEntrance().getX() +":"+ Portals.getEntrance().getY());
 //		System.out.println("exit "+Portals.getExit().getX() +":"+ Portals.getExit().getY());
 	}
-	
+
 	private void saveLevelToFile() {
 		try {
 			ImageIO.write(image, "png", new File(Level.class.getResource(imagePath).getFile()));
@@ -194,59 +193,59 @@ public class Level implements NBTCapable, GameActionListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void alterTile(int x, int y, Tile newTile) {
 		tiles[x + y * width] = newTile.getId();
 		image.setRGB(x, y, newTile.getLevelColor());
 	}
-	
+
 	public void setOffset(Screen screen) {
-		this.xOffset = -(screen.xOffset + screen.width / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2); 
+		this.xOffset = -(screen.xOffset + screen.width / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2);
 		this.yOffset = -(screen.yOffset + screen.height / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2);
 	}
 
-	private void generateLevel() {
-		int entrenceY = Utils.randInt(1, Config.MAP_Y_SIZE-2);
-		int exitY = Utils.randInt(1, Config.MAP_Y_SIZE-2);
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				if (y == 0 || 
-					x == Config.MAP_X_SIZE-1 || 
-					y == Config.MAP_Y_SIZE-1 || x == 0) {
-					
-					if ((x == 0 && y == entrenceY) || 
-						(x == Config.MAP_X_SIZE-1 && y == exitY)) {
-						tiles[x + y * width] = Tile.ENTRANCE.getId();
-					} else {
-						tiles[x + y * width] = Tile.BUSH.getId();												
-					}
-					
-				} else {
-					if (Utils.randInt(0, 88)==13 && 
-						(x != 1 && y != entrenceY) && 
-						(x != Config.MAP_X_SIZE-1 && y != exitY)) {
-						
-						tiles[x + y * width] = Tile.STONE.getId();
-						
-					} else {
-						tiles[x + y * width] = Tile.GRASS.getId();
-					}
-				}
-//				if (x * y % 10 == 0) {
-//					tiles[x + y * width] = Tile.BUSH.getId();
+//	private void generateLevel() {
+//		int entrenceY = Utils.randInt(1, Config.MAP_Y_SIZE-2);
+//		int exitY = Utils.randInt(1, Config.MAP_Y_SIZE-2);
+//		for (int y = 0; y < height; y++) {
+//			for (int x = 0; x < width; x++) {
+//				if (y == 0 ||
+//					x == Config.MAP_X_SIZE-1 ||
+//					y == Config.MAP_Y_SIZE-1 || x == 0) {
+//
+//					if ((x == 0 && y == entrenceY) ||
+//						(x == Config.MAP_X_SIZE-1 && y == exitY)) {
+//						tiles[x + y * width] = Tile.ENTRANCE.getId();
+//					} else {
+//						tiles[x + y * width] = Tile.BUSH.getId();
+//					}
+//
 //				} else {
-//					tiles[x + y * width] = Tile.GRASS.getId();
+//					if (Utils.randInt(0, 88)==13 &&
+//						(x != 1 && y != entrenceY) &&
+//						(x != Config.MAP_X_SIZE-1 && y != exitY)) {
+//
+//						tiles[x + y * width] = Tile.STONE.getId();
+//
+//					} else {
+//						tiles[x + y * width] = Tile.GRASS.getId();
+//					}
 //				}
-			}
-		}
-	}
-	
+////				if (x * y % 10 == 0) {
+////					tiles[x + y * width] = Tile.BUSH.getId();
+////				} else {
+////					tiles[x + y * width] = Tile.GRASS.getId();
+////				}
+//			}
+//		}
+//	}
+
 	public void renderTiles(Screen screen, int xOffset, int yOffset) {
 //		if(xOffset < 0) xOffset = 0;
 //		if(xOffset > ((width << 3) - screen.width)) xOffset = ((width << 3) - screen.width);
 //		if(yOffset < 0) yOffset = 0;
 //		if(yOffset > ((height << 3) - screen.height)) yOffset = ((height << 3) - screen.height);
-		
+
 //		screen.setOffset(xOffset, yOffset);
 		//-38, -19
 //		System.out.println("---------------------");
@@ -259,32 +258,32 @@ public class Level implements NBTCapable, GameActionListener {
 //		System.out.println(-(Config.REAL_SCREEN_WIDTH / 2 - Config.MAP_X_SIZE*Config.BOX_SIZE)/Config.BOX_SIZE);
 //		System.out.println(-(Config.REAL_SCREEN_HEIGHT / 2 - Config.MAP_Y_SIZE*Config.BOX_SIZE)/Config.BOX_SIZE);
 //		screen.setOffset(
-//				this.xOffset, 
+//				this.xOffset,
 //				this.yOffset);
-		
+
 		for(int y = 0; y < height; y++) {
 			for(int x = 0; x < width; x++) {
 				Tile tile = getTile(x,y);
-				switch(tile.getId()) {
-					case 4://brush
-						tile.render(screen, this, x << 3, y << 3, (x + y % 10 > 0) ? 0x00 : 0x02);
-						break;
-					case 1://stone
-						tile.render(screen, this, x << 3, y << 3, (x * y % 10 == 0) ? 0x01 : 0x02);
-						break;	
-					default:
+//				switch(tile.getId()) {
+//					case 4://brush
+//						tile.render(screen, this, x << 3, y << 3, (x + y % 10 > 0) ? 0x00 : 0x02);
+//						break;
+//					case 1://stone
+//						tile.render(screen, this, x << 3, y << 3, (x * y % 10 == 0) ? 0x01 : 0x02);
+//						break;
+//					default:
 						tile.render(screen, this, x << 3, y << 3);
-						break;
-				}
-				if (tile.getId() == 4) {
-//				if ((x == 0 && y == 10) || (x == Config.MAP_X_SIZE-1 && y == 10)) {
-					tile.render(screen, this, x << 3, y << 3, (x + y % 10 > 0) ? 0x00 : 0x02);
-				} else {
-					tile.render(screen, this, x << 3, y << 3);
-				}
+//						break;
+//				}
+//				if (tile.getId() == 4) {
+////				if ((x == 0 && y == 10) || (x == Config.MAP_X_SIZE-1 && y == 10)) {
+//					tile.render(screen, this, x << 3, y << 3, (x + y % 10 > 0) ? 0x00 : 0x02);
+//				} else {
+//					tile.render(screen, this, x << 3, y << 3);
+//				}
 			}
 		}
-		
+
 		renderIds(screen);
 	}
 
@@ -330,7 +329,7 @@ public class Level implements NBTCapable, GameActionListener {
     		}
     		t.tick();
     	}
-    	
+
     	for (NpcType n : npcs) {
     		n.tick();
     	}
@@ -341,19 +340,19 @@ public class Level implements NBTCapable, GameActionListener {
     		n.render(screen);
     	}
     }
-    
+
 	public int getWidthInTiles() {
 		return width;
 	}
 
 	public int getHeightInTiles() {
 		return height;
-	}    
-    
+	}
+
 	public byte[] getTileIdArray() {
 		return tiles;
-	}	
-	
+	}
+
 	@Override
 	public void loadFromNBT(Tag tag) {
 		this.name = tag.findTagByName("NAME").getValue().toString();
@@ -395,7 +394,7 @@ public class Level implements NBTCapable, GameActionListener {
 			Game.instance.showGui(new GuiPause(Game.instance, Game.instance.getWidth(), Game.instance.getHeight()));
 		}
 	}
-	
+
 	public void addNpc(NpcType npc) {
 		npcs.add(npc);
 	}
