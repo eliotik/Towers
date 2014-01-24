@@ -3,6 +3,8 @@ package org.game.towers.level;
 import org.game.towers.configs.Config;
 import org.game.towers.configs.Npcs;
 import org.game.towers.game.Game;
+import org.game.towers.geo.Coordinates;
+import org.game.towers.geo.Geo;
 import org.game.towers.gfx.Colors;
 import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
@@ -16,12 +18,12 @@ import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
 import org.game.towers.workers.NBTCapable;
 import org.game.towers.workers.Tag;
-import org.game.towers.workers.Utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -29,7 +31,8 @@ import javax.imageio.ImageIO;
 public class Level implements NBTCapable, GameActionListener {
 
 	private String name;
-	private byte[] tiles;
+//	private byte[] tiles;
+	private HashMap<Integer, TileMap> tiles = new HashMap<Integer, TileMap>();
     private List<Construction> constructions = new ArrayList<Construction>();
 	public int width;
 	public int height;
@@ -97,17 +100,44 @@ public class Level implements NBTCapable, GameActionListener {
 			image = ImageIO.read(Config.class.getResource(this.imagePath));
 			width = image.getWidth();
 			height = image.getHeight();
-			tiles = new byte [width * height];
+			//tiles = new byte [width * height];
 			loadTiles();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	public class TileMap {
+		private Geo geo;
+		private byte tileId;
+		
+		public TileMap(byte tId, Geo geo) {
+			setTileId(tId);
+			setGeo(geo);
+		}
+
+		public Geo getGeo() {
+			return geo;
+		}
+		
+		public void setGeo(Geo geo) {
+			this.geo = geo;
+		}
+		
+		public byte getTileId() {
+			return tileId;
+		}
+		
+		public void setTileId(byte id) {
+			this.tileId = id;
+		}
+		
+	}
+	
 	public static class Portals {
 
-		public static final byte ENTRANCE = Tile.ENTRANCE.getId();
-		public static final byte EXIT = Tile.EXIT.getId();
+		private static final byte ENTRANCE = Tile.ENTRANCE.getId();
+		private static final byte EXIT = Tile.EXIT.getId();
 
 		private static Portal entrance = new Portal();
 		private static Portal exit = new Portal();
@@ -170,7 +200,8 @@ public class Level implements NBTCapable, GameActionListener {
 				tileCheck: for (Tile t : Tile.tiles) {
 					if (t != null && t.getLevelColor() == tileColors[x + y * width]) {
 						byte tId = t.getId();
-						tiles[x + y * width] = tId;
+						tiles.put(x + y * width, new TileMap(tId, new Geo(new Coordinates(x, y), Config.BOX_SIZE, Config.BOX_SIZE)));
+						//tiles[x + y * width] = tId;//new tileMap(tId, new Geo(new Coordinates(x, y), Config.BOX_SIZE, Config.BOX_SIZE));
 						if (tId == Portals.ENTRANCE) {
 							Portals.setEntrance(t, x, y);
 						}
@@ -195,7 +226,8 @@ public class Level implements NBTCapable, GameActionListener {
 	}
 
 	public void alterTile(int x, int y, Tile newTile) {
-		tiles[x + y * width] = newTile.getId();
+		tiles.get((byte)(x + y * width)).setTileId(newTile.getId());
+//		tiles[x + y * width] = newTile.getId();
 		image.setRGB(x, y, newTile.getLevelColor());
 	}
 
@@ -310,8 +342,15 @@ public class Level implements NBTCapable, GameActionListener {
 		if (0 > x || x >= width || 0 > y || y >= height) {
 			return Tile.VOID;
 		}
-		return Tile.tiles[tiles[x + y * width]];
+		return Tile.tiles[tiles.get((x + y * width)).getTileId()];
 	}
+	
+	public Geo getTileGeo(int x, int y) {
+		if (0 > x || x >= width || 0 > y || y >= height) {
+			return null;
+		}
+		return tiles.get(x + y * width).getGeo();
+	}	
 
     public void addConstruction(int x, int y, int width, int height, Unit type) {
         Construction construction = new Construction(x, y, width, height, type);
@@ -349,7 +388,7 @@ public class Level implements NBTCapable, GameActionListener {
 		return height;
 	}
 
-	public byte[] getTileIdArray() {
+	public HashMap<Integer, TileMap> getTileIdArray() {
 		return tiles;
 	}
 
@@ -358,10 +397,10 @@ public class Level implements NBTCapable, GameActionListener {
 		this.name = tag.findTagByName("NAME").getValue().toString();
 		this.width = (int) tag.findTagByName("WIDTH").getValue();
 		this.height = (int) tag.findTagByName("HEIGHT").getValue();
-		this.tiles = (byte[]) tag.findTagByName("TILES").getValue();
+		this.tiles = (HashMap<Integer, TileMap>) tag.findTagByName("TILES").getValue();
 		// this.meta = (byte[]) tag.findTagByName("META").getValue();
 		// this.overlay = (byte[]) tag.findTagByName("OVERLAY").getValue();
-		if (tiles.length != width * height) {
+		if (tiles.size() != width * height) {
 			Game.debug(Game.DebugLevel.WARNING, "Tile data corrupted!");
 			Game.debug(Game.DebugLevel.ERROR, "Error while loading level \""
 					+ name + "\"!");

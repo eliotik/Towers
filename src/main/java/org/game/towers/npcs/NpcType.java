@@ -6,6 +6,7 @@ package org.game.towers.npcs;
 import java.util.ArrayList;
 
 import org.game.towers.configs.Config;
+import org.game.towers.geo.Geo;
 import org.game.towers.gfx.Screen;
 import org.game.towers.level.Level;
 import org.game.towers.units.Unit;
@@ -75,7 +76,8 @@ public class NpcType extends Unit {
 
 	@Override
 	public void render(Screen screen) {
-		
+//		Geo geo = getLevel().getTileGeo((int)(getX()/Config.BOX_SIZE), (int)(getY()/Config.BOX_SIZE));
+//		System.out.println(geo.getTopLeft().getX()+"-"+geo.getTopLeft().getY()+'='+getLevel().getTile((int)(getX()/Config.BOX_SIZE), (int)(getY()/Config.BOX_SIZE)).getId());
 		int walkingSpeed = 4;
 		int flip = (getMovingDirection() - 1) % 2;
 		int shift = ((getNumSteps() >> walkingSpeed) & 1);

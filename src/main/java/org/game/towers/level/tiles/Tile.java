@@ -1,6 +1,5 @@
 package org.game.towers.level.tiles;
 
-import org.game.towers.geo.Geo;
 import org.game.towers.gfx.Colors;
 import org.game.towers.gfx.Screen;
 import org.game.towers.level.Level;
@@ -30,7 +29,6 @@ public abstract class Tile {
 	protected boolean solid;
 	protected boolean emitter;
 	private int levelColor;
-	private Geo geo = new Geo();
 
 	public Tile(int id, boolean isSolid, boolean isEmitter, int levelColor) {
 		this.id = (byte) id;
@@ -65,13 +63,4 @@ public abstract class Tile {
 	}
 
 	public abstract void tick();
-
-	public Geo getGeo() {
-		return geo;
-	}
-
-	public void setGeo(Geo geo) {
-		this.geo = geo;
-	}
-
 }
