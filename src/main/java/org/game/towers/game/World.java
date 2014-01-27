@@ -31,8 +31,8 @@ public class World implements NBTCapable {
 
 	public World(String name) {
 		this.name = name;
-		level = new Level(format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME));
-		Game.instance.input.addListener(level);
+		setLevel(new Level(format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME)));
+		Game.instance.input.addListener(getLevel());
 	}
 
 	public World(Game game, String path) {
@@ -78,19 +78,20 @@ public class World implements NBTCapable {
 	}
 
 	public void tick() {
-		if (level != null) {
-			level.tick();
+		if (getLevel() != null) {
+			getLevel().tick();
 		}
 	}
 
 	public void render(Screen screen) {
-		if (level != null) {
+		if (getLevel() != null) {
 			int xOffset = 0;
 			int yOffset = 0;
 //			int xOffset = x - (getScreen().width / 2);
 //			int yOffset = y - (getScreen().height / 2);
-			level.renderTiles(screen, xOffset, yOffset);
-			level.renderNpcs(screen);
+			getLevel().renderTiles(screen, xOffset, yOffset);
+			getLevel().renderNpcs(screen);
+			getLevel().renderStore(screen);
 		}
 	}
 
@@ -163,7 +164,7 @@ public class World implements NBTCapable {
 		if (levels != null) {
 			return levels;
 		}
-		return new Level[] { level };
+		return new Level[] { getLevel() };
 	}
 
 	public Level getLevel() {
@@ -222,7 +223,7 @@ public class World implements NBTCapable {
 		this.timePlayed = (long) tag.findTagByName("TIME_PLAYED").getValue();
 		String startLevel = tag.findTagByName("STARTLEVEL").getValue()
 				.toString().toUpperCase();
-		level = new Level(tag.findTagByName("LEVELS").findTagByName(startLevel));
+		setLevel(new Level(tag.findTagByName("LEVELS").findTagByName(startLevel)));
 	}
 
 	@Override
@@ -234,7 +235,7 @@ public class World implements NBTCapable {
 				.toString(), new Tag[1]);
 		tag.addTag(new Tag(Tag.Type.TAG_String, "NAME", this.name));
 		tag.addTag(new Tag(Tag.Type.TAG_Long, "TIME_PLAYED", this.timePlayed));
-		tag.addTag(new Tag(Tag.Type.TAG_String, "STARTLEVEL", level.getName()));
+		tag.addTag(new Tag(Tag.Type.TAG_String, "STARTLEVEL", getLevel().getName()));
 		// tag.addTag(game.level.saveToNBT(null));
 		Tag levels = new Tag(Tag.Type.TAG_Compound, "LEVELS",
 				new Tag[] { new Tag(Tag.Type.TAG_Int, "dump", 0) });
@@ -248,11 +249,15 @@ public class World implements NBTCapable {
 				}
 			}
 		} else {
-			levels.addTag(level.saveToNBT(null));
+			levels.addTag(getLevel().saveToNBT(null));
 		}
 		levels.addTag(new Tag(Tag.Type.TAG_End, null, null));
 		tag.addTag(levels);
 		tag.addTag(new Tag(Tag.Type.TAG_End, null, null));
 		return tag;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
 	}
 }

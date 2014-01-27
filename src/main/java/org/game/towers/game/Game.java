@@ -33,32 +33,32 @@ import org.game.towers.npcs.NpcTypesCollection;
 public class Game extends Canvas implements Runnable, FocusListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public static Game instance;
-	
+
 	private JFrame frame;
 	private Thread thread;
-	
+
 	private boolean running = false;
 	private boolean isFocused = true;
-	
+
 	private int ticksCount = 0;
-	
+
 	public boolean debug;
-	public static boolean DEBUG = true;	
-	
+	public static boolean DEBUG = true;
+
 	private BufferedImage image = new BufferedImage(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	public int[] colors = new int[6 * 6 * 6];//6 different shades of color
-	
+
 	private Screen screen;
 //	public static Level level;
 	public static Grid grid = new Grid();
 	public InputHandler input;
 	private Gui gui;
 	private World world;
-	
-//	private int x = 0; 
+
+//	private int x = 0;
 //	private int y = 0;
 
 	private boolean launcherInited = false;
@@ -68,7 +68,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		setMaximumSize(Config.DIMENSIONS);
 		setPreferredSize(Config.DIMENSIONS);
 	}
-	
+
 	public void initFrame() {
 		frame = new JFrame(Config.GAME_NAME);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,7 +80,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		frame.setVisible(true);
 		frame.requestFocus();
 	}
-	
+
 	public void run() {
 		if (!launcherInited) {
 			debug(DebugLevel.WARNING, "Launcher was not correctly initiated!");
@@ -92,7 +92,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		int frames = 0;
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
-		
+
 		init();
 
 		while(isRunning()) {
@@ -101,25 +101,25 @@ public class Game extends Canvas implements Runnable, FocusListener {
 			delta += (now - lastTime) / nsPerTick;
 			lastTime = now;
 			boolean shouldRender = true;
-			
+
 			while(delta >= 1) {
 				ticks++;
 				tick();
 				delta -= 1;
 				shouldRender = true;
 			}
-			
+
 			try {
 				Thread.sleep(2);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
+
 			if (shouldRender) {
 				frames++;
 				render();
 			}
-			
+
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
 				debug(DebugLevel.INFO, frames + " frames, " + ticks
@@ -139,14 +139,14 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		initInput();
 //		initLevel();
 		initMainMenu();
-	}	
+	}
 
 	private void initUnits() {
-		NpcTypesCollection.load();		
+		NpcTypesCollection.load();
 	}
 
 	private void initMainMenu() {
-		showGui(new GuiMainMenu(this, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT));		
+		showGui(new GuiMainMenu(this, Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT));
 	}
 
 	private void initFocusListener() {
@@ -187,10 +187,10 @@ public class Game extends Canvas implements Runnable, FocusListener {
 			}
 		}
 	}
-	
+
 	private void tickLevel() {
 		getWorld().tick();
-	}	
+	}
 
 	private void render() {
 		BufferStrategy bs = getBufferStrategy();
@@ -198,11 +198,11 @@ public class Game extends Canvas implements Runnable, FocusListener {
 			createBufferStrategy(Config.BUFFER_STRATEGY_BUFFERS);
 			return;
 		}
-		
+
 //		int xOffset = x - (getScreen().width / 2);
 //		int yOffset = y - (getScreen().height / 2);
 //		level.renderTiles(getScreen(), xOffset, yOffset);
-		
+
 		if (gui != null) {
 			gui.render();
 			for (int y = 0; y < Config.SCREEN_HEIGHT; y++) {
@@ -224,14 +224,14 @@ public class Game extends Canvas implements Runnable, FocusListener {
 //				String msg = "Hello World";
 //				Font.render(msg, screen, screen.xOffset + screen.width / 2 - (msg.length()*8)/2, screen.yOffset + screen.height / 2, Colors.get(-1, -1, -1, 000));
 			}
-		}		
-		
+		}
+
 		Graphics g = bs.getDrawGraphics();
-		
+
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		g.setColor(Color.BLACK);
 		g.drawRect(0, 0, getWidth(), getHeight());
-		
+
 		g.dispose();
 		bs.show();
 	}
@@ -247,7 +247,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	private void initInput() {
 		input = new InputHandler(this);
 	}
-	
+
 	private void initColors() {
 		int index = 0;
 		for (int r = 0; r < 6; r++) {
@@ -256,20 +256,20 @@ public class Game extends Canvas implements Runnable, FocusListener {
 					int rr = (r * 255/5);
 					int gg = (g * 255/5);
 					int bb = (b * 255/5);
-					
+
 					colors[index++] = rr << 16 | gg << 8 | bb;
 				}
 			}
 		}
 	}
-	
+
 	public synchronized void start() {
 		setRunning(true);
 		thread = new Thread(this);
 		thread.start();
 		Game.debug(Game.DebugLevel.INFO, "Game started");
 	}
-	
+
 	public synchronized void stop() {
 		setRunning(false);
 
@@ -279,7 +279,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		new Game().start();
 	}
@@ -291,10 +291,10 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
-	
+
 	/**
 	 * Sends a debug message to the console.
-	 * 
+	 *
 	 * @param level The debug level (what type of message, "INFO", "WARNING", "ERROR")
 	 * @param msg The text to output.
 	 */
@@ -330,7 +330,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	public static enum DebugLevel {
 		INFO, WARNING, ERROR;
 	}
-	
+
 	@Override
 	public void focusGained(FocusEvent focusEvent) {
 		setFocused(true);
@@ -339,7 +339,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		}
 		Game.debug(DebugLevel.INFO, "Got focus!");
 	}
-	
+
 	@Override
 	public void focusLost(FocusEvent arg0) {
 		if (arg0.getID() == FocusEvent.FOCUS_LOST) {
@@ -357,7 +357,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	public void setFocused(boolean isFocused) {
 		this.isFocused = isFocused;
 	}
-	
+
 	public void showGui(Gui gui) {
 		if(this.gui != null) {
 			input.removeListener(this.gui);
@@ -421,5 +421,5 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		initFrame();
 		requestFocus();
 		setLaucherInited(true);
-	}	
+	}
 }

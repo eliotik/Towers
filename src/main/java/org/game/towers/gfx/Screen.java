@@ -1,56 +1,58 @@
 package org.game.towers.gfx;
 
-import org.game.towers.configs.Config;
+import java.awt.Point;
 
 public class Screen {
 
 //	public static final int MAP_WIDTH = 64;
 //	public static final int MAP_WIDTH_MASK = MAP_WIDTH - 1;
-	
+
 	public static final byte BIT_MIRROR_X = 0x01;
 	public static final byte BIT_MIRROR_Y = 0x02;
-	
+
 	public int[] pixels;
-	
+
 	public int xOffset = 0;
 	public int yOffset = 0;
-	
+
 	public int width;
 	public int height;
-	
+
+	private Point mousePosition = new Point(0, 0);
+
 	public SpriteSheet sheet;
-	
+
 	public Screen(int width, int height, SpriteSheet sheet) {
 		this.width = width;
 		this.height = height;
 		this.sheet = sheet;
-		
+
 		pixels = new int[width * height];
 	}
 
 	public void render(int xPos, int yPos, int tile, int color) {
 		render(xPos, yPos, tile, color, 0x00, 1);
 	}
-	
+
 	public void render(int xPos, int yPos, int tile, int color, int mirrorDir, int scale) {
 		xPos -= xOffset;
 		yPos -= yOffset;
-		
+
 		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
 		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
-		
+
 		int xTile = tile % 32;
 		int yTile = tile / 32;
 		int tileOffset = (xTile << 3) + (yTile << 3) * sheet.getWidth();
 		int scaleMap = scale - 1;
-		
+
 		for (int y = 0; y < 8; y++) {
 			int ySheet = y;
 			if (mirrorY) ySheet = 7 - y;
-			
+
 			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << 3) / 2);
-			
-			
+
+
 			for (int x = 0; x < 8; x++) {
 				int xSheet = x;
 				if (mirrorX) {
@@ -78,5 +80,13 @@ public class Screen {
 	public void setOffset(int xOffset, int yOffset) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
+	}
+
+	public Point getMousePosition() {
+		return mousePosition;
+	}
+
+	public void setMousePosition(Point mousePosition) {
+		this.mousePosition = mousePosition;
 	}
 }
