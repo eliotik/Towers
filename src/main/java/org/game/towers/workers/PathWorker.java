@@ -2,6 +2,7 @@ package org.game.towers.workers;
 
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
+import org.game.towers.geo.Coordinates;
 import org.game.towers.grid.Cell;
 import org.game.towers.level.Construction;
 import org.game.towers.level.Level;
@@ -10,10 +11,8 @@ import org.hamcrest.Matchers;
 
 import java.awt.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import static ch.lambdaj.Lambda.*;
 
@@ -165,50 +164,102 @@ public class PathWorker {
         return dimension;
     }
 
-    private int getLogicZone(int x, int y, Construction construction){
-        if (x < construction.getApexAX() && y < construction.getApexAY()) {
+    private int getLogicZone(int x, int y, Level.TileMap construction){
+        if (x < construction.getGeo().getTopLeft().getX() && y < construction.getGeo().getTopLeft().getY()) {
             return 1; // north West
         }
 
-        if (x < construction.getApexAX() && x > construction.getApexBX() && y < construction.getApexBY()) {
+        if (x < construction.getGeo().getTopLeft().getX() && x > construction.getGeo().getTopRight().getX() && y < construction.getGeo().getTopRight().getY()) {
             return 2; // north
         }
 
-        if (x > construction.getApexBX() && y > construction.getApexBY()) {
+        if (x > construction.getGeo().getTopRight().getX() && y > construction.getGeo().getTopRight().getY()) {
             return 3; // north-east
         }
 
-        if (x > construction.getApexBX() && y < construction.getApexBY() && y > construction.getApexCY()) {
+        if (x > construction.getGeo().getTopRight().getX() && y < construction.getGeo().getTopRight().getY() && y > construction.getGeo().getBottomRight().getY()) {
             return 4; // east
         }
 
-        if (x > construction.getApexCX() && y > construction.getApexCY()) {
+        if (x > construction.getGeo().getBottomRight().getX() && y > construction.getGeo().getBottomRight().getY()) {
             return 5; // south east
         }
 
-        if (x > construction.getApexDX() && x < construction.getApexCX() && y > construction.getApexCY()) {
+        if (x > construction.getGeo().getBottomLeft().getX() && x < construction.getGeo().getBottomRight().getX() && y > construction.getGeo().getBottomRight().getY()) {
             return 6; // south
         }
 
-        if (x < construction.getApexDX() && y > construction.getApexDY()) {
+        if (x < construction.getGeo().getBottomLeft().getX() && y > construction.getGeo().getBottomLeft().getY()) {
             return 7; // south west
         }
 
-        if (x < construction.getApexAX() && y > construction.getApexAY() && y < construction.getApexDY()) {
+        if (x < construction.getGeo().getTopLeft().getX() && y > construction.getGeo().getTopLeft().getY() && y < construction.getGeo().getBottomLeft().getY()) {
             return 8; // west
         }
         return 0;
     }
 
-//    private int[] getIntermediateFinish(int x, int y, Construction construction) {
-//        int logicZone = getLogicZone(x, y, construction);
-//        switch (logicZone) {
-//            case 1:
-//
-//                break;
-//        }
-//
-//    }
+    private Coordinates getTransitionalFinish(int x, int y, Level.TileMap barrier) {
+        Coordinates coordinate = null;
+        Coordinates firstPotentialPoint = null;
+        Coordinates secondPotentialPoint = null;
+        int logicZone = getLogicZone(x, y, barrier);
+        switch (logicZone) {
+            case 1:
+                firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX(), barrier.getGeo().getTopRight().getY());
+                secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomLeft().getX(), barrier.getGeo().getBottomLeft().getY());
+                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                break;
+            case 2:
+                firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX(), barrier.getGeo().getTopRight().getY());
+                secondPotentialPoint = new Coordinates(barrier.getGeo().getTopLeft().getX(), barrier.getGeo().getTopLeft().getY());
+                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                break;
+            case 3:
+                firstPotentialPoint = new Coordinates(barrier.getGeo().getTopLeft().getX(), barrier.getGeo().getTopLeft().getY());
+                secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomRight().getX(), barrier.getGeo().getBottomRight().getY());
+                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                break;
+            case 4:
+                firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX(), barrier.getGeo().getTopRight().getY());
+                secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomRight().getX(), barrier.getGeo().getBottomRight().getY());
+                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                break;
+            case 5:
+                firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX(), barrier.getGeo().getTopRight().getY());
+                secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomLeft().getX(), barrier.getGeo().getBottomLeft().getY());
+                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                break;
+            case 6:
+                firstPotentialPoint = new Coordinates(barrier.getGeo().getBottomRight().getX(), barrier.getGeo().getBottomRight().getY());
+                secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomLeft().getX(), barrier.getGeo().getBottomLeft().getY());
+                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                break;
+            case 7:
+                firstPotentialPoint = new Coordinates(barrier.getGeo().getTopLeft().getX(), barrier.getGeo().getTopLeft().getY());
+                secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomRight().getX(), barrier.getGeo().getBottomRight().getY());
+                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                break;
+            case 8:
+                firstPotentialPoint = new Coordinates(barrier.getGeo().getTopLeft().getX(), barrier.getGeo().getTopLeft().getY());
+                secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomLeft().getX(), barrier.getGeo().getBottomLeft().getY());
+                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                break;
+        }
+        return coordinate;
+    }
+
+    private Coordinates getProbabilisticWay(int x, int y, Coordinates firstPotentialPoint, Coordinates secondPotentialPoint){
+        double r1 = getRadiusVector(x, firstPotentialPoint.getX(), y, firstPotentialPoint.getY()); // radius vector
+        double r2 = getRadiusVector(x, secondPotentialPoint.getX(), y, secondPotentialPoint.getY()); // radius vector
+        Random rand = new Random();
+        int n = (int)(rand.nextInt(10)*(r1/r2));
+
+        if (n < 5) {
+            return firstPotentialPoint;
+        }
+        return secondPotentialPoint;
+    }
 
 
 
