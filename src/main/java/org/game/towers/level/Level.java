@@ -42,11 +42,13 @@ public class Level implements NBTCapable, GameActionListener {
 	private String imagePath;
 	private BufferedImage image;
 	public List<NpcType> npcs = new ArrayList<NpcType>();
+	private Store store;
 
 	public Level(String imagePath) {
 //		if (imagePath != null) {
 			this.imagePath = imagePath;
 			loadLevelFromFile();
+			initStore();
 //		} else {
 //			width = Config.DEFAULT_LEVEL_WIDTH;
 //			height = Config.DEFAULT_LEVEL_HEIGHT;
@@ -55,37 +57,20 @@ public class Level implements NBTCapable, GameActionListener {
 //		}
 	}
 
+	private void initStore() {
+		setStore(new Store());
+	}
+
 	public void generateNpcs() {
 		switch(wave) {
 			case 1:
 				NpcType tank1 = UnitFactory.getNpc(Npcs.TANK);
-//				NpcType tank2 = UnitFactory.getNpc(Npcs.TANK);
-//				NpcType tank3 = UnitFactory.getNpc(Npcs.TANK);
-//				NpcType tank4 = UnitFactory.getNpc(Npcs.TANK);
 				if (tank1 != null) {
 					tank1.setLevel(this);
 					tank1.setX(8);
 					tank1.setY(160-Config.BOX_SIZE*4);
 
 					addNpc(tank1);
-
-//					tank2.setX(250);
-//					tank2.setY(80-Config.BOX_SIZE);
-//					tank2.setSpeed(1.5);
-//
-//					addNpc(tank2);
-//
-//					tank3.setX(150);
-//					tank3.setY(120-Config.BOX_SIZE);
-//					tank3.setSpeed(2);
-//
-//					addNpc(tank3);
-//
-//					tank4.setX(80);
-//					tank4.setY(64-Config.BOX_SIZE);
-//					tank4.setSpeed(1);
-//
-//					addNpc(tank4);
 				}
 		}
 	}
@@ -110,7 +95,7 @@ public class Level implements NBTCapable, GameActionListener {
 	public class TileMap {
 		private Geo geo;
 		private byte tileId;
-		
+
 		public TileMap(byte tId, Geo geo) {
 			setTileId(tId);
 			setGeo(geo);
@@ -119,21 +104,21 @@ public class Level implements NBTCapable, GameActionListener {
 		public Geo getGeo() {
 			return geo;
 		}
-		
+
 		public void setGeo(Geo geo) {
 			this.geo = geo;
 		}
-		
+
 		public byte getTileId() {
 			return tileId;
 		}
-		
+
 		public void setTileId(byte id) {
 			this.tileId = id;
 		}
-		
+
 	}
-	
+
 	public static class Portals {
 
 		private static final byte ENTRANCE = Tile.ENTRANCE.getId();
@@ -348,13 +333,13 @@ public class Level implements NBTCapable, GameActionListener {
 		}
 		return Tile.tiles[tiles.get((x + y * width)).getTileId()];
 	}
-	
+
 	public Geo getTileGeo(int x, int y) {
 		if (0 > x || x >= width || 0 > y || y >= height) {
 			return null;
 		}
 		return tiles.get(x + y * width).getGeo();
-	}	
+	}
 
     public void addConstruction(int x, int y, int width, int height, Unit type) {
         Construction construction = new Construction(x, y, width, height, type);
@@ -376,7 +361,13 @@ public class Level implements NBTCapable, GameActionListener {
     	for (NpcType n : npcs) {
     		n.tick();
     	}
+
+    	getStore().tick();
 	}
+
+    public void renderStore(Screen screen) {
+    	getStore().render(screen);
+    }
 
     public void renderNpcs(Screen screen) {
     	for (NpcType n : npcs) {
@@ -448,5 +439,13 @@ public class Level implements NBTCapable, GameActionListener {
 
 	public void setWave(int wave) {
 		this.wave = wave;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
 	}
 }
