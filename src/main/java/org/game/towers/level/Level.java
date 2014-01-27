@@ -338,7 +338,11 @@ public class Level implements NBTCapable, GameActionListener {
 		}
 	}
 
-	public Tile getTile(int x, int y) {
+    public HashMap<Integer, TileMap> getTiles() {
+        return tiles;
+    }
+
+    public Tile getTile(int x, int y) {
 		if (0 > x || x >= width || 0 > y || y >= height) {
 			return Tile.VOID;
 		}
