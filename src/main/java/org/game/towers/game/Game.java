@@ -29,6 +29,7 @@ import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler;
 //import org.game.towers.level.Level;
 import org.game.towers.npcs.NpcTypesCollection;
+import org.game.towers.workers.PathWorker;
 
 public class Game extends Canvas implements Runnable, FocusListener {
 
@@ -62,6 +63,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 //	private int y = 0;
 
 	private boolean launcherInited = false;
+	private PathWorker pathWorker;
 
 	public void initSizes() {
 		setMinimumSize(Config.DIMENSIONS);
@@ -138,7 +140,12 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		initScreen();
 		initInput();
 //		initLevel();
+		initPathWorker();
 		initMainMenu();
+	}
+
+	private void initPathWorker() {
+		setPathWorker(new PathWorker());
 	}
 
 	private void initUnits() {
@@ -421,5 +428,13 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		initFrame();
 		requestFocus();
 		setLaucherInited(true);
+	}
+
+	public PathWorker getPathWorker() {
+		return pathWorker;
+	}
+
+	public void setPathWorker(PathWorker pathWorker) {
+		this.pathWorker = pathWorker;
 	}
 }

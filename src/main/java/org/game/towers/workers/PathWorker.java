@@ -19,7 +19,7 @@ import static ch.lambdaj.Lambda.*;
 public class PathWorker {
 
     private boolean isAvailable = true;
-    private Level level = Game.instance.getWorld().getLevel();
+//    private Level level = Game.instance.getWorld().getLevel();
 
     public boolean pathCheck() {
         return isAvailable;
@@ -247,7 +247,7 @@ public class PathWorker {
         int finishY = Level.Portals.getExit().getY();
         Level.TileMap barrier = getBarrier(x, finishX, y, finishY);
         Coordinates coordinate = getTransitionalFinish(x, y, barrier);
-        getShift();
+        getShift(x, y);
     }
 
 
