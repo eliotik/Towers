@@ -35,32 +35,15 @@ public class PathWorker {
 
     private Level.TileMap getBarrier(int xStart, int xFinish, int yStart, int yFinish){
         HashMap<Integer, Level.TileMap> temporaryTileMap = Game.instance.getWorld().getLevel().getTiles();
-        if ( (yFinish > yStart  && xFinish > xStart) || (yFinish < yStart  && xFinish < xStart) ) {
+//        if ( (yFinish > yStart  && xFinish > xStart) || (yFinish < yStart  && xFinish < xStart) ) {
+//        if ( (xStart < xFinish && yStart < yFinish) || (xStart > xFinish && yStart > yFinish) ) {
+        if ( (xStart < xFinish && yStart < yFinish) || (xStart > xFinish && yStart > yFinish) ) {
             for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
-                int apexX = tileItem.getValue().getGeo().getBottomRight().getX();
-                int apexY = tileItem.getValue().getGeo().getBottomRight().getY();
+                int apexX = tileItem.getValue().getGeo().getBottomLeft().getX();
+                int apexY = tileItem.getValue().getGeo().getBottomLeft().getY();
                 double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
                 if (apexY > y) {
-                    temporaryTileMap.remove(tileItem);
-                }
-            }
-            for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
-                int apexX = tileItem.getValue().getGeo().getTopLeft().getX();
-                int apexY = tileItem.getValue().getGeo().getTopLeft().getY();
-                double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
-                if (apexY < y) {
-                    temporaryTileMap.remove(tileItem);
-                }
-            }
-        }
-
-        if ( (yFinish > yStart  && xFinish < xStart) || (yFinish < yStart  && xFinish > xStart) ) {
-            for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
-                int apexX = tileItem.getValue().getGeo().getBottomRight().getX();
-                int apexY = tileItem.getValue().getGeo().getBottomRight().getY();
-                double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
-                if (apexY > y) {
-                    temporaryTileMap.remove(tileItem);
+                    temporaryTileMap.remove(tileItem.getKey());
                 }
             }
             for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
@@ -68,14 +51,42 @@ public class PathWorker {
                 int apexY = tileItem.getValue().getGeo().getTopRight().getY();
                 double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
                 if (apexY < y) {
-                    temporaryTileMap.remove(tileItem);
+                    temporaryTileMap.remove(tileItem.getKey());
                 }
             }
         }
+
+//        if ( (yFinish > yStart  && xFinish < xStart) || (yFinish < yStart  && xFinish > xStart) ) {
+//        if ( (xStart < xFinish && yStart < yFinish) || (xStart > xFinish && yStart > yFinish) ) {
+        if ( (xStart < xFinish && yStart > yFinish) || (xStart > xFinish && yStart < yFinish) ) {
+            for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
+                int apexX = tileItem.getValue().getGeo().getBottomRight().getX();
+                int apexY = tileItem.getValue().getGeo().getBottomRight().getY();
+                double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
+                if (apexY < y) {
+                    System.out.println("removed");
+                    System.out.println("key "+tileItem.getKey() + " val" +tileItem.getValue());
+                    temporaryTileMap.remove(tileItem);
+                }
+            }
+
+            for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
+                int apexX = tileItem.getValue().getGeo().getTopLeft().getX();
+                int apexY = tileItem.getValue().getGeo().getTopLeft().getY();
+                double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
+                if (apexY > y) {
+                    temporaryTileMap.remove(tileItem.getKey());
+                }
+            }
+        }
+
         if (temporaryTileMap.isEmpty()) {
             return null;
         }
-
+//        for (Map.Entry<Integer, Level.TileMap> item : temporaryTileMap.entrySet()){
+//            System.out.println("x =" + item.getValue().getGeo().getTopLeft().getX() + " y =" + item.getValue().getGeo().getTopLeft().getY());
+//        }
+//        System.out.println("-----------------------");
         Level.TileMap barrier = getFirstBarrier(temporaryTileMap, xStart, yStart);
         return barrier;
     }
@@ -133,35 +144,39 @@ public class PathWorker {
 //    }
 
     private int getLogicZone(int x, int y, Level.TileMap construction){
-        if (x < construction.getGeo().getTopLeft().getX() && y < construction.getGeo().getTopLeft().getY()) {
+//        System.out.println("x"+x);
+//        System.out.println("y"+y);
+//        System.out.println("construction.getGeo().getTopLeft().getX"+construction.getGeo().getTopLeft().getX());
+//        System.out.println("construction.getGeo().getTopLeft().getY"+construction.getGeo().getTopLeft().getY());
+        if (x <= construction.getGeo().getTopLeft().getX() && y <= construction.getGeo().getTopLeft().getY()) {
             return 1; // north West
         }
 
-        if (x < construction.getGeo().getTopLeft().getX() && x > construction.getGeo().getTopRight().getX() && y < construction.getGeo().getTopRight().getY()) {
+        if (x <= construction.getGeo().getTopLeft().getX() && x >= construction.getGeo().getTopRight().getX() && y <= construction.getGeo().getTopRight().getY()) {
             return 2; // north
         }
 
-        if (x > construction.getGeo().getTopRight().getX() && y > construction.getGeo().getTopRight().getY()) {
+        if (x >= construction.getGeo().getTopRight().getX() && y >= construction.getGeo().getTopRight().getY()) {
             return 3; // north-east
         }
 
-        if (x > construction.getGeo().getTopRight().getX() && y < construction.getGeo().getTopRight().getY() && y > construction.getGeo().getBottomRight().getY()) {
+        if (x >= construction.getGeo().getTopRight().getX() && y <= construction.getGeo().getTopRight().getY() && y >= construction.getGeo().getBottomRight().getY()) {
             return 4; // east
         }
 
-        if (x > construction.getGeo().getBottomRight().getX() && y > construction.getGeo().getBottomRight().getY()) {
+        if (x >= construction.getGeo().getBottomRight().getX() && y >= construction.getGeo().getBottomRight().getY()) {
             return 5; // south east
         }
 
-        if (x > construction.getGeo().getBottomLeft().getX() && x < construction.getGeo().getBottomRight().getX() && y > construction.getGeo().getBottomRight().getY()) {
+        if (x >= construction.getGeo().getBottomLeft().getX() && x <= construction.getGeo().getBottomRight().getX() && y >= construction.getGeo().getBottomRight().getY()) {
             return 6; // south
         }
 
-        if (x < construction.getGeo().getBottomLeft().getX() && y > construction.getGeo().getBottomLeft().getY()) {
+        if (x <= construction.getGeo().getBottomLeft().getX() && y >= construction.getGeo().getBottomLeft().getY()) {
             return 7; // south west
         }
 
-        if (x < construction.getGeo().getTopLeft().getX() && y > construction.getGeo().getTopLeft().getY() && y < construction.getGeo().getBottomLeft().getY()) {
+        if (x <= construction.getGeo().getTopLeft().getX() && y >= construction.getGeo().getTopLeft().getY() && y <= construction.getGeo().getBottomLeft().getY()) {
             return 8; // west
         }
         return 0;
@@ -172,6 +187,7 @@ public class PathWorker {
         Coordinates firstPotentialPoint = null;
         Coordinates secondPotentialPoint = null;
         int logicZone = getLogicZone(x, y, barrier);
+
         switch (logicZone) {
             case 1:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX(), barrier.getGeo().getTopRight().getY());
@@ -229,7 +245,7 @@ public class PathWorker {
         return secondPotentialPoint;
     }
 
-    private int getShift(int dimension1, int dimension2) {
+    private int doShift(int dimension1, int dimension2) {
         int deltaDim = dimension2 - dimension1;
 
         if (deltaDim > 0){
@@ -245,11 +261,24 @@ public class PathWorker {
     public void nextCoordinate(int x, int y, Point point) {
         int finishX = Level.Portals.getExit().getX();
         int finishY = Level.Portals.getExit().getY();
+//        System.out.println("x="+x);
+//        System.out.println("y="+y);
+//        System.out.println("finishX="+finishX);
+//        System.out.println("finishY="+finishY);
         Level.TileMap barrier = getBarrier(x, finishX, y, finishY);
+        System.out.println("barrier.getGeo().getTopLeft().getX()="+barrier.getGeo().getTopLeft().getX());
+        System.out.println("barrier.getGeo().getTopLeft().getX()="+barrier.getGeo().getTopLeft().getX());
         Coordinates coordinate = getTransitionalFinish(x, y, barrier);
-        getShift(x, y);
-    }
+//        System.out.println("coordinate.getX()="+coordinate.getX());
+//        System.out.println("coordinate.getY()="+coordinate.getY());
+        int dx = doShift(x, coordinate.getX());
+        int dy = doShift(y, coordinate.getY());
 
+        dx = doShift(x, finishX);
+        dy = doShift(y, finishY);
+
+        point.setLocation(dx, dy);
+    }
 
 
 

@@ -75,7 +75,7 @@ public class NpcType extends Unit {
 //		}
 		Point shifts = new Point();
 		Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
-		move((int)shifts.getX(), (int)shifts.getY());
+        move((int)shifts.getX(), (int)shifts.getY());
 //		setNumSteps(16);
 //		setScale(1);
 	}
