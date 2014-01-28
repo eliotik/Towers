@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.game.towers.npcs;
 
@@ -19,7 +19,7 @@ import org.game.towers.units.Unit;
  *
  */
 public class NpcType extends Unit {
-	
+
 	private static final long serialVersionUID = 1L;
 
 //	public NpcType(Level level) {
@@ -42,40 +42,40 @@ public class NpcType extends Unit {
 
 	@Override
 	public void tick() {
-//		int xa = 0;
-//		
-//		if (getMovingDirection() != 2)
-//			setMovingDirection(3);
-//		
-//		if (getX() < Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
-//			xa++;
-//		} else if (getX() >= Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
-//			setMovingDirection(2);
-//		} else if (getX() > 8 && getMovingDirection() == 2) {
-//			xa--;			
-//		} else if (getX() <= 8 && getMovingDirection() == 2) {
-//			setMovingDirection(3);
-//		}
-//		if (xa != 0) {
-//			if(!hasCollided(xa, 0)) {
-//				move(xa, 0);
-//			} else {
-//				if (getMovingDirection() == 2) {
-//					setMovingDirection(3);
-//					move(xa++, 0);
-//				} else {
-//					setMovingDirection(2);
-//					move(--xa, 0);
-//				}
-//			}
-//			
-//			setMoving(true);
-//		} else {
-//			setMoving(false);
-//		}
-		Point shifts = new Point();
-		Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
-        move((int)shifts.getX(), (int)shifts.getY());
+		int xa = 0;
+
+		if (getMovingDirection() != 2)
+			setMovingDirection(3);
+
+		if (getX() < Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
+			xa++;
+		} else if (getX() >= Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
+			setMovingDirection(2);
+		} else if (getX() > 8 && getMovingDirection() == 2) {
+			xa--;
+		} else if (getX() <= 8 && getMovingDirection() == 2) {
+			setMovingDirection(3);
+		}
+		if (xa != 0) {
+			if(!hasCollided(xa, 0)) {
+				move(xa, 0);
+			} else {
+				if (getMovingDirection() == 2) {
+					setMovingDirection(3);
+					move(xa++, 0);
+				} else {
+					setMovingDirection(2);
+					move(--xa, 0);
+				}
+			}
+
+			setMoving(true);
+		} else {
+			setMoving(false);
+		}
+//		Point shifts = new Point();
+//		Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
+//        move((int)shifts.getX(), (int)shifts.getY());
 //		setNumSteps(16);
 //		setScale(1);
 	}
@@ -88,8 +88,8 @@ public class NpcType extends Unit {
 		int flip = (getMovingDirection() - 1) % 2;
 		int shift = ((getNumSteps() >> walkingSpeed) & 1);
 		int xTile = getTileX() + shift;
-		
-		
+
+
 		if (getMovingDirection() == 1) {
 			xTile += 1 - shift * 2;
 			flip = (getMovingDirection() - 1) % 2;
@@ -98,13 +98,13 @@ public class NpcType extends Unit {
 			flip = (getMovingDirection() - 1) % 2;
 		}
 //		System.out.println("dir = " +getMovingDirection()+ ", steps = "+ getNumSteps() + ", tile = "+ xTile+", flip = "+flip+", shift = "+shift);
-//		int modifier = 8 * getScale();		
+//		int modifier = 8 * getScale();
 //		int xOffset = (int) (getX() - modifier / 2);
 //		int yOffset = (int) (getY() - modifier / 2);
-		
+
 		screen.render((int) getX(), (int) getY(), xTile + getTileY() * 32, getColor(), flip, getScale());
 	}
-	
+
 	public void move(int xa, int ya) {
 		if (xa != 0 && ya != 0) {
 			move(xa, 0);
@@ -112,9 +112,9 @@ public class NpcType extends Unit {
 			setNumSteps(getNumSteps() - 1);
 			return;
 		}
-		
+
 		setNumSteps(getNumSteps() + 1);
-		
+
 		if(!hasCollided(xa, ya)) {
 			if (ya < 0) {
 				setMovingDirection(0);
@@ -139,7 +139,7 @@ public class NpcType extends Unit {
 		int xMax = 7;
 		int yMin = 0;
 		int yMax = 7;
-		
+
 		for (int x = xMin; x < xMax; x++) {
 			if (isSolidTile(xa, ya, x, yMin)) {
 				return true;
@@ -160,7 +160,7 @@ public class NpcType extends Unit {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 }

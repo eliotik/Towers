@@ -5,6 +5,7 @@ import org.game.towers.configs.Npcs;
 import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
 import org.game.towers.geo.Geo;
+import org.game.towers.gfx.Camera;
 import org.game.towers.gfx.Colors;
 import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
@@ -43,18 +44,26 @@ public class Level implements NBTCapable, GameActionListener {
 	private BufferedImage image;
 	public List<NpcType> npcs = new ArrayList<NpcType>();
 	private Store store;
+	private Camera camera;
 
 	public Level(String imagePath) {
 //		if (imagePath != null) {
 			this.imagePath = imagePath;
 			loadLevelFromFile();
 			initStore();
+			initCamera();
 //		} else {
 //			width = Config.DEFAULT_LEVEL_WIDTH;
 //			height = Config.DEFAULT_LEVEL_HEIGHT;
 //			tiles = new byte[width * height];
 //			generateLevel();
 //		}
+	}
+
+	private void initCamera() {
+		if (getCamera() == null) {
+			setCamera(new Camera(this, 0, 0, Game.instance.getInputHandler(), 4));
+		}
 	}
 
 	private void initStore() {
@@ -258,12 +267,12 @@ public class Level implements NBTCapable, GameActionListener {
 //	}
 
 	public void renderTiles(Screen screen, int xOffset, int yOffset) {
-//		if(xOffset < 0) xOffset = 0;
-//		if(xOffset > ((width << 3) - screen.width)) xOffset = ((width << 3) - screen.width);
-//		if(yOffset < 0) yOffset = 0;
-//		if(yOffset > ((height << 3) - screen.height)) yOffset = ((height << 3) - screen.height);
+		if(xOffset < 0) xOffset = 0;
+		if(xOffset > ((width << 3) - screen.width)) xOffset = ((width << 3) - screen.width);
+		if(yOffset < 0) yOffset = 0;
+		if(yOffset > ((height << 3) - screen.height)) yOffset = ((height << 3) - screen.height);
 
-//		screen.setOffset(xOffset, yOffset);
+		screen.setOffset(xOffset, yOffset);
 		//-38, -19
 //		System.out.println("---------------------");
 //		System.out.println(screen.xOffset + screen.width / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2);
@@ -353,6 +362,10 @@ public class Level implements NBTCapable, GameActionListener {
     		n.tick();
     	}
 
+    	if (getCamera() != null) {
+    		getCamera().tick();
+	    }
+
     	getStore().tick();
 	}
 
@@ -438,5 +451,13 @@ public class Level implements NBTCapable, GameActionListener {
 
 	public void setStore(Store store) {
 		this.store = store;
+	}
+
+	public Camera getCamera() {
+		return camera;
+	}
+
+	public void setCamera(Camera camera) {
+		this.camera = camera;
 	}
 }

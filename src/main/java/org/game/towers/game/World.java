@@ -85,8 +85,8 @@ public class World implements NBTCapable {
 
 	public void render(Screen screen) {
 		if (getLevel() != null) {
-			int xOffset = 0;
-			int yOffset = 0;
+			int xOffset = getLevel().getCamera().getX();
+			int yOffset = getLevel().getCamera().getY();
 //			int xOffset = x - (getScreen().width / 2);
 //			int yOffset = y - (getScreen().height / 2);
 			getLevel().renderTiles(screen, xOffset, yOffset);
