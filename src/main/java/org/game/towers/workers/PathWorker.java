@@ -1,12 +1,18 @@
 package org.game.towers.workers;
 
+import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
+//import org.game.towers.grid.Cell;
+//import org.game.towers.level.Construction;
 import org.game.towers.level.Level;
+import org.game.towers.units.Unit;
+import org.hamcrest.Matchers;
 
 import java.awt.*;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.List;
 
 import static ch.lambdaj.Lambda.*;
 
@@ -37,7 +43,7 @@ public class PathWorker {
                 int apexY = tileItem.getValue().getGeo().getBottomLeft().getY();
                 double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
                 if (apexY > y) {
-                    temporaryTileMap.remove(tileItem.getKey());
+                    temporaryTileMap.values().remove(tileItem);
                 }
             }
             for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
@@ -45,33 +51,58 @@ public class PathWorker {
                 int apexY = tileItem.getValue().getGeo().getTopRight().getY();
                 double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
                 if (apexY < y) {
-                    temporaryTileMap.remove(tileItem.getKey());
+                    temporaryTileMap.values().remove(tileItem);
                 }
             }
         }
 
-//        if ( (yFinish > yStart  && xFinish < xStart) || (yFinish < yStart  && xFinish > xStart) ) {
-//        if ( (xStart < xFinish && yStart < yFinish) || (xStart > xFinish && yStart > yFinish) ) {
         if ( (xStart < xFinish && yStart > yFinish) || (xStart > xFinish && yStart < yFinish) ) {
-            for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
+            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
+            {
+                Map.Entry<Integer, Level.TileMap> tileItem = it.next();
                 int apexX = tileItem.getValue().getGeo().getBottomRight().getX();
                 int apexY = tileItem.getValue().getGeo().getBottomRight().getY();
                 double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
                 if (apexY < y) {
-//                    System.out.println("removed");
-//                    System.out.println("key "+tileItem.getKey() + " val" +tileItem.getValue());
-                    temporaryTileMap.remove(tileItem);
+                    it.remove();
+                    System.out.println(temporaryTileMap.size());
                 }
             }
 
-            for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
+            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
+            {
+                Map.Entry<Integer, Level.TileMap> tileItem = it.next();
                 int apexX = tileItem.getValue().getGeo().getTopLeft().getX();
                 int apexY = tileItem.getValue().getGeo().getTopLeft().getY();
                 double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
                 if (apexY > y) {
-                    temporaryTileMap.remove(tileItem.getKey());
+                    it.remove();
+                    System.out.println(temporaryTileMap.size());
                 }
             }
+
+
+
+
+//
+//            for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
+//                int apexX = tileItem.getValue().getGeo().getBottomRight().getX();
+//                int apexY = tileItem.getValue().getGeo().getBottomRight().getY();
+//                double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
+//                if (apexY < y) {
+//                    temporaryTileMap.remove(tileItem.getKey());
+//                    System.out.println(temporaryTileMap.size());
+//                }
+//            }
+
+//            for(Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()) {
+//                int apexX = tileItem.getValue().getGeo().getTopLeft().getX();
+//                int apexY = tileItem.getValue().getGeo().getTopLeft().getY();
+//                double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
+//                if (apexY > y) {
+//                    temporaryTileMap.values().remove(tileItem);
+//                }
+//            }
         }
 
         if (temporaryTileMap.isEmpty()) {
@@ -114,6 +145,17 @@ public class PathWorker {
         double r = Math.sqrt(Math.pow(x - xStart, 2) + Math.pow(y - yStart, 2));
         return r;
     }
+
+//    private static void getNeighbor(Construction construction){
+//        List<Construction> temporaryTileMap = Game.instance.getWorld().getLevel().getConstructions();
+//        temporaryTileMap.remove(construction);
+//
+//        for(Construction constrItem : temporaryTileMap) {
+//
+//        }
+//
+////        return null;
+//    }
 
 //    public Dimension getNextCoordinates(int x, int y){
 //        int finishX = Level.Portals.getExit().getX();
@@ -244,21 +286,23 @@ public class PathWorker {
     public void nextCoordinate(int x, int y, Point point) {
         int finishX = Level.Portals.getExit().getX();
         int finishY = Level.Portals.getExit().getY();
+        int dx, dy;
+        Level.TileMap barrier = getBarrier(x, finishX, y, finishY);
+        Coordinates coordinate = getTransitionalFinish(x, y, barrier);
+
 //        System.out.println("x="+x);
 //        System.out.println("y="+y);
 //        System.out.println("finishX="+finishX);
 //        System.out.println("finishY="+finishY);
-        Level.TileMap barrier = getBarrier(x, finishX, y, finishY);
 //        System.out.println("barrier.getGeo().getTopLeft().getX()="+barrier.getGeo().getTopLeft().getX());
 //        System.out.println("barrier.getGeo().getTopLeft().getX()="+barrier.getGeo().getTopLeft().getX());
-        Coordinates coordinate = getTransitionalFinish(x, y, barrier);
 //        System.out.println("coordinate.getX()="+coordinate.getX());
 //        System.out.println("coordinate.getY()="+coordinate.getY());
-        int dx = doShift(x, coordinate.getX());
-        int dy = doShift(y, coordinate.getY());
+        dx = doShift(x, coordinate.getX());
+        dy = doShift(y, coordinate.getY());
 
-        dx = doShift(x, finishX);
-        dy = doShift(y, finishY);
+//        dx = doShift(x, finishX);
+//        dy = doShift(y, finishY);
 
         point.setLocation(dx, dy);
     }
