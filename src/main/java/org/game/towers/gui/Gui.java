@@ -32,7 +32,7 @@ public abstract class Gui implements GameActionListener {
 
 	public Gui(Game game, int width, int height) {
 		this.game = game;
-		this.input = game.input;
+		this.input = game.getInputHandler();
 		this.font = new SpriteSheet(Config.SPRITESHEET_FILE);
 		this.width = width;
 		this.height = height;

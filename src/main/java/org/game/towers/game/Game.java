@@ -27,6 +27,7 @@ import org.game.towers.gui.GuiFocus;
 import org.game.towers.gui.GuiMainMenu;
 import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler;
+import org.game.towers.handlers.MouseHandler;
 //import org.game.towers.level.Level;
 import org.game.towers.npcs.NpcTypesCollection;
 
@@ -38,6 +39,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	private JFrame frame;
 	private Thread thread;
+	private boolean isApplet = false;
 
 	private boolean running = false;
 	private boolean isFocused = true;
@@ -54,14 +56,21 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	private Screen screen;
 //	public static Level level;
 	public static Grid grid = new Grid();
-	public InputHandler input;
 	private Gui gui;
 	private World world;
+
+	private InputHandler inputHandler;
+	private MouseHandler mouseHandler;
 
 //	private int x = 0;
 //	private int y = 0;
 
 	private boolean launcherInited = false;
+
+	public Game(boolean isApplet) {
+		setApplet(isApplet);
+		initLauncher();
+	}
 
 	public void initSizes() {
 		setMinimumSize(Config.DIMENSIONS);
@@ -70,8 +79,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	public void initFrame() {
-		frame = new JFrame(Config.GAME_NAME);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 		frame.add(this, BorderLayout.CENTER);
 		frame.pack();
@@ -79,6 +87,10 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.requestFocus();
+		if (!isApplet()) {
+			frame.setTitle(Config.GAME_NAME);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    }
 	}
 
 	public void run() {
@@ -173,7 +185,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	private void tick() {
 		ticksCount++;
-		input.tick();
+		getInputHandler().tick();
 		if (gui != null) {
 			gui.tick(ticksCount);
 			if (gui != null && !gui.pausesGame()) {
@@ -245,7 +257,8 @@ public class Game extends Canvas implements Runnable, FocusListener {
 //		level.setOffset(getScreen());
 //	}
 	private void initInput() {
-		input = new InputHandler(this);
+		setInputHandler(new InputHandler(this));
+		setMouseHandler(new MouseHandler(this));
 	}
 
 	private void initColors() {
@@ -281,7 +294,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	public static void main(String[] args) {
-		new Game().start();
+		new Game(false).start();
 	}
 
 	public boolean isRunning() {
@@ -360,15 +373,15 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	public void showGui(Gui gui) {
 		if(this.gui != null) {
-			input.removeListener(this.gui);
+			getInputHandler().removeListener(this.gui);
 		}
 		this.gui = null;
 		this.gui = gui;
-		input.addListener(this.gui);
+		getInputHandler().addListener(this.gui);
 	}
 
 	public void hideGui(Gui gui) {
-		input.removeListener(gui);
+		getInputHandler().removeListener(gui);
 		if (gui.getParentGui() != null) {
 			showGui(gui.getParentGui());
 		}
@@ -421,5 +434,29 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		initFrame();
 		requestFocus();
 		setLaucherInited(true);
+	}
+
+	public boolean isApplet() {
+		return isApplet;
+	}
+
+	public void setApplet(boolean isApplet) {
+		this.isApplet = isApplet;
+	}
+
+	public MouseHandler getMouseHandler() {
+		return mouseHandler;
+	}
+
+	public void setMouseHandler(MouseHandler mouseHandler) {
+		this.mouseHandler = mouseHandler;
+	}
+
+	public InputHandler getInputHandler() {
+		return inputHandler;
+	}
+
+	public void setInputHandler(InputHandler inputHandler) {
+		this.inputHandler = inputHandler;
 	}
 }

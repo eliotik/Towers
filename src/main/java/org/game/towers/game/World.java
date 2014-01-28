@@ -32,7 +32,7 @@ public class World implements NBTCapable {
 	public World(String name) {
 		this.name = name;
 		setLevel(new Level(format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME)));
-		Game.instance.input.addListener(getLevel());
+		Game.instance.getInputHandler().addListener(getLevel());
 	}
 
 	public World(Game game, String path) {

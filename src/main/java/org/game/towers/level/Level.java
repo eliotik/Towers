@@ -423,7 +423,7 @@ public class Level implements NBTCapable, GameActionListener {
 
 	@Override
 	public void actionPerformed(InputEvent event) {
-		if (event.key.id == Game.instance.input.esc.id
+		if (event.key.id == Game.instance.getInputHandler().esc.id
 				&& event.type == InputEventType.PRESSED) {
 			Game.instance.showGui(new GuiPause(Game.instance, Game.instance.getWidth(), Game.instance.getHeight()));
 		}

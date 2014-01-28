@@ -1,17 +1,13 @@
 package org.game.towers.handlers;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.game.towers.game.Game;
 
-public class InputHandler implements KeyListener, MouseListener, MouseMotionListener {
+public class InputHandler implements KeyListener {
 
 	public Key[] keys = new Key[6];
 	public Key up = new Key();
@@ -28,8 +24,6 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
 	public InputHandler(Game game) {
 		game.addKeyListener(this);
-		game.addMouseListener(this);
-		game.addMouseMotionListener(this);
 	}
 
 	public void tick() {
@@ -161,34 +155,5 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
 	public boolean isKeyPressed(Key key) {
 		return key.isPressed();
-	}
-
-	public void mouseClicked(MouseEvent e) {
-
-	}
-
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    public void mouseMoved(MouseEvent e) {
-    	Game.instance.getScreen().setMousePosition(new Point(e.getX(), e.getY()));
-    	System.out.println("MS x: "+e.getX()+", y:"+e.getY());
-    }
-
-	public void mouseDragged(MouseEvent e) {
-		Game.instance.getScreen().setMousePosition(new Point(e.getX(), e.getY()));
 	}
 }
