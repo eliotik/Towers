@@ -13,6 +13,7 @@ import org.game.towers.handlers.InputHandler.GameActionListener;
 import org.game.towers.handlers.InputHandler.InputEvent;
 import org.game.towers.handlers.InputHandler.InputEventType;
 import org.game.towers.level.tiles.Tile;
+import org.game.towers.level.tiles.TileTypes;
 import org.game.towers.npcs.NpcType;
 import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
@@ -120,8 +121,8 @@ public class Level implements NBTCapable, GameActionListener {
 
 	public static class Portals {
 
-		private static final byte ENTRANCE = Tile.ENTRANCE.getId();
-		private static final byte EXIT = Tile.EXIT.getId();
+		private static final byte ENTRANCE = TileTypes.ENTRANCE.getId();
+		private static final byte EXIT = TileTypes.EXIT.getId();
 
 		private static Portal entrance = new Portal();
 		private static Portal exit = new Portal();
@@ -181,7 +182,7 @@ public class Level implements NBTCapable, GameActionListener {
 		int[] tileColors = image.getRGB(0, 0, width, height, null, 0, width);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				tileCheck: for (Tile t : Tile.tiles) {
+				tileCheck: for (Tile t : TileTypes.tiles) {
 					if (t != null && t.getLevelColor() == tileColors[x + y * width]) {
 						byte tId = t.getId();
 						tiles.put(x + y * width, new TileMap(tId, new Geo(new Coordinates(x, y), Config.BOX_SIZE, Config.BOX_SIZE)));
@@ -328,9 +329,9 @@ public class Level implements NBTCapable, GameActionListener {
 
     public Tile getTile(int x, int y) {
 		if (0 > x || x >= width || 0 > y || y >= height) {
-			return Tile.VOID;
+			return TileTypes.VOID;
 		}
-		return Tile.tiles[tiles.get((x + y * width)).getTileId()];
+		return TileTypes.tiles[tiles.get((x + y * width)).getTileId()];
 	}
 
 	public Geo getTileGeo(int x, int y) {
@@ -341,7 +342,7 @@ public class Level implements NBTCapable, GameActionListener {
 	}
 
     public void tick() {
-    	for (Tile t : Tile.tiles) {
+    	for (Tile t : TileTypes.tiles) {
     		if (t == null) {
     			break;
     		}
