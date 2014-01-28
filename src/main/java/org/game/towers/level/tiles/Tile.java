@@ -23,7 +23,7 @@ public abstract class Tile {
 	public static final Tile EXIT = new AnimatedTile(5, new int[][] {{0, 7}, {1, 7}, {2, 7}, {3, 7}, {4, 7}, {5, 7}, {6, 7}, {7, 7}, {8, 7}, {9, 7}, {10, 7}, {11, 7}, {12, 7}, {13, 7}, {14, 7}, {15, 7}},
 			Colors.get(335, 131, 555, 777), false, 0xFFFF0000, 100);
 	public static final Tile SAND = new AnimatedTile(6, new int[][] {{0, 8}, {1, 8}, {2, 8}, {3, 8}, {2, 8}, {1, 8}},
-			Colors.get(433, 455, 444, 552), true, 0xFFFFEA00, 2000, 500);
+			Colors.get(433, 455, 444, 552), false, 0xFFFFEA00, 2000, 500);
 
 	protected byte id;
 	protected boolean solid;

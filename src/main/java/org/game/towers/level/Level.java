@@ -33,7 +33,6 @@ public class Level implements NBTCapable, GameActionListener {
 	private String name;
 //	private byte[] tiles;
 	private HashMap<Integer, TileMap> tiles = new HashMap<Integer, TileMap>();
-    private List<Construction> constructions = new ArrayList<Construction>();
 	public int width;
 	public int height;
 	public int xOffset = 0;
@@ -340,15 +339,6 @@ public class Level implements NBTCapable, GameActionListener {
 		}
 		return tiles.get(x + y * width).getGeo();
 	}
-
-    public void addConstruction(int x, int y, int width, int height, Unit type) {
-        Construction construction = new Construction(x, y, width, height, type);
-        constructions.add(construction);
-    }
-
-    public List<Construction> getConstructions() {
-        return constructions;
-    }
 
     public void tick() {
     	for (Tile t : Tile.tiles) {

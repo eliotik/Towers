@@ -17,18 +17,14 @@ import java.io.File;
 import javax.swing.JFrame;
 
 import org.game.towers.configs.Config;
-//import org.game.towers.gfx.Colors;
-//import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.SpriteSheet;
-import org.game.towers.grid.Grid;
 import org.game.towers.gui.Gui;
 import org.game.towers.gui.GuiFocus;
 import org.game.towers.gui.GuiMainMenu;
 import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler;
 import org.game.towers.handlers.MouseHandler;
-//import org.game.towers.level.Level;
 import org.game.towers.npcs.NpcTypesCollection;
 import org.game.towers.workers.PathWorker;
 
@@ -44,6 +40,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	private boolean running = false;
 	private boolean isFocused = true;
+	private boolean launcherInited = false;
 
 	private int ticksCount = 0;
 
@@ -55,20 +52,15 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	public int[] colors = new int[6 * 6 * 6];//6 different shades of color
 
 	private Screen screen;
-//	public static Level level;
-	public static Grid grid = new Grid();
 	private Gui gui;
 	private World world;
+	private PathWorker pathWorker;
 
 	private InputHandler inputHandler;
 	private MouseHandler mouseHandler;
 
-//	private int x = 0;
-//	private int y = 0;
-
-	private boolean launcherInited = false;
-
-	private PathWorker pathWorker;
+	private int lastFrames = 0;
+	private int lastTicks = 0;
 
 	public Game(boolean isApplet) {
 		setApplet(isApplet);
@@ -98,7 +90,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	public void run() {
 		if (!launcherInited) {
-			debug(DebugLevel.WARNING, "Launcher was not correctly initiated!");
+			debug(DebugLevel.WARNING, "Launcher was not correctly initiated! Will try to initiate laucher manually.");
 			initLauncher();
 		}
 		long lastTime = System.nanoTime();
@@ -139,6 +131,8 @@ public class Game extends Canvas implements Runnable, FocusListener {
 				lastTimer += 1000;
 				debug(DebugLevel.INFO, frames + " frames, " + ticks
 						+ " ticks");
+				setLastFrames(frames);
+				setLastTicks(0);
 				frames = 0;
 				ticks = 0;
 			}
@@ -286,7 +280,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	public synchronized void start() {
 		setRunning(true);
-		thread = new Thread(this);
+		thread = new Thread(this, "GameThread");
 		thread.start();
 		Game.debug(Game.DebugLevel.INFO, "Game started");
 	}
@@ -474,5 +468,21 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	public void setPathWorker(PathWorker pathWorker) {
 		this.pathWorker = pathWorker;
+	}
+
+	public int getLastFrames() {
+		return lastFrames;
+	}
+
+	public void setLastFrames(int lastFrames) {
+		this.lastFrames = lastFrames;
+	}
+
+	public int getLastTicks() {
+		return lastTicks;
+	}
+
+	public void setLastTicks(int lastTicks) {
+		this.lastTicks = lastTicks;
 	}
 }

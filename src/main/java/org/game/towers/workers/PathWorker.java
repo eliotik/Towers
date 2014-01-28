@@ -1,18 +1,12 @@
 package org.game.towers.workers;
 
-import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
-import org.game.towers.grid.Cell;
-import org.game.towers.level.Construction;
 import org.game.towers.level.Level;
-import org.game.towers.units.Unit;
-import org.hamcrest.Matchers;
 
 import java.awt.*;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.List;
 
 import static ch.lambdaj.Lambda.*;
 
@@ -64,8 +58,8 @@ public class PathWorker {
                 int apexY = tileItem.getValue().getGeo().getBottomRight().getY();
                 double y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
                 if (apexY < y) {
-                    System.out.println("removed");
-                    System.out.println("key "+tileItem.getKey() + " val" +tileItem.getValue());
+//                    System.out.println("removed");
+//                    System.out.println("key "+tileItem.getKey() + " val" +tileItem.getValue());
                     temporaryTileMap.remove(tileItem);
                 }
             }
@@ -119,17 +113,6 @@ public class PathWorker {
     private double getRadiusVector(int x, int y, int xStart, int yStart) {
         double r = Math.sqrt(Math.pow(x - xStart, 2) + Math.pow(y - yStart, 2));
         return r;
-    }
-
-    private static void getNeighbor(Construction construction){
-        List<Construction> temporaryTileMap = Game.instance.getWorld().getLevel().getConstructions();
-        temporaryTileMap.remove(construction);
-
-        for(Construction constrItem : temporaryTileMap) {
-
-        }
-
-//        return null;
     }
 
 //    public Dimension getNextCoordinates(int x, int y){
@@ -266,8 +249,8 @@ public class PathWorker {
 //        System.out.println("finishX="+finishX);
 //        System.out.println("finishY="+finishY);
         Level.TileMap barrier = getBarrier(x, finishX, y, finishY);
-        System.out.println("barrier.getGeo().getTopLeft().getX()="+barrier.getGeo().getTopLeft().getX());
-        System.out.println("barrier.getGeo().getTopLeft().getX()="+barrier.getGeo().getTopLeft().getX());
+//        System.out.println("barrier.getGeo().getTopLeft().getX()="+barrier.getGeo().getTopLeft().getX());
+//        System.out.println("barrier.getGeo().getTopLeft().getX()="+barrier.getGeo().getTopLeft().getX());
         Coordinates coordinate = getTransitionalFinish(x, y, barrier);
 //        System.out.println("coordinate.getX()="+coordinate.getX());
 //        System.out.println("coordinate.getY()="+coordinate.getY());
