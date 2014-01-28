@@ -3,9 +3,12 @@
  */
 package org.game.towers.npcs;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.util.ArrayList;
 
 import org.game.towers.configs.Config;
+import org.game.towers.game.Game;
 import org.game.towers.geo.Geo;
 import org.game.towers.gfx.Screen;
 import org.game.towers.level.Level;
@@ -39,37 +42,40 @@ public class NpcType extends Unit {
 
 	@Override
 	public void tick() {
-		int xa = 0;
-		
-		if (getMovingDirection() != 2)
-			setMovingDirection(3);
-		
-		if (getX() < Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
-			xa++;
-		} else if (getX() >= Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
-			setMovingDirection(2);
-		} else if (getX() > 8 && getMovingDirection() == 2) {
-			xa--;			
-		} else if (getX() <= 8 && getMovingDirection() == 2) {
-			setMovingDirection(3);
-		}
-		if (xa != 0) {
-			if(!hasCollided(xa, 0)) {
-				move(xa, 0);
-			} else {
-				if (getMovingDirection() == 2) {
-					setMovingDirection(3);
-					move(xa++, 0);
-				} else {
-					setMovingDirection(2);
-					move(--xa, 0);
-				}
-			}
-			
-			setMoving(true);
-		} else {
-			setMoving(false);
-		}
+//		int xa = 0;
+//		
+//		if (getMovingDirection() != 2)
+//			setMovingDirection(3);
+//		
+//		if (getX() < Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
+//			xa++;
+//		} else if (getX() >= Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
+//			setMovingDirection(2);
+//		} else if (getX() > 8 && getMovingDirection() == 2) {
+//			xa--;			
+//		} else if (getX() <= 8 && getMovingDirection() == 2) {
+//			setMovingDirection(3);
+//		}
+//		if (xa != 0) {
+//			if(!hasCollided(xa, 0)) {
+//				move(xa, 0);
+//			} else {
+//				if (getMovingDirection() == 2) {
+//					setMovingDirection(3);
+//					move(xa++, 0);
+//				} else {
+//					setMovingDirection(2);
+//					move(--xa, 0);
+//				}
+//			}
+//			
+//			setMoving(true);
+//		} else {
+//			setMoving(false);
+//		}
+		Point shifts = new Point();
+		Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
+        move((int)shifts.getX(), (int)shifts.getY());
 //		setNumSteps(16);
 //		setScale(1);
 	}

@@ -30,6 +30,7 @@ import org.game.towers.handlers.InputHandler;
 import org.game.towers.handlers.MouseHandler;
 //import org.game.towers.level.Level;
 import org.game.towers.npcs.NpcTypesCollection;
+import org.game.towers.workers.PathWorker;
 
 public class Game extends Canvas implements Runnable, FocusListener {
 
@@ -66,6 +67,8 @@ public class Game extends Canvas implements Runnable, FocusListener {
 //	private int y = 0;
 
 	private boolean launcherInited = false;
+
+	private PathWorker pathWorker;
 
 	public Game(boolean isApplet) {
 		setApplet(isApplet);
@@ -150,7 +153,12 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		initScreen();
 		initInput();
 //		initLevel();
+		initPathWorker();
 		initMainMenu();
+	}
+
+	private void initPathWorker() {
+		setPathWorker(new PathWorker());
 	}
 
 	private void initUnits() {
@@ -458,5 +466,13 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	public void setInputHandler(InputHandler inputHandler) {
 		this.inputHandler = inputHandler;
+	}
+
+	public PathWorker getPathWorker() {
+		return pathWorker;
+	}
+
+	public void setPathWorker(PathWorker pathWorker) {
+		this.pathWorker = pathWorker;
 	}
 }
