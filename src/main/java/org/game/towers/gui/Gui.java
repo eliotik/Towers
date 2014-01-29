@@ -7,7 +7,7 @@ import org.game.towers.handlers.InputHandler.GameActionListener;
 import org.game.towers.handlers.InputHandler.InputEvent;
 import org.game.towers.handlers.InputHandler.InputEventType;
 import org.game.towers.gfx.Colors;
-import org.game.towers.gfx.SpriteSheet;
+import org.game.towers.gfx.sprites.SpriteSheet;
 
 public abstract class Gui implements GameActionListener {
 

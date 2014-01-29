@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.io.File;
 
 import org.game.towers.game.Game;
+import org.game.towers.level.tiles.TileTypes;
 
 public class Config {
 	public static final String GAME_VERSION = "0.0.1";
@@ -19,7 +20,9 @@ public class Config {
 	public static final String NPCS_FILE = "npcs.xml";
 	public static final String TOWERS_FILE = "towers.xml";
 	public static final String BUILDINGS_FILE = "buildings.xml";
-	public static final String SPRITESHEET_FILE = "spritesheet.png";
+//	public static final String SPRITESHEET_FILE = "spritesheet.png";
+	public static final String SPRITESHEET_FILE = "tiles.png";
+	public static final String SPRITESHEET_NPCS_FILE = "npcs.png";
 	public static final String FONT_FILE = "font.png";
 
 	public static final String NPC_NODE_NAME = "npc";
@@ -38,7 +41,7 @@ public class Config {
     public static final int AMOUNT_VERTICAL_PIX = 800;
 	public static final int BUFFER_STRATEGY_BUFFERS = 3;
 
-	public static final int BOX_SIZE = 8;
+	public static final int BOX_SIZE = 16;
 	public static final int MAP_X_SIZE = 37;
 	public static final int MAP_Y_SIZE = 25;
 
@@ -47,4 +50,7 @@ public class Config {
 	public static final int DEFAULT_LEVEL_HEIGHT = MAP_Y_SIZE;
 	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
 	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
+
+	public static final byte ENTRANCE = TileTypes.ENTRANCE.getId();
+	public static final byte EXIT = TileTypes.EXIT.getId();
 }

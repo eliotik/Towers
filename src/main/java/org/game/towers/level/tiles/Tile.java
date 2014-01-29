@@ -5,18 +5,41 @@ import org.game.towers.level.Level;
 
 public abstract class Tile {
 
-	protected byte id;
-	protected boolean solid;
-	protected boolean emitter;
+	private byte id;
+	private Level level;
+	private String name;
+	private Sprite sprite;
+	private boolean solid;
+	private boolean emitter;
 	private int levelColor;
+	public int x;
+	public int y;
 
-	public Tile(int id, boolean isSolid, boolean isEmitter, int levelColor) {
-		this.id = (byte) id;
-		if (TileTypes.tiles[id] != null) throw new RuntimeException("Duplicate tile id on " + id);
-		this.solid = isSolid;
-		this.emitter = isEmitter;
-		setLevelColor(levelColor);
-		TileTypes.tiles[id] = this;
+	public Tile(Level level, int id, Sprite sprite, String name, int levelColor,
+			boolean isSolid, boolean isEmitter, int x, int y) {
+		this.setId((byte) id);
+//		if (TileTypes.tiles[id] != null) throw new RuntimeException("Duplicate tile id on " + id);
+	    this.setLevel(level);
+	    this.setName(name);
+	    this.setSprite(sprite);
+	    this.setSolid(isSolid);
+	    this.setEmitter(isEmitter);
+	    setLevelColor(levelColor);
+	    this.x = x;
+	    this.y = y;
+//	    TileTypes.tiles[id] = this;
+	}
+
+	public abstract void render(Screen screen, Level level, int x, int y);
+	public abstract void render(Screen screen, Level level, int x, int y, int mirrorDir);
+	public abstract void tick();
+
+	public Sprite getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
 	}
 
 	public byte getId() {
@@ -27,13 +50,6 @@ public abstract class Tile {
 		return solid;
 	}
 
-	public boolean isEmiter() {
-		return emitter;
-	}
-
-	public abstract void render(Screen screen, Level level, int x, int y);
-	public abstract void render(Screen screen, Level level, int x, int y, int mirrorDir);
-
 	public int getLevelColor() {
 		return levelColor;
 	}
@@ -42,5 +58,35 @@ public abstract class Tile {
 		this.levelColor = levelColor;
 	}
 
-	public abstract void tick();
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setSolid(boolean solid) {
+		this.solid = solid;
+	}
+
+	public boolean isEmitter() {
+		return emitter;
+	}
+
+	public void setEmitter(boolean emitter) {
+		this.emitter = emitter;
+	}
+
+	public void setId(byte id) {
+		this.id = id;
+	}
 }

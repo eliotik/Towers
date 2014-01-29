@@ -2,7 +2,7 @@ package org.game.towers.gui.elements;
 
 import org.game.towers.configs.Config;
 import org.game.towers.gfx.Colors;
-import org.game.towers.gfx.SpriteSheet;
+import org.game.towers.gfx.sprites.SpriteSheet;
 import org.game.towers.gui.Gui;
 
 public class FontRenderer {
