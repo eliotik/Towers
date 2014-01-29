@@ -19,7 +19,6 @@ import static ch.lambdaj.Lambda.*;
 public class PathWorker {
 
     private boolean isAvailable = true;
-//    private Level level = Game.instance.getWorld().getLevel();
 
     public boolean pathCheck() {
         return isAvailable;
@@ -34,7 +33,7 @@ public class PathWorker {
     }
 
     private Level.TileMap getBarrier(int xStart, int xFinish, int yStart, int yFinish){
-        HashMap<Integer, Level.TileMap> temporaryTileMap = (HashMap<Integer, Level.TileMap>) Game.instance.getWorld().getLevel().getTiles().clone();
+        HashMap<Integer, Level.TileMap> temporaryTileMap = (HashMap<Integer, Level.TileMap>) Game.instance.getWorld().getLevel().getBlocks().clone();
         int apexX, apexY;
         double y;
         Map.Entry<Integer, Level.TileMap> tileItem;
@@ -45,11 +44,8 @@ public class PathWorker {
                 apexX = tileItem.getValue().getGeo().getBottomLeft().getX();
                 apexY = tileItem.getValue().getGeo().getBottomLeft().getY();
                 y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
-//                System.out.println(apexY);
-//                System.out.println(y);
                 if (apexY > y) {
                     it.remove();
-//                    System.out.println(temporaryTileMap.size());
                 }
             }
 
@@ -59,23 +55,19 @@ public class PathWorker {
                 apexX = tileItem.getValue().getGeo().getTopRight().getX();
                 apexY = tileItem.getValue().getGeo().getTopRight().getY();
                 y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
-//                System.out.println(apexY);
-//                System.out.println(y);
                 if (apexY < y) {
                     it.remove();
                 }
             }
         }
 
-        if ( (xStart < xFinish && yStart > yFinish) || (xStart > xFinish && yStart < yFinish) ) {
+        if ( (yStart > yFinish && xStart < xFinish) || (xStart > xFinish && yStart < yFinish) ) {
             for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
             {
                 tileItem = it.next();
                 apexX = tileItem.getValue().getGeo().getBottomRight().getX();
                 apexY = tileItem.getValue().getGeo().getBottomRight().getY();
                 y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
-                System.out.println("apexY ="+apexY);
-                System.out.println("y ="+y);
                 if (apexY < y) {
                     it.remove();
                 }
@@ -87,11 +79,8 @@ public class PathWorker {
                 apexX = tileItem.getValue().getGeo().getTopLeft().getX();
                 apexY = tileItem.getValue().getGeo().getTopLeft().getY();
                 y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
-                System.out.println(apexY);
-                System.out.println(y);
                 if (apexY > y) {
                     it.remove();
-//                    System.out.println(temporaryTileMap.size());
                 }
             }
         }
@@ -105,15 +94,9 @@ public class PathWorker {
     }
 
     private double lineEquation(int x, int xFinish, int xStart, int yFinish, int yStart) {
-//        System.out.println("x "+ x + " xFinish "+xFinish+" xStart "+xStart+" yFinish "+yFinish+" yStart "+yStart);
-        double b = (double)(yFinish - yStart) / (double)(xFinish - xStart);
-//        System.out.println(yFinish - yStart);
-//        System.out.println(xFinish - xStart);
-//        System.out.println(b);
-        double c = (double)yFinish - xStart * b;
-//        System.out.println(c);
-        double y = b * x + c;
-
+        double A = (double)(yStart - yFinish) / (double)(xFinish - xStart);
+        double B = (double)yFinish - A * xStart;
+        double y = A * (double)x + B;
         return y;
     }
 
@@ -241,7 +224,6 @@ public class PathWorker {
 
     private int doShift(int dimension1, int dimension2) {
         int deltaDim = dimension2 - dimension1;
-
         if (deltaDim > 0){
             return 1;
         }
@@ -258,16 +240,20 @@ public class PathWorker {
         List<Integer> list = new ArrayList<Integer>();
         Random rand = new Random();
         chance = rand.nextInt(10);
-        chanceX = chance * (finishX - x)/(finishY - y);
-        chanceY = chance * (finishY - y)/(finishX - x);
+        chanceX = chanceY = 0;
+        if (finishY != y && finishX != x){
+            chanceX = chance * (finishX - x)/(finishY - y);
+            chanceY = chance * (finishY - y)/(finishX - x);
+        }
         dx = doShift(x, finishX);
         dy = doShift(y, finishY);
-        if (Math.abs(chanceX) < 5) {
+        if (Math.abs(chanceX) > 10) {
             dx = 0;
         }
-        if (Math.abs(chanceY) < 5) {
+        if (Math.abs(chanceY) > 10) {
             dy = 0;
         }
+
         list.add(dx);
         list.add(dy);
 
@@ -282,13 +268,16 @@ public class PathWorker {
         Coordinates coordinate = new Coordinates(finishX, finishY);
         if (barrier != null){
             coordinate = getTransitionalFinish(x, y, barrier);
+
         }
-//        System.out.println(barrier);
-//        System.out.println(x +", "+ y);
-//        System.out.println(coordinate.getX() +", "+ coordinate.getY());
+
         List<Integer> chanceDirection = chanceDirection(x, y, coordinate.getX(), coordinate.getY());
         dx = chanceDirection.get(0);
         dy = chanceDirection.get(1);
+
+//        dx = doShift(x, coordinate.getX());
+//        dy = doShift(y, coordinate.getY());
+
 
         point.setLocation(dx, dy);
     }

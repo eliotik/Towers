@@ -35,6 +35,7 @@ public class Level implements NBTCapable, GameActionListener {
 	private String name;
 //	private byte[] tiles;
 	private HashMap<Integer, TileMap> tiles = new HashMap<Integer, TileMap>();
+    private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
 	public int width;
 	public int height;
 	public int xOffset = 0;
@@ -194,7 +195,12 @@ public class Level implements NBTCapable, GameActionListener {
 				tileCheck: for (Tile t : TileTypes.tiles) {
 					if (t != null && t.getLevelColor() == tileColors[x + y * width]) {
 						byte tId = t.getId();
-						tiles.put(x + y * width, new TileMap(tId, new Geo(new Coordinates(x, y), Config.BOX_SIZE, Config.BOX_SIZE)));
+						tiles.put(x + y * width, new TileMap(tId, new Geo(new Coordinates(x * Config.BOX_SIZE, y * Config.BOX_SIZE), Config.BOX_SIZE, Config.BOX_SIZE)));
+                        String key = "x:"+(x*Config.BOX_SIZE) +",y:"+ (y*Config.BOX_SIZE) +",xb:"+((x*Config.BOX_SIZE)+Config.BOX_SIZE)+",yb"+((y*Config.BOX_SIZE)+Config.BOX_SIZE);
+//                        System.out.println("w:"+(width*Config.BOX_SIZE)+", h:"+(height*Config.BOX_SIZE)+", "+key);
+                        if (!blocks.containsKey(key)) {
+                            blocks.put(key, new TileMap(tId, new Geo(new Coordinates(x * Config.BOX_SIZE, y * Config.BOX_SIZE), Config.BOX_SIZE, Config.BOX_SIZE)));
+                        }
 						//tiles[x + y * width] = tId;//new tileMap(tId, new Geo(new Coordinates(x, y), Config.BOX_SIZE, Config.BOX_SIZE));
 						if (tId == Portals.ENTRANCE) {
 							Portals.setEntrance(t, x, y);
@@ -207,6 +213,7 @@ public class Level implements NBTCapable, GameActionListener {
 				}
 			}
 		}
+        System.out.println(blocks.size()+"=="+(Config.MAP_X_SIZE*Config.MAP_Y_SIZE));
 //		System.out.println("entrance "+Portals.getEntrance().getX() +":"+ Portals.getEntrance().getY());
 //		System.out.println("exit "+Portals.getExit().getX() +":"+ Portals.getExit().getY());
 	}
@@ -460,4 +467,12 @@ public class Level implements NBTCapable, GameActionListener {
 	public void setCamera(Camera camera) {
 		this.camera = camera;
 	}
+
+    public HashMap<String, TileMap> getBlocks() {
+        return blocks;
+    }
+
+    public void setBlocks(HashMap<String, TileMap> blocks) {
+        this.blocks = blocks;
+    }
 }
