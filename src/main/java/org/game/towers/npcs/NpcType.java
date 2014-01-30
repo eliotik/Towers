@@ -3,15 +3,11 @@
  */
 package org.game.towers.npcs;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
-import org.game.towers.geo.Geo;
 import org.game.towers.gfx.Screen;
-import org.game.towers.level.Level;
 import org.game.towers.units.Unit;
 
 /**
@@ -102,7 +98,7 @@ public class NpcType extends Unit {
 //		int xOffset = (int) (getX() - modifier / 2);
 //		int yOffset = (int) (getY() - modifier / 2);
 
-		screen.render((int) getX(), (int) getY(), xTile + getTileY() * 32, getColor(), flip, getScale());
+//		screen.render((int) getX(), (int) getY(), xTile + getTileY() * 32, getColor(), flip, getScale());
 	}
 
 	public void move(int xa, int ya) {

@@ -111,14 +111,14 @@ public class Camera {
         if (getX() < 0) {
             setX(0);
         }
-        if (getX() > (getLevel().width << 3) - Game.instance.getScreen().width) {
-            setX((getLevel().width << 3) - Game.instance.getScreen().width);
+        if (getX() > (getLevel().getWidth() << 3) - Game.instance.getScreen().width) {
+            setX((getLevel().getWidth() << 3) - Game.instance.getScreen().width);
         }
         if (getY() < 0) {
             setY(0);
         }
-        if (getY() > (getLevel().height << 3) - Game.instance.getScreen().height) {
-            setY((getLevel().height << 3) - Game.instance.getScreen().height);
+        if (getY() > (getLevel().getHeight() << 3) - Game.instance.getScreen().height) {
+            setY((getLevel().getHeight() << 3) - Game.instance.getScreen().height);
         }
     }
 

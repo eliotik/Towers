@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.gfx.Colors;
-import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
 
 public class Store {
@@ -55,11 +54,10 @@ public class Store {
 			int xOffset = getX() - modifier / 2;
 			int yOffset = getY() - modifier / 2 - 4;
 
-			screen.render(xOffset, yOffset, xTile + yTile * 32, currentColor);
-			screen.render(xOffset + modifier, yOffset, (xTile + 1) + yTile * 32, currentColor);
-			screen.render(xOffset, yOffset + modifier, xTile + (yTile + 1) * 32, currentColor);
-			screen.render(xOffset + modifier, yOffset + modifier, (xTile + 1) + (yTile + 1) * 32, currentColor);
-			Font.render("["+(id+1)+"]", screen, getX()-getWidth()/2, getY()-getHeight()/2 + 3, Colors.get(-1, -1, -1, 200), 1);
+//			screen.render(xOffset, yOffset, xTile + yTile * 32, currentColor);
+//			screen.render(xOffset + modifier, yOffset, (xTile + 1) + yTile * 32, currentColor);
+//			screen.render(xOffset, yOffset + modifier, xTile + (yTile + 1) * 32, currentColor);
+//			screen.render(xOffset + modifier, yOffset + modifier, (xTile + 1) + (yTile + 1) * 32, currentColor);
 		}
 
 		public int getId() {

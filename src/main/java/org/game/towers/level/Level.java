@@ -6,8 +6,6 @@ import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
 import org.game.towers.geo.Geo;
 import org.game.towers.gfx.Camera;
-import org.game.towers.gfx.Colors;
-import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler.GameActionListener;
@@ -17,13 +15,9 @@ import org.game.towers.level.tiles.Tile;
 import org.game.towers.level.tiles.TileMap;
 import org.game.towers.level.tiles.TileTypes;
 import org.game.towers.npcs.NpcType;
-import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
-import org.game.towers.workers.NBTCapable;
-import org.game.towers.workers.Tag;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,23 +29,23 @@ public class Level implements GameActionListener {
 
 	private String name;
     private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
-	private byte[] tiles;
-	public int width;
-	public int height;
-	public int xOffset = 0;
-	public int yOffset = 0;
+	private Tile[] tiles;
+	private int width;
+	private int height;
+	private int xOffset = 0;
+	private int yOffset = 0;
 	private int wave = 1;
 	private String imagePath;
 	private BufferedImage image;
-	public List<NpcType> npcs = new ArrayList<NpcType>();
-	private Store store;
+	private List<NpcType> npcs = new ArrayList<NpcType>();
+//	private Store store;
 	private Camera camera;
 
 	public Level(String imagePath) {
 //		if (imagePath != null) {
 			this.imagePath = imagePath;
 			loadLevelFromFile();
-			initStore();
+//			initStore();
 			initCamera();
 //		} else {
 //			width = Config.DEFAULT_LEVEL_WIDTH;
@@ -67,9 +61,9 @@ public class Level implements GameActionListener {
 		}
 	}
 
-	private void initStore() {
-		setStore(new Store());
-	}
+//	private void initStore() {
+//		setStore(new Store());
+//	}
 
 	public void generateNpcs() {
 		switch(wave) {
@@ -88,8 +82,9 @@ public class Level implements GameActionListener {
 	private void loadLevelFromFile() {
 		try {
 			image = ImageIO.read(Config.class.getResource(this.imagePath));
-			width = image.getWidth();
-			height = image.getHeight();
+			setWidth(image.getWidth());
+			setHeight(image.getHeight());
+			tiles = new Tile[getWidth() * getHeight()];
 			//tiles = new byte [width * height];
 			loadTiles();
 		} catch (IOException e) {
@@ -97,42 +92,57 @@ public class Level implements GameActionListener {
 		}
 	}
 
-	private void loadTiles() {
-		int[] tileColors = image.getRGB(0, 0, width, height, null, 0, width);
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				tileCheck: for (Tile t : TileTypes.tiles) {
-					if (t != null && t.getLevelColor() == tileColors[x + y * width]) {
-						byte tId = t.getId();
-						tiles[x + y * width] = tId;
-						String key = "x:"+(x*Config.BOX_SIZE) +",y:"+ (y*Config.BOX_SIZE) +",xb:"+((x*Config.BOX_SIZE)+Config.BOX_SIZE)+",yb"+((y*Config.BOX_SIZE)+Config.BOX_SIZE);
-						if (!blocks.containsKey(key)) {
-						  blocks.put(key, new TileMap(tId, new Geo(new Coordinates(x * Config.BOX_SIZE, y * Config.BOX_SIZE), Config.BOX_SIZE, Config.BOX_SIZE)));
-						}
-						if (tId == Config.ENTRANCE) {
-							Portals.setEntrance(t, x, y);
-						}
-						if (tId == Config.EXIT) {
-							Portals.setExit(t, x, y);
-						}
-						break tileCheck;
-					}
-				}
+	private Tile parseTileFromColour(int color, int x, int y) {
+		for (TileTypes tt : TileTypes.types) {
+			if (tt.get().getLevelColor() == color) {
+				return tt.get(this, x, y);
 			}
 		}
-        System.out.println(blocks.size()+"=="+(Config.MAP_X_SIZE*Config.MAP_Y_SIZE));
+		return TileTypes.get("VOID").get(this, x, y);
+	}
+
+	private void loadTiles() {
+		int[] tiles = new int[getWidth() * getHeight()];
+		for (int y = 0; y < getHeight(); y++) {
+			for (int x = 0; x < getWidth(); x++) {
+				this.tiles[x + y * getWidth()] = parseTileFromColour(tiles[x + y * getWidth()], x, y);
+			}
+		}
+//		int[] tileColors = image.getRGB(0, 0, width, height, null, 0, width);
+//		for (int y = 0; y < height; y++) {
+//			for (int x = 0; x < width; x++) {
+//				tileCheck: for (Tile t : TileTypes.tiles) {
+//					if (t != null && t.getLevelColor() == tileColors[x + y * width]) {
+//						byte tId = t.getId();
+//						tiles[x + y * width] = tId;
+//						String key = "x:"+(x*Config.BOX_SIZE) +",y:"+ (y*Config.BOX_SIZE) +",xb:"+((x*Config.BOX_SIZE)+Config.BOX_SIZE)+",yb"+((y*Config.BOX_SIZE)+Config.BOX_SIZE);
+//						if (!blocks.containsKey(key)) {
+//						  blocks.put(key, new TileMap(tId, new Geo(new Coordinates(x * Config.BOX_SIZE, y * Config.BOX_SIZE), Config.BOX_SIZE, Config.BOX_SIZE)));
+//						}
+//						if (tId == Config.ENTRANCE) {
+//							Portals.setEntrance(t, x, y);
+//						}
+//						if (tId == Config.EXIT) {
+//							Portals.setExit(t, x, y);
+//						}
+//						break tileCheck;
+//					}
+//				}
+//			}
+//		}
+//        System.out.println(blocks.size()+"=="+(Config.MAP_X_SIZE*Config.MAP_Y_SIZE));
 //		System.out.println("entrance "+Portals.getEntrance().getX() +":"+ Portals.getEntrance().getY());
 //		System.out.println("exit "+Portals.getExit().getX() +":"+ Portals.getExit().getY());
 	}
 
 	public void alterTile(int x, int y, Tile newTile) {
-		tiles[x + y * width] = newTile.getId();
+		tiles[x + y * getWidth()] = newTile;
 		image.setRGB(x, y, newTile.getLevelColor());
 	}
 
 	public void setOffset(Screen screen) {
-		this.xOffset = -(screen.getxOffset() + screen.width / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2);
-		this.yOffset = -(screen.getyOffset() + screen.height / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2);
+		this.setxOffset(-(screen.getxOffset() + screen.width / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2));
+		this.setyOffset(-(screen.getyOffset() + screen.height / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2));
 	}
 
 //	private void generateLevel() {
@@ -173,9 +183,9 @@ public class Level implements GameActionListener {
 
 	public void renderTiles(Screen screen, int xOffset, int yOffset) {
 		if(xOffset < 0) xOffset = 0;
-		if(xOffset > ((width << 4) - screen.width)) xOffset = ((width << 4) - screen.width);
+		if(xOffset > ((getWidth() << 4) - screen.width)) xOffset = ((getWidth() << 4) - screen.width);
 		if(yOffset < 0) yOffset = 0;
-		if(yOffset > ((height << 4) - screen.height)) yOffset = ((height << 4) - screen.height);
+		if(yOffset > ((getHeight() << 4) - screen.height)) yOffset = ((getHeight() << 4) - screen.height);
 
 		screen.setOffset(xOffset, yOffset);
 
@@ -220,16 +230,15 @@ public class Level implements GameActionListener {
 //		}
 //	}
 
-    public byte[] getTiles() {
+    public Tile[] getTiles() {
         return tiles;
     }
 
     public Tile getTile(int x, int y) {
-		if (0 > x || x >= width || 0 > y || y >= height) {
+		if (0 > x || x >= getWidth() || 0 > y || y >= getHeight()) {
 			return TileTypes.get("VOID").get(this, x, y);
-//			return TileTypes.VOID;
 		}
-		return TileTypes.tiles[tiles[x + y * width]];
+		return tiles[x + y * getWidth()];
 	}
 
     public void tick() {
@@ -240,7 +249,7 @@ public class Level implements GameActionListener {
     		t.tick();
     	}
 
-    	for (NpcType n : npcs) {
+    	for (NpcType n : getNpcs()) {
     		n.tick();
     	}
 
@@ -248,25 +257,25 @@ public class Level implements GameActionListener {
     		getCamera().tick();
 	    }
 
-    	getStore().tick();
+//    	getStore().tick();
 	}
 
-    public void renderStore(Screen screen) {
-    	getStore().render(screen);
-    }
+//    public void renderStore(Screen screen) {
+//    	getStore().render(screen);
+//    }
 
     public void renderNpcs(Screen screen) {
-    	for (NpcType n : npcs) {
+    	for (NpcType n : getNpcs()) {
     		n.render(screen);
     	}
     }
 
 	public int getWidthInTiles() {
-		return width;
+		return getWidth();
 	}
 
 	public int getHeightInTiles() {
-		return height;
+		return getHeight();
 	}
 
 	public String getName() {
@@ -275,6 +284,10 @@ public class Level implements GameActionListener {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Tile getBackgroundTile(int x, int y) {
+		return TileTypes.get(Config.TILE_VOID).get(this, x, y);
 	}
 
 	@Override
@@ -286,7 +299,7 @@ public class Level implements GameActionListener {
 	}
 
 	public void addNpc(NpcType npc) {
-		npcs.add(npc);
+		getNpcs().add(npc);
 	}
 
 	public int getWave() {
@@ -297,13 +310,13 @@ public class Level implements GameActionListener {
 		this.wave = wave;
 	}
 
-	public Store getStore() {
-		return store;
-	}
-
-	public void setStore(Store store) {
-		this.store = store;
-	}
+//	public Store getStore() {
+//		return store;
+//	}
+//
+//	public void setStore(Store store) {
+//		this.store = store;
+//	}
 
 	public Camera getCamera() {
 		return camera;
@@ -320,4 +333,44 @@ public class Level implements GameActionListener {
     public void setBlocks(HashMap<String, TileMap> blocks) {
         this.blocks = blocks;
     }
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getxOffset() {
+		return xOffset;
+	}
+
+	public void setxOffset(int xOffset) {
+		this.xOffset = xOffset;
+	}
+
+	public int getyOffset() {
+		return yOffset;
+	}
+
+	public void setyOffset(int yOffset) {
+		this.yOffset = yOffset;
+	}
+
+	public List<NpcType> getNpcs() {
+		return npcs;
+	}
+
+	public void setNpcs(List<NpcType> npcs) {
+		this.npcs = npcs;
+	}
 }

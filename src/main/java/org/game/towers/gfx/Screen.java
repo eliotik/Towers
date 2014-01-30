@@ -3,6 +3,9 @@ package org.game.towers.gfx;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import org.game.towers.level.Level;
+import org.game.towers.level.tiles.Tile;
+
 public class Screen {
 
 	public static final byte BIT_MIRROR_X = 0x01;
@@ -43,6 +46,35 @@ public class Screen {
 	public void clear() {
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = 0;
+		}
+	}
+
+	public void renderTile(Level level, int xOrig, int yOrig, Tile tile) {
+		int xp = (xOrig * tile.getSprite().getWidth()) - xOffset;
+		int yp = (yOrig * tile.getSprite().getHeight()) - yOffset;
+
+		for (int y = 0; y < tile.getSprite().getHeight(); y++) {
+			int yt = y + yp;
+			for (int x = 0; x < tile.getSprite().getWidth(); x++) {
+				int xt = x + xp;
+				if (0 - tile.getSprite().getWidth() > xt || xt >= width
+						|| 0 - tile.getSprite().getHeight() > yt || yt >= height) {
+					break;
+				}
+				if (xt < 0) {
+					xt = 0;
+				}
+
+				if (yt < 0) {
+					yt = 0;
+				}
+				int color = tile.getSprite().getPixels()[x + y * tile.getSprite().getWidth()];
+				if ((color == 0xFFFF00FF || color == 0xFF800080)
+						&& level != null) {
+					color = level.getBackgroundTile(xOrig, yOrig).getSprite().getPixels()[x	+ y * level.getBackgroundTile(xOrig, yOrig).getSprite().getWidth()];
+				}
+				pixels[xt + yt * width] = color;
+			}
 		}
 	}
 

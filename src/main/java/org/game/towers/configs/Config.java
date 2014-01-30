@@ -20,9 +20,10 @@ public class Config {
 	public static final String NPCS_FILE = "npcs.xml";
 	public static final String TOWERS_FILE = "towers.xml";
 	public static final String BUILDINGS_FILE = "buildings.xml";
-//	public static final String SPRITESHEET_FILE = "spritesheet.png";
-	public static final String SPRITESHEET_FILE = "tiles.png";
-	public static final String SPRITESHEET_NPCS_FILE = "npcs.png";
+//	public static final String SPRITESHEET_FILE = "spritesheets/spritesheet.png";
+	public static final String SPRITESHEET_FILE = "spritesheets/tiles.png";
+	public static final String SPRITESHEET_NPCS_FILE = "spritesheets/npcs.png";
+	public static final String SPRITESHEET_PORTALS_FILE = "spritesheets/portals.png";
 	public static final String FONT_FILE = "font.png";
 
 	public static final String NPC_NODE_NAME = "npc";
@@ -51,8 +52,8 @@ public class Config {
 	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
 	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
 
-//	public static final byte ENTRANCE = TileTypes.ENTRANCE.getId();
-//	public static final byte EXIT = TileTypes.EXIT.getId();
+	public static final byte ENTRANCE = 4;
+	public static final byte EXIT = 5;
 
 	public static final String TILE_GRASS = "GRASS";
 	public static final String TILE_SAND = "SAND";

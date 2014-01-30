@@ -19,7 +19,7 @@ public abstract class Tile {
 	public Tile(Level level, int id, Sprite sprite, String name, int levelColor,
 			boolean isSolid, boolean isEmitter, int x, int y) {
 		setId((byte) id);
-//		if (TileTypes.tiles[id] != null) throw new RuntimeException("Duplicate tile id on " + id);
+		if (TileTypes.tiles[id] != null) throw new RuntimeException("Duplicate tile id on " + id + ", name " + name);
 	    setLevel(level);
 	    setName(name);
 	    setSprite(sprite);
@@ -28,11 +28,9 @@ public abstract class Tile {
 	    setLevelColor(levelColor);
 	    setX(x);
 	    setY(y);
-//	    TileTypes.tiles[id] = this;
+	    TileTypes.tiles[id] = this;
 	}
 
-//	public abstract void render(Screen screen, Level level, int x, int y);
-//	public abstract void render(Screen screen, Level level, int x, int y, int mirrorDir);
 	public abstract void render(Screen screen);
 	public abstract void tick();
 
