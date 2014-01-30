@@ -90,6 +90,7 @@ public class PathWorker {
         }
 
         Level.TileMap barrier = getFirstBarrier(temporaryTileMap, xStart, yStart);
+//        System.out.println(barrier.getGeo().getTopLeft().getX() + " " + barrier.getGeo().getTopLeft().getY());
         return barrier;
     }
 
@@ -108,9 +109,14 @@ public class PathWorker {
         double minR = getRadiusVector(minX, minY, xStart, yStart);
         Level.TileMap nearestConstruction = temporaryTileMap.entrySet().iterator().next().getValue();
         for (Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()){
-            double r = getRadiusVector(tileItem.getValue().getGeo().getTopLeft().getX(), tileItem.getValue().getGeo().getTopLeft().getY(), xStart, yStart);
-            if (r < minR) {
-                nearestConstruction = tileItem.getValue();
+
+            boolean isSolid = Game.instance.getWorld().getLevel().getTile(tileItem.getValue().getGeo().getTopLeft().getX(),
+                                                        tileItem.getValue().getGeo().getTopLeft().getY()).isSolid();
+            if (isSolid) {
+                double r = getRadiusVector(tileItem.getValue().getGeo().getTopLeft().getX(), tileItem.getValue().getGeo().getTopLeft().getY(), xStart, yStart);
+                if (r < minR) {
+                    nearestConstruction = tileItem.getValue();
+                }
             }
         }
         return nearestConstruction;
@@ -124,20 +130,20 @@ public class PathWorker {
 
 
     private int getLogicZone(int x, int y, Level.TileMap construction){
-
+        System.out.println("x = "+x+" y = "+ y + " construction.getGeo().getTopLeft() X =" + construction.getGeo().getTopLeft().getX() + " construction.getGeo().getTopLeft() Y =" + construction.getGeo().getTopLeft().getY() );
         if (x <= construction.getGeo().getTopLeft().getX() && y <= construction.getGeo().getTopLeft().getY()) {
             return 1; // north West
         }
 
-        if (x <= construction.getGeo().getTopLeft().getX() && x >= construction.getGeo().getTopRight().getX() && y <= construction.getGeo().getTopRight().getY()) {
+        if (x <= construction.getGeo().getTopLeft().getX() && x >= construction.getGeo().getTopRight().getX() && y <= construction.getGeo().getTopLeft().getY() && y <= construction.getGeo().getTopRight().getY()) {
             return 2; // north
         }
 
-        if (x >= construction.getGeo().getTopRight().getX() && y >= construction.getGeo().getTopRight().getY()) {
+        if (x >= construction.getGeo().getTopRight().getX() && y <= construction.getGeo().getTopRight().getY()) {
             return 3; // north-east
         }
 
-        if (x >= construction.getGeo().getTopRight().getX() && y <= construction.getGeo().getTopRight().getY() && y >= construction.getGeo().getBottomRight().getY()) {
+        if (x >= construction.getGeo().getTopRight().getX() && x >= construction.getGeo().getBottomRight().getX() && y >= construction.getGeo().getTopRight().getY() && y <= construction.getGeo().getBottomRight().getY()) {
             return 4; // east
         }
 
@@ -145,7 +151,7 @@ public class PathWorker {
             return 5; // south east
         }
 
-        if (x >= construction.getGeo().getBottomLeft().getX() && x <= construction.getGeo().getBottomRight().getX() && y >= construction.getGeo().getBottomRight().getY()) {
+        if (x >= construction.getGeo().getBottomLeft().getX() && x <= construction.getGeo().getBottomRight().getX() && y >= construction.getGeo().getBottomRight().getY() && y >= construction.getGeo().getBottomLeft().getY()) {
             return 6; // south
         }
 
@@ -153,7 +159,7 @@ public class PathWorker {
             return 7; // south west
         }
 
-        if (x <= construction.getGeo().getTopLeft().getX() && y >= construction.getGeo().getTopLeft().getY() && y <= construction.getGeo().getBottomLeft().getY()) {
+        if (x <= construction.getGeo().getTopLeft().getX() && y <= construction.getGeo().getTopLeft().getY() && y >= construction.getGeo().getBottomLeft().getY()) {
             return 8; // west
         }
         return 0;
@@ -163,8 +169,9 @@ public class PathWorker {
         Coordinates coordinate = null;
         Coordinates firstPotentialPoint = null;
         Coordinates secondPotentialPoint = null;
+//        System.out.println(barrier.getGeo().getTopLeft().getX()+" "+barrier.getGeo().getTopLeft().getX() );
         int logicZone = getLogicZone(x, y, barrier);
-
+        System.out.println("logicZone="+logicZone);
         switch (logicZone) {
             case 1:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX(), barrier.getGeo().getTopRight().getY());
@@ -260,6 +267,12 @@ public class PathWorker {
         return list;
     }
 
+    private int getNextCoordinateByLineEquation(int dx, int expectedY, int x, int y, Coordinates coordinate){
+        double resultY = lineEquation(dx, coordinate.getX(), x, coordinate.getY(), y);
+        int dimension = doShift(expectedY, (int)resultY);
+        return  dimension;
+    }
+
     public void nextCoordinate(int x, int y, Point point) {
         int finishX = Level.Portals.getExit().getX();
         int finishY = Level.Portals.getExit().getY();
@@ -267,21 +280,22 @@ public class PathWorker {
         Level.TileMap barrier = getBarrier(x, finishX, y, finishY);
         Coordinates coordinate = new Coordinates(finishX, finishY);
         if (barrier != null){
+//            System.out.println(barrier.getGeo().getTopLeft().getX());
+//            System.out.println("before");
             coordinate = getTransitionalFinish(x, y, barrier);
-
+//            System.out.println("coordinate"+coordinate);
+//            System.out.println("after coordinate x"+coordinate.getX());
+//            System.out.println("after coordinate y"+coordinate.getY());
         }
 
-        List<Integer> chanceDirection = chanceDirection(x, y, coordinate.getX(), coordinate.getY());
-        dx = chanceDirection.get(0);
-        dy = chanceDirection.get(1);
+//        List<Integer> chanceDirection = chanceDirection(x, y, coordinate.getX(), coordinate.getY());
+//        dx = chanceDirection.get(0);
+//        dy = chanceDirection.get(1);
+        dx = doShift(x, coordinate.getX());
+        dy = doShift(y, coordinate.getY());
 
-//        dx = doShift(x, coordinate.getX());
-//        dy = doShift(y, coordinate.getY());
-
-
+        dy = getNextCoordinateByLineEquation(x+dx, y+dy, x, y, coordinate);
         point.setLocation(dx, dy);
     }
-
-
 
 }
