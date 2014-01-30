@@ -28,12 +28,9 @@ public class World {
 		}
 	}
 
-	public void render(Screen screen) {
+	public void render() {
 		if (getLevel() != null) {
-			int xOffset = getLevel().getCamera().getX();
-			int yOffset = getLevel().getCamera().getY();
-
-			getLevel().renderTiles(screen, xOffset, yOffset);
+			getLevel().render(Game.instance.getScreen());
 //			getLevel().renderNpcs(screen);
 //			getLevel().renderStore(screen);
 		}

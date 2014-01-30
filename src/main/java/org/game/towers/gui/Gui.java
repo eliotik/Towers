@@ -38,7 +38,7 @@ public abstract class Gui implements GameActionListener {
 		this.height = height;
 		this.pixels = new int[width * height];
 		this.setTint(0.3D, 0.3D, 0.3D);
-		if (game.getWorld() != null && game.getScreen().pixels.length == pixels.length) {
+		if (game.getWorld() != null && game.getScreen().getPixels().length == pixels.length) {
 			bkgPixels = game.getPixels().clone();
 		}
 	}

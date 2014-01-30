@@ -259,8 +259,8 @@ public class PathWorker {
     }
 
     public void nextCoordinate(int x, int y, Point point) {
-        int finishX = Portals.getExit().getX();
-        int finishY = Portals.getExit().getY();
+        int finishX = Portals.getExit().getCoordinates().getX();
+        int finishY = Portals.getExit().getCoordinates().getY();
         int dx, dy;
         TileMap barrier = getBarrier(x, finishX, y, finishY);
         Coordinates coordinate = new Coordinates(finishX, finishY);

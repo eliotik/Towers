@@ -230,7 +230,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 			}
 		} else {
 			if (world != null) {
-				world.render(screen);
+				world.render();
 
 //				for (int y = 0; y < getScreen().height; y++) {
 //					for (int x = 0; x < getScreen().width; x++) {
@@ -243,7 +243,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 			}
 		}
 		for (int i = 0; i < Config.SCREEN_WIDTH * Config.SCREEN_HEIGHT; i++) {
-			pixels[i] = screen.pixels[i];
+			pixels[i] = screen.getPixels()[i];
 		}
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 //		g.setColor(Color.BLACK);

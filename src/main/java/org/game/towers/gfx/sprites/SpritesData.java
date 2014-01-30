@@ -16,8 +16,20 @@ public class SpritesData {
 	public static Sprite STONE = new Sprite("STONE", 2, 0, 16, 16, "BLOCK");
 	public static Sprite BUSH = new Sprite("BUSH", 3, 0, 16, 16, "BLOCK");
 
-	public static Sprite ENTRANCE = new Sprite("ENTRANCE", 0, 0, 16, 16, "PORTAL");
-	public static Sprite EXIT = new Sprite("EXIT", 1, 0, 16, 16, "PORTAL");
+	public static Sprite ENTRANCE_0 = new Sprite("ENTRANCE", 0, 0, 16, 16, "PORTAL");
+	public static Sprite ENTRANCE_1 = new Sprite("ENTRANCE", 1, 0, 16, 16, "PORTAL");
+	public static Sprite ENTRANCE_2 = new Sprite("ENTRANCE", 2, 0, 16, 16, "PORTAL");
+	public static Sprite ENTRANCE_3 = new Sprite("ENTRANCE", 3, 0, 16, 16, "PORTAL");
+	public static Sprite ENTRANCE_4 = new Sprite("ENTRANCE", 4, 0, 16, 16, "PORTAL");
+	public static Sprite ENTRANCE_5 = new Sprite("ENTRANCE", 5, 0, 16, 16, "PORTAL");
+	public static Sprite ENTRANCE_6 = new Sprite("ENTRANCE", 6, 0, 16, 16, "PORTAL");
+	public static Sprite EXIT_0 = new Sprite("EXIT", 0, 1, 16, 16, "PORTAL");
+	public static Sprite EXIT_1 = new Sprite("EXIT", 1, 1, 16, 16, "PORTAL");
+	public static Sprite EXIT_2 = new Sprite("EXIT", 2, 1, 16, 16, "PORTAL");
+	public static Sprite EXIT_3 = new Sprite("EXIT", 3, 1, 16, 16, "PORTAL");
+	public static Sprite EXIT_4 = new Sprite("EXIT", 4, 1, 16, 16, "PORTAL");
+	public static Sprite EXIT_5 = new Sprite("EXIT", 5, 1, 16, 16, "PORTAL");
+	public static Sprite EXIT_6 = new Sprite("EXIT", 6, 1, 16, 16, "PORTAL");
 
 	public static SpriteSheet[] getSpriteSheets() {
 		return spriteSheets;

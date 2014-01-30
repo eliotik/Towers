@@ -6,7 +6,6 @@ import org.game.towers.level.Level;
 
 public abstract class Tile {
 
-	private byte id;
 	private Level level;
 	private String name;
 	private Sprite sprite;
@@ -16,10 +15,8 @@ public abstract class Tile {
 	private int x;
 	private int y;
 
-	public Tile(Level level, int id, Sprite sprite, String name, int levelColor,
+	public Tile(Level level, Sprite sprite, String name, int levelColor,
 			boolean isSolid, boolean isEmitter, int x, int y) {
-		setId((byte) id);
-		if (TileTypes.tiles[id] != null) throw new RuntimeException("Duplicate tile id on " + id + ", name " + name);
 	    setLevel(level);
 	    setName(name);
 	    setSprite(sprite);
@@ -28,7 +25,6 @@ public abstract class Tile {
 	    setLevelColor(levelColor);
 	    setX(x);
 	    setY(y);
-	    TileTypes.tiles[id] = this;
 	}
 
 	public abstract void render(Screen screen);
@@ -40,10 +36,6 @@ public abstract class Tile {
 
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
-	}
-
-	public byte getId() {
-		return id;
 	}
 
 	public boolean isSolid() {
@@ -84,10 +76,6 @@ public abstract class Tile {
 
 	public void setEmitter(boolean emitter) {
 		this.emitter = emitter;
-	}
-
-	public void setId(byte id) {
-		this.id = id;
 	}
 
 	public int getX() {

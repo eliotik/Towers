@@ -34,22 +34,22 @@ public class Camera {
             setTop(new Rectangle(0,
         						0,
     							Config.REAL_SCREEN_WIDTH,
-    							Config.BOX_SIZE));
+    							Config.BOX_SIZE * 2));
 
             setLeft(new Rectangle(0,
         						0,
-        						Config.BOX_SIZE,
+        						Config.BOX_SIZE * 2,
         						Config.REAL_SCREEN_HEIGHT));
 
-            setRight(new Rectangle(Config.REAL_SCREEN_WIDTH-Config.BOX_SIZE,
+            setRight(new Rectangle(Config.REAL_SCREEN_WIDTH-Config.BOX_SIZE * 2,
             						0,
-            						Config.BOX_SIZE,
+            						Config.BOX_SIZE * 2,
             						Config.REAL_SCREEN_HEIGHT));
 
             setBottom(new Rectangle(0,
-            						Config.REAL_SCREEN_HEIGHT-Config.BOX_SIZE,
+            						Config.REAL_SCREEN_HEIGHT-Config.BOX_SIZE * 2,
             						Config.REAL_SCREEN_WIDTH,
-            						Config.BOX_SIZE));
+            						Config.BOX_SIZE * 2));
         }
 
         public Rectangle getTop() {
@@ -111,14 +111,14 @@ public class Camera {
         if (getX() < 0) {
             setX(0);
         }
-        if (getX() > (getLevel().getWidth() << 3) - Game.instance.getScreen().width) {
-            setX((getLevel().getWidth() << 3) - Game.instance.getScreen().width);
+        if (getX() > (getLevel().getWidth() << 4) - Game.instance.getScreen().getWidth()) {
+            setX((getLevel().getWidth() << 4) - Game.instance.getScreen().getWidth());
         }
         if (getY() < 0) {
             setY(0);
         }
-        if (getY() > (getLevel().getHeight() << 3) - Game.instance.getScreen().height) {
-            setY((getLevel().getHeight() << 3) - Game.instance.getScreen().height);
+        if (getY() > (getLevel().getHeight() << 4) - Game.instance.getScreen().getHeight()) {
+            setY((getLevel().getHeight() << 4) - Game.instance.getScreen().getHeight());
         }
     }
 

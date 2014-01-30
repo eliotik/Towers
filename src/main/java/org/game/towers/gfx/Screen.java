@@ -11,24 +11,24 @@ public class Screen {
 	public static final byte BIT_MIRROR_X = 0x01;
 	public static final byte BIT_MIRROR_Y = 0x02;
 
-	public int[] pixels;
+	private int[] pixels;
 	private Graphics graphics;
 
 	private int xOffset = 0;
 	private int yOffset = 0;
 
-	public int width;
-	public int height;
+	private int width;
+	private int height;
 
 	private Point mousePosition = new Point(0, 0);
 
 //	public SpriteSheet sheet;
 
 	public Screen(int width, int height) {
-		this.width = width;
-		this.height = height;
+		setWidth(width);
+		setHeight(height);
 
-		pixels = new int[width * height];
+		setPixels(new int[width * height]);
 	}
 
 //	public Screen(int width, int height, SpriteSheet sheet) {
@@ -44,21 +44,21 @@ public class Screen {
 	}
 
 	public void clear() {
-		for (int i = 0; i < pixels.length; i++) {
-			pixels[i] = 0;
+		for (int i = 0; i < getPixels().length; i++) {
+			getPixels()[i] = 0;
 		}
 	}
 
 	public void renderTile(Level level, int xOrig, int yOrig, Tile tile) {
-		int xp = (xOrig * tile.getSprite().getWidth()) - xOffset;
-		int yp = (yOrig * tile.getSprite().getHeight()) - yOffset;
+		int xp = (xOrig * tile.getSprite().getWidth()) - getxOffset();
+		int yp = (yOrig * tile.getSprite().getHeight()) - getyOffset();
 
 		for (int y = 0; y < tile.getSprite().getHeight(); y++) {
 			int yt = y + yp;
 			for (int x = 0; x < tile.getSprite().getWidth(); x++) {
 				int xt = x + xp;
-				if (0 - tile.getSprite().getWidth() > xt || xt >= width
-						|| 0 - tile.getSprite().getHeight() > yt || yt >= height) {
+				if (0 - tile.getSprite().getWidth() > xt || xt >= getWidth()
+						|| 0 - tile.getSprite().getHeight() > yt || yt >= getHeight()) {
 					break;
 				}
 				if (xt < 0) {
@@ -71,9 +71,10 @@ public class Screen {
 				int color = tile.getSprite().getPixels()[x + y * tile.getSprite().getWidth()];
 				if ((color == 0xFFFF00FF || color == 0xFF800080)
 						&& level != null) {
-					color = level.getBackgroundTile(xOrig, yOrig).getSprite().getPixels()[x	+ y * level.getBackgroundTile(xOrig, yOrig).getSprite().getWidth()];
+					Tile bgTile = level.getBackgroundTile(xOrig, yOrig);
+					color = bgTile.getSprite().getPixels()[x	+ y * bgTile.getSprite().getWidth()];
 				}
-				pixels[xt + yt * width] = color;
+				getPixels()[xt + yt * getWidth()] = color;
 			}
 		}
 	}
@@ -154,5 +155,29 @@ public class Screen {
 
 	public void setyOffset(int yOffset) {
 		this.yOffset = yOffset;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int[] getPixels() {
+		return pixels;
+	}
+
+	public void setPixels(int[] pixels) {
+		this.pixels = pixels;
 	}
 }

@@ -4,10 +4,10 @@ import org.game.towers.geo.Geo;
 
 public class TileMap {
 	private Geo geo;
-	private byte tileId;
+	private Tile tile;
 
-	public TileMap(byte tId, Geo geo) {
-		setTileId(tId);
+	public TileMap(Tile tile, Geo geo) {
+		setTile(tile);
 		setGeo(geo);
 	}
 
@@ -19,12 +19,12 @@ public class TileMap {
 		this.geo = geo;
 	}
 
-	public byte getTileId() {
-		return tileId;
+	public Tile getTile() {
+		return tile;
 	}
 
-	public void setTileId(byte id) {
-		this.tileId = id;
+	public void setTile(Tile tile) {
+		this.tile = tile;
 	}
 
 }

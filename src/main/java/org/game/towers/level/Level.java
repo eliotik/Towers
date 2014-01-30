@@ -42,17 +42,10 @@ public class Level implements GameActionListener {
 	private Camera camera;
 
 	public Level(String imagePath) {
-//		if (imagePath != null) {
 			this.imagePath = imagePath;
 			loadLevelFromFile();
 //			initStore();
 			initCamera();
-//		} else {
-//			width = Config.DEFAULT_LEVEL_WIDTH;
-//			height = Config.DEFAULT_LEVEL_HEIGHT;
-//			tiles = new byte[width * height];
-//			generateLevel();
-//		}
 	}
 
 	private void initCamera() {
@@ -81,177 +74,69 @@ public class Level implements GameActionListener {
 
 	private void loadLevelFromFile() {
 		try {
-			image = ImageIO.read(Config.class.getResource(this.imagePath));
-			setWidth(image.getWidth());
-			setHeight(image.getHeight());
-			tiles = new Tile[getWidth() * getHeight()];
-			//tiles = new byte [width * height];
+			setImage(ImageIO.read(Level.class.getResource(this.imagePath)));
+			setWidth(getImage().getWidth());
+			setHeight(getImage().getHeight());
+			setTiles(new Tile[getWidth() * getHeight()]);
 			loadTiles();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private Tile parseTileFromColour(int color, int x, int y) {
+	private Tile parseTileFromColor(int color, int x, int y) {
 		for (TileTypes tt : TileTypes.types) {
 			if (tt.get().getLevelColor() == color) {
-				return tt.get(this, x, y);
+				return tt.get(this, x, y, false);
 			}
 		}
-		return TileTypes.get("VOID").get(this, x, y);
+		return TileTypes.get("VOID").get(this, x, y, true);
 	}
 
 	private void loadTiles() {
 		int[] tiles = new int[getWidth() * getHeight()];
+		tiles = getImage().getRGB(0, 0, getWidth(), getHeight(), null, 0, getWidth());
 		for (int y = 0; y < getHeight(); y++) {
 			for (int x = 0; x < getWidth(); x++) {
-				this.tiles[x + y * getWidth()] = parseTileFromColour(tiles[x + y * getWidth()], x, y);
+				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
+				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
+				getTiles()[x + y * getWidth()] = tile;
+				if (!blocks.containsKey(key)) blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
 			}
 		}
-//		int[] tileColors = image.getRGB(0, 0, width, height, null, 0, width);
-//		for (int y = 0; y < height; y++) {
-//			for (int x = 0; x < width; x++) {
-//				tileCheck: for (Tile t : TileTypes.tiles) {
-//					if (t != null && t.getLevelColor() == tileColors[x + y * width]) {
-//						byte tId = t.getId();
-//						tiles[x + y * width] = tId;
-//						String key = "x:"+(x*Config.BOX_SIZE) +",y:"+ (y*Config.BOX_SIZE) +",xb:"+((x*Config.BOX_SIZE)+Config.BOX_SIZE)+",yb"+((y*Config.BOX_SIZE)+Config.BOX_SIZE);
-//						if (!blocks.containsKey(key)) {
-//						  blocks.put(key, new TileMap(tId, new Geo(new Coordinates(x * Config.BOX_SIZE, y * Config.BOX_SIZE), Config.BOX_SIZE, Config.BOX_SIZE)));
-//						}
-//						if (tId == Config.ENTRANCE) {
-//							Portals.setEntrance(t, x, y);
-//						}
-//						if (tId == Config.EXIT) {
-//							Portals.setExit(t, x, y);
-//						}
-//						break tileCheck;
-//					}
-//				}
-//			}
-//		}
-//        System.out.println(blocks.size()+"=="+(Config.MAP_X_SIZE*Config.MAP_Y_SIZE));
-//		System.out.println("entrance "+Portals.getEntrance().getX() +":"+ Portals.getEntrance().getY());
-//		System.out.println("exit "+Portals.getExit().getX() +":"+ Portals.getExit().getY());
+		Portals.setEntrance(getEntranceLocation());
+		Portals.setExit(getExitLocation());
 	}
 
 	public void alterTile(int x, int y, Tile newTile) {
-		tiles[x + y * getWidth()] = newTile;
-		image.setRGB(x, y, newTile.getLevelColor());
+		getTiles()[x + y * getWidth()] = newTile;
+		getImage().setRGB(x, y, newTile.getLevelColor());
 	}
-
-	public void setOffset(Screen screen) {
-		this.setxOffset(-(screen.getxOffset() + screen.width / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2));
-		this.setyOffset(-(screen.getyOffset() + screen.height / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2));
-	}
-
-//	private void generateLevel() {
-//		int entrenceY = Utils.randInt(1, Config.MAP_Y_SIZE-2);
-//		int exitY = Utils.randInt(1, Config.MAP_Y_SIZE-2);
-//		for (int y = 0; y < height; y++) {
-//			for (int x = 0; x < width; x++) {
-//				if (y == 0 ||
-//					x == Config.MAP_X_SIZE-1 ||
-//					y == Config.MAP_Y_SIZE-1 || x == 0) {
-//
-//					if ((x == 0 && y == entrenceY) ||
-//						(x == Config.MAP_X_SIZE-1 && y == exitY)) {
-//						tiles[x + y * width] = Tile.ENTRANCE.getId();
-//					} else {
-//						tiles[x + y * width] = Tile.BUSH.getId();
-//					}
-//
-//				} else {
-//					if (Utils.randInt(0, 88)==13 &&
-//						(x != 1 && y != entrenceY) &&
-//						(x != Config.MAP_X_SIZE-1 && y != exitY)) {
-//
-//						tiles[x + y * width] = Tile.STONE.getId();
-//
-//					} else {
-//						tiles[x + y * width] = Tile.GRASS.getId();
-//					}
-//				}
-////				if (x * y % 10 == 0) {
-////					tiles[x + y * width] = Tile.BUSH.getId();
-////				} else {
-////					tiles[x + y * width] = Tile.GRASS.getId();
-////				}
-//			}
-//		}
-//	}
-
-	public void renderTiles(Screen screen, int xOffset, int yOffset) {
-		if(xOffset < 0) xOffset = 0;
-		if(xOffset > ((getWidth() << 4) - screen.width)) xOffset = ((getWidth() << 4) - screen.width);
-		if(yOffset < 0) yOffset = 0;
-		if(yOffset > ((getHeight() << 4) - screen.height)) yOffset = ((getHeight() << 4) - screen.height);
-
-		screen.setOffset(xOffset, yOffset);
-
-		int xMin = xOffset >> 4;
-	    int xMax = (xOffset + screen.width) >> 4;
-	    int yMin = yOffset >> 4;
-	    int yMax = (yOffset + screen.height) >> 4;
-
-	    for (int y = yMin; y < yMax + 15; y++) {
-	      for (int x = xMin; x < xMax + 15; x++) {
-	        Tile tile = getTile(x, y);
-	        tile.render(screen);
-	      }
-	    }
-
-//		for(int y = 0; y < height; y++) {
-//			for(int x = 0; x < width; x++) {
-//				Tile tile = getTile(x,y);
-//				tile.render(screen, this, x << 3, y << 3);
-//			}
-//		}
-//
-//		renderIds(screen);
-	}
-
-//	private void renderIds(Screen screen) {
-//		if (Config.LEVEL_SHOW_IDS) {
-//			for (int x = 0; x < width; x++) {
-//				int color = Colors.get(-1, -1, -1, 000);
-//				if(x % 10 == 0 && x != 0) {
-//					color = Colors.get(-1, -1, -1, 500);
-//				}
-//				Font.render((x%10)+"", screen, 0 + (x * 8), 0, color, 1);
-//			}
-//			for (int y = 0; y < height; y++) {
-//				int color = Colors.get(-1, -1, -1, 000);
-//				if(y % 10 == 0 && y != 0) {
-//					color = Colors.get(-1, -1, -1, 500);
-//				}
-//				Font.render((y%10)+"", screen, 0, 0 + (y * 8), color, 1);
-//			}
-//		}
-//	}
 
     public Tile[] getTiles() {
         return tiles;
     }
 
+	public Tile getTile(int index) {
+		return getTiles()[index];
+	}
+
     public Tile getTile(int x, int y) {
 		if (0 > x || x >= getWidth() || 0 > y || y >= getHeight()) {
-			return TileTypes.get("VOID").get(this, x, y);
+			return TileTypes.get("VOID").get(this, x, y, true);
 		}
-		return tiles[x + y * getWidth()];
+		return getTiles()[x + y * getWidth()];
 	}
 
     public void tick() {
-    	for (Tile t : TileTypes.tiles) {
-    		if (t == null) {
-    			break;
-    		}
-    		t.tick();
-    	}
+		for (int i = 0; i < tiles.length; i++) {
+			Tile tile = getTile(i);
+			tile.tick();
+		}
 
-    	for (NpcType n : getNpcs()) {
-    		n.tick();
-    	}
+//    	for (NpcType n : getNpcs()) {
+//    		n.tick();
+//    	}
 
     	if (getCamera() != null) {
     		getCamera().tick();
@@ -264,19 +149,34 @@ public class Level implements GameActionListener {
 //    	getStore().render(screen);
 //    }
 
+	public Coordinates getEntranceLocation() {
+		return getTileLocation(Config.TILE_ENTRANCE);
+	}
+
+	public Coordinates getExitLocation() {
+		return getTileLocation(Config.TILE_EXIT);
+	}
+
+	public Coordinates getTileLocation(String name) {
+		Coordinates coords = new Coordinates();
+		for (int y = 0; y < getHeight(); y++) {
+			for (int x = 0; x < getWidth(); x++) {
+				Tile tile = getTile(x, y);
+				if (tile.getName().equals(name)) {
+					coords.setX(x << 4);
+					coords.setY(y << 4);
+					return coords;
+				}
+			}
+		}
+		return coords;
+	}
+
     public void renderNpcs(Screen screen) {
     	for (NpcType n : getNpcs()) {
     		n.render(screen);
     	}
     }
-
-	public int getWidthInTiles() {
-		return getWidth();
-	}
-
-	public int getHeightInTiles() {
-		return getHeight();
-	}
 
 	public String getName() {
 		return name;
@@ -287,7 +187,7 @@ public class Level implements GameActionListener {
 	}
 
 	public Tile getBackgroundTile(int x, int y) {
-		return TileTypes.get(Config.TILE_VOID).get(this, x, y);
+		return TileTypes.get(Config.TILE_GRASS).get(this, x, y, true);
 	}
 
 	@Override
@@ -372,5 +272,41 @@ public class Level implements GameActionListener {
 
 	public void setNpcs(List<NpcType> npcs) {
 		this.npcs = npcs;
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public void setImage(BufferedImage image) {
+		this.image = image;
+	}
+
+	public void setTiles(Tile[] tiles) {
+		this.tiles = tiles;
+	}
+
+	public void render(Screen screen) {
+		int xOffset = getCamera().getX();
+		int yOffset = getCamera().getY();
+
+		if(xOffset < 0) xOffset = 0;
+		if(xOffset > ((getWidth() << 4) - screen.getWidth())) xOffset = ((getWidth() << 4) - screen.getWidth());
+		if(yOffset < 0) yOffset = 0;
+		if(yOffset > ((getHeight() << 4) - screen.getHeight())) yOffset = ((getHeight() << 4) - screen.getHeight());
+
+		screen.setOffset(xOffset, yOffset);
+
+		int xMin = xOffset >> 4;
+	    int xMax = (xOffset + screen.getWidth()) >> 4;
+	    int yMin = yOffset >> 4;
+	    int yMax = (yOffset + screen.getHeight()) >> 4;
+
+		for (int y = yMin; y < yMax + 15; y++) {
+			for (int x = xMin; x < xMax + 15; x++) {
+				Tile tile = getTile(x, y);
+				tile.render(screen);
+			}
+		}
 	}
 }

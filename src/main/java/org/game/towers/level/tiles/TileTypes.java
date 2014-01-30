@@ -15,7 +15,6 @@ public class TileTypes {
 			new TileTypes(Config.TILE_EXIT), new TileTypes("VOID") };
 	private String type;
 	private Random random = new Random();
-	public static final Tile[] tiles = new Tile[256];
 
 	// public static final Tile VOID = new BasicSolidTile(0, 0, 0,
 	// Colors.get(000, -1, -1, -1), 0xFF000000);
@@ -55,74 +54,83 @@ public class TileTypes {
 	}
 
 	public Tile get() {
-		return get(null, 0, 0);
+		return get(null, 0, 0, false);
 	}
 
-	public Tile get(Level level, int x, int y) {
+	public Tile get(Level level, int x, int y, boolean staticSprite) {
 		switch(type) {
-		case Config.TILE_GRASS:    return getTileGrass(level, x, y);
-		case Config.TILE_SAND:     return getTileSand(level, x, y);
-		case Config.TILE_STONE:    return getTileStone(level, x, y);
-		case Config.TILE_BUSH:     return getTileBush(level, x, y);
-		case Config.TILE_ENTRANCE: return getTileEntrance(level, x, y);
-		case Config.TILE_EXIT:     return getTileExit(level, x, y);
-		default:                  return getTileVoid(level, x, y);
+		case Config.TILE_GRASS:    return getTileGrass(level, x, y, staticSprite);
+		case Config.TILE_SAND:     return getTileSand(level, x, y, staticSprite);
+		case Config.TILE_STONE:    return getTileStone(level, x, y, staticSprite);
+		case Config.TILE_BUSH:     return getTileBush(level, x, y, staticSprite);
+		case Config.TILE_ENTRANCE: return getTileEntrance(level, x, y, staticSprite);
+		case Config.TILE_EXIT:     return getTileExit(level, x, y, staticSprite);
+		default:                   return getTileVoid(level, x, y, staticSprite);
 		}
 	}
 
-	private Tile getTileVoid(Level level, int x, int y) {
-		int id = TileTypes.tiles.length-1;
-		if (TileTypes.tiles[id] != null) return TileTypes.tiles[id];
-		return new VoidTile(level, id, SpritesData.VOID, x, y);
+	private Tile getTileVoid(Level level, int x, int y, boolean staticSprite) {
+		return new VoidTile(level, SpritesData.VOID, x, y);
 	}
 
-	private Tile getTileExit(Level level, int x, int y) {
-		int id = 5;
-		if (TileTypes.tiles[id] != null) return TileTypes.tiles[id];
-		return new BasicTile(level, id, SpritesData.EXIT, Config.TILE_EXIT, 0xffff0000, false, false, x, y);
+	private Tile getTileExit(Level level, int x, int y, boolean staticSprite) {
+		return new AnimatedTile(level,
+				new Sprite[] {
+					SpritesData.EXIT_0,
+					SpritesData.EXIT_1,
+					SpritesData.EXIT_2,
+					SpritesData.EXIT_3,
+					SpritesData.EXIT_4,
+					SpritesData.EXIT_5
+				},
+				Config.TILE_EXIT, 0xffff0000, false, false, x, y, 170);
 	}
 
-	private Tile getTileEntrance(Level level, int x, int y) {
-		int id = 4;
-		if (TileTypes.tiles[id] != null) return TileTypes.tiles[id];
-		return new BasicTile(level, id, SpritesData.ENTRANCE, Config.TILE_ENTRANCE, 0xfffaa71a, false, false, x, y);
+	private Tile getTileEntrance(Level level, int x, int y, boolean staticSprite) {
+		return new AnimatedTile(level,
+				new Sprite[] {
+					SpritesData.ENTRANCE_0,
+					SpritesData.ENTRANCE_1,
+					SpritesData.ENTRANCE_2,
+					SpritesData.ENTRANCE_3,
+					SpritesData.ENTRANCE_4,
+					SpritesData.ENTRANCE_5
+				},
+				Config.TILE_ENTRANCE, 0xfffaa71a, false, false, x, y, 170);
 	}
 
-	private Tile getTileBush(Level level, int x, int y) {
-		int id = 3;
-		if (TileTypes.tiles[id] != null) return TileTypes.tiles[id];
-		return new BasicTile(level, id, SpritesData.BUSH, Config.TILE_BUSH, 0xff69bd45, true, false, x, y);
+	private Tile getTileBush(Level level, int x, int y, boolean staticSprite) {
+		return new BasicTile(level, SpritesData.BUSH, Config.TILE_BUSH, 0xff69bd45, true, false, x, y);
 	}
 
-	private Tile getTileStone(Level level, int x, int y) {
-		int id = 2;
-		if (TileTypes.tiles[id] != null) return TileTypes.tiles[id];
-		return new BasicTile(level, id, SpritesData.STONE, Config.TILE_STONE, 0xff555555, true, false, x, y);
+	private Tile getTileStone(Level level, int x, int y, boolean staticSprite) {
+		return new BasicTile(level, SpritesData.STONE, Config.TILE_STONE, 0xff555555, true, false, x, y);
 	}
 
-	private Tile getTileSand(Level level, int x, int y) {
-		int id = 1;
-		if (TileTypes.tiles[id] != null) return TileTypes.tiles[id];
-		return new BasicTile(level, id, SpritesData.SAND, Config.TILE_SAND, 0xffffea00, false, false, x, y);
+	private Tile getTileSand(Level level, int x, int y, boolean staticSprite) {
+		return new BasicTile(level, SpritesData.SAND, Config.TILE_SAND, 0xffffea00, false, false, x, y);
 	}
 
-	private Tile getTileGrass(Level level, int x, int y) {
-		int id = 0;
-		if (TileTypes.tiles[id] != null) return TileTypes.tiles[id];
+	private Tile getTileGrass(Level level, int x, int y, boolean staticSprite) {
 		Sprite sprite = SpritesData.GRASS_0;
-		switch (getRandom().nextInt(8)) {
-		case 1:
-			sprite = SpritesData.GRASS_1;
-			break;
-		case 2:
-			sprite = SpritesData.GRASS_2;
-			break;
-		default:
-		case 0:
-			sprite = SpritesData.GRASS_0;
-			break;
+		if (!staticSprite) {
+			switch (getRandom().nextInt(8)) {
+			case 1:
+			case 2:
+				sprite = SpritesData.GRASS_1;
+				break;
+			case 3:
+			case 4:
+			case 5:
+				sprite = SpritesData.GRASS_2;
+				break;
+			default:
+			case 0:
+				sprite = SpritesData.GRASS_0;
+				break;
+			}
 		}
-		return new BasicTile(level, id, sprite, Config.TILE_GRASS, 0xff00ff00, false, false, x, y);
+		return new BasicTile(level, sprite, Config.TILE_GRASS, 0xff00ff00, false, false, x, y);
 	}
 
 	public String getType() {
@@ -140,5 +148,4 @@ public class TileTypes {
 	public void setRandom(Random random) {
 		this.random = random;
 	}
-
 }
