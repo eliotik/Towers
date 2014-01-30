@@ -51,6 +51,14 @@ public class Config {
 	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
 	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
 
-	public static final byte ENTRANCE = TileTypes.ENTRANCE.getId();
-	public static final byte EXIT = TileTypes.EXIT.getId();
+//	public static final byte ENTRANCE = TileTypes.ENTRANCE.getId();
+//	public static final byte EXIT = TileTypes.EXIT.getId();
+
+	public static final String TILE_GRASS = "GRASS";
+	public static final String TILE_SAND = "SAND";
+	public static final String TILE_STONE = "STONE";
+	public static final String TILE_BUSH = "BUSH";
+	public static final String TILE_VOID = "VOID";
+	public static final String TILE_ENTRANCE = "ENTRANCE";
+	public static final String TILE_EXIT = "EXIT";
 }

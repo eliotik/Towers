@@ -1,6 +1,7 @@
 package org.game.towers.level.tiles;
 
 import org.game.towers.gfx.Screen;
+import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.level.Level;
 
 public abstract class Tile {
@@ -12,26 +13,27 @@ public abstract class Tile {
 	private boolean solid;
 	private boolean emitter;
 	private int levelColor;
-	public int x;
-	public int y;
+	private int x;
+	private int y;
 
 	public Tile(Level level, int id, Sprite sprite, String name, int levelColor,
 			boolean isSolid, boolean isEmitter, int x, int y) {
-		this.setId((byte) id);
+		setId((byte) id);
 //		if (TileTypes.tiles[id] != null) throw new RuntimeException("Duplicate tile id on " + id);
-	    this.setLevel(level);
-	    this.setName(name);
-	    this.setSprite(sprite);
-	    this.setSolid(isSolid);
-	    this.setEmitter(isEmitter);
+	    setLevel(level);
+	    setName(name);
+	    setSprite(sprite);
+	    setSolid(isSolid);
+	    setEmitter(isEmitter);
 	    setLevelColor(levelColor);
-	    this.x = x;
-	    this.y = y;
+	    setX(x);
+	    setY(y);
 //	    TileTypes.tiles[id] = this;
 	}
 
-	public abstract void render(Screen screen, Level level, int x, int y);
-	public abstract void render(Screen screen, Level level, int x, int y, int mirrorDir);
+//	public abstract void render(Screen screen, Level level, int x, int y);
+//	public abstract void render(Screen screen, Level level, int x, int y, int mirrorDir);
+	public abstract void render(Screen screen);
 	public abstract void tick();
 
 	public Sprite getSprite() {
@@ -88,5 +90,21 @@ public abstract class Tile {
 
 	public void setId(byte id) {
 		this.id = id;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
 	}
 }
