@@ -159,7 +159,7 @@ public class PathWorker {
             return 7; // south west
         }
 
-        if (x <= construction.getGeo().getTopLeft().getX() && y <= construction.getGeo().getTopLeft().getY() && y >= construction.getGeo().getBottomLeft().getY()) {
+        if (x <= construction.getGeo().getTopLeft().getX() && y >= construction.getGeo().getTopLeft().getY() && y <= construction.getGeo().getBottomLeft().getY()) {
             return 8; // west
         }
         return 0;
@@ -269,15 +269,15 @@ public class PathWorker {
 
     private int getNextCoordinateByLineEquation(int dx, int expectedY, int x, int y, Coordinates coordinate){
         double resultY = lineEquation(dx, coordinate.getX(), x, coordinate.getY(), y);
-        int dimension = doShift(expectedY, (int)resultY);
+        int dimension = doShift(expectedY, (int)resultY + Config.BOX_SIZE);
         return  dimension;
     }
 
     public void nextCoordinate(int x, int y, Point point) {
-        int finishX = Level.Portals.getExit().getX();
-        int finishY = Level.Portals.getExit().getY();
+        int finishX = Level.Portals.getExit().getX()*Config.BOX_SIZE;
+        int finishY = Level.Portals.getExit().getY()*Config.BOX_SIZE;
         int dx, dy;
-        Level.TileMap barrier = getBarrier(x, finishX, y, finishY);
+        Level.TileMap barrier = getBarrier(x*Config.BOX_SIZE, finishX, y*Config.BOX_SIZE, finishY);
         Coordinates coordinate = new Coordinates(finishX, finishY);
         if (barrier != null){
 //            System.out.println(barrier.getGeo().getTopLeft().getX());

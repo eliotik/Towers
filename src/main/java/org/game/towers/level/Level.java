@@ -78,7 +78,7 @@ public class Level implements NBTCapable, GameActionListener {
 				if (tank1 != null) {
 					tank1.setLevel(this);
 					tank1.setX(8);
-					tank1.setY(160-Config.BOX_SIZE*4);
+					tank1.setY(160-Config.BOX_SIZE);
 
 					addNpc(tank1);
 				}
