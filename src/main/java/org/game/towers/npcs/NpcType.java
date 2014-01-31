@@ -78,27 +78,28 @@ public class NpcType extends Unit {
 
 	@Override
 	public void render(Screen screen) {
-//		Geo geo = getLevel().getTileGeo((int)(getX()/Config.BOX_SIZE), (int)(getY()/Config.BOX_SIZE));
-//		System.out.println(geo.getTopLeft().getX()+"-"+geo.getTopLeft().getY()+'='+getLevel().getTile((int)(getX()/Config.BOX_SIZE), (int)(getY()/Config.BOX_SIZE)).getId());
-		int walkingSpeed = 4;
-		int flip = (getMovingDirection() - 1) % 2;
-		int shift = ((getNumSteps() >> walkingSpeed) & 1);
-		int xTile = getTileX() + shift;
-
-
-		if (getMovingDirection() == 1) {
-			xTile += 1 - shift * 2;
-			flip = (getMovingDirection() - 1) % 2;
-		} else if (getMovingDirection() > 1) {
-			xTile += 2;
-			flip = (getMovingDirection() - 1) % 2;
-		}
-//		System.out.println("dir = " +getMovingDirection()+ ", steps = "+ getNumSteps() + ", tile = "+ xTile+", flip = "+flip+", shift = "+shift);
-//		int modifier = 8 * getScale();
-//		int xOffset = (int) (getX() - modifier / 2);
-//		int yOffset = (int) (getY() - modifier / 2);
+////		Geo geo = getLevel().getTileGeo((int)(getX()/Config.BOX_SIZE), (int)(getY()/Config.BOX_SIZE));
+////		System.out.println(geo.getTopLeft().getX()+"-"+geo.getTopLeft().getY()+'='+getLevel().getTile((int)(getX()/Config.BOX_SIZE), (int)(getY()/Config.BOX_SIZE)).getId());
+//		int walkingSpeed = 4;
+//		int flip = (getMovingDirection() - 1) % 2;
+//		int shift = ((getNumSteps() >> walkingSpeed) & 1);
+//		int xTile = getTileX() + shift;
+//
+//
+//		if (getMovingDirection() == 1) {
+//			xTile += 1 - shift * 2;
+//			flip = (getMovingDirection() - 1) % 2;
+//		} else if (getMovingDirection() > 1) {
+//			xTile += 2;
+//			flip = (getMovingDirection() - 1) % 2;
+//		}
+////		System.out.println("dir = " +getMovingDirection()+ ", steps = "+ getNumSteps() + ", tile = "+ xTile+", flip = "+flip+", shift = "+shift);
+////		int modifier = 8 * getScale();
+////		int xOffset = (int) (getX() - modifier / 2);
+////		int yOffset = (int) (getY() - modifier / 2);
 
 //		screen.render((int) getX(), (int) getY(), xTile + getTileY() * 32, getColor(), flip, getScale());
+		screen.renderUnit((int) getX(), (int) getY(), this);
 	}
 
 	public void move(int xa, int ya) {

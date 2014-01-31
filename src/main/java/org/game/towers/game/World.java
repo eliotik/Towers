@@ -19,7 +19,12 @@ public class World {
 	public World(String name) {
 		this.name = name;
 		setLevel(new Level(format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME)));
-		Game.instance.getInputHandler().addListener(getLevel());
+		Game.instance.getInputHandler().addListener(getLevel(), true);
+	}
+
+	public void reset() {
+		Game.instance.getInputHandler().removeListener(getLevel());
+		setLevel(null);
 	}
 
 	public void tick() {
@@ -31,7 +36,6 @@ public class World {
 	public void render() {
 		if (getLevel() != null) {
 			getLevel().render(Game.instance.getScreen());
-//			getLevel().renderNpcs(screen);
 //			getLevel().renderStore(screen);
 		}
 	}

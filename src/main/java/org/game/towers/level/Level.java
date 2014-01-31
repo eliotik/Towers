@@ -15,12 +15,14 @@ import org.game.towers.level.tiles.Tile;
 import org.game.towers.level.tiles.TileMap;
 import org.game.towers.level.tiles.TileTypes;
 import org.game.towers.npcs.NpcType;
+import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -37,9 +39,10 @@ public class Level implements GameActionListener {
 	private int wave = 1;
 	private String imagePath;
 	private BufferedImage image;
-	private List<NpcType> npcs = new ArrayList<NpcType>();
+	private volatile List<Unit> units = new ArrayList<Unit>();
 //	private Store store;
 	private Camera camera;
+	private long nextWave = System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT;
 
 	public Level(String imagePath) {
 			this.imagePath = imagePath;
@@ -59,13 +62,20 @@ public class Level implements GameActionListener {
 //	}
 
 	public void generateNpcs() {
-		switch(wave) {
+
+//		if (System.currentTimeMillis() < getNextWave()) return;
+//		setNextWave(System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT);
+
+		switch(getWave()) {
 			case 1:
 				NpcType tank1 = UnitFactory.getNpc(Npcs.TANK);
 				if (tank1 != null) {
 					tank1.setLevel(this);
-					tank1.setX(8);
-					tank1.setY(160-Config.BOX_SIZE*4);
+					System.out.println("x: "+Portals.getEntrance().getCoordinates().getX()+", y: "+Portals.getEntrance().getCoordinates().getY());
+//					tank1.setX(Portals.getEntrance().getCoordinates().getX());
+//					tank1.setY(Portals.getEntrance().getCoordinates().getY());
+					tank1.setX(Config.BOX_SIZE);
+					tank1.setY(Config.BOX_SIZE*10);
 
 					addNpc(tank1);
 				}
@@ -138,6 +148,13 @@ public class Level implements GameActionListener {
 //    		n.tick();
 //    	}
 
+		synchronized (getUnits()) {
+			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
+				Unit unit = (Unit) it.next();
+				unit.tick();
+			}
+		}
+
     	if (getCamera() != null) {
     		getCamera().tick();
 	    }
@@ -172,12 +189,6 @@ public class Level implements GameActionListener {
 		return coords;
 	}
 
-    public void renderNpcs(Screen screen) {
-    	for (NpcType n : getNpcs()) {
-    		n.render(screen);
-    	}
-    }
-
 	public String getName() {
 		return name;
 	}
@@ -199,7 +210,9 @@ public class Level implements GameActionListener {
 	}
 
 	public void addNpc(NpcType npc) {
-		getNpcs().add(npc);
+		synchronized (getUnits()) {
+			getUnits().add(npc);
+		}
 	}
 
 	public int getWave() {
@@ -266,14 +279,6 @@ public class Level implements GameActionListener {
 		this.yOffset = yOffset;
 	}
 
-	public List<NpcType> getNpcs() {
-		return npcs;
-	}
-
-	public void setNpcs(List<NpcType> npcs) {
-		this.npcs = npcs;
-	}
-
 	public BufferedImage getImage() {
 		return image;
 	}
@@ -308,5 +313,28 @@ public class Level implements GameActionListener {
 				tile.render(screen);
 			}
 		}
+
+		synchronized (getUnits()) {
+			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
+				Unit unit = (Unit) it.next();
+				unit.render(screen);
+			}
+		}
+	}
+
+	public long getNextWave() {
+		return nextWave;
+	}
+
+	public void setNextWave(long nextWave) {
+		this.nextWave = nextWave;
+	}
+
+	public List<Unit> getUnits() {
+		return units;
+	}
+
+	public void setUnits(List<Unit> units) {
+		this.units = units;
 	}
 }

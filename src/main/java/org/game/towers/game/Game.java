@@ -143,16 +143,10 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		initHomeDirectory();
 		initWorld();
 		initFocusListener();
-//		initColors();
 		initScreen();
 		initInput();
-//		initLevel();
 		initPathWorker();
-		//initMainMenu();
-
-		//TODO: remove after Screen refactoring is done
-		setWorld(new World(Config.DEFAULT_WORLD_NAME));
-//		getWorld().getLevel().generateNpcs();
+		initMainMenu();
 	}
 
 	private void initPathWorker() {
@@ -222,12 +216,12 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 		if (gui != null) {
 			gui.render();
-			for (int y = 0; y < Config.SCREEN_HEIGHT; y++) {
-				for (int x = 0; x < Config.SCREEN_WIDTH; x++) {
-					int colorCode = gui.pixels[x + y * gui.width];
-					pixels[x + y * Config.SCREEN_WIDTH] = colorCode + (0xFF << 24);
-				}
-			}
+//			for (int y = 0; y < Config.SCREEN_HEIGHT; y++) {
+//				for (int x = 0; x < Config.SCREEN_WIDTH; x++) {
+//					int colorCode = gui.pixels[x + y * gui.width];
+//					pixels[x + y * Config.SCREEN_WIDTH] = colorCode + (0xFF << 24);
+//				}
+//			}
 		} else {
 			if (world != null) {
 				world.render();
@@ -378,12 +372,15 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	public void showGui(Gui gui) {
+		if (this.gui != null && this.gui.pausesGame()) {
+			return;
+		}
 		if(this.gui != null) {
 			getInputHandler().removeListener(this.gui);
 		}
 		this.gui = null;
 		this.gui = gui;
-		getInputHandler().addListener(this.gui);
+		getInputHandler().addListener(this.gui, true);
 	}
 
 	public void hideGui(Gui gui) {

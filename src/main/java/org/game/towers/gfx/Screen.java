@@ -79,6 +79,12 @@ public class Screen {
 		}
 	}
 
+	public void fill(int color) {
+		for (int i = 0; i < getPixels().length; i++) {
+			getPixels()[i] = color;
+		}
+	}
+
 //	public void render(int xPos, int yPos, int tile, int color) {
 //		render(xPos, yPos, tile, color, 0x00, 1);
 //	}

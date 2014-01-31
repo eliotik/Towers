@@ -67,11 +67,12 @@ public class ChooseList extends GuiElement implements GameActionListener {
 			selectedEntry--;
 		}
 		if (selectedEntry < 0) {
-			selectedEntry = 0;
-		}
-		if (selectedEntry >= options.size()) {
 			selectedEntry = options.size() - 1;
 		}
+		if (selectedEntry >= options.size()) {
+			selectedEntry = 0;
+		}
+
 		if (event.key.id == input.action.id
 				&& event.type == InputEventType.PRESSED) {
 			parent.guiActionPerformed(id, selectedEntry);

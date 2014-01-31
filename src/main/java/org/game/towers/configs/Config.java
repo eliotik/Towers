@@ -1,5 +1,5 @@
-package org.game.towers.configs;
 
+package org.game.towers.configs;
 import java.awt.Dimension;
 import java.io.File;
 
@@ -43,6 +43,7 @@ public class Config {
 	public static final boolean LEVEL_SHOW_IDS = false;
 	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
 	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
+	public static final int LEVEL_WAVE_TIMEOUT = 10000;
 
 	public static final String TILE_GRASS = "GRASS";
 	public static final String TILE_SAND = "SAND";

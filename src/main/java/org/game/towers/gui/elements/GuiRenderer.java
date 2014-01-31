@@ -1,5 +1,6 @@
 package org.game.towers.gui.elements;
 
+import org.game.towers.game.Game;
 import org.game.towers.gfx.sprites.SpriteSheet;
 import org.game.towers.gui.Gui;
 
@@ -18,7 +19,7 @@ public class GuiRenderer {
 		if (sheet == null) {
 			return;
 		}
-		
+
 		int[] colors = new int[6 * 6 * 6];
 		int index = 0;
 		for (int r = 0; r < 6; r++) {
@@ -61,14 +62,14 @@ public class GuiRenderer {
 				if (col < 255) {
 					for (int yScale = 0; yScale < scale; yScale++) {
 						if (yPixel + yScale < 0
-								|| yPixel + yScale >= gui.height)
+								|| yPixel + yScale >= Game.instance.getScreen().getHeight())
 							continue;
 						for (int xScale = 0; xScale < scale; xScale++) {
 							if (xPixel + xScale < 0
-									|| xPixel + xScale >= gui.width)
+									|| xPixel + xScale >= Game.instance.getScreen().getWidth())
 								continue;
-							gui.pixels[(xPixel + xScale) + (yPixel + yScale)
-									* gui.width] = colors[col];
+							Game.instance.getScreen().getPixels()[(xPixel + xScale) + (yPixel + yScale)
+									* Game.instance.getScreen().getWidth()] = colors[col];
 						}
 					}
 				}

@@ -12,13 +12,14 @@ import java.awt.Rectangle;
 import java.util.*;
 
 public class TowerTypesCollection {
-	
+
 	private static ArrayList<TowerType> items = new ArrayList<TowerType>();
 
     public static void load() {
+    	items = new ArrayList<TowerType>();
         XmlReader.getStreamFromFile(Config.TOWERS_FILE);
         NodeList listOfElements = XmlReader.read(Config.TOWER_NODE_NAME);
-        
+
         for( int j=0; j < listOfElements.getLength(); ++j ) {
             Node firstNode=listOfElements.item(j);
             if( firstNode.getNodeType() == Node.ELEMENT_NODE ) {
@@ -26,37 +27,37 @@ public class TowerTypesCollection {
                 TowerType item = new TowerType(Game.instance.getWorld().getLevel());
 
                 item.setId(elemj.getAttribute("id").toString());
-                
+
                 item.setTypeName(elemj.getAttribute("name").toString());
                 item.setType(elemj.getAttribute("type").toString());
-                
+
                 item.setTileX(Integer.parseInt(elemj.getAttribute("tile_x").toString()));
                 item.setTileY(Integer.parseInt(elemj.getAttribute("tile_y").toString()));
-                
+
                 item.setHealth(Integer.parseInt(elemj.getAttribute("health").toString()));
                 item.setArmour(Integer.parseInt(elemj.getAttribute("armour").toString()));
                 item.setSpeed(Double.parseDouble(elemj.getAttribute("speed").toString()));
                 item.setDamage(Integer.parseInt(elemj.getAttribute("damage").toString()));
-                
+
                 item.setGeo(new Rectangle(
                         0,
                         0,
-                		Integer.parseInt(elemj.getAttribute("width").toString()), 
+                		Integer.parseInt(elemj.getAttribute("width").toString()),
                 		Integer.parseInt(elemj.getAttribute("height").toString())
             		)
                 );
-                
+
                 item.setRadius(Integer.parseInt(elemj.getAttribute("radius").toString()));
-                
+
                 item.setColor(
             		Colors.get(
-        				Integer.parseInt(elemj.getAttribute("color_1").toString()), 
-        				Integer.parseInt(elemj.getAttribute("color_2").toString()), 
-        				Integer.parseInt(elemj.getAttribute("color_3").toString()), 
+        				Integer.parseInt(elemj.getAttribute("color_1").toString()),
+        				Integer.parseInt(elemj.getAttribute("color_2").toString()),
+        				Integer.parseInt(elemj.getAttribute("color_3").toString()),
         				Integer.parseInt(elemj.getAttribute("color_4").toString())
     				)
-				);                
-                
+				);
+
                 getItems().add(item);
             }
         }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.game.towers.game.Game;
+import org.game.towers.gui.Gui;
 
 public class InputHandler implements KeyListener {
 
@@ -43,8 +44,7 @@ public class InputHandler implements KeyListener {
 			if (keys[j].gotPressed()) {
 				for (int i = 0; i < listeners.size(); i++) {
 					if(!newListeners.contains(listeners.get(i))) {
-					listeners.get(i).actionPerformed(
-							new InputEvent(keys[j], InputEventType.PRESSED));
+						listeners.get(i).actionPerformed(new InputEvent(keys[j], InputEventType.PRESSED));
 					} else {
 						newListeners.remove(listeners.get(i));
 					}
@@ -145,8 +145,9 @@ public class InputHandler implements KeyListener {
 	}
 
 	public void addListener(GameActionListener listener) {
-		newListeners.add(listener);
-		listeners.add(listener);
+		addListener(listener, false);
+//		newListeners.add(listener);
+//		listeners.add(listener);
 	}
 
 	public void removeListener(GameActionListener listener) {
@@ -155,5 +156,12 @@ public class InputHandler implements KeyListener {
 
 	public boolean isKeyPressed(Key key) {
 		return key.isPressed();
+	}
+
+	public void addListener(GameActionListener listener, boolean onlyListeners) {
+		if (!onlyListeners) {
+			newListeners.add(listener);
+		}
+		listeners.add(listener);
 	}
 }
