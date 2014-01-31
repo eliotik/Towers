@@ -6,19 +6,16 @@ import org.game.towers.geo.Coordinates;
 //import org.game.towers.grid.Cell;
 //import org.game.towers.level.Construction;
 import org.game.towers.level.Level;
-import org.game.towers.units.Unit;
-import org.hamcrest.Matchers;
 
 import java.awt.*;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
 
-import static ch.lambdaj.Lambda.*;
-
 public class PathWorker {
 
     private boolean isAvailable = true;
+    private List<Coordinates> wayList = new ArrayList<Coordinates>();
 
     public boolean pathCheck() {
         return isAvailable;
@@ -177,42 +174,42 @@ public class PathWorker {
             case 1:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX() + Config.BOX_SIZE, barrier.getGeo().getTopRight().getY() - Config.BOX_SIZE);
                 secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomLeft().getX() - Config.BOX_SIZE, barrier.getGeo().getBottomLeft().getY() + Config.BOX_SIZE);
-                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                coordinate = potentialWayHandler(x, y, firstPotentialPoint, secondPotentialPoint);
                 break;
             case 2:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX() + Config.BOX_SIZE, barrier.getGeo().getTopRight().getY() - Config.BOX_SIZE);
                 secondPotentialPoint = new Coordinates(barrier.getGeo().getTopLeft().getX() - Config.BOX_SIZE, barrier.getGeo().getTopLeft().getY() - Config.BOX_SIZE);
-                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                coordinate = potentialWayHandler(x, y, firstPotentialPoint, secondPotentialPoint);
                 break;
             case 3:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getTopLeft().getX() - Config.BOX_SIZE, barrier.getGeo().getTopLeft().getY() - Config.BOX_SIZE);
                 secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomRight().getX() + Config.BOX_SIZE, barrier.getGeo().getBottomRight().getY() + Config.BOX_SIZE);
-                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                coordinate = potentialWayHandler(x, y, firstPotentialPoint, secondPotentialPoint);
                 break;
             case 4:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX() + Config.BOX_SIZE, barrier.getGeo().getTopRight().getY() - Config.BOX_SIZE);
                 secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomRight().getX() + Config.BOX_SIZE, barrier.getGeo().getBottomRight().getY() + Config.BOX_SIZE);
-                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                coordinate = potentialWayHandler(x, y, firstPotentialPoint, secondPotentialPoint);
                 break;
             case 5:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX() + Config.BOX_SIZE, barrier.getGeo().getTopRight().getY() - Config.BOX_SIZE);
                 secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomLeft().getX() - Config.BOX_SIZE, barrier.getGeo().getBottomLeft().getY() + Config.BOX_SIZE);
-                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                coordinate = potentialWayHandler(x, y, firstPotentialPoint, secondPotentialPoint);
                 break;
             case 6:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getBottomRight().getX() + Config.BOX_SIZE, barrier.getGeo().getBottomRight().getY() + Config.BOX_SIZE);
                 secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomLeft().getX() - Config.BOX_SIZE, barrier.getGeo().getBottomLeft().getY() + Config.BOX_SIZE);
-                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                coordinate = potentialWayHandler(x, y, firstPotentialPoint, secondPotentialPoint);
                 break;
             case 7:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getTopLeft().getX() - Config.BOX_SIZE, barrier.getGeo().getTopLeft().getY() + Config.BOX_SIZE);
                 secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomRight().getX() + Config.BOX_SIZE, barrier.getGeo().getBottomRight().getY() + Config.BOX_SIZE);
-                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                coordinate = potentialWayHandler(x, y, firstPotentialPoint, secondPotentialPoint);
                 break;
             case 8:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getTopLeft().getX() - Config.BOX_SIZE, barrier.getGeo().getTopLeft().getY() - Config.BOX_SIZE);
                 secondPotentialPoint = new Coordinates(barrier.getGeo().getBottomLeft().getX() - Config.BOX_SIZE, barrier.getGeo().getBottomLeft().getY() + Config.BOX_SIZE);
-                coordinate =  getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                coordinate = potentialWayHandler(x, y, firstPotentialPoint, secondPotentialPoint);
                 break;
         }
         return coordinate;
@@ -224,10 +221,41 @@ public class PathWorker {
         Random rand = new Random();
         int n = (int)(rand.nextInt(10)*(r1/r2));
 
-//        if (n < 5) {
+        if (n < 5) {
             return firstPotentialPoint;
-//        }
-//        return secondPotentialPoint;
+        }
+        return secondPotentialPoint;
+    }
+
+    private Coordinates checkProbabilisticWay(int x, int y, Coordinates firstPotentialPoint, Coordinates secondPotentialPoint) {
+        Coordinates lastPoint = wayList.get(wayList.size() - 1);
+
+        if (lastPoint.equals(firstPotentialPoint))
+            return firstPotentialPoint;
+
+        if (lastPoint.equals(secondPotentialPoint))
+            return secondPotentialPoint;
+
+
+        System.out.println("Method 'checkProbabilisticWay()' returns null");
+        return null;
+
+    }
+
+    private Coordinates potentialWayHandler(int x, int y, Coordinates firstPotentialPoint, Coordinates secondPotentialPoint) {
+        Coordinates coordinate = null;
+        if (wayList.isEmpty()) {
+            coordinate = getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+            wayList.add(coordinate);
+        } else {
+            coordinate = checkProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+            if (coordinate == null) {
+                coordinate = getProbabilisticWay(x, y, firstPotentialPoint, secondPotentialPoint);
+                wayList.add(coordinate);
+            }
+        }
+
+        return coordinate;
     }
 
     private int doShift(int dimension1, int dimension2) {
@@ -277,8 +305,7 @@ public class PathWorker {
     public void nextCoordinate(int x, int y, Point point) {
         int finishX = Level.Portals.getExit().getX() + Config.BOX_SIZE;
         int finishY = Level.Portals.getExit().getY();
-        System.out.println("finish x= " + finishX + "finish y= " + finishY);
-        System.out.println("Config.BOX_SIZE= " + Config.BOX_SIZE);
+        System.out.println("wayList.size="+wayList.size());
         int dx, dy;
 //        Level.TileMap barrier = getBarrier(x*Config.BOX_SIZE, finishX*Config.BOX_SIZE, y*Config.BOX_SIZE, finishY*Config.BOX_SIZE);
         Level.TileMap barrier = getBarrier(x, finishX, y, finishY);
