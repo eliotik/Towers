@@ -198,7 +198,8 @@ public class Level implements NBTCapable, GameActionListener {
 						tiles.put(x + y * width, new TileMap(tId, new Geo(new Coordinates(x * Config.BOX_SIZE, y * Config.BOX_SIZE), Config.BOX_SIZE, Config.BOX_SIZE)));
                         String key = "x:"+(x*Config.BOX_SIZE) +",y:"+ (y*Config.BOX_SIZE) +",xb:"+((x*Config.BOX_SIZE)+Config.BOX_SIZE)+",yb"+((y*Config.BOX_SIZE)+Config.BOX_SIZE);
 //                        System.out.println("w:"+(width*Config.BOX_SIZE)+", h:"+(height*Config.BOX_SIZE)+", "+key);
-                        if (!blocks.containsKey(key)) {
+//                        if (!blocks.containsKey(key)) {
+                        if (!blocks.containsKey(key) && t.isSolid()) {
                             blocks.put(key, new TileMap(tId, new Geo(new Coordinates(x * Config.BOX_SIZE, y * Config.BOX_SIZE), Config.BOX_SIZE, Config.BOX_SIZE)));
                         }
 						//tiles[x + y * width] = tId;//new tileMap(tId, new Geo(new Coordinates(x, y), Config.BOX_SIZE, Config.BOX_SIZE));
@@ -206,7 +207,9 @@ public class Level implements NBTCapable, GameActionListener {
 							Portals.setEntrance(t, x, y);
 						}
 						if (tId == Portals.EXIT) {
-							Portals.setExit(t, x, y);
+                            System.out.println("x = " + x +", y = "+y);
+                            Portals.setExit(t, x, y);
+                            System.out.println("x = " + Portals.getExit().getX() +", y = "+Portals.getExit().getX());
 						}
 						break tileCheck;
 					}
