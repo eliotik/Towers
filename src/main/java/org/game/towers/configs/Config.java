@@ -23,6 +23,7 @@ public class Config {
 	public static final String SPRITESHEET_FILE = "spritesheets/tiles.png";
 	public static final String SPRITESHEET_NPCS_FILE = "spritesheets/npcs.png";
 	public static final String SPRITESHEET_PORTALS_FILE = "spritesheets/portals.png";
+	public static final String SPRITESHEET_GUI_FILE = "spritesheets/gui.png";
 	public static final String FONT_FILE = "font.png";
 
 	public static final String NPC_NODE_NAME = "npc";
@@ -52,4 +53,5 @@ public class Config {
 	public static final String TILE_VOID = "VOID";
 	public static final String TILE_ENTRANCE = "ENTRANCE";
 	public static final String TILE_EXIT = "EXIT";
+	public static final String TILE_NPC_BULB = "NPC_BULB";
 }

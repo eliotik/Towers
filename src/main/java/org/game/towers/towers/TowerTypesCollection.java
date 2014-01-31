@@ -49,15 +49,6 @@ public class TowerTypesCollection {
 
                 item.setRadius(Integer.parseInt(elemj.getAttribute("radius").toString()));
 
-                item.setColor(
-            		Colors.get(
-        				Integer.parseInt(elemj.getAttribute("color_1").toString()),
-        				Integer.parseInt(elemj.getAttribute("color_2").toString()),
-        				Integer.parseInt(elemj.getAttribute("color_3").toString()),
-        				Integer.parseInt(elemj.getAttribute("color_4").toString())
-    				)
-				);
-
                 getItems().add(item);
             }
         }

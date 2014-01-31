@@ -33,11 +33,7 @@ public class SpriteSheet {
 		setWidth(image.getWidth());
 		setHeight(image.getHeight());
 
-		pixels = image.getRGB(0, 0, getWidth(), getHeight(), null, 0, getWidth());
-
-//		for (int i = 0; i < pixels.length; i++) {
-//			pixels[i] = (pixels[i] & 0xff) / 64;
-//		}
+		setPixels(image.getRGB(0, 0, getWidth(), getHeight(), null, 0, getWidth()));
 	}
 
 	public int getWidth() {
@@ -66,5 +62,9 @@ public class SpriteSheet {
 
 	public int[] getPixels() {
 		return pixels;
+	}
+
+	public void setPixels(int[] pixels) {
+		this.pixels = pixels;
 	}
 }

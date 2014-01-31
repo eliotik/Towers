@@ -68,16 +68,14 @@ public class Level implements GameActionListener {
 
 		switch(getWave()) {
 			case 1:
-				NpcType tank1 = UnitFactory.getNpc(Npcs.TANK);
-				if (tank1 != null) {
-					tank1.setLevel(this);
+				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
+				if (bulb != null) {
+					bulb.setLevel(this);
 					System.out.println("x: "+Portals.getEntrance().getCoordinates().getX()+", y: "+Portals.getEntrance().getCoordinates().getY());
-//					tank1.setX(Portals.getEntrance().getCoordinates().getX());
-//					tank1.setY(Portals.getEntrance().getCoordinates().getY());
-					tank1.setX(Config.BOX_SIZE);
-					tank1.setY(Config.BOX_SIZE*10);
+					bulb.setX(Portals.getEntrance().getCoordinates().getX());
+					bulb.setY(Portals.getEntrance().getCoordinates().getY());
 
-					addNpc(tank1);
+					addNpc(bulb);
 				}
 		}
 	}

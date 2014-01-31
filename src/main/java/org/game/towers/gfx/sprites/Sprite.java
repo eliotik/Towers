@@ -1,9 +1,12 @@
 package org.game.towers.gfx.sprites;
 
+import java.io.Serializable;
+
 import org.game.towers.configs.Config;
 
-public class Sprite {
+public class Sprite implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private int x;
 	private int y;

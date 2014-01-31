@@ -5,6 +5,8 @@ import java.awt.Point;
 
 import org.game.towers.level.Level;
 import org.game.towers.level.tiles.Tile;
+import org.game.towers.npcs.NpcType;
+import org.game.towers.units.Unit;
 
 public class Screen {
 
@@ -185,5 +187,60 @@ public class Screen {
 
 	public void setPixels(int[] pixels) {
 		this.pixels = pixels;
+	}
+
+	public void renderUnit(int xOrig, int yOrig, Unit unit) {
+		int xp = xOrig - getxOffset();
+		int yp = yOrig - getyOffset();
+		for (int y = 0; y < unit.getCurrentSprite().getHeight(); y++) {
+			int yt = y + yp;
+			for (int x = 0; x < unit.getCurrentSprite().getWidth(); x++) {
+				int xt = x + xp;
+				if (0 - unit.getCurrentSprite().getWidth() > xt || xt >= getWidth()
+						|| 0 - unit.getCurrentSprite().getHeight() > yt
+						|| yt >= getHeight()) {
+					break;
+				}
+				if (xt < 0) {
+					xt = 0;
+				}
+
+				if (yt < 0) {
+					yt = 0;
+				}
+				int colour = unit.getCurrentSprite().getPixels()[x + y
+						* unit.getCurrentSprite().getWidth()];
+				if (colour != 0xFFFF00FF && colour != 0xFF800080) {
+					getPixels()[xt + yt * getWidth()] = colour;
+				}
+			}
+		}
+
+		if (unit instanceof NpcType) {
+			yp -= 8;
+			for (int y = 0; y < ((NpcType) unit).getCurrentHealthSprite().getHeight(); y++) {
+				int yt = y + yp;
+				for (int x = 0; x < ((NpcType) unit).getCurrentHealthSprite().getWidth(); x++) {
+					int xt = x + xp;
+					if (0 - ((NpcType) unit).getCurrentHealthSprite().getWidth() > xt
+							|| xt >= getWidth()
+							|| 0 - ((NpcType) unit).getCurrentHealthSprite().getHeight() > yt
+							|| yt >= getHeight()) {
+						break;
+					}
+					if (xt < 0) {
+						xt = 0;
+					}
+
+					if (yt < 0) {
+						yt = 0;
+					}
+					int colour = ((NpcType) unit).getCurrentHealthSprite().getPixels()[x + y * ((NpcType) unit).getCurrentHealthSprite().getWidth()];
+					if (colour != 0xFFFF00FF && colour != 0xFF800080) {
+						getPixels()[xt + yt * getWidth()] = colour;
+					}
+				}
+			}
+		}
 	}
 }

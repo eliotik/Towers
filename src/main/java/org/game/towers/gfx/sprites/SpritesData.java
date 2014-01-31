@@ -6,7 +6,8 @@ public class SpritesData {
 	private static SpriteSheet[] spriteSheets = {
 			new BlockSpriteSheet(Config.SPRITESHEET_FILE),
 			new BlockSpriteSheet(Config.SPRITESHEET_PORTALS_FILE),
-			new NpcSpriteSheet(Config.SPRITESHEET_NPCS_FILE) };
+			new NpcSpriteSheet(Config.SPRITESHEET_NPCS_FILE),
+			new NpcSpriteSheet(Config.SPRITESHEET_GUI_FILE) };
 
 	public static Sprite VOID = new Sprite(0x000000);
 	public static Sprite GRASS_0 = new Sprite("GRASS", 0, 0, 16, 16, "BLOCK");
@@ -31,6 +32,26 @@ public class SpritesData {
 	public static Sprite EXIT_5 = new Sprite("EXIT", 5, 1, 16, 16, "PORTAL");
 	public static Sprite EXIT_6 = new Sprite("EXIT", 6, 1, 16, 16, "PORTAL");
 
+	public static Sprite NPC_BULB_0 = new Sprite("NPC_BULB", 0, 0, 16, 16, "NPC");
+	public static Sprite NPC_BULB_1 = new Sprite("NPC_BULB", 1, 0, 16, 16, "NPC");
+	public static Sprite NPC_BULB_2 = new Sprite("NPC_BULB", 2, 0, 16, 16, "NPC");
+	public static Sprite NPC_BULB_3 = new Sprite("NPC_BULB", 3, 0, 16, 16, "NPC");
+	public static Sprite NPC_BULB_4 = new Sprite("NPC_BULB", 4, 0, 16, 16, "NPC");
+	public static Sprite NPC_BULB_5 = new Sprite("NPC_BULB", 5, 0, 16, 16, "NPC");
+	public static Sprite NPC_BULB_6 = new Sprite("NPC_BULB", 6, 0, 16, 16, "NPC");
+
+	public static Sprite HEALTH_MAX  = new Sprite("HEALTH_MAX", 0, 0, 16, 16, "GUI");
+	public static Sprite HEALTH_90   = new Sprite("HEALTH_90", 1, 0, 16, 16, "GUI");
+	public static Sprite HEALTH_80   = new Sprite("HEALTH_80", 2, 0, 16, 16, "GUI");
+	public static Sprite HEALTH_70   = new Sprite("HEALTH_70", 3, 0, 16, 16, "GUI");
+	public static Sprite HEALTH_60   = new Sprite("HEALTH_60", 4, 0, 16, 16, "GUI");
+	public static Sprite HEALTH_50   = new Sprite("HEALTH_50", 5, 0, 16, 16, "GUI");
+	public static Sprite HEALTH_40   = new Sprite("HEALTH_40", 6, 0, 16, 16, "GUI");
+	public static Sprite HEALTH_30   = new Sprite("HEALTH_30", 7, 0, 16, 16, "GUI");
+	public static Sprite HEALTH_20   = new Sprite("HEALTH_20", 8, 0, 16, 16, "GUI");
+	public static Sprite HEALTH_10   = new Sprite("HEALTH_10", 9, 0, 16, 16, "GUI");
+	public static Sprite HEALTH_DEAD = new Sprite("HEALTH_DEAD", 10, 0, 16, 16, "GUI");
+
 	public static SpriteSheet[] getSpriteSheets() {
 		return spriteSheets;
 	}
@@ -41,13 +62,14 @@ public class SpritesData {
 
 	public static SpriteSheet getSpriteSheet(String type) {
 		switch (type) {
-		case "BLOCK":
-			return getSpriteSheets()[0];
 		case "PORTAL":
 			return getSpriteSheets()[1];
 		case "NPC":
 			return getSpriteSheets()[2];
+		case "GUI":
+			return getSpriteSheets()[3];
 		default:
+		case "BLOCK":
 			return getSpriteSheets()[0];
 		}
 	}

@@ -4,6 +4,8 @@ import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.game.Game.DebugLevel;
 import org.game.towers.gfx.Colors;
+import org.game.towers.gfx.sprites.Sprite;
+import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -48,14 +50,7 @@ public class NpcTypesCollection {
             		)
                 );
 
-                item.setColor(
-            		Colors.get(
-        				Integer.parseInt(elemj.getAttribute("color_1").toString()),
-        				Integer.parseInt(elemj.getAttribute("color_2").toString()),
-        				Integer.parseInt(elemj.getAttribute("color_3").toString()),
-        				Integer.parseInt(elemj.getAttribute("color_4").toString())
-    				)
-				);
+                item.setSprites(getSprites(item.getId()));
 
                 getItems().add(item);
                 Game.debug(DebugLevel.INFO, "Added NPC type: " + item.getId());
@@ -63,6 +58,25 @@ public class NpcTypesCollection {
         }
         Game.debug(DebugLevel.INFO, "Loaded NPC types: " + getItems().size());
     }
+
+	private static List<Sprite> getSprites(String id) {
+		switch(id) {
+		case "bulb": return getBulbSprites();
+		}
+		return new ArrayList<Sprite>();
+	}
+
+	private static List<Sprite> getBulbSprites() {
+		List<Sprite> sprites = new ArrayList<Sprite>();
+		sprites.add(SpritesData.NPC_BULB_0);
+		sprites.add(SpritesData.NPC_BULB_1);
+		sprites.add(SpritesData.NPC_BULB_2);
+		sprites.add(SpritesData.NPC_BULB_3);
+		sprites.add(SpritesData.NPC_BULB_4);
+		sprites.add(SpritesData.NPC_BULB_5);
+		sprites.add(SpritesData.NPC_BULB_6);
+		return sprites;
+	}
 
 	public static ArrayList<NpcType> getItems() {
 		return items;

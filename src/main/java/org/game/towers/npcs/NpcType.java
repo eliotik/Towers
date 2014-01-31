@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import org.game.towers.game.Game;
 import org.game.towers.gfx.Screen;
+import org.game.towers.gfx.sprites.Sprite;
+import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.units.Unit;
 
 /**
@@ -78,27 +80,6 @@ public class NpcType extends Unit {
 
 	@Override
 	public void render(Screen screen) {
-////		Geo geo = getLevel().getTileGeo((int)(getX()/Config.BOX_SIZE), (int)(getY()/Config.BOX_SIZE));
-////		System.out.println(geo.getTopLeft().getX()+"-"+geo.getTopLeft().getY()+'='+getLevel().getTile((int)(getX()/Config.BOX_SIZE), (int)(getY()/Config.BOX_SIZE)).getId());
-//		int walkingSpeed = 4;
-//		int flip = (getMovingDirection() - 1) % 2;
-//		int shift = ((getNumSteps() >> walkingSpeed) & 1);
-//		int xTile = getTileX() + shift;
-//
-//
-//		if (getMovingDirection() == 1) {
-//			xTile += 1 - shift * 2;
-//			flip = (getMovingDirection() - 1) % 2;
-//		} else if (getMovingDirection() > 1) {
-//			xTile += 2;
-//			flip = (getMovingDirection() - 1) % 2;
-//		}
-////		System.out.println("dir = " +getMovingDirection()+ ", steps = "+ getNumSteps() + ", tile = "+ xTile+", flip = "+flip+", shift = "+shift);
-////		int modifier = 8 * getScale();
-////		int xOffset = (int) (getX() - modifier / 2);
-////		int yOffset = (int) (getY() - modifier / 2);
-
-//		screen.render((int) getX(), (int) getY(), xTile + getTileY() * 32, getColor(), flip, getScale());
 		screen.renderUnit((int) getX(), (int) getY(), this);
 	}
 
@@ -159,5 +140,40 @@ public class NpcType extends Unit {
 		}
 
 		return false;
+	}
+
+	public Sprite getCurrentHealthSprite() {
+		int healthPercent = (int) (((double) getHealth() / (double) getMaxHealth()) * (double) 100);
+		if (healthPercent >= 100) {
+			return SpritesData.HEALTH_MAX;
+		}
+		if (healthPercent >= 90) {
+			return SpritesData.HEALTH_90;
+		}
+		if (healthPercent >= 80) {
+			return SpritesData.HEALTH_80;
+		}
+		if (healthPercent >= 70) {
+			return SpritesData.HEALTH_70;
+		}
+		if (healthPercent >= 60) {
+			return SpritesData.HEALTH_60;
+		}
+		if (healthPercent >= 50) {
+			return SpritesData.HEALTH_50;
+		}
+		if (healthPercent >= 40) {
+			return SpritesData.HEALTH_40;
+		}
+		if (healthPercent >= 30) {
+			return SpritesData.HEALTH_30;
+		}
+		if (healthPercent >= 20) {
+			return SpritesData.HEALTH_20;
+		}
+		if (healthPercent >= 10) {
+			return SpritesData.HEALTH_10;
+		}
+		return SpritesData.HEALTH_DEAD;
 	}
 }
