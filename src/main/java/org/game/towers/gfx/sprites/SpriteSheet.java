@@ -1,4 +1,4 @@
-package org.game.towers.gfx;
+package org.game.towers.gfx.sprites;
 
 import static java.lang.String.format;
 
@@ -13,9 +13,9 @@ public class SpriteSheet {
 	private String file;
 	private int width;
 	private int height;
-	
+
 	private int[] pixels;
-	
+
 	public SpriteSheet(String initFile) {
 		BufferedImage image = null;
 		String spriteFilePath = format("%s%s", Config.IMAGES_FILE_PATH, initFile);
@@ -24,20 +24,16 @@ public class SpriteSheet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (image == null) {
 			return;
 		}
-		
+
 		setFile(initFile);
 		setWidth(image.getWidth());
 		setHeight(image.getHeight());
-		
-		pixels = image.getRGB(0, 0, getWidth(), getHeight(), null, 0, getWidth());
-		
-		for (int i = 0; i < pixels.length; i++) {
-			pixels[i] = (pixels[i] & 0xff) / 64;
-		}
+
+		setPixels(image.getRGB(0, 0, getWidth(), getHeight(), null, 0, getWidth()));
 	}
 
 	public int getWidth() {
@@ -66,5 +62,9 @@ public class SpriteSheet {
 
 	public int[] getPixels() {
 		return pixels;
+	}
+
+	public void setPixels(int[] pixels) {
+		this.pixels = pixels;
 	}
 }

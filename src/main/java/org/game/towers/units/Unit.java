@@ -1,12 +1,14 @@
 /**
- * 
+ *
  */
 package org.game.towers.units;
 
 import java.awt.Rectangle;
 import java.io.Serializable;
+import java.util.List;
 
 import org.game.towers.gfx.Screen;
+import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.interfaces.IUnit;
 import org.game.towers.level.Level;
 import org.game.towers.level.tiles.Tile;
@@ -21,6 +23,7 @@ public abstract class Unit implements IUnit, Serializable {
 	private String id;
 	private int armour;
 	private int health;
+	private int maxHealth;
 	private int damage;
 	private double speed;
 	private String type;
@@ -35,37 +38,34 @@ public abstract class Unit implements IUnit, Serializable {
 	private boolean isMoving;
 	private int movingDirection = 1;
 	private int scale = 1;
-	private int color;
+	private List<Sprite> sprites;
+	private int spriteIndex = 0;
+	private boolean pauseAnimation = false;
 
-	public Unit() {
-	}
-	
-//	public Unit(Level level) {
-//		init(level);
-//	}
-//	
-//	public final void init(Level level) {
-//		this.setLevel(level);
-//	}
-	
+	public Unit() {}
+
 	public abstract void tick();
-	
+
 	public abstract void render(Screen screen);
-	
+
 	public abstract boolean hasCollided(int xa, int ya);
-	
+
+	public Sprite getCurrentSprite() {
+		return getSprites().get(getSpriteIndex());
+	}
+
 	protected boolean isSolidTile(int xa, int ya, int x, int y) {
-		if (level == null) {
+		if (getLevel() == null) {
 			return false;
 		}
-		Tile lastTile = level.getTile((int)(this.x + x) >> 3, (int)(this.y + y) >> 3);
-		Tile newTile = level.getTile((int)(this.x + x + xa) >> 3, (int)(this.y + y + ya) >> 3);
+		Tile lastTile = getLevel().getTile((int)(getX() + x) >> 4, (int)(getY() + y) >> 4);
+		Tile newTile = getLevel().getTile((int)(getX() + x + xa) >> 4, (int)(getY() + y + ya) >> 4);
 		if (!lastTile.equals(newTile) && newTile.isSolid()) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.game.towers.interfaces.IUnit#setArmour(int)
 	 */
@@ -122,7 +122,7 @@ public abstract class Unit implements IUnit, Serializable {
 	 */
 	@Override
 	public IUnit setSpeed(double speed) {
-		this.speed = speed;		
+		this.speed = speed;
 		return this;
 	}
 
@@ -208,13 +208,13 @@ public abstract class Unit implements IUnit, Serializable {
 	public int getTileX() {
 		return tileX;
 	}
-	
+
 	@Override
 	public IUnit setTileY(int tileY) {
 		this.tileY = tileY;
 		return this;
 	}
-	
+
 	@Override
 	public int getTileY() {
 		return tileY;
@@ -285,11 +285,39 @@ public abstract class Unit implements IUnit, Serializable {
 		this.level = level;
 	}
 
-	public int getColor() {
-		return color;
+	public int getMaxHealth() {
+		return maxHealth;
 	}
 
-	public void setColor(int color) {
-		this.color = color;
+	public IUnit setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
+		return this;
+	}
+
+	public List<Sprite> getSprites() {
+		return sprites;
+	}
+
+	public void setSprites(List<Sprite> sprites) {
+		this.sprites = sprites;
+	}
+
+	public int getSpriteIndex() {
+		return spriteIndex;
+	}
+
+	public void setSpriteIndex(int spriteIndex) {
+		this.spriteIndex = spriteIndex;
+	}
+
+	public boolean isPauseAnimation() {
+		return pauseAnimation;
+	}
+
+	public void setPauseAnimation(boolean pauseAnimation) {
+		this.pauseAnimation = pauseAnimation;
+		if (pauseAnimation) {
+			spriteIndex = 0;
+		}
 	}
 }

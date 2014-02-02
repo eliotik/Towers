@@ -6,59 +6,49 @@ import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
 import org.game.towers.geo.Geo;
 import org.game.towers.gfx.Camera;
-import org.game.towers.gfx.Colors;
-import org.game.towers.gfx.Font;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler.GameActionListener;
 import org.game.towers.handlers.InputHandler.InputEvent;
 import org.game.towers.handlers.InputHandler.InputEventType;
 import org.game.towers.level.tiles.Tile;
+import org.game.towers.level.tiles.TileMap;
 import org.game.towers.level.tiles.TileTypes;
 import org.game.towers.npcs.NpcType;
 import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
-import org.game.towers.workers.NBTCapable;
-import org.game.towers.workers.Tag;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class Level implements NBTCapable, GameActionListener {
+public class Level implements GameActionListener {
 
 	private String name;
-//	private byte[] tiles;
-	private HashMap<Integer, TileMap> tiles = new HashMap<Integer, TileMap>();
     private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
-	public int width;
-	public int height;
-	public int xOffset = 0;
-	public int yOffset = 0;
+	private Tile[] tiles;
+	private int width;
+	private int height;
+	private int xOffset = 0;
+	private int yOffset = 0;
 	private int wave = 1;
 	private String imagePath;
 	private BufferedImage image;
-	public List<NpcType> npcs = new ArrayList<NpcType>();
-	private Store store;
+	private volatile List<Unit> units = new ArrayList<Unit>();
+//	private Store store;
 	private Camera camera;
+	private long nextWave = System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT;
 
 	public Level(String imagePath) {
-//		if (imagePath != null) {
 			this.imagePath = imagePath;
 			loadLevelFromFile();
-			initStore();
+//			initStore();
 			initCamera();
-//		} else {
-//			width = Config.DEFAULT_LEVEL_WIDTH;
-//			height = Config.DEFAULT_LEVEL_HEIGHT;
-//			tiles = new byte[width * height];
-//			generateLevel();
-//		}
 	}
 
 	private void initCamera() {
@@ -67,364 +57,134 @@ public class Level implements NBTCapable, GameActionListener {
 		}
 	}
 
-	private void initStore() {
-		setStore(new Store());
-	}
+//	private void initStore() {
+//		setStore(new Store());
+//	}
 
 	public void generateNpcs() {
-		switch(wave) {
-			case 1:
-				NpcType tank1 = UnitFactory.getNpc(Npcs.TANK);
-				if (tank1 != null) {
-					tank1.setLevel(this);
-					tank1.setX(8);
-					tank1.setY(160-Config.BOX_SIZE);
 
-					addNpc(tank1);
+//		if (System.currentTimeMillis() < getNextWave()) return;
+//		setNextWave(System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT);
+
+		switch(getWave()) {
+			case 1:
+				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
+				if (bulb != null) {
+					bulb.setLevel(this);
+					System.out.println("x: "+Portals.getEntrance().getCoordinates().getX()+", y: "+Portals.getEntrance().getCoordinates().getY());
+					bulb.setX(Portals.getEntrance().getCoordinates().getX());
+					bulb.setY(Portals.getEntrance().getCoordinates().getY());
+
+					addNpc(bulb);
 				}
 		}
 	}
 
-	public Level(Tag tag) {
-		this.setName("LEVEL");
-		this.loadFromNBT(tag);
-	}
-
 	private void loadLevelFromFile() {
 		try {
-			image = ImageIO.read(Config.class.getResource(this.imagePath));
-			width = image.getWidth();
-			height = image.getHeight();
-			//tiles = new byte [width * height];
+			setImage(ImageIO.read(Level.class.getResource(this.imagePath)));
+			setWidth(getImage().getWidth());
+			setHeight(getImage().getHeight());
+			setTiles(new Tile[getWidth() * getHeight()]);
 			loadTiles();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public class TileMap {
-		private Geo geo;
-		private byte tileId;
-
-		public TileMap(byte tId, Geo geo) {
-			setTileId(tId);
-			setGeo(geo);
-		}
-
-		public Geo getGeo() {
-			return geo;
-		}
-
-		public void setGeo(Geo geo) {
-			this.geo = geo;
-		}
-
-		public byte getTileId() {
-			return tileId;
-		}
-
-		public void setTileId(byte id) {
-			this.tileId = id;
-		}
-
-	}
-
-	public static class Portals {
-
-		private static final byte ENTRANCE = TileTypes.ENTRANCE.getId();
-		private static final byte EXIT = TileTypes.EXIT.getId();
-
-		private static Portal entrance = new Portal();
-		private static Portal exit = new Portal();
-
-		public static class Portal {
-			private Tile tile;
-			private int x;
-			private int y;
-
-			public Tile getTile() {
-				return tile;
-			}
-
-			public void setTile(Tile tile) {
-				this.tile = tile;
-			}
-
-			public int getX() {
-				return x * Config.BOX_SIZE;
-			}
-
-			public void setX(int x) {
-				this.x = x;
-			}
-
-			public int getY() {
-				return y * Config.BOX_SIZE;
-			}
-
-			public void setY(int y) {
-				this.y = y;
+	private Tile parseTileFromColor(int color, int x, int y) {
+		for (TileTypes tt : TileTypes.types) {
+			if (tt.get().getLevelColor() == color) {
+				return tt.get(this, x, y, false);
 			}
 		}
-
-		public static Portal getEntrance() {
-			return entrance;
-		}
-
-		public static void setEntrance(Tile ent, int x, int y) {
-			entrance.setTile(ent);
-			entrance.setX(x);
-			entrance.setY(y);
-		}
-
-		public static Portal getExit() {
-			return exit;
-		}
-
-		public static void setExit(Tile ex, int x, int y) {
-			exit.setTile(ex);
-			exit.setX(x);
-			exit.setY(y);
-		}
+		return TileTypes.get("VOID").get(this, x, y, true);
 	}
 
 	private void loadTiles() {
-		int[] tileColors = image.getRGB(0, 0, width, height, null, 0, width);
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				tileCheck: for (Tile t : TileTypes.tiles) {
-					if (t != null && t.getLevelColor() == tileColors[x + y * width]) {
-						byte tId = t.getId();
-						tiles.put(x + y * width, new TileMap(tId, new Geo(new Coordinates(x * Config.BOX_SIZE, y * Config.BOX_SIZE), Config.BOX_SIZE, Config.BOX_SIZE)));
-                        String key = "x:"+(x*Config.BOX_SIZE) +",y:"+ (y*Config.BOX_SIZE) +",xb:"+((x*Config.BOX_SIZE)+Config.BOX_SIZE)+",yb"+((y*Config.BOX_SIZE)+Config.BOX_SIZE);
-//                        System.out.println("w:"+(width*Config.BOX_SIZE)+", h:"+(height*Config.BOX_SIZE)+", "+key);
-//                        if (!blocks.containsKey(key)) {
-                        if (!blocks.containsKey(key) && t.isSolid()) {
-                            blocks.put(key, new TileMap(tId, new Geo(new Coordinates(x * Config.BOX_SIZE, y * Config.BOX_SIZE), Config.BOX_SIZE, Config.BOX_SIZE)));
-                        }
-						//tiles[x + y * width] = tId;//new tileMap(tId, new Geo(new Coordinates(x, y), Config.BOX_SIZE, Config.BOX_SIZE));
-						if (tId == Portals.ENTRANCE) {
-							Portals.setEntrance(t, x, y);
-						}
-						if (tId == Portals.EXIT) {
-                            System.out.println("x = " + x +", y = "+y);
-                            Portals.setExit(t, x, y);
-                            System.out.println("x = " + Portals.getExit().getX() +", y = "+Portals.getExit().getX());
-						}
-						break tileCheck;
-					}
-				}
+		int[] tiles = new int[getWidth() * getHeight()];
+		tiles = getImage().getRGB(0, 0, getWidth(), getHeight(), null, 0, getWidth());
+		for (int y = 0; y < getHeight(); y++) {
+			for (int x = 0; x < getWidth(); x++) {
+				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
+				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
+				getTiles()[x + y * getWidth()] = tile;
+				if (!blocks.containsKey(key)) blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
 			}
 		}
-        System.out.println(blocks.size()+"=="+(Config.MAP_X_SIZE*Config.MAP_Y_SIZE));
-//		System.out.println("entrance "+Portals.getEntrance().getX() +":"+ Portals.getEntrance().getY());
-//		System.out.println("exit "+Portals.getExit().getX() +":"+ Portals.getExit().getY());
-	}
-
-	private void saveLevelToFile() {
-		try {
-			ImageIO.write(image, "png", new File(Level.class.getResource(imagePath).getFile()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Portals.setEntrance(getEntranceLocation());
+		Portals.setExit(getExitLocation());
 	}
 
 	public void alterTile(int x, int y, Tile newTile) {
-		tiles.get((byte)(x + y * width)).setTileId(newTile.getId());
-//		tiles[x + y * width] = newTile.getId();
-		image.setRGB(x, y, newTile.getLevelColor());
+		getTiles()[x + y * getWidth()] = newTile;
+		getImage().setRGB(x, y, newTile.getLevelColor());
 	}
 
-	public void setOffset(Screen screen) {
-		this.xOffset = -(screen.xOffset + screen.width / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2);
-		this.yOffset = -(screen.yOffset + screen.height / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2);
-	}
-
-//	private void generateLevel() {
-//		int entrenceY = Utils.randInt(1, Config.MAP_Y_SIZE-2);
-//		int exitY = Utils.randInt(1, Config.MAP_Y_SIZE-2);
-//		for (int y = 0; y < height; y++) {
-//			for (int x = 0; x < width; x++) {
-//				if (y == 0 ||
-//					x == Config.MAP_X_SIZE-1 ||
-//					y == Config.MAP_Y_SIZE-1 || x == 0) {
-//
-//					if ((x == 0 && y == entrenceY) ||
-//						(x == Config.MAP_X_SIZE-1 && y == exitY)) {
-//						tiles[x + y * width] = Tile.ENTRANCE.getId();
-//					} else {
-//						tiles[x + y * width] = Tile.BUSH.getId();
-//					}
-//
-//				} else {
-//					if (Utils.randInt(0, 88)==13 &&
-//						(x != 1 && y != entrenceY) &&
-//						(x != Config.MAP_X_SIZE-1 && y != exitY)) {
-//
-//						tiles[x + y * width] = Tile.STONE.getId();
-//
-//					} else {
-//						tiles[x + y * width] = Tile.GRASS.getId();
-//					}
-//				}
-////				if (x * y % 10 == 0) {
-////					tiles[x + y * width] = Tile.BUSH.getId();
-////				} else {
-////					tiles[x + y * width] = Tile.GRASS.getId();
-////				}
-//			}
-//		}
-//	}
-
-	public void renderTiles(Screen screen, int xOffset, int yOffset) {
-		if(xOffset < 0) xOffset = 0;
-		if(xOffset > ((width << 3) - screen.width)) xOffset = ((width << 3) - screen.width);
-		if(yOffset < 0) yOffset = 0;
-		if(yOffset > ((height << 3) - screen.height)) yOffset = ((height << 3) - screen.height);
-
-		screen.setOffset(xOffset, yOffset);
-		//-38, -19
-//		System.out.println("---------------------");
-//		System.out.println(screen.xOffset + screen.width / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2);
-//		System.out.println(screen.yOffset + screen.height / 2 - (Config.MAP_X_SIZE*Config.BOX_SIZE)/2);
-//		System.out.println(screen.width);
-//		System.out.println("---------------------");
-//		System.out.println(Config.REAL_SCREEN_WIDTH/Config.BOX_SIZE/2);
-//		System.out.println(Config.MAP_X_SIZE);
-//		System.out.println(-(Config.REAL_SCREEN_WIDTH / 2 - Config.MAP_X_SIZE*Config.BOX_SIZE)/Config.BOX_SIZE);
-//		System.out.println(-(Config.REAL_SCREEN_HEIGHT / 2 - Config.MAP_Y_SIZE*Config.BOX_SIZE)/Config.BOX_SIZE);
-//		screen.setOffset(
-//				this.xOffset,
-//				this.yOffset);
-
-		for(int y = 0; y < height; y++) {
-			for(int x = 0; x < width; x++) {
-				Tile tile = getTile(x,y);
-//				switch(tile.getId()) {
-//					case 4://brush
-//						tile.render(screen, this, x << 3, y << 3, (x + y % 10 > 0) ? 0x00 : 0x02);
-//						break;
-//					case 1://stone
-//						tile.render(screen, this, x << 3, y << 3, (x * y % 10 == 0) ? 0x01 : 0x02);
-//						break;
-//					default:
-						tile.render(screen, this, x << 3, y << 3);
-//						break;
-//				}
-//				if (tile.getId() == 4) {
-////				if ((x == 0 && y == 10) || (x == Config.MAP_X_SIZE-1 && y == 10)) {
-//					tile.render(screen, this, x << 3, y << 3, (x + y % 10 > 0) ? 0x00 : 0x02);
-//				} else {
-//					tile.render(screen, this, x << 3, y << 3);
-//				}
-			}
-		}
-
-		renderIds(screen);
-	}
-
-	private void renderIds(Screen screen) {
-		if (Config.LEVEL_SHOW_IDS) {
-			for (int x = 0; x < width; x++) {
-				int color = Colors.get(-1, -1, -1, 000);
-				if(x % 10 == 0 && x != 0) {
-					color = Colors.get(-1, -1, -1, 500);
-				}
-				Font.render((x%10)+"", screen, 0 + (x * 8), 0, color, 1);
-			}
-			for (int y = 0; y < height; y++) {
-				int color = Colors.get(-1, -1, -1, 000);
-				if(y % 10 == 0 && y != 0) {
-					color = Colors.get(-1, -1, -1, 500);
-				}
-				Font.render((y%10)+"", screen, 0, 0 + (y * 8), color, 1);
-			}
-		}
-	}
-
-    public HashMap<Integer, TileMap> getTiles() {
+    public Tile[] getTiles() {
         return tiles;
     }
 
-    public Tile getTile(int x, int y) {
-		if (0 > x || x >= width || 0 > y || y >= height) {
-			return TileTypes.VOID;
-		}
-		return TileTypes.tiles[tiles.get((x + y * width)).getTileId()];
+	public Tile getTile(int index) {
+		return getTiles()[index];
 	}
 
-	public Geo getTileGeo(int x, int y) {
-		if (0 > x || x >= width || 0 > y || y >= height) {
-			return null;
+    public Tile getTile(int x, int y) {
+		if (0 > x || x >= getWidth() || 0 > y || y >= getHeight()) {
+			return TileTypes.get("VOID").get(this, x, y, true);
 		}
-		return tiles.get(x + y * width).getGeo();
+		return getTiles()[x + y * getWidth()];
 	}
 
     public void tick() {
-    	for (Tile t : TileTypes.tiles) {
-    		if (t == null) {
-    			break;
-    		}
-    		t.tick();
-    	}
+		for (int i = 0; i < tiles.length; i++) {
+			Tile tile = getTile(i);
+			tile.tick();
+		}
 
-    	for (NpcType n : npcs) {
-    		n.tick();
-    	}
+//    	for (NpcType n : getNpcs()) {
+//    		n.tick();
+//    	}
+
+		synchronized (getUnits()) {
+			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
+				Unit unit = (Unit) it.next();
+				unit.tick();
+			}
+		}
 
     	if (getCamera() != null) {
     		getCamera().tick();
 	    }
 
-    	getStore().tick();
+//    	getStore().tick();
 	}
 
-    public void renderStore(Screen screen) {
-    	getStore().render(screen);
-    }
+//    public void renderStore(Screen screen) {
+//    	getStore().render(screen);
+//    }
 
-    public void renderNpcs(Screen screen) {
-    	for (NpcType n : npcs) {
-    		n.render(screen);
-    	}
-    }
-
-	public int getWidthInTiles() {
-		return width;
+	public Coordinates getEntranceLocation() {
+		return getTileLocation(Config.TILE_ENTRANCE);
 	}
 
-	public int getHeightInTiles() {
-		return height;
+	public Coordinates getExitLocation() {
+		return getTileLocation(Config.TILE_EXIT);
 	}
 
-	public HashMap<Integer, TileMap> getTileIdArray() {
-		return tiles;
-	}
-
-	@Override
-	public void loadFromNBT(Tag tag) {
-		this.name = tag.findTagByName("NAME").getValue().toString();
-		this.width = (int) tag.findTagByName("WIDTH").getValue();
-		this.height = (int) tag.findTagByName("HEIGHT").getValue();
-		this.tiles = (HashMap<Integer, TileMap>) tag.findTagByName("TILES").getValue();
-		// this.meta = (byte[]) tag.findTagByName("META").getValue();
-		// this.overlay = (byte[]) tag.findTagByName("OVERLAY").getValue();
-		if (tiles.size() != width * height) {
-			Game.debug(Game.DebugLevel.WARNING, "Tile data corrupted!");
-			Game.debug(Game.DebugLevel.ERROR, "Error while loading level \""
-					+ name + "\"!");
+	public Coordinates getTileLocation(String name) {
+		Coordinates coords = new Coordinates();
+		for (int y = 0; y < getHeight(); y++) {
+			for (int x = 0; x < getWidth(); x++) {
+				Tile tile = getTile(x, y);
+				if (tile.getName().equals(name)) {
+					coords.setX(x << 4);
+					coords.setY(y << 4);
+					return coords;
+				}
+			}
 		}
-	}
-
-	@Override
-	public Tag saveToNBT(Tag tag) {
-		tag.addTag(new Tag(Tag.Type.TAG_String, "NAME", this.getName()));
-		tag.addTag(new Tag(Tag.Type.TAG_Int, "WIDTH", this.getWidthInTiles()));
-		tag.addTag(new Tag(Tag.Type.TAG_Int, "HEIGHT", this.getHeightInTiles()));
-		tag.addTag(new Tag(Tag.Type.TAG_Byte_Array, "TILES", this
-				.getTileIdArray()));
-		tag.addTag(new Tag(Tag.Type.TAG_End, null, null));
-		return tag;
+		return coords;
 	}
 
 	public String getName() {
@@ -433,6 +193,10 @@ public class Level implements NBTCapable, GameActionListener {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Tile getBackgroundTile(int x, int y) {
+		return TileTypes.get(Config.TILE_GRASS).get(this, x, y, true);
 	}
 
 	@Override
@@ -444,7 +208,9 @@ public class Level implements NBTCapable, GameActionListener {
 	}
 
 	public void addNpc(NpcType npc) {
-		npcs.add(npc);
+		synchronized (getUnits()) {
+			getUnits().add(npc);
+		}
 	}
 
 	public int getWave() {
@@ -455,13 +221,13 @@ public class Level implements NBTCapable, GameActionListener {
 		this.wave = wave;
 	}
 
-	public Store getStore() {
-		return store;
-	}
-
-	public void setStore(Store store) {
-		this.store = store;
-	}
+//	public Store getStore() {
+//		return store;
+//	}
+//
+//	public void setStore(Store store) {
+//		this.store = store;
+//	}
 
 	public Camera getCamera() {
 		return camera;
@@ -478,4 +244,95 @@ public class Level implements NBTCapable, GameActionListener {
     public void setBlocks(HashMap<String, TileMap> blocks) {
         this.blocks = blocks;
     }
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getxOffset() {
+		return xOffset;
+	}
+
+	public void setxOffset(int xOffset) {
+		this.xOffset = xOffset;
+	}
+
+	public int getyOffset() {
+		return yOffset;
+	}
+
+	public void setyOffset(int yOffset) {
+		this.yOffset = yOffset;
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public void setImage(BufferedImage image) {
+		this.image = image;
+	}
+
+	public void setTiles(Tile[] tiles) {
+		this.tiles = tiles;
+	}
+
+	public void render(Screen screen) {
+		int xOffset = getCamera().getX();
+		int yOffset = getCamera().getY();
+
+		if(xOffset < 0) xOffset = 0;
+		if(xOffset > ((getWidth() << 4) - screen.getWidth())) xOffset = ((getWidth() << 4) - screen.getWidth());
+		if(yOffset < 0) yOffset = 0;
+		if(yOffset > ((getHeight() << 4) - screen.getHeight())) yOffset = ((getHeight() << 4) - screen.getHeight());
+
+		screen.setOffset(xOffset, yOffset);
+
+		int xMin = xOffset >> 4;
+	    int xMax = (xOffset + screen.getWidth()) >> 4;
+	    int yMin = yOffset >> 4;
+	    int yMax = (yOffset + screen.getHeight()) >> 4;
+
+		for (int y = yMin; y < yMax + 15; y++) {
+			for (int x = xMin; x < xMax + 15; x++) {
+				Tile tile = getTile(x, y);
+				tile.render(screen);
+			}
+		}
+
+		synchronized (getUnits()) {
+			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
+				Unit unit = (Unit) it.next();
+				unit.render(screen);
+			}
+		}
+	}
+
+	public long getNextWave() {
+		return nextWave;
+	}
+
+	public void setNextWave(long nextWave) {
+		this.nextWave = nextWave;
+	}
+
+	public List<Unit> getUnits() {
+		return units;
+	}
+
+	public void setUnits(List<Unit> units) {
+		this.units = units;
+	}
 }

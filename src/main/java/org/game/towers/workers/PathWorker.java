@@ -3,9 +3,10 @@ package org.game.towers.workers;
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
-//import org.game.towers.grid.Cell;
-//import org.game.towers.level.Construction;
-import org.game.towers.level.Level;
+import org.game.towers.level.Portals;
+import org.game.towers.level.tiles.TileMap;
+import org.game.towers.units.Unit;
+import org.hamcrest.Matchers;
 
 import java.awt.*;
 import java.math.BigDecimal;
@@ -29,14 +30,14 @@ public class PathWorker {
         return result;
     }
 
-    private Level.TileMap getBarrier(int xStart, int xFinish, int yStart, int yFinish){
-        HashMap<Integer, Level.TileMap> temporaryTileMap = (HashMap<Integer, Level.TileMap>) Game.instance.getWorld().getLevel().getBlocks().clone();
+    private TileMap getBarrier(int xStart, int xFinish, int yStart, int yFinish){
+        HashMap<Integer, TileMap> temporaryTileMap = (HashMap<Integer, TileMap>) Game.instance.getWorld().getLevel().getBlocks().clone();
         int apexX, apexY;
         double y;
-        Map.Entry<Integer, Level.TileMap> tileItem;
+        Map.Entry<Integer, TileMap> tileItem;
 
         if (yStart >= (yFinish - Config.BOX_SIZE) && yStart <= (yFinish + Config.BOX_SIZE)) {
-            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
+            for (Iterator<Map.Entry<Integer, TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
             {
                 tileItem = it.next();
                 apexX = tileItem.getValue().getGeo().getTopRight().getX();
@@ -47,7 +48,7 @@ public class PathWorker {
                 }
             }
 
-            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
+            for (Iterator<Map.Entry<Integer, TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
             {
                 tileItem = it.next();
                 apexX = tileItem.getValue().getGeo().getBottomRight().getX();
@@ -61,7 +62,7 @@ public class PathWorker {
 
 
         if ( (xStart < xFinish && yStart < yFinish) || (xStart > xFinish && yStart > yFinish) ) {
-            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
+            for (Iterator<Map.Entry<Integer, TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
             {
                 tileItem = it.next();
                 apexX = tileItem.getValue().getGeo().getBottomLeft().getX();
@@ -72,7 +73,7 @@ public class PathWorker {
                 }
             }
 
-            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
+            for (Iterator<Map.Entry<Integer, TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
             {
                 tileItem = it.next();
                 apexX = tileItem.getValue().getGeo().getTopRight().getX();
@@ -85,7 +86,7 @@ public class PathWorker {
         }
 
         if ( (yStart > yFinish && xStart < xFinish) || (xStart > xFinish && yStart < yFinish) ) {
-            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
+            for (Iterator<Map.Entry<Integer, TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
             {
                 tileItem = it.next();
                 apexX = tileItem.getValue().getGeo().getBottomRight().getX();
@@ -96,7 +97,7 @@ public class PathWorker {
                 }
             }
 
-            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
+            for (Iterator<Map.Entry<Integer, TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
             {
                 tileItem = it.next();
                 apexX = tileItem.getValue().getGeo().getTopLeft().getX();
@@ -114,7 +115,8 @@ public class PathWorker {
         }
 
         System.out.println("size ="+temporaryTileMap.size());
-        Level.TileMap barrier = getFirstBarrier(temporaryTileMap, xStart, yStart);
+        TileMap barrier = getFirstBarrier(temporaryTileMap, xStart, yStart);
+
         return barrier;
     }
 
@@ -129,14 +131,14 @@ public class PathWorker {
         return y;
     }
 
-    private Level.TileMap getFirstBarrier(HashMap<Integer, Level.TileMap> temporaryTileMap, int xStart, int yStart) {
-        Level.TileMap firstTile = temporaryTileMap.entrySet().iterator().next().getValue();
+    private TileMap getFirstBarrier(HashMap<Integer, TileMap> temporaryTileMap, int xStart, int yStart) {
+        TileMap firstTile = temporaryTileMap.entrySet().iterator().next().getValue();
         temporaryTileMap.remove(firstTile);
         int minX = firstTile.getGeo().getTopLeft().getX();
         int minY = firstTile.getGeo().getTopLeft().getY();
         double minR = getRadiusVector(minX, minY, xStart, yStart);
-        Level.TileMap nearestConstruction = temporaryTileMap.entrySet().iterator().next().getValue();
-        for (Map.Entry<Integer, Level.TileMap> tileItem : temporaryTileMap.entrySet()){
+        TileMap nearestConstruction = temporaryTileMap.entrySet().iterator().next().getValue();
+        for (Map.Entry<Integer, TileMap> tileItem : temporaryTileMap.entrySet()){
 
             boolean isSolid = Game.instance.getWorld().getLevel().getTile(tileItem.getValue().getGeo().getTopLeft().getX(),
                                                         tileItem.getValue().getGeo().getTopLeft().getY()).isSolid();
@@ -155,9 +157,7 @@ public class PathWorker {
         return r;
     }
 
-
-
-    private int getLogicZone(int x, int y, Level.TileMap construction){
+    private int getLogicZone(int x, int y, TileMap construction){
         System.out.println("x = "+x+" y = "+ y + " construction.getGeo().getTopLeft() X =" + construction.getGeo().getTopLeft().getX() + " construction.getGeo().getTopLeft() Y =" + construction.getGeo().getTopLeft().getY() );
 //        System.out.println("x = "+x+" y = "+ y + " construction.getGeo().getTopLeft() X =" + construction.getGeo().getTopLeft().getX()* Config.BOX_SIZE + " construction.getGeo().getTopLeft() Y =" + construction.getGeo().getTopLeft().getY() );
         if (x <= construction.getGeo().getTopLeft().getX() && y <= construction.getGeo().getTopLeft().getY() - Config.BOX_SIZE) {
@@ -194,7 +194,7 @@ public class PathWorker {
         return 0;
     }
 
-    private Coordinates getTransitionalFinish(int x, int y, Level.TileMap barrier) {
+    private Coordinates getTransitionalFinish(int x, int y, TileMap barrier) {
         Coordinates coordinate = null;
         Coordinates firstPotentialPoint = null;
         Coordinates secondPotentialPoint = null;
@@ -347,11 +347,11 @@ public class PathWorker {
     }
 
     public void nextCoordinate(int x, int y, Point point) {
-        int finishX = Level.Portals.getExit().getX();
-        int finishY = Level.Portals.getExit().getY();
+        int finishX = Portals.getExit().getCoordinates().getX();
+        int finishY = Portals.getExit().getCoordinates().getY();
         System.out.println("wayList.size="+wayList.size());
         int dx, dy;
-        Level.TileMap barrier = getBarrier(x, finishX, y, finishY);
+        TileMap barrier = getBarrier(x, finishX, y, finishY);
         Coordinates coordinate = new Coordinates(finishX, finishY);
         if (barrier != null){
             coordinate = getTransitionalFinish(x, y, barrier);

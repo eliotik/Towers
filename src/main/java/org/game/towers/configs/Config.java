@@ -1,9 +1,10 @@
-package org.game.towers.configs;
 
+package org.game.towers.configs;
 import java.awt.Dimension;
 import java.io.File;
 
 import org.game.towers.game.Game;
+import org.game.towers.level.tiles.TileTypes;
 
 public class Config {
 	public static final String GAME_VERSION = "0.0.1";
@@ -19,32 +20,38 @@ public class Config {
 	public static final String NPCS_FILE = "npcs.xml";
 	public static final String TOWERS_FILE = "towers.xml";
 	public static final String BUILDINGS_FILE = "buildings.xml";
-	public static final String SPRITESHEET_FILE = "spritesheet.png";
+	public static final String SPRITESHEET_FILE = "spritesheets/tiles.png";
+	public static final String SPRITESHEET_NPCS_FILE = "spritesheets/npcs.png";
+	public static final String SPRITESHEET_PORTALS_FILE = "spritesheets/portals.png";
+	public static final String SPRITESHEET_GUI_FILE = "spritesheets/gui.png";
 	public static final String FONT_FILE = "font.png";
 
 	public static final String NPC_NODE_NAME = "npc";
 	public static final String TOWER_NODE_NAME = "tower";
 	public static final String BUILDING_NODE_NAME = "building";
 
-	public static final int SCREEN_WIDTH = 269;
+	public static final int SCREEN_WIDTH = 500;
 	public static final int SCREEN_HEIGHT = SCREEN_WIDTH/12*9;
-	public static final int SCALE = 3;
+	public static final int SCALE = 2;
 	public static final int REAL_SCREEN_WIDTH = SCREEN_WIDTH * SCALE;
 	public static final int REAL_SCREEN_HEIGHT = SCREEN_HEIGHT * SCALE;
 	public static final Dimension DIMENSIONS = new Dimension(REAL_SCREEN_WIDTH, REAL_SCREEN_HEIGHT);
 
-
-    public static final int AMOUNT_HORIZONTAL_PIX = 800;
-    public static final int AMOUNT_VERTICAL_PIX = 800;
 	public static final int BUFFER_STRATEGY_BUFFERS = 3;
 
-	public static final int BOX_SIZE = 8;
-	public static final int MAP_X_SIZE = 37;
-	public static final int MAP_Y_SIZE = 25;
+	public static final int BOX_SIZE = 16;
 
 	public static final boolean LEVEL_SHOW_IDS = false;
-	public static final int DEFAULT_LEVEL_WIDTH = MAP_X_SIZE;
-	public static final int DEFAULT_LEVEL_HEIGHT = MAP_Y_SIZE;
 	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
 	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
+	public static final int LEVEL_WAVE_TIMEOUT = 10000;
+
+	public static final String TILE_GRASS = "GRASS";
+	public static final String TILE_SAND = "SAND";
+	public static final String TILE_STONE = "STONE";
+	public static final String TILE_BUSH = "BUSH";
+	public static final String TILE_VOID = "VOID";
+	public static final String TILE_ENTRANCE = "ENTRANCE";
+	public static final String TILE_EXIT = "EXIT";
+	public static final String TILE_NPC_BULB = "NPC_BULB";
 }

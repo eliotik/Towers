@@ -17,6 +17,10 @@ public class Geo {
 	}
 
 	public Geo(Coordinates topLeft, int shiftRight, int shiftDown){
+		init(topLeft, shiftRight, shiftDown);
+	}
+
+	private void init(Coordinates topLeft, int shiftRight, int shiftDown) {
 		this.topLeft = topLeft;
 
 		this.topRight.setX(topLeft.getX() + shiftRight);
@@ -27,6 +31,10 @@ public class Geo {
 
 		this.bottomRight.setX(topLeft.getX() + shiftRight);
 		this.bottomRight.setY(topLeft.getY() + shiftDown);
+	}
+
+	public Geo(Coordinates coordinates, int shift) {
+		init(topLeft, shift, shift);
 	}
 
 	public Coordinates getTopLeft() {

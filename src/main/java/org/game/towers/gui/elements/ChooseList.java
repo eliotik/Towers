@@ -17,7 +17,7 @@ public class ChooseList extends GuiElement implements GameActionListener {
 
 	private List<Option> options = new ArrayList<Option>();
 	private int selectedEntry;
-	public int scrol;
+	private int scroll;
 	private InputHandler input;
 
 	private int width;
@@ -25,16 +25,16 @@ public class ChooseList extends GuiElement implements GameActionListener {
 
 	public ChooseList(int id, Gui gui) {
 		super(id, gui);
-		input = gui.input;
+		setInput(gui.input);
 	}
 
 	public void addOption(Option option) {
-		options.add(option);
-		width = getWidth();
-		if (options.size() < ENTRIES_DISPLAYED) {
-			height = options.size() * 8;
+		getOptions().add(option);
+		setWidth(getWidth());
+		if (getOptions().size() < ENTRIES_DISPLAYED) {
+			setHeight(getOptions().size() * 8);
 		} else {
-			height = ENTRIES_DISPLAYED * 8;
+			setHeight(ENTRIES_DISPLAYED * 8);
 		}
 	}
 
@@ -58,76 +58,121 @@ public class ChooseList extends GuiElement implements GameActionListener {
 	}
 
 	public void actionPerformed(InputEvent event) {
-		if (event.key.id == input.down.id
+		if (event.key.id == getInput().down.id
 				&& event.type == InputEventType.PRESSED) {
-			selectedEntry++;
+			setSelectedEntry(getSelectedEntry() + 1);
 		}
-		if (event.key.id == input.up.id
+		if (event.key.id == getInput().up.id
 				&& event.type == InputEventType.PRESSED) {
-			selectedEntry--;
+			setSelectedEntry(getSelectedEntry() - 1);
 		}
-		if (selectedEntry < 0) {
-			selectedEntry = 0;
+		if (getSelectedEntry() < 0) {
+			setSelectedEntry(getOptions().size() - 1);
 		}
-		if (selectedEntry >= options.size()) {
-			selectedEntry = options.size() - 1;
+		if (getSelectedEntry() >= getOptions().size()) {
+			setSelectedEntry(0);
 		}
-		if (event.key.id == input.action.id
+
+		if (event.key.id == getInput().action.id
 				&& event.type == InputEventType.PRESSED) {
-			parent.guiActionPerformed(id, selectedEntry);
+			parent.guiActionPerformed(id, getSelectedEntry());
 		}
-		if (event.key.id == input.esc.id
+		if (event.key.id == getInput().esc.id
 				&& event.type == InputEventType.PRESSED) {
 			parent.guiActionPerformed(id, -1);
 		}
-		if (selectedEntry >= ENTRIES_DISPLAYED) {
-			scrol = selectedEntry - ENTRIES_DISPLAYED + 1;
+		if (getSelectedEntry() >= ENTRIES_DISPLAYED) {
+			setScroll(getSelectedEntry() - ENTRIES_DISPLAYED + 1);
 		}
-		if (selectedEntry < scrol) {
-			scrol = selectedEntry;
+		if (getSelectedEntry() < getScroll()) {
+			setScroll(getSelectedEntry());
 		}
 	}
 
 	public void renderCentered(Gui gui, int x, int y, int color) {
-		this.render(gui, x - width / 2, y - height / 2, color);
+		this.render(gui, x - getWidth() / 2, y - getHeight() / 2, color);
 	}
 
 	public void render(Gui gui, int x, int y, int color) {
-		for (Option o : options) {
-			if ((o.id >= scrol) && (o.id < scrol + ENTRIES_DISPLAYED)) {
+		for (Option o : getOptions()) {
+			if ((o.id >= getScroll()) && (o.id < getScroll() + ENTRIES_DISPLAYED)) {
 				if (o.isAvailable) {
 					FontRenderer.drawString(o.text, gui, x + 5, y + o.id * 8
-							- scrol * 8, color, 1);
-					if (o.id == selectedEntry) {
+							- getScroll() * 8, color, 1);
+					if (o.id == getSelectedEntry()) {
 						FontRenderer.drawString(">", gui, x, y + o.id * 8
-								- scrol * 8, color, 1);
+								- getScroll() * 8, color, 1);
 					}
 				} else {
 					FontRenderer.drawString(o.text, gui, x + 5, y + o.id * 8
-							- scrol * 8, 444, 1);
-					if (o.id == selectedEntry) {
+							- getScroll() * 8, 444, 1);
+					if (o.id == getSelectedEntry()) {
 						FontRenderer.drawString("#", gui, x, y + o.id * 8
-								- scrol * 8, 444, 1);
+								- getScroll() * 8, 444, 1);
 					}
 				}
 			}
 		}
-		if (scrol < options.size() - ENTRIES_DISPLAYED) {
+		if (getScroll() < getOptions().size() - ENTRIES_DISPLAYED) {
 			FontRenderer.drawString("}", gui, x + 20, y + 22, color, 1);
 		}
-		if (scrol > 0) {
+		if (getScroll() > 0) {
 			FontRenderer.drawString("{", gui, x + 20, y - 8, color, 1);
 		}
 	}
 
 	private int getWidth() {
 		int w = 0;
-		for (Option o : options) {
+		for (Option o : getOptions()) {
 			int w_c = FontRenderer.getStringWidth(o.text, 1);
 			if (w_c > w) {
 				w = w_c;
 			}
 		}
 		return w;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public InputHandler getInput() {
+		return input;
+	}
+
+	public void setInput(InputHandler input) {
+		this.input = input;
+	}
+
+	public int getScroll() {
+		return scroll;
+	}
+
+	public void setScroll(int scroll) {
+		this.scroll = scroll;
+	}
+
+	public int getSelectedEntry() {
+		return selectedEntry;
+	}
+
+	public void setSelectedEntry(int selectedEntry) {
+		this.selectedEntry = selectedEntry;
+	}
+
+	public List<Option> getOptions() {
+		return options;
+	}
+
+	public void setOptions(List<Option> options) {
+		this.options = options;
 	}
 }

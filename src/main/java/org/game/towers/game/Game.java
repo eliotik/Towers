@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 
 import org.game.towers.configs.Config;
 import org.game.towers.gfx.Screen;
-import org.game.towers.gfx.SpriteSheet;
+import org.game.towers.gfx.sprites.SpriteSheet;
 import org.game.towers.gui.Gui;
 import org.game.towers.gui.GuiFocus;
 import org.game.towers.gui.GuiMainMenu;
@@ -49,7 +49,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	private BufferedImage image = new BufferedImage(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-	public int[] colors = new int[6 * 6 * 6];//6 different shades of color
+//	public int[] colors = new int[6 * 6 * 6];//6 different shades of color
 
 	private Screen screen;
 	private Gui gui;
@@ -143,10 +143,8 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		initHomeDirectory();
 		initWorld();
 		initFocusListener();
-		initColors();
 		initScreen();
 		initInput();
-//		initLevel();
 		initPathWorker();
 		initMainMenu();
 	}
@@ -190,68 +188,68 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		getInputHandler().tick();
 		if (gui != null) {
 			gui.tick(ticksCount);
-			if (gui != null && !gui.pausesGame()) {
-				if (getWorld() != null) {
-					tickLevel();
-				}
+			if (!gui.pausesGame()) {
+				updateWorld();
 			}
 		} else {
-			if (getWorld() != null) {
-				tickLevel();
-			}
+			updateWorld();
 		}
 	}
 
-	private void tickLevel() {
-		getWorld().tick();
+	private void updateWorld() {
+		if (getWorld() != null) {
+			getWorld().tick();
+		}
 	}
 
 	private void render() {
 		BufferStrategy bs = getBufferStrategy();
 		if (bs == null) {
 			createBufferStrategy(Config.BUFFER_STRATEGY_BUFFERS);
+			requestFocus();
 			return;
 		}
 
-//		int xOffset = x - (getScreen().width / 2);
-//		int yOffset = y - (getScreen().height / 2);
-//		level.renderTiles(getScreen(), xOffset, yOffset);
+		screen.clear();
+		Graphics g = bs.getDrawGraphics();
+		screen.setGraphics(g);
 
 		if (gui != null) {
 			gui.render();
-			for (int y = 0; y < Config.SCREEN_HEIGHT; y++) {
-				for (int x = 0; x < Config.SCREEN_WIDTH; x++) {
-					int colorCode = gui.pixels[x + y * gui.width];
-					pixels[x + y * Config.SCREEN_WIDTH] = colorCode + (0xFF << 24);
-				}
-			}
+//			for (int y = 0; y < Config.SCREEN_HEIGHT; y++) {
+//				for (int x = 0; x < Config.SCREEN_WIDTH; x++) {
+//					int colorCode = gui.pixels[x + y * gui.width];
+//					pixels[x + y * Config.SCREEN_WIDTH] = colorCode + (0xFF << 24);
+//				}
+//			}
 		} else {
 			if (world != null) {
-				world.render(screen);
+				world.render();
 
-				for (int y = 0; y < getScreen().height; y++) {
-					for (int x = 0; x < getScreen().width; x++) {
-						int colorCode = getScreen().pixels[x + y * getScreen().width];
-						if (colorCode < 255) getPixels()[x + y * Config.SCREEN_WIDTH] = colors[colorCode];
-					}
-				}
+//				for (int y = 0; y < getScreen().height; y++) {
+//					for (int x = 0; x < getScreen().width; x++) {
+//						int colorCode = getScreen().pixels[x + y * getScreen().width];
+//						if (colorCode < 255) getPixels()[x + y * Config.SCREEN_WIDTH] = colors[colorCode];
+//					}
+//				}
 //				String msg = "Hello World";
 //				Font.render(msg, screen, screen.xOffset + screen.width / 2 - (msg.length()*8)/2, screen.yOffset + screen.height / 2, Colors.get(-1, -1, -1, 000));
 			}
 		}
-
-		Graphics g = bs.getDrawGraphics();
-
+		for (int i = 0; i < Config.SCREEN_WIDTH * Config.SCREEN_HEIGHT; i++) {
+			pixels[i] = screen.getPixels()[i];
+		}
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-		g.setColor(Color.BLACK);
-		g.drawRect(0, 0, getWidth(), getHeight());
+//		g.setColor(Color.BLACK);
+//		g.drawRect(0, 0, getWidth(), getHeight());
 
 		g.dispose();
 		bs.show();
 	}
 
 	private void initScreen() {
-		setScreen(new Screen(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, new SpriteSheet(Config.SPRITESHEET_FILE)));
+//		setScreen(new Screen(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, new SpriteSheet(Config.SPRITESHEET_FILE)));
+		setScreen(new Screen(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT));
 	}
 
 //	private void initLevel() {
@@ -263,20 +261,20 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		setMouseHandler(new MouseHandler(this));
 	}
 
-	private void initColors() {
-		int index = 0;
-		for (int r = 0; r < 6; r++) {
-			for (int g = 0; g < 6; g++) {
-				for (int b = 0; b < 6; b++) {
-					int rr = (r * 255/5);
-					int gg = (g * 255/5);
-					int bb = (b * 255/5);
-
-					colors[index++] = rr << 16 | gg << 8 | bb;
-				}
-			}
-		}
-	}
+//	private void initColors() {
+//		int index = 0;
+//		for (int r = 0; r < 6; r++) {
+//			for (int g = 0; g < 6; g++) {
+//				for (int b = 0; b < 6; b++) {
+//					int rr = (r * 255/5);
+//					int gg = (g * 255/5);
+//					int bb = (b * 255/5);
+//
+//					colors[index++] = rr << 16 | gg << 8 | bb;
+//				}
+//			}
+//		}
+//	}
 
 	public synchronized void start() {
 		setRunning(true);
@@ -374,12 +372,15 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	public void showGui(Gui gui) {
+		if (this.gui != null && this.gui.pausesGame()) {
+			return;
+		}
 		if(this.gui != null) {
 			getInputHandler().removeListener(this.gui);
 		}
 		this.gui = null;
 		this.gui = gui;
-		getInputHandler().addListener(this.gui);
+		getInputHandler().addListener(this.gui, true);
 	}
 
 	public void hideGui(Gui gui) {

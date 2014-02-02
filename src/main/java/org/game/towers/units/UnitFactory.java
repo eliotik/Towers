@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.game.towers.units;
 
 import java.util.ArrayList;
@@ -17,12 +14,8 @@ import org.apache.commons.lang3.SerializationUtils;
 
 import static ch.lambdaj.Lambda.*;
 
-/**
- * @author eliotik
- *
- */
 public class UnitFactory {
-	
+
 	public static NpcType getNpc(String type) {
 		try {
 			List<NpcType> types = filter(having(on(NpcType.class).getId(), Matchers.equalTo(type)),
@@ -39,11 +32,11 @@ public class UnitFactory {
 		}
 		return null;
 	}
-	
+
 	public static ArrayList<TowerType> getTower(){
 		return null;
 	}
-	
+
 	public static ArrayList<BuildingType> getBuilding(){
 		return null;
 	}

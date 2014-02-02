@@ -2,6 +2,7 @@ package org.game.towers.gui;
 
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
+import org.game.towers.game.World;
 import org.game.towers.handlers.InputHandler.InputEvent;
 import org.game.towers.gui.elements.ChooseList;
 import org.game.towers.gui.elements.FontRenderer;
@@ -10,13 +11,14 @@ public class GuiPause extends Gui{
 
 	private ChooseList list;
 	private String splash = Config.GAME_NAME;
-	
+
 	public GuiPause(Game game, int width, int height) {
 		super(game, width, height);
 		this.pauseGame = true;
 		list = new ChooseList(0, this);
 		list.addOption(list.new Option(0, "Resume"));
-		list.addOption(list.new Option(1, "Exit"));
+		list.addOption(list.new Option(1, "Restart"));
+		list.addOption(list.new Option(2, "Exit"));
 	}
 
 	public void actionPerformed(InputEvent event) {
@@ -25,8 +27,8 @@ public class GuiPause extends Gui{
 
 	public void render() {
 		this.drawDefaultBackground();
-		FontRenderer.drawCenteredString("Paused", this, width / 2 + 2, 5, 222, 2);
-		FontRenderer.drawString(splash, this, 2, height - 10, 000, 1);
+		FontRenderer.drawCenteredString("Paused", this, Config.SCREEN_WIDTH / 2 + 2, 5, 222, 2);
+		FontRenderer.drawString(splash, this, 2, Config.SCREEN_HEIGHT - 10, 000, 1);
 		list.render(this, 20, 30, 555);
 	}
 
@@ -39,6 +41,12 @@ public class GuiPause extends Gui{
 				close();
 				break;
 			case 1:
+				game.getWorld().reset();
+				game.setWorld(new World(Config.DEFAULT_WORLD_NAME));
+				game.getWorld().getLevel().generateNpcs();
+				close();
+				break;
+			case 2:
 				System.out.println("The game has been quit!");
 				close();
 				System.exit(0);

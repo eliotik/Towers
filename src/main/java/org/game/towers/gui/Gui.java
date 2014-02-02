@@ -7,7 +7,7 @@ import org.game.towers.handlers.InputHandler.GameActionListener;
 import org.game.towers.handlers.InputHandler.InputEvent;
 import org.game.towers.handlers.InputHandler.InputEventType;
 import org.game.towers.gfx.Colors;
-import org.game.towers.gfx.SpriteSheet;
+import org.game.towers.gfx.sprites.SpriteSheet;
 
 public abstract class Gui implements GameActionListener {
 
@@ -19,7 +19,7 @@ public abstract class Gui implements GameActionListener {
 	protected Gui parentGui;
 	protected Game game;
 	public InputHandler input;
-	
+
 	public SpriteSheet font;
 
 	public int[] pixels;
@@ -38,7 +38,7 @@ public abstract class Gui implements GameActionListener {
 		this.height = height;
 		this.pixels = new int[width * height];
 		this.setTint(0.3D, 0.3D, 0.3D);
-		if (game.getWorld() != null && game.getScreen().pixels.length == pixels.length) {
+		if (game.getWorld() != null && game.getScreen().getPixels().length == Game.instance.getScreen().getPixels().length) {
 			bkgPixels = game.getPixels().clone();
 		}
 	}
@@ -61,57 +61,56 @@ public abstract class Gui implements GameActionListener {
 	public void drawDefaultBackground() {
 		if (bkgPixels != null) {
 			for (int i = 0; i < bkgPixels.length; i++) {
-				pixels[i] = Colors.tint(bkgPixels[i], red, green, blue);
+				Game.instance.getScreen().getPixels()[i] = Colors.tint(bkgPixels[i], red, green, blue);
 			}
 		} else {
-			for (int i = 0; i < pixels.length; i++) {
-				pixels[i] = DEFAULT_BKG_COLOR;
+			for (int i = 0; i < Game.instance.getScreen().getPixels().length; i++) {
+				Game.instance.getScreen().getPixels()[i] = DEFAULT_BKG_COLOR;
 			}
 		}
 	}
 
-	public void drawRect(int xPos, int yPos, int width, int height, int color) {
-		if (xPos > this.width)
-			xPos = this.width - 1;
-		if (yPos > this.height)
-			yPos = this.height - 1;
-		if (xPos + width > this.width)
-			width = this.width - xPos;
-		if (yPos + height > this.height)
-			height = this.height - yPos;
-		width -= 1;
-		height -= 1;
-		for (int x = xPos; x < xPos + width; x++) {
-			pixels[x + yPos * this.width] = color;
-		}
-		for (int y = yPos; y < yPos + height; y++) {
-			pixels[xPos + y * this.width] = color;
-		}
-		for (int x = xPos; x < xPos + width; x++) {
-			pixels[x + (yPos + height) * this.width] = color;
-		}
-		for (int y = yPos; y < yPos + height; y++) {
-			pixels[(xPos + width) + y * this.width] = color;
-		}
-	}
+//	public void drawRect(int xPos, int yPos, int width, int height, int color) {
+//		if (xPos > this.width)
+//			xPos = this.width - 1;
+//		if (yPos > this.height)
+//			yPos = this.height - 1;
+//		if (xPos + width > this.width)
+//			width = this.width - xPos;
+//		if (yPos + height > this.height)
+//			height = this.height - yPos;
+//		width -= 1;
+//		height -= 1;
+//		for (int x = xPos; x < xPos + width; x++) {
+//			pixels[x + yPos * this.width] = color;
+//		}
+//		for (int y = yPos; y < yPos + height; y++) {
+//			pixels[xPos + y * this.width] = color;
+//		}
+//		for (int x = xPos; x < xPos + width; x++) {
+//			pixels[x + (yPos + height) * this.width] = color;
+//		}
+//		for (int y = yPos; y < yPos + height; y++) {
+//			pixels[(xPos + width) + y * this.width] = color;
+//		}
+//	}
+//
+//	public void fillRect(int xPos, int yPos, int width, int height, int color) {
+//		if (xPos > this.width)
+//			xPos = this.width;
+//		if (yPos > this.height)
+//			yPos = this.height;
+//		if (xPos + width > this.width)
+//			width = this.width - xPos;
+//		if (yPos + height > this.height)
+//			height = this.height - yPos;
+//		for (int y = yPos; y < yPos + height; y++) {
+//			for (int x = xPos; x < xPos + width; x++) {
+//				pixels[x + y * this.width] = color;
+//			}
+//		}
+//	}
 
-	public void fillRect(int xPos, int yPos, int width, int height, int color) {
-		if (xPos > this.width)
-			xPos = this.width;
-		if (yPos > this.height)
-			yPos = this.height;
-		if (xPos + width > this.width)
-			width = this.width - xPos;
-		if (yPos + height > this.height)
-			height = this.height - yPos;
-		for (int y = yPos; y < yPos + height; y++) {
-			for (int x = xPos; x < xPos + width; x++) {
-				pixels[x + y * this.width] = color;
-			}
-		}
-	}
-
-	
 	@Override
 	public void actionPerformed(InputEvent event) {
 		if (event.key.id == input.esc.id
@@ -125,7 +124,7 @@ public abstract class Gui implements GameActionListener {
 		green = g;
 		blue = b;
 	}
-	
+
 	public Gui setParent(Gui gui) {
 		this.parentGui = gui;
 		return this;
@@ -134,7 +133,7 @@ public abstract class Gui implements GameActionListener {
 	public void last() {
 		game.hideGui(this);
 	}
-	
+
 	public void close() {
 		this.parentGui = null;
 		game.hideGui(this);
