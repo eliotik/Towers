@@ -109,7 +109,9 @@ public class Level implements GameActionListener {
 				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
 				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
 				getTiles()[x + y * getWidth()] = tile;
-				if (!blocks.containsKey(key)) blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
+				if (!blocks.containsKey(key) && tile.isSolid())
+//                    blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
+                    blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
 			}
 		}
 		Portals.setEntrance(getEntranceLocation());
