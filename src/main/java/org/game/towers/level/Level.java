@@ -69,6 +69,8 @@ public class Level implements GameActionListener {
 		switch(getWave()) {
 			case 1:
 				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
+				NpcType bulb2 = UnitFactory.getNpc(Npcs.BULB);
+				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
 				if (bulb != null) {
 					bulb.setLevel(this);
 //					System.out.println("x: "+Portals.getEntrance().getCoordinates().getX()+", y: "+Portals.getEntrance().getCoordinates().getY());
@@ -76,6 +78,18 @@ public class Level implements GameActionListener {
 					bulb.setY(Portals.getEntrance().getCoordinates().getY());
 
 					addNpc(bulb);
+
+					bulb2.setLevel(this);
+					bulb2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
+					bulb2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
+
+					addNpc(bulb2);
+
+					bulb3.setLevel(this);
+					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
+					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
+
+					addNpc(bulb3);
 				}
 		}
 	}

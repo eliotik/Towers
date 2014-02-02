@@ -16,12 +16,12 @@ public class AnimatedTile extends BasicTile{
 			int animationSwitchDelay) {
 		super(level, null, name, levelColor, isSolid, isEmitter, x, y);
 
-		this.sprites = sprites;
-		this.currentAnimationIndex = 0;
-		this.animationStartDelay = 0;
-		this.lastIterationTime = System.currentTimeMillis();
-		this.lastIterationStartTime = System.currentTimeMillis();
-		this.animationSwitchDelay = animationSwitchDelay;
+		setSprites(sprites);
+		setCurrentAnimationIndex(0);
+		setAnimationStartDelay(0);
+		setLastIterationTime(System.currentTimeMillis());
+		setLastIterationStartTime(System.currentTimeMillis());
+		setAnimationSwitchDelay(animationSwitchDelay);
 	}
 
 	public AnimatedTile(Level level, Sprite[] sprites, String name,
@@ -29,21 +29,21 @@ public class AnimatedTile extends BasicTile{
 			int animationSwitchDelay, int animationStartDelay) {
 		super(level, null, name, levelColor, isSolid, isEmitter, x, y);
 
-		this.sprites = sprites;
-		this.currentAnimationIndex = 0;
-		this.animationStartDelay = animationStartDelay;
-		this.lastIterationTime = System.currentTimeMillis();
-		this.lastIterationStartTime = System.currentTimeMillis();
-		this.animationSwitchDelay = animationSwitchDelay;
+		setSprites(sprites);
+		setCurrentAnimationIndex(0);
+		setAnimationStartDelay(animationStartDelay);
+		setLastIterationTime(System.currentTimeMillis());
+		setLastIterationStartTime(System.currentTimeMillis());
+		setAnimationSwitchDelay(animationSwitchDelay);
 	}
 
 	public void tick() {
-		if ((System.currentTimeMillis() - lastIterationStartTime) >= (animationStartDelay)) {
-			if ((System.currentTimeMillis() - lastIterationTime) >= (animationSwitchDelay)) {
-				lastIterationTime = System.currentTimeMillis();
-				currentAnimationIndex = (currentAnimationIndex + 1) % sprites.length;
-				if (currentAnimationIndex >= sprites.length - 1) {
-					lastIterationStartTime = System.currentTimeMillis();
+		if ((System.currentTimeMillis() - getLastIterationStartTime()) >= (getAnimationStartDelay())) {
+			if ((System.currentTimeMillis() - getLastIterationTime()) >= (getAnimationSwitchDelay())) {
+				setLastIterationTime(System.currentTimeMillis());
+				setCurrentAnimationIndex((getCurrentAnimationIndex() + 1) % getSprites().length);
+				if (getCurrentAnimationIndex() >= getSprites().length - 1) {
+					setLastIterationStartTime(System.currentTimeMillis());
 				}
 			}
 		}
@@ -51,6 +51,54 @@ public class AnimatedTile extends BasicTile{
 
 	@Override
 	public Sprite getSprite() {
-		return sprites[currentAnimationIndex];
+		return getSprites()[getCurrentAnimationIndex()];
+	}
+
+	public int getCurrentAnimationIndex() {
+		return currentAnimationIndex;
+	}
+
+	public void setCurrentAnimationIndex(int currentAnimationIndex) {
+		this.currentAnimationIndex = currentAnimationIndex;
+	}
+
+	public long getLastIterationTime() {
+		return lastIterationTime;
+	}
+
+	public void setLastIterationTime(long lastIterationTime) {
+		this.lastIterationTime = lastIterationTime;
+	}
+
+	public long getLastIterationStartTime() {
+		return lastIterationStartTime;
+	}
+
+	public void setLastIterationStartTime(long lastIterationStartTime) {
+		this.lastIterationStartTime = lastIterationStartTime;
+	}
+
+	public int getAnimationSwitchDelay() {
+		return animationSwitchDelay;
+	}
+
+	public void setAnimationSwitchDelay(int animationSwitchDelay) {
+		this.animationSwitchDelay = animationSwitchDelay;
+	}
+
+	public int getAnimationStartDelay() {
+		return animationStartDelay;
+	}
+
+	public void setAnimationStartDelay(int animationStartDelay) {
+		this.animationStartDelay = animationStartDelay;
+	}
+
+	public Sprite[] getSprites() {
+		return sprites;
+	}
+
+	public void setSprites(Sprite[] sprites) {
+		this.sprites = sprites;
 	}
 }

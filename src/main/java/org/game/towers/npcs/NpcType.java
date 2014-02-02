@@ -9,6 +9,7 @@ import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.units.Unit;
+import org.game.towers.workers.Utils;
 
 public class NpcType extends Unit {
 
@@ -55,8 +56,7 @@ public class NpcType extends Unit {
 		Point shifts = new Point();
 		Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
         move((int)shifts.getX(), (int)shifts.getY());
-        Random random = new Random();
-        if (random.nextInt(10) > 7 && getHealth() > 0) setHealth(getHealth()-1);
+        if (Utils.randInt(0, 100) > 95 && getHealth() > 0) setHealth(getHealth()-1);
 	}
 
 	@Override

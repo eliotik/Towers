@@ -216,7 +216,7 @@ public class Screen {
 			}
 		}
 
-		if (unit instanceof NpcType) {
+		if (unit instanceof NpcType && unit.getHealth() < unit.getMaxHealth()) {
 			yp -= 8;
 			for (int y = 0; y < ((NpcType) unit).getCurrentHealthSprite().getHeight(); y++) {
 				int yt = y + yp;

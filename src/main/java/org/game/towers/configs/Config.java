@@ -41,7 +41,6 @@ public class Config {
 
 	public static final int BOX_SIZE = 16;
 
-	public static final boolean LEVEL_SHOW_IDS = false;
 	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
 	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
 	public static final int LEVEL_WAVE_TIMEOUT = 10000;

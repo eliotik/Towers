@@ -6,6 +6,7 @@ import org.game.towers.configs.Config;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.level.Level;
+import org.game.towers.workers.Utils;
 
 public class TileTypes {
 
@@ -14,7 +15,6 @@ public class TileTypes {
 			new TileTypes(Config.TILE_BUSH), new TileTypes(Config.TILE_ENTRANCE),
 			new TileTypes(Config.TILE_EXIT), new TileTypes("VOID") };
 	private String type;
-	private Random random = new Random();
 
 	// public static final Tile VOID = new BasicSolidTile(0, 0, 0,
 	// Colors.get(000, -1, -1, -1), 0xFF000000);
@@ -114,7 +114,7 @@ public class TileTypes {
 	private Tile getTileGrass(Level level, int x, int y, boolean staticSprite) {
 		Sprite sprite = SpritesData.GRASS_0;
 		if (!staticSprite) {
-			switch (getRandom().nextInt(8)) {
+			switch (Utils.randInt(0, 8)) {
 			case 1:
 			case 2:
 				sprite = SpritesData.GRASS_1;
@@ -139,13 +139,5 @@ public class TileTypes {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public Random getRandom() {
-		return random;
-	}
-
-	public void setRandom(Random random) {
-		this.random = random;
 	}
 }
