@@ -40,6 +40,9 @@ public class SpritesData {
 	public static Sprite NPC_BULB_5 = new Sprite("NPC_BULB", 5, 0, 16, 16, "NPC");
 	public static Sprite NPC_BULB_6 = new Sprite("NPC_BULB", 6, 0, 16, 16, "NPC");
 
+	public static Sprite NPC_DRONE_0 = new Sprite("NPC_DRONE", 0, 1, 16, 16, "NPC");
+	public static Sprite NPC_DRONE_1 = new Sprite("NPC_DRONE", 1, 1, 16, 16, "NPC");
+
 	public static Sprite HEALTH_MAX  = new Sprite("HEALTH_MAX", 0, 0, 16, 16, "GUI");
 	public static Sprite HEALTH_90   = new Sprite("HEALTH_90", 1, 0, 16, 16, "GUI");
 	public static Sprite HEALTH_80   = new Sprite("HEALTH_80", 2, 0, 16, 16, "GUI");

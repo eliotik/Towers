@@ -1,6 +1,7 @@
 package org.game.towers.npcs;
 
 import org.game.towers.configs.Config;
+import org.game.towers.configs.Npcs;
 import org.game.towers.game.Game;
 import org.game.towers.game.Game.DebugLevel;
 import org.game.towers.gfx.Colors;
@@ -64,7 +65,8 @@ public class NpcTypesCollection {
 
 	private static List<Sprite> getSprites(String id) {
 		switch(id) {
-		case "bulb": return getBulbSprites();
+		case Npcs.BULB: return getBulbSprites();
+		case Npcs.DRONE: return getDroneSprites();
 		}
 		return new ArrayList<Sprite>();
 	}
@@ -78,6 +80,13 @@ public class NpcTypesCollection {
 		sprites.add(SpritesData.NPC_BULB_4);
 		sprites.add(SpritesData.NPC_BULB_5);
 		sprites.add(SpritesData.NPC_BULB_6);
+		return sprites;
+	}
+
+	private static List<Sprite> getDroneSprites() {
+		List<Sprite> sprites = new ArrayList<Sprite>();
+		sprites.add(SpritesData.NPC_DRONE_0);
+		sprites.add(SpritesData.NPC_DRONE_1);
 		return sprites;
 	}
 

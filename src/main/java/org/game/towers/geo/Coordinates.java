@@ -5,8 +5,8 @@ public class Coordinates {
     private int y;
 
     public Coordinates(int x, int y) {
-        this.setX(x);
-        this.setY(y);
+        setX(x);
+        setY(y);
     }
 
     public Coordinates() {

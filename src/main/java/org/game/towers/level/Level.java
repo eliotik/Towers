@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -71,25 +72,34 @@ public class Level implements GameActionListener {
 				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
 				NpcType bulb2 = UnitFactory.getNpc(Npcs.BULB);
 				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
+				NpcType drone1 = UnitFactory.getNpc(Npcs.DRONE);
+				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
 				if (bulb != null) {
 					bulb.setLevel(this);
 //					System.out.println("x: "+Portals.getEntrance().getCoordinates().getX()+", y: "+Portals.getEntrance().getCoordinates().getY());
 					bulb.setX(Portals.getEntrance().getCoordinates().getX());
 					bulb.setY(Portals.getEntrance().getCoordinates().getY());
-
 					addNpc(bulb);
 
 					bulb2.setLevel(this);
 					bulb2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
 					bulb2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
-
 					addNpc(bulb2);
 
 					bulb3.setLevel(this);
 					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
 					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
-
 					addNpc(bulb3);
+
+					drone1.setLevel(this);
+					drone1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
+					drone1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
+					addNpc(drone1);
+
+					drone2.setLevel(this);
+					drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
+					drone2.setY(Portals.getEntrance().getCoordinates().getY());
+					addNpc(drone2);
 				}
 		}
 	}
@@ -123,9 +133,9 @@ public class Level implements GameActionListener {
 				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
 				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
 				getTiles()[x + y * getWidth()] = tile;
-				if (!blocks.containsKey(key) && tile.isSolid())
-//                    blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
+				if (!blocks.containsKey(key) && tile.isSolid()) {
                     blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
+				}
 			}
 		}
 		Portals.setEntrance(getEntranceLocation());
