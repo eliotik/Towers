@@ -94,11 +94,12 @@ public class NpcType extends Unit {
 
 	@Override
 	public boolean hasCollided(int xa, int ya) {
-		int xMin = 0;
-		int xMax = 15;
+		//TODO: need to move collision box size to configuration file so we can use diferent sizes for each type of unit
+		int xMin = 4;
+		int xMax = 12;
 
-		int yMin = 0;
-		int yMax = 15;
+		int yMin = 4;
+		int yMax = 12;
 
 		for (int x = xMin; x < xMax; x++) {
 			if (isSolidTile(xa, ya, x, yMin)) {
