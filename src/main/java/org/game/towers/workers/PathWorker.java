@@ -35,29 +35,29 @@ public class PathWorker {
         double y;
         Map.Entry<Integer, Level.TileMap> tileItem;
 
-//        if (yStart >= (yFinish - Config.BOX_SIZE) && yStart <= (yFinish + Config.BOX_SIZE)) {
-//            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
-//            {
-//                tileItem = it.next();
-//                apexX = tileItem.getValue().getGeo().getTopLeft().getX();
-//                apexY = tileItem.getValue().getGeo().getTopLeft().getY();
-//                y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
-//                if (apexY > y) {
-//                    it.remove();
-//                }
-//            }
-//
-//            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
-//            {
-//                tileItem = it.next();
-//                apexX = tileItem.getValue().getGeo().getBottomLeft().getX();
-//                apexY = tileItem.getValue().getGeo().getBottomLeft().getY();
-//                y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
-//                if (apexY < y) {
-//                    it.remove();
-//                }
-//            }
-//        }
+        if (yStart >= (yFinish - Config.BOX_SIZE) && yStart <= (yFinish + Config.BOX_SIZE)) {
+            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
+            {
+                tileItem = it.next();
+                apexX = tileItem.getValue().getGeo().getTopRight().getX();
+                apexY = tileItem.getValue().getGeo().getTopRight().getY();
+                y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
+                if (apexY > y || apexX < xStart) {
+                    it.remove();
+                }
+            }
+
+            for (Iterator<Map.Entry<Integer, Level.TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
+            {
+                tileItem = it.next();
+                apexX = tileItem.getValue().getGeo().getBottomRight().getX();
+                apexY = tileItem.getValue().getGeo().getBottomRight().getY();
+                y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
+                if (apexY < y || apexX < xStart) {
+                    it.remove();
+                }
+            }
+        }
 
 
         if ( (xStart < xFinish && yStart < yFinish) || (xStart > xFinish && yStart > yFinish) ) {
@@ -112,6 +112,7 @@ public class PathWorker {
         if (temporaryTileMap.size() == 0) {
             return null;
         }
+
         System.out.println("size ="+temporaryTileMap.size());
         Level.TileMap barrier = getFirstBarrier(temporaryTileMap, xStart, yStart);
         return barrier;
@@ -197,6 +198,15 @@ public class PathWorker {
         Coordinates coordinate = null;
         Coordinates firstPotentialPoint = null;
         Coordinates secondPotentialPoint = null;
+
+        if (wayList.size() > 0){
+            if (Math.abs(x - wayList.get(wayList.size()-1).getX()) > Config.BOX_SIZE / 2 &&
+                    Math.abs(y - wayList.get(wayList.size()-1).getY()) > Config.BOX_SIZE / 2) {
+                return wayList.get(wayList.size()-1);
+            }
+        }
+
+
 //        System.out.println(barrier.getGeo().getTopLeft().getX()+" "+barrier.getGeo().getTopLeft().getX() );
         int logicZone = getLogicZone(x, y, barrier);
         System.out.println("logicZone="+logicZone);
@@ -260,7 +270,7 @@ public class PathWorker {
     private Coordinates checkProbabilisticWay(int x, int y, Coordinates firstPotentialPoint, Coordinates secondPotentialPoint) {
         Coordinates lastPoint = wayList.get(wayList.size() - 1);
 
-        if (Math.abs(lastPoint.getX() - x) < Config.BOX_SIZE / 2 && Math.abs(lastPoint.getY() - y) < Config.BOX_SIZE / 2){
+        if (Math.abs(lastPoint.getX() - x) < Config.BOX_SIZE /4  && Math.abs(lastPoint.getY() - y) < Config.BOX_SIZE /4){
             System.out.println("Method 'checkProbabilisticWay()' returns null");
 
             return null;
@@ -351,9 +361,9 @@ public class PathWorker {
 //        dx = chanceDirection.get(0);
 //        dy = chanceDirection.get(1);
         dx = doShift(x, coordinate.getX());
-        dy = doShift(y, coordinate.getY());
+        int expectedY = doShift(coordinate.getY(), y);
 
-        dy = getNextCoordinateByLineEquation(x+dx, y+dy, x, y, coordinate);
+        dy = getNextCoordinateByLineEquation(x+dx, y+expectedY, x, y, coordinate);
         point.setLocation(dx, dy);
     }
 
