@@ -10,10 +10,10 @@ public class Geo {
 	public Geo() {}
 
 	public Geo(Coordinates topLeft, Coordinates topRight, Coordinates bottomLeft, Coordinates bottomRight){
-		this.topLeft = topLeft;
-		this.topRight = topRight;
-		this.bottomLeft = bottomLeft;
-		this.bottomRight = bottomRight;
+		setTopLeft(topLeft);
+		setTopRight(topRight);
+		setBottomLeft(bottomLeft);
+		setBottomRight(bottomRight);
 	}
 
 	public Geo(Coordinates topLeft, int shiftRight, int shiftDown){
@@ -21,16 +21,19 @@ public class Geo {
 	}
 
 	private void init(Coordinates topLeft, int shiftRight, int shiftDown) {
-		this.topLeft = topLeft;
+		setTopLeft(topLeft);
 
-		this.topRight.setX(topLeft.getX() + shiftRight);
-		this.topRight.setY(topLeft.getY());
+		getTopLeft().setX(getTopLeft().getX() << 4);
+		getTopLeft().setY(getTopLeft().getY() << 4);
 
-		this.bottomLeft.setX(topLeft.getX());
-		this.bottomLeft.setY(topLeft.getY() + shiftDown);
+		getTopRight().setX(topLeft.getX() + shiftRight);
+		getTopRight().setY(topLeft.getY());
 
-		this.bottomRight.setX(topLeft.getX() + shiftRight);
-		this.bottomRight.setY(topLeft.getY() + shiftDown);
+		getBottomLeft().setX(topLeft.getX());
+		getBottomLeft().setY(topLeft.getY() + shiftDown);
+
+		getBottomRight().setX(topLeft.getX() + shiftRight);
+		getBottomRight().setY(topLeft.getY() + shiftDown);
 	}
 
 	public Geo(Coordinates coordinates, int shift) {

@@ -94,10 +94,10 @@ public class PathWorker {
 
                 apexX = tileItem.getValue().getGeo().getBottomRight().getX();
                 apexY = tileItem.getValue().getGeo().getBottomRight().getY();
-                System.out.println("tileItem =" + tileItem);
-                System.out.println("xStart =" + xStart + "yStart =" + yStart);
-                System.out.println("xFinish =" + xFinish + "yFinish =" + yFinish);
-                System.out.println("apexX =" + apexX + "apexY =" + apexY);
+//                System.out.println("tileItem =" + tileItem);
+//                System.out.println("xStart =" + xStart + "yStart =" + yStart);
+//                System.out.println("xFinish =" + xFinish + "yFinish =" + yFinish);
+//                System.out.println("apexX =" + apexX + "apexY =" + apexY);
                 y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
                 if (apexY < y || apexX < xStart) {
                     it.remove();
@@ -120,7 +120,7 @@ public class PathWorker {
             return null;
         }
 
-        System.out.println("size ="+temporaryTileMap.size());
+//        System.out.println("size ="+temporaryTileMap.size());
         TileMap barrier = getFirstBarrier(temporaryTileMap, xStart, yStart);
 
         return barrier;
@@ -164,7 +164,7 @@ public class PathWorker {
     }
 
     private int getLogicZone(int x, int y, TileMap construction){
-        System.out.println("x = "+x+" y = "+ y + " construction.getGeo().getTopLeft() X =" + construction.getGeo().getTopLeft().getX() + " construction.getGeo().getTopLeft() Y =" + construction.getGeo().getTopLeft().getY() );
+//        System.out.println("x = "+x+" y = "+ y + " construction.getGeo().getTopLeft() X =" + construction.getGeo().getTopLeft().getX() + " construction.getGeo().getTopLeft() Y =" + construction.getGeo().getTopLeft().getY() );
 //        System.out.println("x = "+x+" y = "+ y + " construction.getGeo().getTopLeft() X =" + construction.getGeo().getTopLeft().getX()* Config.BOX_SIZE + " construction.getGeo().getTopLeft() Y =" + construction.getGeo().getTopLeft().getY() );
         if (x <= construction.getGeo().getTopLeft().getX() && y <= construction.getGeo().getTopLeft().getY() - Config.BOX_SIZE) {
             return 1; // north West
@@ -215,7 +215,7 @@ public class PathWorker {
 
 //        System.out.println(barrier.getGeo().getTopLeft().getX()+" "+barrier.getGeo().getTopLeft().getX() );
         int logicZone = getLogicZone(x, y, barrier);
-        System.out.println("logicZone="+logicZone);
+//        System.out.println("logicZone="+logicZone);
         switch (logicZone) {
             case 1:
                 firstPotentialPoint = new Coordinates(barrier.getGeo().getTopRight().getX() + Config.BOX_SIZE, barrier.getGeo().getTopRight().getY() - Config.BOX_SIZE);
@@ -277,7 +277,7 @@ public class PathWorker {
         Coordinates lastPoint = wayList.get(wayList.size() - 1);
 
         if (Math.abs(lastPoint.getX() - x) < Config.BOX_SIZE /4  && Math.abs(lastPoint.getY() - y) < Config.BOX_SIZE /4){
-            System.out.println("Method 'checkProbabilisticWay()' returns null");
+//            System.out.println("Method 'checkProbabilisticWay()' returns null");
 
             return null;
         }
@@ -355,7 +355,7 @@ public class PathWorker {
     public void nextCoordinate(int x, int y, Point point) {
         int finishX = Portals.getExit().getCoordinates().getX();
         int finishY = Portals.getExit().getCoordinates().getY();
-        System.out.println("wayList.size="+wayList.size());
+//        System.out.println("wayList.size="+wayList.size());
         int dx, dy;
         TileMap barrier = getBarrier(x, finishX, y, finishY);
         Coordinates coordinate = new Coordinates(finishX, finishY);

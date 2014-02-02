@@ -71,7 +71,7 @@ public class Level implements GameActionListener {
 				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
 				if (bulb != null) {
 					bulb.setLevel(this);
-					System.out.println("x: "+Portals.getEntrance().getCoordinates().getX()+", y: "+Portals.getEntrance().getCoordinates().getY());
+//					System.out.println("x: "+Portals.getEntrance().getCoordinates().getX()+", y: "+Portals.getEntrance().getCoordinates().getY());
 					bulb.setX(Portals.getEntrance().getCoordinates().getX());
 					bulb.setY(Portals.getEntrance().getCoordinates().getY());
 

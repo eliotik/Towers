@@ -10,7 +10,7 @@ import java.util.zip.GZIPOutputStream;
 
 /**
  * NBT IO class
- * 
+ *
  * @see <a
  *      href="https://github.com/udoprog/c10t/blob/master/docs/NBT.txt">Online
  *      NBT specification</a>
@@ -30,7 +30,7 @@ public class Tag {
 
 	/**
 	 * Create a new TAG_List or TAG_Compound NBT tag.
-	 * 
+	 *
 	 * @param type
 	 *            either TAG_List or TAG_Compound
 	 * @param name
@@ -45,7 +45,7 @@ public class Tag {
 	/**
 	 * Create a new TAG_List with an empty list. Use {@link Tag#addTag(Tag)} to
 	 * add tags later.
-	 * 
+	 *
 	 * @param name
 	 *            name for this tag or null to create an unnamed tag.
 	 * @param listType
@@ -57,7 +57,7 @@ public class Tag {
 
 	/**
 	 * Create a new NBT tag.
-	 * 
+	 *
 	 * @param type
 	 *            any value from the {@link Type} enum.
 	 * @param name
@@ -248,7 +248,7 @@ public class Tag {
 
 	/**
 	 * Remove a tag from a TAG_List or a TAG_Compound at the specified index.
-	 * 
+	 *
 	 * @return the removed tag
 	 */
 	public Tag removeTag(int index) {
@@ -268,7 +268,7 @@ public class Tag {
 	/**
 	 * Remove a tag from a TAG_List or a TAG_Compound. If the tag is not a child
 	 * of this tag then nested tags are searched.
-	 * 
+	 *
 	 * @param tag
 	 *            tag to look for
 	 */
@@ -293,7 +293,7 @@ public class Tag {
 
 	/**
 	 * Find the first nested tag with specified name in a TAG_Compound.
-	 * 
+	 *
 	 * @param name
 	 *            the name to look for. May be null to look for unnamed tags.
 	 * @return the first nested tag that has the specified name.
@@ -305,7 +305,7 @@ public class Tag {
 	/**
 	 * Find the first nested tag with specified name in a TAG_List or
 	 * TAG_Compound after a tag with the same name.
-	 * 
+	 *
 	 * @param name
 	 *            the name to look for. May be null to look for unnamed tags.
 	 * @param found
@@ -335,7 +335,7 @@ public class Tag {
 
 	/**
 	 * Read a tag and its nested tags from an InputStream.
-	 * 
+	 *
 	 * @param is
 	 *            stream to read from, like a FileInputStream
 	 * @return NBT tag or structure read from the InputStream
@@ -424,7 +424,7 @@ public class Tag {
 
 	/**
 	 * Read a tag and its nested tags from an InputStream.
-	 * 
+	 *
 	 * @param os
 	 *            stream to write to, like a FileOutputStream
 	 * @throws IOException
@@ -556,37 +556,37 @@ public class Tag {
 			return;
 		String name = t.getName();
 		indent(indent);
-		System.out.print(getTypeString(t.getType()));
+//		System.out.print(getTypeString(t.getType()));
 		if (name != null)
-			System.out.print("(\"" + t.getName() + "\")");
+//			System.out.print("(\"" + t.getName() + "\")");
 		if (type == Type.TAG_Byte_Array) {
 			byte[] b = (byte[]) t.getValue();
-			System.out.println(": [" + b.length + " bytes]");
+//			System.out.println(": [" + b.length + " bytes]");
 		} else if (type == Type.TAG_List) {
 			Tag[] subtags = (Tag[]) t.getValue();
-			System.out.println(": " + subtags.length + " entries of type "
-					+ getTypeString(t.getListType()));
+//			System.out.println(": " + subtags.length + " entries of type "
+//					+ getTypeString(t.getListType()));
 			for (Tag st : subtags) {
 				print(st, indent + 1);
 			}
 			indent(indent);
-			System.out.println("}");
+//			System.out.println("}");
 		} else if (type == Type.TAG_Compound) {
 			Tag[] subtags = (Tag[]) t.getValue();
-			System.out.println(": " + (subtags.length - 1) + " entries");
+//			System.out.println(": " + (subtags.length - 1) + " entries");
 			indent(indent);
-			System.out.println("{");
+//			System.out.println("{");
 			for (Tag st : subtags) {
 				print(st, indent + 1);
 			}
 			indent(indent);
-			System.out.println("}");
+//			System.out.println("}");
 		} else if (type == Type.TAG_Int_Array) {
 			int[] i = (int[]) t.getValue();
-			System.out.println(": [" + i.length * 4 + " bytes]");
+//			System.out.println(": [" + i.length * 4 + " bytes]");
 
 		} else {
-			System.out.println(": " + t.getValue());
+//			System.out.println(": " + t.getValue());
 		}
 	}
 
