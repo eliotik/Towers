@@ -95,25 +95,29 @@ public class NpcType extends Unit {
 	@Override
 	public boolean hasCollided(int xa, int ya) {
 		int xMin = 0;
-		int xMax = 7;
+		int xMax = 15;
+
 		int yMin = 0;
-		int yMax = 7;
+		int yMax = 15;
 
 		for (int x = xMin; x < xMax; x++) {
 			if (isSolidTile(xa, ya, x, yMin)) {
 				return true;
 			}
 		}
+
 		for (int x = xMin; x < xMax; x++) {
 			if (isSolidTile(xa, ya, x, yMax)) {
 				return true;
 			}
 		}
+
 		for (int y = yMin; y < yMax; y++) {
 			if (isSolidTile(xa, ya, xMin, y)) {
 				return true;
 			}
 		}
+
 		for (int y = yMin; y < yMax; y++) {
 			if (isSolidTile(xa, ya, xMax, y)) {
 				return true;
