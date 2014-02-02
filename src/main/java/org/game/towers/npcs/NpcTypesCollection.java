@@ -38,9 +38,12 @@ public class NpcTypesCollection {
                 item.setTileY(Integer.parseInt(elemj.getAttribute("tile_y").toString()));
 
                 item.setHealth(Integer.parseInt(elemj.getAttribute("health").toString()));
+                item.setMaxHealth(item.getHealth());
                 item.setArmour(Integer.parseInt(elemj.getAttribute("armour").toString()));
                 item.setSpeed(Double.parseDouble(elemj.getAttribute("speed").toString()));
                 item.setDamage(Integer.parseInt(elemj.getAttribute("damage").toString()));
+                item.setAnimationSwitchDelay(Integer.parseInt(elemj.getAttribute("animation_switch_delay").toString()));
+                item.setAnimationStartDelay(Integer.parseInt(elemj.getAttribute("animation_start_delay").toString()));
 
                 item.setGeo(new Rectangle(
                         0,

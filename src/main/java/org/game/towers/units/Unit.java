@@ -40,16 +40,9 @@ public abstract class Unit implements IUnit, Serializable {
 	private int scale = 1;
 	private List<Sprite> sprites;
 	private int spriteIndex = 0;
+	private boolean pauseAnimation = false;
 
 	public Unit() {}
-
-//	public Unit(Level level) {
-//		init(level);
-//	}
-//
-//	public final void init(Level level) {
-//		this.setLevel(level);
-//	}
 
 	public abstract void tick();
 
@@ -315,5 +308,16 @@ public abstract class Unit implements IUnit, Serializable {
 
 	public void setSpriteIndex(int spriteIndex) {
 		this.spriteIndex = spriteIndex;
+	}
+
+	public boolean isPauseAnimation() {
+		return pauseAnimation;
+	}
+
+	public void setPauseAnimation(boolean pauseAnimation) {
+		this.pauseAnimation = pauseAnimation;
+		if (pauseAnimation) {
+			spriteIndex = 0;
+		}
 	}
 }

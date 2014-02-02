@@ -1,10 +1,8 @@
-/**
- *
- */
 package org.game.towers.npcs;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.game.towers.game.Game;
 import org.game.towers.gfx.Screen;
@@ -12,19 +10,22 @@ import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.units.Unit;
 
-/**
- * @author eliotik
- *
- */
 public class NpcType extends Unit {
 
 	private static final long serialVersionUID = 1L;
 
-//	public NpcType(Level level) {
-//		super(level);
-//	}
-
+	private long lastIterationTime;
+	private long lastIterationStartTime;
+	private int animationSwitchDelay;
+	private int animationStartDelay;
 	private ArrayList<String> hands;
+
+	public NpcType() {
+		setSpriteIndex(0);
+		setAnimationStartDelay(0);
+		lastIterationTime = System.currentTimeMillis();
+		lastIterationStartTime = System.currentTimeMillis();
+	}
 
 	public ArrayList<String> getHands() {
 		return hands;
@@ -40,42 +41,22 @@ public class NpcType extends Unit {
 
 	@Override
 	public void tick() {
-//		int xa = 0;
-//
-//		if (getMovingDirection() != 2)
-//			setMovingDirection(3);
-//
-//		if (getX() < Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
-//			xa++;
-//		} else if (getX() >= Config.SCREEN_WIDTH - 8*2 && getMovingDirection() == 3) {
-//			setMovingDirection(2);
-//		} else if (getX() > 8 && getMovingDirection() == 2) {
-//			xa--;
-//		} else if (getX() <= 8 && getMovingDirection() == 2) {
-//			setMovingDirection(3);
-//		}
-//		if (xa != 0) {
-//			if(!hasCollided(xa, 0)) {
-//				move(xa, 0);
-//			} else {
-//				if (getMovingDirection() == 2) {
-//					setMovingDirection(3);
-//					move(xa++, 0);
-//				} else {
-//					setMovingDirection(2);
-//					move(--xa, 0);
-//				}
-//			}
-//
-//			setMoving(true);
-//		} else {
-//			setMoving(false);
-//		}
+
+		if ((System.currentTimeMillis() - lastIterationStartTime) >= (getAnimationStartDelay()) && !isPauseAnimation()) {
+			if ((System.currentTimeMillis() - lastIterationTime) >= (getAnimationSwitchDelay())) {
+				lastIterationTime = System.currentTimeMillis();
+				setSpriteIndex((getSpriteIndex() + 1) % getSprites().size());
+				if (getSpriteIndex() >= getSprites().size() - 1) {
+					lastIterationStartTime = System.currentTimeMillis();
+				}
+			}
+		}
+
 		Point shifts = new Point();
 		Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
         move((int)shifts.getX(), (int)shifts.getY());
-//		setNumSteps(16);
-//		setScale(1);
+        Random random = new Random();
+        if (random.nextInt(10) > 7 && getHealth() > 0) setHealth(getHealth()-1);
 	}
 
 	@Override
@@ -175,5 +156,21 @@ public class NpcType extends Unit {
 			return SpritesData.HEALTH_10;
 		}
 		return SpritesData.HEALTH_DEAD;
+	}
+
+	public int getAnimationSwitchDelay() {
+		return animationSwitchDelay;
+	}
+
+	public void setAnimationSwitchDelay(int animationSwitchDelay) {
+		this.animationSwitchDelay = animationSwitchDelay;
+	}
+
+	public int getAnimationStartDelay() {
+		return animationStartDelay;
+	}
+
+	public void setAnimationStartDelay(int animationStartDelay) {
+		this.animationStartDelay = animationStartDelay;
 	}
 }

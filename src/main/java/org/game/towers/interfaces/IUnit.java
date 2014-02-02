@@ -73,8 +73,11 @@ public interface IUnit {
     public boolean isConstruction();
 
 	public List<Sprite> getSprites();
-	public void setSprites(List<Sprite> sprites);
+	public void         setSprites(List<Sprite> sprites);
 
-	public int getSpriteIndex();
+	public int  getSpriteIndex();
 	public void setSpriteIndex(int spriteIndex);
+
+	public boolean isPauseAnimation();
+	public void    setPauseAnimation(boolean pauseAnimation);
 }

@@ -65,23 +65,8 @@ public class TileTypes {
 		case Config.TILE_BUSH:     return getTileBush(level, x, y, staticSprite);
 		case Config.TILE_ENTRANCE: return getTileEntrance(level, x, y, staticSprite);
 		case Config.TILE_EXIT:     return getTileExit(level, x, y, staticSprite);
-		case Config.TILE_NPC_BULB: return getTileNpcBulb(level, x, y, staticSprite);
 		default:                   return getTileVoid(level, x, y, staticSprite);
 		}
-	}
-
-	private Tile getTileNpcBulb(Level level, int x, int y, boolean staticSprite) {
-		return new AnimatedTile(level,
-				new Sprite[] {
-					SpritesData.NPC_BULB_0,
-					SpritesData.NPC_BULB_1,
-					SpritesData.NPC_BULB_2,
-					SpritesData.NPC_BULB_3,
-					SpritesData.NPC_BULB_4,
-					SpritesData.NPC_BULB_5,
-					SpritesData.NPC_BULB_6
-				},
-				Config.TILE_EXIT, 0xffd07c03, false, false, x, y, 200);
 	}
 
 	private Tile getTileVoid(Level level, int x, int y, boolean staticSprite) {

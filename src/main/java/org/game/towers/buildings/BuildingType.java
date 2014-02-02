@@ -1,16 +1,9 @@
-/**
- * 
- */
 package org.game.towers.buildings;
 
 import org.game.towers.gfx.Screen;
 import org.game.towers.level.Level;
 import org.game.towers.units.Unit;
 
-/**
- * @author eliotik
- *
- */
 public class BuildingType extends Unit {
 	public BuildingType(Level level) {
 //		super(level);
