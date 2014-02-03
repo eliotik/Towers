@@ -76,7 +76,6 @@ public class Level implements GameActionListener {
 				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
 				if (bulb != null) {
 					bulb.setLevel(this);
-//					System.out.println("x: "+Portals.getEntrance().getCoordinates().getX()+", y: "+Portals.getEntrance().getCoordinates().getY());
 					bulb.setX(Portals.getEntrance().getCoordinates().getX());
 					bulb.setY(Portals.getEntrance().getCoordinates().getY());
 					addNpc(bulb);

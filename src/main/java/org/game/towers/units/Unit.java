@@ -9,8 +9,10 @@ import java.util.List;
 
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
+import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.level.Level;
 import org.game.towers.level.tiles.Tile;
+import org.game.towers.workers.Utils;
 
 /**
  * @author eliotik
@@ -40,6 +42,7 @@ public abstract class Unit implements Serializable {
 	private List<Sprite> sprites;
 	private int spriteIndex = 0;
 	private boolean pauseAnimation = false;
+	private boolean isDead = false;
 
 	public Unit() {}
 
@@ -76,6 +79,9 @@ public abstract class Unit implements Serializable {
 
 	public Unit setHealth(int health) {
 		this.health = health;
+		if (health <= 0) {
+			setDead(true);
+		}
 		return this;
 	}
 
@@ -199,6 +205,7 @@ public abstract class Unit implements Serializable {
 
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
+		setPauseAnimation(!isMoving);
 	}
 
 	public int getNumSteps() {
@@ -206,6 +213,9 @@ public abstract class Unit implements Serializable {
 	}
 
 	public void setNumSteps(int numSteps) {
+		if (this.numSteps + numSteps > this.numSteps) {
+			setMoving(true);
+		}
 		this.numSteps = numSteps;
 	}
 
@@ -243,6 +253,9 @@ public abstract class Unit implements Serializable {
 	}
 
 	public boolean isPauseAnimation() {
+		if (!isMoving()) {
+			setPauseAnimation(true);
+		}
 		return pauseAnimation;
 	}
 
@@ -251,5 +264,68 @@ public abstract class Unit implements Serializable {
 		if (pauseAnimation) {
 			spriteIndex = 0;
 		}
+	}
+
+	public boolean isDead() {
+		return isDead;
+	}
+
+	public void setDead(boolean isDead) {
+		this.isDead = isDead;
+		if (isDead) {
+			switch (Utils.randInt(0, 8)) {
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				getSprites().clear();
+				getSprites().add(SpritesData.NPC_DEAD_0);
+				getSprites().add(SpritesData.NPC_DEAD_1);
+				getSprites().add(SpritesData.NPC_DEAD_2);
+				break;
+			default:
+			case 0:
+				getSprites().clear();
+				getSprites().add(SpritesData.NPC_DEAD_3);
+				getSprites().add(SpritesData.NPC_DEAD_4);
+				getSprites().add(SpritesData.NPC_DEAD_5);
+				break;
+			}
+		}
+	}
+
+	public Sprite getCurrentHealthSprite() {
+		int healthPercent = (int) (((double) getHealth() / (double) getMaxHealth()) * (double) 100);
+		if (healthPercent >= 100) {
+			return SpritesData.HEALTH_MAX;
+		}
+		if (healthPercent >= 90) {
+			return SpritesData.HEALTH_90;
+		}
+		if (healthPercent >= 80) {
+			return SpritesData.HEALTH_80;
+		}
+		if (healthPercent >= 70) {
+			return SpritesData.HEALTH_70;
+		}
+		if (healthPercent >= 60) {
+			return SpritesData.HEALTH_60;
+		}
+		if (healthPercent >= 50) {
+			return SpritesData.HEALTH_50;
+		}
+		if (healthPercent >= 40) {
+			return SpritesData.HEALTH_40;
+		}
+		if (healthPercent >= 30) {
+			return SpritesData.HEALTH_30;
+		}
+		if (healthPercent >= 20) {
+			return SpritesData.HEALTH_20;
+		}
+		if (healthPercent >= 10) {
+			return SpritesData.HEALTH_10;
+		}
+		return SpritesData.HEALTH_DEAD;
 	}
 }

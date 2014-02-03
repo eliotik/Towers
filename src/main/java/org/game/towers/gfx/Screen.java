@@ -14,7 +14,7 @@ public class Screen {
 	public static final byte BIT_MIRROR_Y = 0x02;
 
 	private int[] pixels;
-	private Graphics graphics;
+//	private Graphics graphics;
 
 	private int xOffset = 0;
 	private int yOffset = 0;
@@ -41,9 +41,9 @@ public class Screen {
 //		pixels = new int[width * height];
 //	}
 
-	public void setGraphics(Graphics g) {
-		graphics = g;
-	}
+//	public void setGraphics(Graphics g) {
+//		graphics = g;
+//	}
 
 	public void clear() {
 		for (int i = 0; i < getPixels().length; i++) {
@@ -216,7 +216,7 @@ public class Screen {
 			}
 		}
 
-		if (unit instanceof NpcType && unit.getHealth() < unit.getMaxHealth()) {
+		if (unit instanceof NpcType && unit.getHealth() < unit.getMaxHealth() && !unit.isDead()) {
 			yp -= 8;
 			for (int y = 0; y < ((NpcType) unit).getCurrentHealthSprite().getHeight(); y++) {
 				int yt = y + yp;

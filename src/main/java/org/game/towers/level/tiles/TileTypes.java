@@ -1,7 +1,5 @@
 package org.game.towers.level.tiles;
 
-import java.util.Random;
-
 import org.game.towers.configs.Config;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;

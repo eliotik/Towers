@@ -38,10 +38,17 @@ public class SpritesData {
 	public static Sprite NPC_BULB_3 = new Sprite("NPC_BULB", 3, 0, 16, 16, "NPC");
 	public static Sprite NPC_BULB_4 = new Sprite("NPC_BULB", 4, 0, 16, 16, "NPC");
 	public static Sprite NPC_BULB_5 = new Sprite("NPC_BULB", 5, 0, 16, 16, "NPC");
-	public static Sprite NPC_BULB_6 = new Sprite("NPC_BULB", 6, 0, 16, 16, "NPC");
 
 	public static Sprite NPC_DRONE_0 = new Sprite("NPC_DRONE", 0, 1, 16, 16, "NPC");
 	public static Sprite NPC_DRONE_1 = new Sprite("NPC_DRONE", 1, 1, 16, 16, "NPC");
+	public static Sprite NPC_DRONE_2 = new Sprite("NPC_DRONE", 2, 1, 16, 16, "NPC");
+
+	public static Sprite NPC_DEAD_0 = new Sprite("NPC_DEAD", 0, 2, 16, 16, "BLOCK");
+	public static Sprite NPC_DEAD_1 = new Sprite("NPC_DEAD", 1, 2, 16, 16, "BLOCK");
+	public static Sprite NPC_DEAD_2 = new Sprite("NPC_DEAD", 2, 2, 16, 16, "BLOCK");
+	public static Sprite NPC_DEAD_3 = new Sprite("NPC_DEAD", 0, 3, 16, 16, "BLOCK");
+	public static Sprite NPC_DEAD_4 = new Sprite("NPC_DEAD", 1, 3, 16, 16, "BLOCK");
+	public static Sprite NPC_DEAD_5 = new Sprite("NPC_DEAD", 2, 3, 16, 16, "BLOCK");
 
 	public static Sprite HEALTH_MAX  = new Sprite("HEALTH_MAX", 0, 0, 16, 16, "GUI");
 	public static Sprite HEALTH_90   = new Sprite("HEALTH_90", 1, 0, 16, 16, "GUI");

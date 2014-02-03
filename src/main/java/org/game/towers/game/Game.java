@@ -212,7 +212,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 		screen.clear();
 		Graphics g = bs.getDrawGraphics();
-		screen.setGraphics(g);
+//		screen.setGraphics(g);
 
 		if (gui != null) {
 			gui.render();

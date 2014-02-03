@@ -2,9 +2,9 @@ package org.game.towers.npcs;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.game.towers.game.Game;
+import org.game.towers.geo.Coordinates;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
@@ -52,11 +52,12 @@ public class NpcType extends Unit {
 				}
 			}
 		}
-
-		Point shifts = new Point();
-		Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
-        move((int)shifts.getX(), (int)shifts.getY());
-        if (Utils.randInt(0, 100) > 95 && getHealth() > 0) setHealth(getHealth()-1);
+		if (!isDead()) {
+			Point shifts = new Point();
+			Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
+	        move((int)shifts.getX(), (int)shifts.getY());
+	        if (Utils.randInt(0, 100) > 95 && !isDead()) setHealth(getHealth()-2);
+		}
 	}
 
 	@Override
@@ -71,8 +72,6 @@ public class NpcType extends Unit {
 			setNumSteps(getNumSteps() - 1);
 			return;
 		}
-
-		setNumSteps(getNumSteps() + 1);
 
 		if(!hasCollided(xa, ya)) {
 			if (ya < 0) {
@@ -89,6 +88,9 @@ public class NpcType extends Unit {
 			}
 			setX(getX() + xa * getSpeed());
 			setY(getY() + ya * getSpeed());
+			setNumSteps(getNumSteps() + 1);
+		} else {
+			setMoving(false);
 		}
 	}
 
@@ -126,41 +128,6 @@ public class NpcType extends Unit {
 		}
 
 		return false;
-	}
-
-	public Sprite getCurrentHealthSprite() {
-		int healthPercent = (int) (((double) getHealth() / (double) getMaxHealth()) * (double) 100);
-		if (healthPercent >= 100) {
-			return SpritesData.HEALTH_MAX;
-		}
-		if (healthPercent >= 90) {
-			return SpritesData.HEALTH_90;
-		}
-		if (healthPercent >= 80) {
-			return SpritesData.HEALTH_80;
-		}
-		if (healthPercent >= 70) {
-			return SpritesData.HEALTH_70;
-		}
-		if (healthPercent >= 60) {
-			return SpritesData.HEALTH_60;
-		}
-		if (healthPercent >= 50) {
-			return SpritesData.HEALTH_50;
-		}
-		if (healthPercent >= 40) {
-			return SpritesData.HEALTH_40;
-		}
-		if (healthPercent >= 30) {
-			return SpritesData.HEALTH_30;
-		}
-		if (healthPercent >= 20) {
-			return SpritesData.HEALTH_20;
-		}
-		if (healthPercent >= 10) {
-			return SpritesData.HEALTH_10;
-		}
-		return SpritesData.HEALTH_DEAD;
 	}
 
 	public int getAnimationSwitchDelay() {
