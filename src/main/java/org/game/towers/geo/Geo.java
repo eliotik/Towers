@@ -27,14 +27,14 @@ public class Geo {
 		getTopLeft().setX(getTopLeft().getX() << 4);
 		getTopLeft().setY(getTopLeft().getY() << 4);
 
-		getTopRight().setX(topLeft.getX() + shiftRight);
-		getTopRight().setY(topLeft.getY());
+		getTopRight().setX(getTopLeft().getX() + shiftRight);
+		getTopRight().setY(getTopLeft().getY());
 
-		getBottomLeft().setX(topLeft.getX());
-		getBottomLeft().setY(topLeft.getY() + shiftDown);
+		getBottomLeft().setX(getTopLeft().getX());
+		getBottomLeft().setY(getTopLeft().getY() + shiftDown);
 
-		getBottomRight().setX(topLeft.getX() + shiftRight);
-		getBottomRight().setY(topLeft.getY() + shiftDown);
+		getBottomRight().setX(getTopLeft().getX() + shiftRight);
+		getBottomRight().setY(getTopLeft().getY() + shiftDown);
 	}
 
 	public Geo(Coordinates coordinates, int shift) {
