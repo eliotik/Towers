@@ -1,6 +1,5 @@
 package org.game.towers.gfx;
 
-import java.awt.Graphics;
 import java.awt.Point;
 
 import org.game.towers.level.Level;
@@ -51,14 +50,31 @@ public class Screen {
 		}
 	}
 
-	public void renderTile(Level level, int xOrig, int yOrig, Tile tile) {
+	public void renderTile(Level level, int xOrig, int yOrig, Tile tile, int mirrorDir, int scale) {
 		int xp = (xOrig * tile.getSprite().getWidth()) - getxOffset();
 		int yp = (yOrig * tile.getSprite().getHeight()) - getyOffset();
 
+		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
+		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
+
+		int scaleMap = scale - 1;
+
 		for (int y = 0; y < tile.getSprite().getHeight(); y++) {
 			int yt = y + yp;
+
+			int ySheet = y;
+			if (mirrorY) ySheet = 15 - y;
+
+			int yPixel = y + yp + (y * scaleMap) - ((scaleMap << 4) / 2);
+
 			for (int x = 0; x < tile.getSprite().getWidth(); x++) {
 				int xt = x + xp;
+
+				int xSheet = x;
+				if (mirrorX) xSheet = 15 - x;
+
+				int xPixel = x + xp + (x * scaleMap) - ((scaleMap << 4) / 2);
+
 				if (0 - tile.getSprite().getWidth() > xt || xt >= getWidth()
 						|| 0 - tile.getSprite().getHeight() > yt || yt >= getHeight()) {
 					break;
@@ -70,13 +86,21 @@ public class Screen {
 				if (yt < 0) {
 					yt = 0;
 				}
-				int color = tile.getSprite().getPixels()[x + y * tile.getSprite().getWidth()];
-				if ((color == 0xFFFF00FF || color == 0xFF800080)
-						&& level != null) {
+				int color = tile.getSprite().getPixels()[xSheet + ySheet * tile.getSprite().getWidth()];
+				if ((color == 0xFFFF00FF || color == 0xFF800080) && level != null) {
 					Tile bgTile = level.getBackgroundTile(xOrig, yOrig);
 					color = bgTile.getSprite().getPixels()[x	+ y * bgTile.getSprite().getWidth()];
 				}
-				getPixels()[xt + yt * getWidth()] = color;
+				for (int yScale = 0; yScale < scale; yScale++) {
+					if (yPixel + yScale < 0 || yPixel + yScale >= getHeight())
+						continue;
+					for (int xScale = 0; xScale < scale; xScale++) {
+						if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
+							continue;
+						getPixels()[(xPixel + xScale) + (yPixel + yScale) * getWidth()] = color;
+					}
+				}
+//				getPixels()[xt + yt * getWidth()] = color;
 			}
 		}
 	}
@@ -189,13 +213,31 @@ public class Screen {
 		this.pixels = pixels;
 	}
 
-	public void renderUnit(int xOrig, int yOrig, Unit unit) {
+	public void renderUnit(int xOrig, int yOrig, Unit unit, int mirrorDir, int scale) {
 		int xp = xOrig - getxOffset();
 		int yp = yOrig - getyOffset();
+
+		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
+		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
+
+		int scaleMap = scale - 1;
+
 		for (int y = 0; y < unit.getCurrentSprite().getHeight(); y++) {
 			int yt = y + yp;
+
+			int ySheet = y;
+			if (mirrorY) ySheet = 15 - y;
+
+			int yPixel = y + yp + (y * scaleMap) - ((scaleMap << 4) / 2);
+
 			for (int x = 0; x < unit.getCurrentSprite().getWidth(); x++) {
 				int xt = x + xp;
+
+				int xSheet = x;
+				if (mirrorX) xSheet = 15 - x;
+
+				int xPixel = x + xp + (x * scaleMap) - ((scaleMap << 4) / 2);
+
 				if (0 - unit.getCurrentSprite().getWidth() > xt || xt >= getWidth()
 						|| 0 - unit.getCurrentSprite().getHeight() > yt
 						|| yt >= getHeight()) {
@@ -208,10 +250,21 @@ public class Screen {
 				if (yt < 0) {
 					yt = 0;
 				}
-				int colour = unit.getCurrentSprite().getPixels()[x + y
+				int color = unit.getCurrentSprite().getPixels()[xSheet + ySheet
 						* unit.getCurrentSprite().getWidth()];
-				if (colour != 0xFFFF00FF && colour != 0xFF800080) {
-					getPixels()[xt + yt * getWidth()] = colour;
+				if (color != 0xFFFF00FF && color != 0xFF800080) {
+
+					for (int yScale = 0; yScale < scale; yScale++) {
+						if (yPixel + yScale < 0 || yPixel + yScale >= getHeight())
+							continue;
+						for (int xScale = 0; xScale < scale; xScale++) {
+							if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
+								continue;
+							getPixels()[(xPixel + xScale) + (yPixel + yScale) * getWidth()] = color;
+						}
+					}
+
+//					getPixels()[xt + yt * getWidth()] = color;
 				}
 			}
 		}
@@ -242,5 +295,9 @@ public class Screen {
 				}
 			}
 		}
+	}
+
+	public void renderTile(Level level, int xOrig, int yOrig, Tile tile) {
+		renderTile(level, xOrig, yOrig, tile, tile.getMirrorMask(), 1);
 	}
 }

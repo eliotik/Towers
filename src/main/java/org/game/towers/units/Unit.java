@@ -39,6 +39,7 @@ public abstract class Unit implements Serializable {
 	private boolean isMoving;
 	private int movingDirection = 1;
 	private int scale = 1;
+	private int mirrorMask = 0x00;
 	private List<Sprite> sprites;
 	private int spriteIndex = 0;
 	private boolean pauseAnimation = false;
@@ -87,8 +88,21 @@ public abstract class Unit implements Serializable {
 			setDead(true);
 			setSpriteIndex(0);
 			setAnimationStartDelay(0);
-			setAnimationSwitchDelay(200);
+			setAnimationSwitchDelay(800);
 			setPauseAnimation(false);
+			switch (Utils.randInt(0, 3)) {
+			case 1:
+				setMirrorMask(0x01);
+				break;
+			case 2:
+				setMirrorMask(0x02);
+				break;
+			case 0:
+			default:
+				setMirrorMask(0x00);
+				break;
+			}
+
 		}
 		return this;
 	}
@@ -261,7 +275,7 @@ public abstract class Unit implements Serializable {
 	}
 
 	public boolean isPauseAnimation() {
-		if (!isMoving()) {
+		if (!isMoving() && !isDead()) {
 			setPauseAnimation(true);
 		}
 		return pauseAnimation;
@@ -367,5 +381,13 @@ public abstract class Unit implements Serializable {
 
 	public void setLastIterationStartTime(long lastIterationStartTime) {
 		this.lastIterationStartTime = lastIterationStartTime;
+	}
+
+	public int getMirrorMask() {
+		return mirrorMask;
+	}
+
+	public void setMirrorMask(int mirrorMask) {
+		this.mirrorMask = mirrorMask;
 	}
 }

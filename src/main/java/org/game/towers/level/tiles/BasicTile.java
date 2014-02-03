@@ -11,6 +11,12 @@ public class BasicTile extends Tile {
 		super(level, sprite, name, levelColor, isSolid, isEmitter, x, y);
 	}
 
+	public BasicTile(Level level, Sprite sprite, String name, int levelColor,
+			boolean isSolid, boolean isEmitter, int x, int y, int mirrorMask) {
+		super(level, sprite, name, levelColor, isSolid, isEmitter, x, y);
+		setMirrorMask(mirrorMask);
+	}
+
 	public void tick() {}
 
 	public void render(Screen screen) {

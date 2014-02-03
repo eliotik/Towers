@@ -4,10 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import org.game.towers.game.Game;
-import org.game.towers.geo.Coordinates;
 import org.game.towers.gfx.Screen;
-import org.game.towers.gfx.sprites.Sprite;
-import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.units.Unit;
 import org.game.towers.workers.Utils;
 
@@ -51,13 +48,13 @@ public class NpcType extends Unit {
 			Point shifts = new Point();
 			Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
 	        move((int)shifts.getX(), (int)shifts.getY());
-	        if (Utils.randInt(0, 100) > 95 && !isDead()) setHealth(getHealth()-20);
+	        if (Utils.randInt(0, 100) > 95 && !isDead()) setHealth(getHealth()-2);
 		}
 	}
 
 	@Override
 	public void render(Screen screen) {
-		screen.renderUnit((int) getX(), (int) getY(), this);
+		screen.renderUnit((int) getX(), (int) getY(), this, getMirrorMask(), getScale());
 	}
 
 	public void move(int xa, int ya) {

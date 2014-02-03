@@ -14,6 +14,7 @@ public abstract class Tile {
 	private int levelColor;
 	private int x;
 	private int y;
+	private int mirrorMask = 0x00;
 
 	public Tile(Level level, Sprite sprite, String name, int levelColor,
 			boolean isSolid, boolean isEmitter, int x, int y) {
@@ -92,5 +93,13 @@ public abstract class Tile {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public int getMirrorMask() {
+		return mirrorMask;
+	}
+
+	public void setMirrorMask(int mirrorMask) {
+		this.mirrorMask = mirrorMask;
 	}
 }

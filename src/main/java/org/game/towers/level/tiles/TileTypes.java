@@ -98,15 +98,37 @@ public class TileTypes {
 	}
 
 	private Tile getTileBush(Level level, int x, int y, boolean staticSprite) {
-		return new BasicTile(level, SpritesData.BUSH, Config.TILE_BUSH, 0xff69bd45, true, false, x, y);
+		int mirrorMask = 0x00;
+		if (Utils.randInt(0, 2) == 1) {
+			mirrorMask = 0x01;
+		}
+		return new BasicTile(level, SpritesData.BUSH, Config.TILE_BUSH, 0xff69bd45, true, false, x, y, mirrorMask);
 	}
 
 	private Tile getTileStone(Level level, int x, int y, boolean staticSprite) {
-		return new BasicTile(level, SpritesData.STONE, Config.TILE_STONE, 0xff555555, true, false, x, y);
+		int mirrorMask = 0x00;
+		switch (Utils.randInt(0, 2)) {
+		case 1:
+			mirrorMask = 0x01;
+			break;
+		case 2:
+			mirrorMask = 0x02;
+			break;
+		}
+		return new BasicTile(level, SpritesData.STONE, Config.TILE_STONE, 0xff555555, true, false, x, y, mirrorMask);
 	}
 
 	private Tile getTileSand(Level level, int x, int y, boolean staticSprite) {
-		return new BasicTile(level, SpritesData.SAND, Config.TILE_SAND, 0xffffea00, false, false, x, y);
+		int mirrorMask = 0x00;
+		switch (Utils.randInt(0, 2)) {
+		case 1:
+			mirrorMask = 0x01;
+			break;
+		case 2:
+			mirrorMask = 0x02;
+			break;
+		}
+		return new BasicTile(level, SpritesData.SAND, Config.TILE_SAND, 0xffffea00, false, false, x, y, mirrorMask);
 	}
 
 	private Tile getTileGrass(Level level, int x, int y, boolean staticSprite) {
@@ -128,7 +150,16 @@ public class TileTypes {
 				break;
 			}
 		}
-		return new BasicTile(level, sprite, Config.TILE_GRASS, 0xff00ff00, false, false, x, y);
+		int mirrorMask = 0x00;
+		switch (Utils.randInt(0, 2)) {
+		case 1:
+			mirrorMask = 0x01;
+			break;
+		case 2:
+			mirrorMask = 0x02;
+			break;
+		}
+		return new BasicTile(level, sprite, Config.TILE_GRASS, 0xff00ff00, false, false, x, y, mirrorMask);
 	}
 
 	public String getType() {
