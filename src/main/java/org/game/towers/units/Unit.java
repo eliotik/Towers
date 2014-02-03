@@ -43,6 +43,10 @@ public abstract class Unit implements Serializable {
 	private int spriteIndex = 0;
 	private boolean pauseAnimation = false;
 	private boolean isDead = false;
+	private long lastIterationTime;
+	private long lastIterationStartTime;
+	private int animationSwitchDelay;
+	private int animationStartDelay;
 
 	public Unit() {}
 
@@ -81,6 +85,10 @@ public abstract class Unit implements Serializable {
 		this.health = health;
 		if (health <= 0) {
 			setDead(true);
+			setSpriteIndex(0);
+			setAnimationStartDelay(0);
+			setAnimationSwitchDelay(200);
+			setPauseAnimation(false);
 		}
 		return this;
 	}
@@ -327,5 +335,37 @@ public abstract class Unit implements Serializable {
 			return SpritesData.HEALTH_10;
 		}
 		return SpritesData.HEALTH_DEAD;
+	}
+
+	public int getAnimationSwitchDelay() {
+		return animationSwitchDelay;
+	}
+
+	public void setAnimationSwitchDelay(int animationSwitchDelay) {
+		this.animationSwitchDelay = animationSwitchDelay;
+	}
+
+	public int getAnimationStartDelay() {
+		return animationStartDelay;
+	}
+
+	public void setAnimationStartDelay(int animationStartDelay) {
+		this.animationStartDelay = animationStartDelay;
+	}
+
+	public long getLastIterationTime() {
+		return lastIterationTime;
+	}
+
+	public void setLastIterationTime(long lastIterationTime) {
+		this.lastIterationTime = lastIterationTime;
+	}
+
+	public long getLastIterationStartTime() {
+		return lastIterationStartTime;
+	}
+
+	public void setLastIterationStartTime(long lastIterationStartTime) {
+		this.lastIterationStartTime = lastIterationStartTime;
 	}
 }

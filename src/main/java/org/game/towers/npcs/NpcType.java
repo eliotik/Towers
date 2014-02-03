@@ -15,17 +15,13 @@ public class NpcType extends Unit {
 
 	private static final long serialVersionUID = 1L;
 
-	private long lastIterationTime;
-	private long lastIterationStartTime;
-	private int animationSwitchDelay;
-	private int animationStartDelay;
 	private ArrayList<String> hands;
 
 	public NpcType() {
 		setSpriteIndex(0);
 		setAnimationStartDelay(0);
-		lastIterationTime = System.currentTimeMillis();
-		lastIterationStartTime = System.currentTimeMillis();
+		setLastIterationTime(System.currentTimeMillis());
+		setLastIterationStartTime(System.currentTimeMillis());
 	}
 
 	public ArrayList<String> getHands() {
@@ -42,13 +38,12 @@ public class NpcType extends Unit {
 
 	@Override
 	public void tick() {
-
-		if ((System.currentTimeMillis() - lastIterationStartTime) >= (getAnimationStartDelay()) && !isPauseAnimation()) {
-			if ((System.currentTimeMillis() - lastIterationTime) >= (getAnimationSwitchDelay())) {
-				lastIterationTime = System.currentTimeMillis();
+		if ((System.currentTimeMillis() - getLastIterationStartTime()) >= (getAnimationStartDelay()) && !isPauseAnimation()) {
+			if ((System.currentTimeMillis() - getLastIterationTime()) >= (getAnimationSwitchDelay())) {
+				setLastIterationTime(System.currentTimeMillis());
 				setSpriteIndex((getSpriteIndex() + 1) % getSprites().size());
 				if (getSpriteIndex() >= getSprites().size() - 1) {
-					lastIterationStartTime = System.currentTimeMillis();
+					setLastIterationStartTime(System.currentTimeMillis());
 				}
 			}
 		}
@@ -56,7 +51,7 @@ public class NpcType extends Unit {
 			Point shifts = new Point();
 			Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
 	        move((int)shifts.getX(), (int)shifts.getY());
-	        if (Utils.randInt(0, 100) > 95 && !isDead()) setHealth(getHealth()-2);
+	        if (Utils.randInt(0, 100) > 95 && !isDead()) setHealth(getHealth()-20);
 		}
 	}
 
@@ -128,21 +123,5 @@ public class NpcType extends Unit {
 		}
 
 		return false;
-	}
-
-	public int getAnimationSwitchDelay() {
-		return animationSwitchDelay;
-	}
-
-	public void setAnimationSwitchDelay(int animationSwitchDelay) {
-		this.animationSwitchDelay = animationSwitchDelay;
-	}
-
-	public int getAnimationStartDelay() {
-		return animationStartDelay;
-	}
-
-	public void setAnimationStartDelay(int animationStartDelay) {
-		this.animationStartDelay = animationStartDelay;
 	}
 }
