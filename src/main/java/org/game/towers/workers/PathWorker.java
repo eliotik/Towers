@@ -3,6 +3,7 @@ package org.game.towers.workers;
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
+import org.game.towers.geo.Geo;
 import org.game.towers.level.Portals;
 import org.game.towers.level.tiles.TileMap;
 import org.game.towers.units.Unit;
@@ -127,9 +128,6 @@ public class PathWorker {
     }
 
     private double lineEquation(int x, int xFinish, int xStart, int yFinish, int yStart) {
-//        double A = (double)(yStart - yFinish) / (double)(xFinish - xStart);
-//        double B = (double)yFinish - A * xStart;
-//        double y = A * (double)x + B;
         // other equation
         double A = (double)(yStart - yFinish) / (double)(xFinish - xStart);
         double B = (double)yStart - A * xStart;
@@ -164,8 +162,6 @@ public class PathWorker {
     }
 
     private int getLogicZone(int x, int y, TileMap construction){
-//        System.out.println("x = "+x+" y = "+ y + " construction.getGeo().getTopLeft() X =" + construction.getGeo().getTopLeft().getX() + " construction.getGeo().getTopLeft() Y =" + construction.getGeo().getTopLeft().getY() );
-//        System.out.println("x = "+x+" y = "+ y + " construction.getGeo().getTopLeft() X =" + construction.getGeo().getTopLeft().getX()* Config.BOX_SIZE + " construction.getGeo().getTopLeft() Y =" + construction.getGeo().getTopLeft().getY() );
         if (x <= construction.getGeo().getTopLeft().getX() && y <= construction.getGeo().getTopLeft().getY() - Config.BOX_SIZE) {
             return 1; // north West
         }
@@ -306,6 +302,49 @@ public class PathWorker {
         }
 
         return coordinate;
+    }
+
+    private Coordinates getNeighbor(int xStart,int yStart, Coordinates coordinates){
+
+    }
+
+    private class Cluster {
+        private Coordinates topLeft = new Coordinates();
+        private Coordinates topRight = new Coordinates();
+        private Coordinates bottomLeft = new Coordinates();
+        private Coordinates bottomRight = new Coordinates();
+
+        public Coordinates getTopLeft() {
+            return topLeft;
+        }
+
+        public void setTopLeft(Coordinates topLeft) {
+            this.topLeft = topLeft;
+        }
+
+        public Coordinates getTopRight() {
+            return topRight;
+        }
+
+        public void setTopRight(Coordinates topRight) {
+            this.topRight = topRight;
+        }
+
+        public Coordinates getBottomLeft() {
+            return bottomLeft;
+        }
+
+        public void setBottomLeft(Coordinates bottomLeft) {
+            this.bottomLeft = bottomLeft;
+        }
+
+        public Coordinates getBottomRight() {
+            return bottomRight;
+        }
+
+        public void setBottomRight(Coordinates bottomRight) {
+            this.bottomRight = bottomRight;
+        }
     }
 
     private int doShift(int dimension1, int dimension2) {
