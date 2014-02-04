@@ -305,6 +305,7 @@ public class PathWorker {
     }
 
     private Coordinates getNeighbor(int xStart,int yStart, Coordinates coordinates){
+		return coordinates;
 
     }
 
