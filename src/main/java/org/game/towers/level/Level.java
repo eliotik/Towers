@@ -343,6 +343,8 @@ public class Level implements GameActionListener {
 				unit.render(screen);
 			}
 		}
+
+		screen.renderLevelGui();
 	}
 
 	public long getNextWave() {

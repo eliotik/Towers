@@ -53,4 +53,6 @@ public class Config {
 	public static final String TILE_ENTRANCE = "ENTRANCE";
 	public static final String TILE_EXIT = "EXIT";
 	public static final String TILE_NPC_BULB = "NPC_BULB";
+	public static final int DEFAULT_PLAYER_HEALTH = 20;
+	public static final int DEFAULT_PLAYER_MONEY = 500;
 }

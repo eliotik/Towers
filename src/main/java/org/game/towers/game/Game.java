@@ -48,7 +48,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	public static boolean DEBUG = true;
 
 	private BufferedImage image = new BufferedImage(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
-	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	private int[] pixels = ((DataBufferInt) getImage().getRaster().getDataBuffer()).getData();
 //	public int[] colors = new int[6 * 6 * 6];//6 different shades of color
 
 	private Screen screen;
@@ -62,6 +62,9 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	private int lastFrames = 0;
 	private int lastTicks = 0;
 
+	private int playerHealth = Config.DEFAULT_PLAYER_HEALTH;
+	private int playerMoney = Config.DEFAULT_PLAYER_MONEY;
+
 	public Game(boolean isApplet) {
 		setApplet(isApplet);
 		initLauncher();
@@ -74,22 +77,22 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	public void initFrame() {
-		frame = new JFrame();
-		frame.setLayout(new BorderLayout());
-		frame.add(this, BorderLayout.CENTER);
-		frame.pack();
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		frame.requestFocus();
+		setFrame(new JFrame());
+		getFrame().setLayout(new BorderLayout());
+		getFrame().add(this, BorderLayout.CENTER);
+		getFrame().pack();
+		getFrame().setResizable(false);
+		getFrame().setLocationRelativeTo(null);
+		getFrame().setVisible(true);
+		getFrame().requestFocus();
 		if (!isApplet()) {
-			frame.setTitle(Config.GAME_NAME);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			getFrame().setTitle(Config.GAME_NAME);
+			getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    }
 	}
 
 	public void run() {
-		if (!launcherInited) {
+		if (!isLauncherInited()) {
 			debug(DebugLevel.WARNING, "Launcher was not correctly initiated! Will try to initiate laucher manually.");
 			initLauncher();
 		}
@@ -186,9 +189,9 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	private void tick() {
 		ticksCount++;
 		getInputHandler().tick();
-		if (gui != null) {
-			gui.tick(ticksCount);
-			if (!gui.pausesGame()) {
+		if (getGui() != null) {
+			getGui().tick(ticksCount);
+			if (!getGui().pausesGame()) {
 				updateWorld();
 			}
 		} else {
@@ -210,76 +213,41 @@ public class Game extends Canvas implements Runnable, FocusListener {
 			return;
 		}
 
-		screen.clear();
+		getScreen().clear();
 		Graphics g = bs.getDrawGraphics();
-//		screen.setGraphics(g);
+		getScreen().setGraphics(g);
 
-		if (gui != null) {
-			gui.render();
-//			for (int y = 0; y < Config.SCREEN_HEIGHT; y++) {
-//				for (int x = 0; x < Config.SCREEN_WIDTH; x++) {
-//					int colorCode = gui.pixels[x + y * gui.width];
-//					pixels[x + y * Config.SCREEN_WIDTH] = colorCode + (0xFF << 24);
-//				}
-//			}
+		if (getGui() != null) {
+			getGui().render();
 		} else {
-			if (world != null) {
-				world.render();
-
-//				for (int y = 0; y < getScreen().height; y++) {
-//					for (int x = 0; x < getScreen().width; x++) {
-//						int colorCode = getScreen().pixels[x + y * getScreen().width];
-//						if (colorCode < 255) getPixels()[x + y * Config.SCREEN_WIDTH] = colors[colorCode];
-//					}
-//				}
-//				String msg = "Hello World";
-//				Font.render(msg, screen, screen.xOffset + screen.width / 2 - (msg.length()*8)/2, screen.yOffset + screen.height / 2, Colors.get(-1, -1, -1, 000));
+			if (getWorld() != null) {
+				getWorld().render();
 			}
 		}
 		for (int i = 0; i < Config.SCREEN_WIDTH * Config.SCREEN_HEIGHT; i++) {
-			pixels[i] = screen.getPixels()[i];
+			getPixels()[i] = getScreen().getPixels()[i];
 		}
-		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-//		g.setColor(Color.BLACK);
-//		g.drawRect(0, 0, getWidth(), getHeight());
+		g.drawImage(getImage(), 0, 0, getWidth(), getHeight(), null);
+
+		getScreen().renderText();
 
 		g.dispose();
 		bs.show();
 	}
 
 	private void initScreen() {
-//		setScreen(new Screen(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, new SpriteSheet(Config.SPRITESHEET_FILE)));
 		setScreen(new Screen(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT));
 	}
 
-//	private void initLevel() {
-//		level = new Level(format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME));
-//		level.setOffset(getScreen());
-//	}
 	private void initInput() {
 		setInputHandler(new InputHandler(this));
 		setMouseHandler(new MouseHandler(this));
 	}
 
-//	private void initColors() {
-//		int index = 0;
-//		for (int r = 0; r < 6; r++) {
-//			for (int g = 0; g < 6; g++) {
-//				for (int b = 0; b < 6; b++) {
-//					int rr = (r * 255/5);
-//					int gg = (g * 255/5);
-//					int bb = (b * 255/5);
-//
-//					colors[index++] = rr << 16 | gg << 8 | bb;
-//				}
-//			}
-//		}
-//	}
-
 	public synchronized void start() {
 		setRunning(true);
-		thread = new Thread(this, "GameThread");
-		thread.start();
+		setThread(new Thread(this, "GameThread"));
+		getThread().start();
 		Game.debug(Game.DebugLevel.INFO, "Game started");
 	}
 
@@ -287,7 +255,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		setRunning(false);
 
 		try {
-			thread.join();
+			getThread().join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -347,8 +315,8 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	@Override
 	public void focusGained(FocusEvent focusEvent) {
 		setFocused(true);
-		if (gui != null && gui instanceof GuiFocus) {
-			gui.last();
+		if (getGui() != null && getGui() instanceof GuiFocus) {
+			getGui().last();
 		}
 		Game.debug(DebugLevel.INFO, "Got focus!");
 	}
@@ -356,7 +324,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	@Override
 	public void focusLost(FocusEvent arg0) {
 		if (arg0.getID() == FocusEvent.FOCUS_LOST) {
-			if ((gui != null && !gui.pausesGame()) || gui == null) {
+			if ((getGui() != null && !getGui().pausesGame()) || getGui() == null) {
 				showGui(new GuiPause(this, getWidth(), getHeight()));
 			}
 			Game.debug(DebugLevel.INFO, "Lost the focus!");
@@ -372,15 +340,15 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	public void showGui(Gui gui) {
-		if (this.gui != null && this.gui.pausesGame()) {
+		if (getGui() != null && getGui().pausesGame()) {
 			return;
 		}
-		if(this.gui != null) {
-			getInputHandler().removeListener(this.gui);
+		if(getGui() != null) {
+			getInputHandler().removeListener(getGui());
 		}
-		this.gui = null;
-		this.gui = gui;
-		getInputHandler().addListener(this.gui, true);
+		setGui(null);
+		setGui(gui);
+		getInputHandler().addListener(getGui(), true);
 	}
 
 	public void hideGui(Gui gui) {
@@ -388,16 +356,16 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		if (gui.getParentGui() != null) {
 			showGui(gui.getParentGui());
 		}
-		if (this.gui == gui) {
-			this.gui = null;
+		if (getGui() == gui) {
+			setGui(null);
 		}
 	}
 
 	public void forceGuiClose() {
-		if (gui != null) {
-			gui.close();
+		if (getGui() != null) {
+			getGui().close();
 		}
-		gui = null;
+		setGui(null);
 	}
 
 	public int[] getPixels() {
@@ -425,10 +393,6 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		initUnits();
 	}
 
-	public void setLaucherInited(boolean isLauncherInited) {
-		this.launcherInited  = isLauncherInited;
-	}
-
 	public void initLauncher() {
 		if (Game.instance == null) {
 			Game.instance = this;
@@ -436,7 +400,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		initSizes();
 		initFrame();
 		requestFocus();
-		setLaucherInited(true);
+		setLauncherInited(true);
 	}
 
 	public boolean isApplet() {
@@ -485,5 +449,61 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	public void setLastTicks(int lastTicks) {
 		this.lastTicks = lastTicks;
+	}
+
+	public int getPlayerHealth() {
+		return playerHealth;
+	}
+
+	public void setPlayerHealth(int playerHealth) {
+		this.playerHealth = playerHealth;
+	}
+
+	public int getPlayerMoney() {
+		return playerMoney;
+	}
+
+	public void setPlayerMoney(int playerMoney) {
+		this.playerMoney = playerMoney;
+	}
+
+	public Gui getGui() {
+		return gui;
+	}
+
+	public void setGui(Gui gui) {
+		this.gui = gui;
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public boolean isLauncherInited() {
+		return launcherInited;
+	}
+
+	public void setLauncherInited(boolean launcherInited) {
+		this.launcherInited = launcherInited;
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public void setImage(BufferedImage image) {
+		this.image = image;
+	}
+
+	public Thread getThread() {
+		return thread;
+	}
+
+	public void setThread(Thread thread) {
+		this.thread = thread;
 	}
 }

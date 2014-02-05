@@ -1,8 +1,10 @@
 package org.game.towers.workers.Algorithms.JumpPointSearch;
 
 import java.util.ArrayList;
+
+import org.game.towers.game.Game;
 /**
- * @author Clint Mullins 
+ * @author Clint Mullins
  * @referenced Javascript version of JPS by aniero / https://github.com/aniero
  */
 public class JPS {
@@ -16,10 +18,10 @@ public class JPS {
 	Node tmpNode, cur;
 	Node[] successors, possibleSuccess;
 	ArrayList<Node> trail;
-	
+
 	/**
 	 * Initializer; sets up variables, creates reference grid and actual grid, gets start and end points, initiates search
-	 * 
+	 *
 	 * @param xMax (int) maximum x value on map + 1 (if xMax==100, actual x maximum is 99)
 	 * @param yMax (int) maximum y value on map + 1 (if yMax==100, actual y maximum is 99)
 	 * @param xIsland (int) when using uniform map generation, how many islands on the x axis
@@ -38,10 +40,10 @@ public class JPS {
 		else{
 			grid = new Grid(xMax,yMax,xIsland,yIsland,preMadeGrid);  //preMadeGrid is passed in because there CAN BE ONLY ONE GRID
 		}
-		int[] startPos = grid.getOpenPos(); //startPos returns random {x,y} that does not lie on an obstacle 
+		int[] startPos = grid.getOpenPos(); //startPos returns random {x,y} that does not lie on an obstacle
 		this.startX = startPos[0];   //the start point x value
 		this.startY = startPos[1];	  //the start point y value
-		int[] endPos = grid.getOpenPos(); //startPos returns random {x,y} that does not lie on an obstacle 
+		int[] endPos = grid.getOpenPos(); //startPos returns random {x,y} that does not lie on an obstacle
 		this.endX = endPos[0];	  //the end point x value
 		this.endY = endPos[1];	  //the end point y value
 		long timeStart = System.currentTimeMillis();
@@ -49,7 +51,7 @@ public class JPS {
 		long timeEnd = System.currentTimeMillis();
 		System.out.println("Time: "+(timeEnd-timeStart)+" ms");
 	}
-	
+
 	/**
 	 * Orchestrates the Jump Point Search; it is explained further in comments below.
 	 */
@@ -60,7 +62,7 @@ public class JPS {
 		grid.getNode(startX,startY).updateGHFP(0, 0, null);
 		grid.heapAdd(grid.getNode(startX, startY));  //Start node is added to the heap
 		while (true){
-			cur = grid.heapPopNode();              //the current node is removed from the heap. 
+			cur = grid.heapPopNode();              //the current node is removed from the heap.
 			if (draw){grid.drawVisited(cur.x, cur.y);}  //draw current point
 			if (cur.x == endX && cur.y==endY){		//if the end node is found
 				System.out.println("Path Found!");  //print "Path Found!"
@@ -80,12 +82,12 @@ public class JPS {
 				if (draw){grid.picPrint("3 - No Path");} 		//print picture without path
 				break;										//loop is done
 			}
-		} 
+		}
 	}
-	
+
 	/**
 	 * returns all nodes jumped from given node
-	 * 
+	 *
 	 * @param node
 	 * @return all nodes jumped from given node
 	 */
@@ -106,15 +108,15 @@ public class JPS {
 		}
 		return successors;  //finally, successors is returned
 	}
-	
+
 	/**
-	 * jump method recursively searches in the direction of parent (px,py) to child, the current node (x,y). 
+	 * jump method recursively searches in the direction of parent (px,py) to child, the current node (x,y).
 	 * It will stop and return its current position in three situations:
-	 * 
+	 *
 	 * 1) The current node is the end node. (endX, endY)
-	 * 2) The current node is a forced neighbor. 
+	 * 2) The current node is a forced neighbor.
 	 * 3) The current node is an intermediate step to a node that satisfies either 1) or 2)
-	 * 
+	 *
 	 * @param x (int) current node's x
 	 * @param y (int) current node's y
 	 * @param px (int) current.parent's x
@@ -126,11 +128,11 @@ public class JPS {
 		int[] jy = {-1,-1}; //used to later check if full or null
 		int dx = (x-px)/Math.max(Math.abs(x-px), 1); //because parents aren't always adjacent, this is used to find parent -> child direction (for x)
 		int dy = (y-py)/Math.max(Math.abs(y-py), 1); //because parents aren't always adjacent, this is used to find parent -> child direction (for y)
-		
-		if (!grid.walkable(x,y)){ //if this space is not grid.walkable, return a null. 
-			return tmpInt(-1,-1); //in this system, returning a {-1,-1} equates to a null and is ignored. 
+
+		if (!grid.walkable(x,y)){ //if this space is not grid.walkable, return a null.
+			return tmpInt(-1,-1); //in this system, returning a {-1,-1} equates to a null and is ignored.
 		}
-		if (x==this.endX && y==this.endY){   //if end point, return that point. The search is over! Have a beer.			
+		if (x==this.endX && y==this.endY){   //if end point, return that point. The search is over! Have a beer.
 			return tmpInt(x,y);
 		}
 		if (dx!=0 && dy!=0){  //if x and y both changed, we are on a diagonally adjacent square: here we check for forced neighbors on diagonals
@@ -142,13 +144,13 @@ public class JPS {
 		else{ //check for horizontal/vertical
 			if (dx!=0){ //moving along x
 				if ((grid.walkable(x+dx,y+1) && !grid.walkable(x,y+1)) || //we are moving along the x axis
-					(grid.walkable(x+dx,y-1) && !grid.walkable(x,y-1))){  //we check our side nodes to see if they are forced neighbors  
+					(grid.walkable(x+dx,y-1) && !grid.walkable(x,y-1))){  //we check our side nodes to see if they are forced neighbors
 					return tmpInt(x,y);
 				}
 			}
 			else{
 				if ((grid.walkable(x+1,y+dy) && !grid.walkable(x+1,y)) ||  //we are moving along the y axis
-					(grid.walkable(x-1,y+dy) && !grid.walkable(x-1,y))){	 //we check our side nodes to see if they are forced neighbors 
+					(grid.walkable(x-1,y+dy) && !grid.walkable(x-1,y))){	 //we check our side nodes to see if they are forced neighbors
 					return tmpInt(x,y);
 				}
 			}
@@ -168,10 +170,10 @@ public class JPS {
 			return tmpInt(-1,-1);
 		}
 	}
-	
+
 	/**
 	 * Encapsulates x,y in an int[] for returning. A helper method for the jump method
-	 * 
+	 *
 	 * @param x (int) point's x coordinate
 	 * @param y (int) point's y coordinate
 	 * @return ([]int) bundled x,y
@@ -180,10 +182,10 @@ public class JPS {
 		int[] tmpIntsTmpInt = {x,y};  //create the tmpInt's tmpInt[]
 		return tmpIntsTmpInt;         //return it
 	}
-	
+
 	/**
 	 * Returns nodes that should be jumped based on the parent location in relation to the given node.
-	 * 
+	 *
 	 * @param node (Node) node which has a parent (not the start node)
 	 * @return (ArrayList<Node>) list of nodes that will be jumped
 	 */
@@ -250,7 +252,7 @@ public class JPS {
 		else {//return all neighbors
 			return grid.getNeighbors(node); //adds initial nodes to be jumped from!
 		}
-		
+
 		return neighbors; //this returns the neighbors, you know
 	}
 }
