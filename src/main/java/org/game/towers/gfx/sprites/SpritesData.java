@@ -64,6 +64,7 @@ public class SpritesData {
 
 	public static Sprite MONEY = new Sprite("MONEY", 0, 2, 16, 16, "GUI");
 	public static Sprite HEART = new Sprite("HEART", 1, 2, 16, 16, "GUI");
+	public static Sprite RESOURCE = new Sprite("RESOURCE", 2, 2, 16, 16, "GUI");
 
 	public static SpriteSheet[] getSpriteSheets() {
 		return spriteSheets;

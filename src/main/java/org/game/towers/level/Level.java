@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -44,6 +43,10 @@ public class Level implements GameActionListener {
 //	private Store store;
 	private Camera camera;
 	private long nextWave = System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT;
+
+	private int playerHealth = Config.DEFAULT_PLAYER_HEALTH;
+	private int playerMoney = Config.DEFAULT_PLAYER_MONEY;
+	private int playerResource = Config.DEFAULT_PLAYER_RESOURCE;
 
 	public Level(String imagePath) {
 			this.imagePath = imagePath;
@@ -361,5 +364,29 @@ public class Level implements GameActionListener {
 
 	public void setUnits(List<Unit> units) {
 		this.units = units;
+	}
+
+	public int getPlayerResource() {
+		return playerResource;
+	}
+
+	public void setPlayerResource(int playerResource) {
+		this.playerResource = playerResource;
+	}
+
+	public int getPlayerHealth() {
+		return playerHealth;
+	}
+
+	public void setPlayerHealth(int playerHealth) {
+		this.playerHealth = playerHealth;
+	}
+
+	public int getPlayerMoney() {
+		return playerMoney;
+	}
+
+	public void setPlayerMoney(int playerMoney) {
+		this.playerMoney = playerMoney;
 	}
 }

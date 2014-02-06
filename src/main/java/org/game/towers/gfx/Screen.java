@@ -315,14 +315,21 @@ public class Screen {
 	public void renderLevelGui() {
 		int fontSize = 22;
 		int yPos = getHeight() * Config.SCALE;
-		renderIcon(SpritesData.MONEY, 0, getHeight() - SpritesData.MONEY.getHeight());
-		renderString(Game.instance.getPlayerMoney() + "", 33 + 2, yPos - 6, fontSize, 1, Color.BLACK);
-		renderString(Game.instance.getPlayerMoney() + "", 33, yPos - 8, fontSize, 1, Color.WHITE);
+		Level level = Game.instance.getWorld().getLevel();
 
-		int xPos = SpritesData.MONEY.getWidth()+((Game.instance.getPlayerMoney() + "").length()*fontSize/2);
+		renderIcon(SpritesData.MONEY, 0, getHeight() - SpritesData.MONEY.getHeight());
+		renderString(level.getPlayerMoney() + "", 33 + 2, yPos - 6, fontSize, 1, Color.BLACK);
+		renderString(level.getPlayerMoney() + "", 33, yPos - 8, fontSize, 1, Color.WHITE);
+
+		int xPos = SpritesData.MONEY.getWidth()+((level.getPlayerMoney() + "").length()*fontSize/2);
 		renderIcon(SpritesData.HEART, xPos, getHeight() - SpritesData.HEART.getHeight());
-		renderString(Game.instance.getPlayerHealth() + "", xPos*2 + 33 + 2, yPos - 6, fontSize, 1, Color.BLACK);
-		renderString(Game.instance.getPlayerHealth() + "", xPos*2 + 33, yPos - 8, fontSize, 1, Color.WHITE);
+		renderString(level.getPlayerHealth() + "", xPos*2 + 33 + 2, yPos - 6, fontSize, 1, Color.BLACK);
+		renderString(level.getPlayerHealth() + "", xPos*2 + 33, yPos - 8, fontSize, 1, Color.WHITE);
+
+		xPos = SpritesData.MONEY.getWidth()+SpritesData.HEART.getWidth()+(((level.getPlayerMoney() + "").length()+(level.getPlayerHealth() + "").length())*fontSize/2);
+		renderIcon(SpritesData.RESOURCE, xPos, getHeight() - SpritesData.RESOURCE.getHeight());
+		renderString(level.getPlayerResource() + "", xPos*2 + 33 + 2, yPos - 6, fontSize, 1, Color.BLACK);
+		renderString(level.getPlayerResource() + "", xPos*2 + 33, yPos - 8, fontSize, 1, Color.WHITE);
 	}
 
 	private void renderIcon(Sprite sprite, int xp, int yp) {

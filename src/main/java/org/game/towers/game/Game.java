@@ -62,9 +62,6 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	private int lastFrames = 0;
 	private int lastTicks = 0;
 
-	private int playerHealth = Config.DEFAULT_PLAYER_HEALTH;
-	private int playerMoney = Config.DEFAULT_PLAYER_MONEY;
-
 	public Game(boolean isApplet) {
 		setApplet(isApplet);
 		initLauncher();
@@ -451,22 +448,6 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		this.lastTicks = lastTicks;
 	}
 
-	public int getPlayerHealth() {
-		return playerHealth;
-	}
-
-	public void setPlayerHealth(int playerHealth) {
-		this.playerHealth = playerHealth;
-	}
-
-	public int getPlayerMoney() {
-		return playerMoney;
-	}
-
-	public void setPlayerMoney(int playerMoney) {
-		this.playerMoney = playerMoney;
-	}
-
 	public Gui getGui() {
 		return gui;
 	}
@@ -506,4 +487,5 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	public void setThread(Thread thread) {
 		this.thread = thread;
 	}
+
 }

@@ -3,9 +3,6 @@ package org.game.towers.configs;
 import java.awt.Dimension;
 import java.io.File;
 
-import org.game.towers.game.Game;
-import org.game.towers.level.tiles.TileTypes;
-
 public class Config {
 	public static final String GAME_VERSION = "0.0.1";
 	public static final String GAME_NAME = "Towers " + GAME_VERSION;
@@ -55,4 +52,5 @@ public class Config {
 	public static final String TILE_NPC_BULB = "NPC_BULB";
 	public static final int DEFAULT_PLAYER_HEALTH = 20;
 	public static final int DEFAULT_PLAYER_MONEY = 500;
+	public static final int DEFAULT_PLAYER_RESOURCE = 120;
 }
