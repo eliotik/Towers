@@ -32,7 +32,7 @@ public class Level implements GameActionListener {
 
 	private String name;
     private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
-    private Node[][] tilesForJSP = new Node[592][400];
+    private Node[][] tilesForJSP;
 	private Tile[] tiles;
 	private int width;
 	private int height;
@@ -133,6 +133,7 @@ public class Level implements GameActionListener {
 
     private void generateGridForJSP() {
         Tile tile;
+        tilesForJSP = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
         for (int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
             for (int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
                 tile = getTile(x, y);
