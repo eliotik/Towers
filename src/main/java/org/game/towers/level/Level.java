@@ -17,6 +17,7 @@ import org.game.towers.level.tiles.TileTypes;
 import org.game.towers.npcs.NpcType;
 import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
+import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -31,6 +32,7 @@ public class Level implements GameActionListener {
 
 	private String name;
     private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
+    private Node[][] tilesForJSP = new Node[592][400];
 	private Tile[] tiles;
 	private int width;
 	private int height;
@@ -53,6 +55,7 @@ public class Level implements GameActionListener {
 			loadLevelFromFile();
 //			initStore();
 			initCamera();
+            generateGridForJSP();
 	}
 
 	private void initCamera() {
@@ -73,35 +76,35 @@ public class Level implements GameActionListener {
 		switch(getWave()) {
 			case 1:
 				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
-				NpcType bulb2 = UnitFactory.getNpc(Npcs.BULB);
-				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
-				NpcType drone1 = UnitFactory.getNpc(Npcs.DRONE);
-				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
+//				NpcType bulb2 = UnitFactory.getNpc(Npcs.BULB);
+//				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
+//				NpcType drone1 = UnitFactory.getNpc(Npcs.DRONE);
+//				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
 				if (bulb != null) {
 					bulb.setLevel(this);
 					bulb.setX(Portals.getEntrance().getCoordinates().getX());
 					bulb.setY(Portals.getEntrance().getCoordinates().getY());
 					addNpc(bulb);
 
-					bulb2.setLevel(this);
-					bulb2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
-					bulb2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
-					addNpc(bulb2);
-
-					bulb3.setLevel(this);
-					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
-					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
-					addNpc(bulb3);
-
-					drone1.setLevel(this);
-					drone1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
-					drone1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
-					addNpc(drone1);
-
-					drone2.setLevel(this);
-					drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
-					drone2.setY(Portals.getEntrance().getCoordinates().getY());
-					addNpc(drone2);
+//					bulb2.setLevel(this);
+//					bulb2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
+//					bulb2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
+//					addNpc(bulb2);
+//
+//					bulb3.setLevel(this);
+//					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
+//					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
+//					addNpc(bulb3);
+//
+//					drone1.setLevel(this);
+//					drone1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
+//					drone1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
+//					addNpc(drone1);
+//
+//					drone2.setLevel(this);
+//					drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
+//					drone2.setY(Portals.getEntrance().getCoordinates().getY());
+//					addNpc(drone2);
 				}
 		}
 	}
@@ -113,6 +116,7 @@ public class Level implements GameActionListener {
 			setHeight(getImage().getHeight());
 			setTiles(new Tile[getWidth() * getHeight()]);
 			loadTiles();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -127,10 +131,26 @@ public class Level implements GameActionListener {
 		return TileTypes.get("VOID").get(this, x, y, true);
 	}
 
+    private void generateGridForJSP() {
+        Tile tile;
+        for (int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
+            for (int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
+                tile = getTile(x, y);
+                System.out.println(getWidth()*Config.BOX_SIZE +" "+getHeight()*Config.BOX_SIZE);
+                tilesForJSP[x][y] = new Node(x, y);
+//                tilesForJSP[x][y].setPass(true);
+                if (tile.isSolid()) {
+                    tilesForJSP[x][y].setPass(false);
+                }
+            }
+        }
+//        return tilesForJSP;
+    }
+
 	private void loadTiles() {
 		int[] tiles = new int[getWidth() * getHeight()];
 		tiles = getImage().getRGB(0, 0, getWidth(), getHeight(), null, 0, getWidth());
-		for (int y = 0; y < getHeight(); y++) {
+        for (int y = 0; y < getHeight(); y++) {
 			for (int x = 0; x < getWidth(); x++) {
 				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
 				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
@@ -140,8 +160,9 @@ public class Level implements GameActionListener {
 				}
 			}
 		}
-		Portals.setEntrance(getEntranceLocation());
+        Portals.setEntrance(getEntranceLocation());
 		Portals.setExit(getExitLocation());
+
 	}
 
 	public void alterTile(int x, int y, Tile newTile) {
@@ -389,4 +410,12 @@ public class Level implements GameActionListener {
 	public void setPlayerMoney(int playerMoney) {
 		this.playerMoney = playerMoney;
 	}
+
+    public Node[][] getTilesForJSP() {
+        return tilesForJSP;
+    }
+
+    public void setTilesForJSP(Node[][] tilesForJSP) {
+        this.tilesForJSP = tilesForJSP;
+    }
 }

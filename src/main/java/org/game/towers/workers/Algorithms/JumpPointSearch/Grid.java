@@ -72,6 +72,11 @@ public class Grid {
 		map.picPrint("1 - Map");
 		heap = new Heap();
 	}
+
+    public Grid(Node[][] grid){
+        this.grid = grid;
+        heap = new Heap();
+    }
 	
 	
 	/**
@@ -266,7 +271,7 @@ public class Grid {
 			}
 		}
 	}
-	
+
 	/**
 	 * Generates land based on random factors. Land forms like an ugly hanging gardens.
 	 * 

@@ -3,6 +3,8 @@ package org.game.towers.workers.Algorithms.JumpPointSearch;
 import java.util.ArrayList;
 
 import org.game.towers.game.Game;
+import org.game.towers.level.Portals;
+
 /**
  * @author Clint Mullins
  * @referenced Javascript version of JPS by aniero / https://github.com/aniero
@@ -52,6 +54,19 @@ public class JPS {
 		System.out.println("Time: "+(timeEnd-timeStart)+" ms");
 	}
 
+    public JPS(){
+        System.out.println("test");
+        Node[][] tiles = Game.instance.getWorld().getLevel().getTilesForJSP();
+        System.out.println(tiles);
+        grid = new Grid(tiles);
+        this.startX = Portals.getEntrance().getCoordinates().getX();
+        this.startY = Portals.getEntrance().getCoordinates().getY();
+        this.endX = Portals.getExit().getCoordinates().getX();
+        this.endY = Portals.getExit().getCoordinates().getY();
+        search();
+    }
+
+
 	/**
 	 * Orchestrates the Jump Point Search; it is explained further in comments below.
 	 */
@@ -83,7 +98,8 @@ public class JPS {
 				break;										//loop is done
 			}
 		}
-	}
+
+    }
 
 	/**
 	 * returns all nodes jumped from given node
