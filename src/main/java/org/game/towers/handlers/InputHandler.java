@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.game.towers.game.Game;
-import org.game.towers.gui.Gui;
 
 public class InputHandler implements KeyListener {
 

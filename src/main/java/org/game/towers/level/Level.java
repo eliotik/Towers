@@ -170,10 +170,6 @@ public class Level implements GameActionListener {
 			tile.tick();
 		}
 
-//    	for (NpcType n : getNpcs()) {
-//    		n.tick();
-//    	}
-
 		synchronized (getUnits()) {
 			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
 				Unit unit = (Unit) it.next();
@@ -333,8 +329,8 @@ public class Level implements GameActionListener {
 	    int yMin = yOffset >> 4;
 	    int yMax = (yOffset + screen.getHeight()) >> 4;
 
-		for (int y = yMin; y < yMax + 15; y++) {
-			for (int x = xMin; x < xMax + 15; x++) {
+		for (int y = yMin; y < yMax + Config.BOX_SIZE_FIXED; y++) {
+			for (int x = xMin; x < xMax + Config.BOX_SIZE_FIXED; x++) {
 				Tile tile = getTile(x, y);
 				tile.render(screen);
 			}

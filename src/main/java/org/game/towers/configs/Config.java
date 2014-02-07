@@ -37,6 +37,7 @@ public class Config {
 	public static final int BUFFER_STRATEGY_BUFFERS = 3;
 
 	public static final int BOX_SIZE = 16;
+	public static final int BOX_SIZE_FIXED = BOX_SIZE - 1;
 
 	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
 	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
@@ -53,4 +54,5 @@ public class Config {
 	public static final int DEFAULT_PLAYER_HEALTH = 20;
 	public static final int DEFAULT_PLAYER_MONEY = 500;
 	public static final int DEFAULT_PLAYER_RESOURCE = 120;
+
 }

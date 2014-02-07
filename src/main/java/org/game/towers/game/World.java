@@ -4,7 +4,6 @@ import static java.lang.String.format;
 
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
-import org.game.towers.gfx.Screen;
 import org.game.towers.level.Level;
 
 public class World {

@@ -4,8 +4,6 @@ package org.game.towers.game;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import java.awt.Color;
-//import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -18,7 +16,6 @@ import javax.swing.JFrame;
 
 import org.game.towers.configs.Config;
 import org.game.towers.gfx.Screen;
-import org.game.towers.gfx.sprites.SpriteSheet;
 import org.game.towers.gui.Gui;
 import org.game.towers.gui.GuiFocus;
 import org.game.towers.gui.GuiMainMenu;

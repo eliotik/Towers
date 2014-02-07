@@ -6,6 +6,8 @@ import org.game.towers.units.Unit;
 
 public class TowerType extends Unit {
 
+	private static final long serialVersionUID = 1L;
+
 	public TowerType(Level level) {
 //		super(level);
 	}

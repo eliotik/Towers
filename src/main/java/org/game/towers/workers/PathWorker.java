@@ -3,10 +3,8 @@ package org.game.towers.workers;
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
-import org.game.towers.geo.Geo;
 import org.game.towers.level.Portals;
 import org.game.towers.level.tiles.TileMap;
-import org.game.towers.units.Unit;
 import org.hamcrest.Matchers;
 
 import java.awt.*;
