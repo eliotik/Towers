@@ -31,7 +31,7 @@ public class NpcType extends Unit {
 		super.tick();
 		if (!isDead()) {
 			Point shifts = new Point();
-			Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
+			Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts, getId());
 	        move((int)shifts.getX(), (int)shifts.getY());
 	        if (Utils.randInt(0, 100) > 95 && !isDead()) setHealth(getHealth()-2);
 		}

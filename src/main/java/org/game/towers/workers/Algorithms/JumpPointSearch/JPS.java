@@ -55,12 +55,14 @@ public class JPS {
 		System.out.println("Time: "+(timeEnd-timeStart)+" ms");
 	}
 
-    public JPS(){
+    public JPS(int xStart, int yStart){
         this.draw = false;
         Node[][] tiles = Game.instance.getWorld().getLevel().getTilesForJSP();
         grid = new Grid(tiles);
-        this.startX = Portals.getEntrance().getCoordinates().getX();
-        this.startY = Portals.getEntrance().getCoordinates().getY();
+        this.startX = xStart;
+        this.startY = yStart;
+//        this.startX = Portals.getEntrance().getCoordinates().getX();
+//        this.startY = Portals.getEntrance().getCoordinates().getY();
         this.endX = Portals.getExit().getCoordinates().getX();
         this.endY = Portals.getExit().getCoordinates().getY();
 
@@ -89,7 +91,6 @@ public class JPS {
 				System.out.println("Path Found!");  //print "Path Found!"
 				if (draw){grid.drawStart(startX, startY); grid.drawEnd(endX, endY); grid.picPrint("2 - JumpPoints");} //draw start, end, and print the picture sans path
 				trail = grid.pathCreate(cur);    //the path is then created
-                System.out.println(trail);
                 if (draw){grid.picPrint("3 - PathAndPoints");}   //printed the picture with path
 				break;				//loop is done
 			}
