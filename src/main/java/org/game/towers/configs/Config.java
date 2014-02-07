@@ -21,6 +21,8 @@ public class Config {
 	public static final String SPRITESHEET_NPCS_FILE = "spritesheets/npcs.png";
 	public static final String SPRITESHEET_PORTALS_FILE = "spritesheets/portals.png";
 	public static final String SPRITESHEET_GUI_FILE = "spritesheets/gui.png";
+	public static final String SPRITESHEET_TOWERS_FILE = "spritesheets/towers.png";
+	public static final String SPRITESHEET_BUILDINGS_FILE = "spritesheets/buildings.png";
 	public static final String FONT_FILE = "font.png";
 
 	public static final String NPC_NODE_NAME = "npc";
@@ -54,5 +56,4 @@ public class Config {
 	public static final int DEFAULT_PLAYER_HEALTH = 20;
 	public static final int DEFAULT_PLAYER_MONEY = 500;
 	public static final int DEFAULT_PLAYER_RESOURCE = 120;
-
 }

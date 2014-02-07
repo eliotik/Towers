@@ -66,6 +66,7 @@ public class NpcTypesCollection {
 		switch(id) {
 		case Npcs.BULB: return getBulbSprites();
 		case Npcs.DRONE: return getDroneSprites();
+		case Npcs.VENT: return getVentSprites();
 		}
 		return new ArrayList<Sprite>();
 	}
@@ -88,6 +89,15 @@ public class NpcTypesCollection {
 		sprites.add(SpritesData.NPC_DRONE_1);
 		sprites.add(SpritesData.NPC_DRONE_2);
 		sprites.add(SpritesData.NPC_DRONE_1);
+		return sprites;
+	}
+
+	private static List<Sprite> getVentSprites() {
+		List<Sprite> sprites = new ArrayList<Sprite>();
+		sprites.add(SpritesData.NPC_VENT_0);
+		sprites.add(SpritesData.NPC_VENT_1);
+		sprites.add(SpritesData.NPC_VENT_2);
+		sprites.add(SpritesData.NPC_VENT_1);
 		return sprites;
 	}
 

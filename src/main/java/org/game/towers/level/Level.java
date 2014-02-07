@@ -80,6 +80,7 @@ public class Level implements GameActionListener {
 //				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
 //				NpcType drone1 = UnitFactory.getNpc(Npcs.DRONE);
 //				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
+				NpcType vent1 = UnitFactory.getNpc(Npcs.VENT);
 				if (bulb != null) {
 					bulb.setLevel(this);
 					bulb.setX(Portals.getEntrance().getCoordinates().getX());
@@ -105,6 +106,11 @@ public class Level implements GameActionListener {
 //					drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
 //					drone2.setY(Portals.getEntrance().getCoordinates().getY());
 //					addNpc(drone2);
+
+					vent1.setLevel(this);
+					vent1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
+					vent1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
+					addNpc(vent1);
 				}
 		}
 	}

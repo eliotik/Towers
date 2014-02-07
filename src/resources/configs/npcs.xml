@@ -33,4 +33,20 @@
 		animation_start_delay="0"
 	/>
 
+	<npc
+		id="vent"
+		type="base"
+		name="Vent"
+		tile_x="0"
+		tile_y="20"
+		health="200"
+		armour="100"
+		speed="0.2"
+		damage="0"
+		width="16"
+		height="16"
+		animation_switch_delay="20"
+		animation_start_delay="0"
+	/>
+
 </npcs>
