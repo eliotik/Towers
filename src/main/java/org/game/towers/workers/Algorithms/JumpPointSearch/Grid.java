@@ -1,5 +1,7 @@
 package org.game.towers.workers.Algorithms.JumpPointSearch;
 
+import org.game.towers.configs.Config;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -72,6 +74,17 @@ public class Grid {
 		map.picPrint("1 - Map");
 		heap = new Heap();
 	}
+
+    public Grid(Node[][] grid){
+        this.grid = grid;
+        heap = new Heap();
+
+//        this.xMax = Config.REAL_SCREEN_WIDTH;
+//        this.yMax = Config.REAL_SCREEN_HEIGHT;
+//        this.xMin = this.yMin = 0;
+//        map = new PixelDraw(this.xMax,this.yMax);
+//        map.picPrint("1 - Map");
+    }
 	
 	
 	/**
@@ -266,7 +279,7 @@ public class Grid {
 			}
 		}
 	}
-	
+
 	/**
 	 * Generates land based on random factors. Land forms like an ugly hanging gardens.
 	 * 

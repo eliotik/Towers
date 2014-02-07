@@ -21,7 +21,7 @@ public class Geo {
 	}
 
 	private void init(Coordinates topLeft, int shiftRight, int shiftDown) {
-		System.out.println("tlx="+topLeft.getX()+", tly="+topLeft.getY());
+//		System.out.println("tlx="+topLeft.getX()+", tly="+topLeft.getY());
 		setTopLeft(topLeft);
 
 		getTopLeft().setX(getTopLeft().getX() << 4);

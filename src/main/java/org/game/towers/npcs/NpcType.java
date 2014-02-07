@@ -88,7 +88,7 @@ public class NpcType extends Unit {
 
 	@Override
 	public boolean hasCollided(int xa, int ya) {
-		//TODO: need to move collision box size to configuration file so we can use diferent sizes for each type of unit
+		//TODO: need to move collision box size to configuration file so we can use different sizes for each type of unit
 		int xMin = 4;
 		int xMax = 12;
 

@@ -3,8 +3,8 @@ package org.game.towers.workers;
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
-import org.game.towers.level.Portals;
 import org.game.towers.level.tiles.TileMap;
+import org.game.towers.workers.Algorithms.JumpPointSearch.JPS;
 import org.hamcrest.Matchers;
 
 import java.awt.*;
@@ -96,12 +96,13 @@ public class PathWorker {
 //                System.out.println("tileItem =" + tileItem);
 //                System.out.println("xStart =" + xStart + "yStart =" + yStart);
 //                System.out.println("xFinish =" + xFinish + "yFinish =" + yFinish);
-//                System.out.println("apexX =" + apexX + "apexY =" + apexY);
                 y = lineEquation(apexX, xFinish, xStart, yFinish, yStart);
-                if (apexY < y || apexX < xStart) {
+                if (apexY < y) {
                     it.remove();
                 }
             }
+            System.out.println(temporaryTileMap.size());
+
 
             for (Iterator<Map.Entry<String, TileMap>> it = temporaryTileMap.entrySet().iterator(); it.hasNext();)
             {
@@ -119,7 +120,6 @@ public class PathWorker {
             return null;
         }
 
-//        System.out.println("size ="+temporaryTileMap.size());
         TileMap barrier = getFirstBarrier(temporaryTileMap, xStart, yStart);
 
         return barrier;
@@ -391,24 +391,28 @@ public class PathWorker {
     }
 
     public void nextCoordinate(int x, int y, Point point) {
-        int finishX = Portals.getExit().getCoordinates().getX();
-        int finishY = Portals.getExit().getCoordinates().getY();
+//        int finishX = Portals.getExit().getCoordinates().getX();
+//        int finishY = Portals.getExit().getCoordinates().getY();
 //        System.out.println("wayList.size="+wayList.size());
-        int dx, dy;
-        TileMap barrier = getBarrier(x, finishX, y, finishY);
-        Coordinates coordinate = new Coordinates(finishX, finishY);
-        if (barrier != null){
-            coordinate = getTransitionalFinish(x, y, barrier);
-        }
+//        System.out.println("wayList.size="+wayList.size());
+//        int dx, dy;
+//        TileMap barrier = getBarrier(x, finishX, y, finishY);
+//        Coordinates coordinate = new Coordinates(finishX, finishY);
+//        if (barrier != null){
+//            coordinate = getTransitionalFinish(x, y, barrier);
+//        }
 
 //        List<Integer> chanceDirection = chanceDirection(x, y, coordinate.getX(), coordinate.getY());
 //        dx = chanceDirection.get(0);
 //        dy = chanceDirection.get(1);
-        dx = doShift(x, coordinate.getX());
-        int expectedY = doShift(coordinate.getY(), y);
 
-        dy = getNextCoordinateByLineEquation(x+dx, y+expectedY, x, y, coordinate);
-        point.setLocation(dx, dy);
+        JPS jpsg = new JPS();
+//
+//        dx = doShift(x, coordinate.getX());
+//        int expectedY = doShift(coordinate.getY(), y);
+//
+//        dy = getNextCoordinateByLineEquation(x+dx, y+expectedY, x, y, coordinate);
+//        point.setLocation(dx, dy);
     }
 
 }
