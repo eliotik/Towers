@@ -132,19 +132,21 @@ public class Level implements GameActionListener {
 	}
 
     private void generateGridForJSP() {
-        Tile tile;
-        tilesForJSP = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
-        for (int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
-            for (int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
-                tile = getTile(x, y);
-                System.out.println(getWidth()*Config.BOX_SIZE +" "+getHeight()*Config.BOX_SIZE);
+
+//        tilesForJSP = new Node[Config.REAL_SCREEN_WIDTH][Config.REAL_SCREEN_HEIGHT];
+        tilesForJSP = new Node[Config.SCREEN_WIDTH][Config.SCREEN_HEIGHT];
+//        for (int x = 0; x < Config.REAL_SCREEN_WIDTH; x++) {
+//            for (int y = 0; y < Config.REAL_SCREEN_HEIGHT; y++) {
+        for (int x = 0; x < Config.SCREEN_WIDTH; x++) {
+            for (int y = 0; y < Config.SCREEN_HEIGHT; y++) {
+                Tile tile = getTile(x, y);
                 tilesForJSP[x][y] = new Node(x, y);
-//                tilesForJSP[x][y].setPass(true);
-                if (tile.isSolid()) {
+                if (tile.isSolid() ) {
                     tilesForJSP[x][y].setPass(false);
                 }
             }
         }
+
 //        return tilesForJSP;
     }
 

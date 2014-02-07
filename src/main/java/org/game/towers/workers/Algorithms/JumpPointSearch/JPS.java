@@ -2,6 +2,7 @@ package org.game.towers.workers.Algorithms.JumpPointSearch;
 
 import java.util.ArrayList;
 
+import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.level.Portals;
 
@@ -55,14 +56,13 @@ public class JPS {
 	}
 
     public JPS(){
-        System.out.println("test");
         Node[][] tiles = Game.instance.getWorld().getLevel().getTilesForJSP();
-        System.out.println(tiles);
         grid = new Grid(tiles);
-        this.startX = Portals.getEntrance().getCoordinates().getX();
-        this.startY = Portals.getEntrance().getCoordinates().getY();
+        this.startX = Portals.getEntrance().getCoordinates().getX()+Config.BOX_SIZE /2;
+        this.startY = Portals.getEntrance().getCoordinates().getY()+Config.BOX_SIZE /2;
         this.endX = Portals.getExit().getCoordinates().getX();
         this.endY = Portals.getExit().getCoordinates().getY();
+
         search();
     }
 
