@@ -152,7 +152,7 @@ public class Screen {
 					for (int xScale = 0; xScale < scale; xScale++) {
 						if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
 							continue;
-						getPixels()[(xPixel + xScale) + (yPixel + yScale) * getWidth()] = color;
+						getPixels()[(xPixel + xScale) + (yPixel + yScale) * getWidth()] = (tile.isHighlight())?Colors.brightness(color, 1.2):color;
 					}
 				}
 			}

@@ -23,13 +23,13 @@ public class Grid {
 	private int[] endCol = {255, 0, 0};
 	private PixelDraw map;
 	private Heap heap;
-	
+
 	/**
 	 * Grid is created, Land is generated in either uniform or random fashion, landscape 'Map' is created in printed.
-	 * 
-	 * 
-	 * @param xMax - (int) maximum x coordinate 
-	 * @param yMax - (int) maximum y coordinate 
+	 *
+	 *
+	 * @param xMax - (int) maximum x coordinate
+	 * @param yMax - (int) maximum y coordinate
 	 * @param xIsland (int) number of islands along x axis
 	 * @param yIsland (int) number of islands along y axis
 	 * @param uniform (boolean) if true then land is generated in a uniform fashion, if false then land is randomly generated
@@ -52,13 +52,13 @@ public class Grid {
 		map.picPrint("1 - Map");
 		heap = new Heap();
 	}
-	
+
 	/**
 	 * This is the constuctor used for comparison. It can be passed an entire Node[][] grid.
-	 * 
-	 * 
-	 * @param xMax - (int) maximum x coordinate 
-	 * @param yMax - (int) maximum y coordinate 
+	 *
+	 *
+	 * @param xMax - (int) maximum x coordinate
+	 * @param yMax - (int) maximum y coordinate
 	 * @param xIsland (int) number of islands along x axis
 	 * @param yIsland (int) number of islands along y axis
 	 * @param grid (Node[][]) an entire grid is passed through for comparison
@@ -85,11 +85,11 @@ public class Grid {
 //        map = new PixelDraw(this.xMax,this.yMax);
 //        map.picPrint("1 - Map");
     }
-	
-	
+
+
 	/**
 	 * returns all adjacent nodes that can be traversed
-	 * 
+	 *
 	 * @param node (Node) finds the neighbors of this node
 	 * @return (int[][]) list of neighbors that can be traversed
 	 */
@@ -101,7 +101,7 @@ public class Grid {
 		boolean d1 = false;
 		boolean d2 = false;
 		boolean d3 = false;
-		
+
 		if (walkable(x,y-1)){
 			neighbors[0] = (tmpInt(x,y-1));
 			d0 = d1 = true;
@@ -132,11 +132,11 @@ public class Grid {
 		}
 		return neighbors;
 	}
-	
+
 //---------------------------Passability------------------------------//
 	/**
-	 * Tests an x,y node's passability 
-	 * 
+	 * Tests an x,y node's passability
+	 *
 	 * @param x (int) node's x coordinate
 	 * @param y (int) node's y coordinate
 	 * @return (boolean) true if the node is obstacle free and on the map, false otherwise
@@ -152,7 +152,7 @@ public class Grid {
 		}
 		else{    //for randomized land generation, all nodes always contain correct "pass" boolean
 			try{
-				return getNode(x,y).pass;     
+				return getNode(x,y).pass;
 			}
 			catch (Exception e){
 				return false;
@@ -164,36 +164,36 @@ public class Grid {
 //---------------------------MAP DRAWING------------------------------//
 	/**
 	 * Draws visited pixel to the map
-	 * 
+	 *
 	 * @param x (int) point to be drawn's x coordinate
 	 * @param y (int) point to be drawn's y coordinate
 	 */
 	public void drawVisited(int x, int y){
 		map.drawPixel(x,y,visitedCol);
 	}
-	
+
 	/**
 	 * Draws expanded pixel to the map
-	 * 
+	 *
 	 * @param x (int) point to be drawn's x coordinate
 	 * @param y (int) point to be drawn's y coordinate
 	 */
 	public void drawExpanded(int x, int y){
 		map.drawPixel(x,y,expandedCol);
 	}
-	
+
 	/**
 	 * Saves the picture to a png file in the folder of the program
-	 * 
+	 *
 	 * @param name (String) the file will be called 'name'
 	 */
 	public void picPrint(String name){
 		map.picPrint(name);
 	}
-	
+
 	/**
-	 * Draws a line from point (x,y) to point (px,py). The line is a nice mellow yellow. 
-	 * 
+	 * Draws a line from point (x,y) to point (px,py). The line is a nice mellow yellow.
+	 *
 	 * @param x (int) start point's x coordinate
 	 * @param y (int) start point's y coordinate
 	 * @param px (int) end point's x coordinate
@@ -202,7 +202,7 @@ public class Grid {
 	public void drawLine(int x, int y, int px, int py){
 		map.drawLine(x, y, px, py, trailCol);
 	}
-	
+
 	/**
 	 * Draws a start point at (x,y)
 	 * @param x (int) start point's x coordinate
@@ -211,7 +211,7 @@ public class Grid {
 	public void drawStart(int x, int y){
 		map.drawPOI(x, y, startCol);
 	}
-	
+
 	/**
 	 * Draws an end point at (x,y)
 	 * @param x (int) end point's x coordinate
@@ -220,7 +220,7 @@ public class Grid {
 	public void drawEnd(int x, int y){
 		map.drawPOI(x, y, endCol);
 	}
-	
+
 	public ArrayList<Node> pathCreate(Node node){
 		ArrayList<Node> trail = new ArrayList<Node>();
 		System.out.println("Tracing Back Path...");
@@ -235,18 +235,18 @@ public class Grid {
 		return trail;
 	}
 //-----------------------------------------------------------------//
-	
-//--------------------------HEAP-----------------------------------//	
+
+//--------------------------HEAP-----------------------------------//
 	/**
 	 * Adds a node's (x,y,f) to the heap. The heap is sorted by 'f'.
-	 * 
+	 *
 	 * @param node (Node) node to be added to the heap
 	 */
 	public void heapAdd(Node node){
 		float[] tmp = {node.x,node.y,node.f};
 		heap.add(tmp);
 	}
-	
+
 	/**
 	 * @return (int) size of the heap
 	 */
@@ -282,7 +282,7 @@ public class Grid {
 
 	/**
 	 * Generates land based on random factors. Land forms like an ugly hanging gardens.
-	 * 
+	 *
 	 * @param amount (int) number of islands to produce
 	 * @param size (int) general size of islands (random size is directly correlated to this number).
 	 */
@@ -311,13 +311,13 @@ public class Grid {
 					}
 					catch(Exception e){}
 				}
-			}	
+			}
 		}
 	}
-	
+
 	/**
 	 * Finds an open spot. Used for finding random start/end points.
-	 * 
+	 *
 	 * @return int[] open spot
 	 */
 	public int[] getOpenPos(){
@@ -334,7 +334,7 @@ public class Grid {
 //---------------------------------------------------------//
 	/**
 	 * Encapsulates x,y in an int[] for returning. A helper method for the jump method
-	 * 
+	 *
 	 * @param x (int) point's x coordinate
 	 * @param y (int) point's y coordinate
 	 * @return ([]int) bundled x,y
@@ -343,10 +343,10 @@ public class Grid {
 		int[] tmpIntsTmpInt = {x,y};  //create the tmpInt's tmpInt[]
 		return tmpIntsTmpInt;         //return it
 	}
-	
+
 	/**
 	 * getFunc - Node at given x, y
-	 * 
+	 *
 	 * @param x (int) desired node x coordinate
 	 * @param y (int) desired node y coordinate
 	 * @return (Node) desired node
@@ -359,9 +359,9 @@ public class Grid {
 			return null;
 		}
 	}
-	
+
 	public float toPointApprox(float x, float y, int tx, int ty){
-		return (float) Math.sqrt(Math.pow(Math.abs(x-tx),2) + Math.pow(Math.abs(y-ty), 2));		
+		return (float) Math.sqrt(Math.pow(Math.abs(x-tx),2) + Math.pow(Math.abs(y-ty), 2));
 	}
 }
 

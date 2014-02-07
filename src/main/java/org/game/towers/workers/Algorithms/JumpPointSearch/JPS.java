@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.level.Portals;
+import org.game.towers.level.tiles.Tile;
 
 /**
  * @author Clint Mullins
@@ -87,6 +88,11 @@ public class JPS {
 		while (true){
 			cur = grid.heapPopNode();              //the current node is removed from the heap.
 			if (draw){grid.drawVisited(cur.x, cur.y);}  //draw current point
+
+			int xa = cur.x >> 4;
+            int ya = cur.y >> 4;
+            Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(true);
+
 			if (cur.x == endX && cur.y==endY){		//if the end node is found
 				System.out.println("Path Found!");  //print "Path Found!"
 				if (draw){grid.drawStart(startX, startY); grid.drawEnd(endX, endY); grid.picPrint("2 - JumpPoints");} //draw start, end, and print the picture sans path
