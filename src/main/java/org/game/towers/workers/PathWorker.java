@@ -8,6 +8,7 @@ import org.game.towers.level.Portals;
 import org.game.towers.level.tiles.TileMap;
 import org.game.towers.units.Unit;
 import org.game.towers.workers.Algorithms.JumpPointSearch.JPS;
+import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
 import org.hamcrest.Matchers;
 
 import java.awt.*;
@@ -19,7 +20,8 @@ public class PathWorker {
 
     private boolean isAvailable = true;
     private List<Coordinates> wayList = new ArrayList<Coordinates>();
-
+    ArrayList<Node> trail;
+    List <Node> visitedNodes = new ArrayList<Node>();
     public boolean pathCheck() {
         return isAvailable;
     }
@@ -393,12 +395,19 @@ public class PathWorker {
         return  dimension;
     }
 
+    private void initJPS() {
+        if (trail == null) {
+            JPS jpsg = new JPS();
+            trail = jpsg.getTrail();
+        }
+    }
+
     public void nextCoordinate(int x, int y, Point point) {
 //        int finishX = Portals.getExit().getCoordinates().getX();
 //        int finishY = Portals.getExit().getCoordinates().getY();
 //        System.out.println("wayList.size="+wayList.size());
 //        System.out.println("wayList.size="+wayList.size());
-//        int dx, dy;
+        int dx, dy;
 //        TileMap barrier = getBarrier(x, finishX, y, finishY);
 //        Coordinates coordinate = new Coordinates(finishX, finishY);
 //        if (barrier != null){
@@ -409,13 +418,25 @@ public class PathWorker {
 //        dx = chanceDirection.get(0);
 //        dy = chanceDirection.get(1);
 
-        JPS jpsg = new JPS();
+
+        initJPS();
+
+        Node nextNode = trail.get(visitedNodes.size());
+
+        if (x == nextNode.getX() && y == nextNode.getY()) {
+            visitedNodes.add(nextNode);
+        }
+
+        dx = doShift(x, nextNode.getX());
+        dy = doShift(y, nextNode.getY());
+
+
 //
 //        dx = doShift(x, coordinate.getX());
 //        int expectedY = doShift(coordinate.getY(), y);
 //
 //        dy = getNextCoordinateByLineEquation(x+dx, y+expectedY, x, y, coordinate);
-//        point.setLocation(dx, dy);
+        point.setLocation(dx, dy);
     }
 
 }

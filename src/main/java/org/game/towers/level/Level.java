@@ -131,24 +131,7 @@ public class Level implements GameActionListener {
 		return TileTypes.get("VOID").get(this, x, y, true);
 	}
 
-    private void generateGridForJSP() {
 
-//        tilesForJSP = new Node[Config.REAL_SCREEN_WIDTH][Config.REAL_SCREEN_HEIGHT];
-        tilesForJSP = new Node[Config.SCREEN_WIDTH][Config.SCREEN_HEIGHT];
-//        for (int x = 0; x < Config.REAL_SCREEN_WIDTH; x++) {
-//            for (int y = 0; y < Config.REAL_SCREEN_HEIGHT; y++) {
-        for (int x = 0; x < Config.SCREEN_WIDTH; x++) {
-            for (int y = 0; y < Config.SCREEN_HEIGHT; y++) {
-                Tile tile = getTile(x, y);
-                tilesForJSP[x][y] = new Node(x, y);
-                if (tile.isSolid() ) {
-                    tilesForJSP[x][y].setPass(false);
-                }
-            }
-        }
-
-//        return tilesForJSP;
-    }
 
 	private void loadTiles() {
 		int[] tiles = new int[getWidth() * getHeight()];
@@ -167,6 +150,37 @@ public class Level implements GameActionListener {
 		Portals.setExit(getExitLocation());
 
 	}
+
+    private void generateGridForJSP() {
+
+//        tilesForJSP = new Node[Config.REAL_SCREEN_WIDTH][Config.REAL_SCREEN_HEIGHT];
+//        System.out.println(Portals.getEntrance().getCoordinates().getX()+" / "+Portals.getEntrance().getCoordinates().getY());
+//        System.out.println(Portals.getExit().getCoordinates().getX()+" / "+Portals.getExit().getCoordinates().getY());
+//        System.out.println(Game.instance.getScreen().getWidth()+" / "+Game.instance.getScreen().getHeight());
+//        System.out.println(Config.SCREEN_WIDTH+" / "+Config.SCREEN_HEIGHT);
+//        System.out.println(Config.REAL_SCREEN_WIDTH+" / "+Config.REAL_SCREEN_HEIGHT);
+//        System.out.println(getWidth()*Config.BOX_SIZE+" / "+getHeight()*Config.BOX_SIZE);
+        tilesForJSP = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
+//        for (int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
+//            for (int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
+        for(int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
+            for(int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
+                int xa = x >> 4;
+                int ya = y >> 4;
+                Tile tile = getTile(xa, ya);
+//                Tile tile = getTile(x, y);
+//                System.out.println(">>-------------------");
+//                System.out.println(tile.getName()+": "+x+" / "+y+" / "+tile.isSolid());
+//                System.out.println("<<-------------------");
+                tilesForJSP[x][y] = new Node(x, y);
+                if (tile.isSolid() ) {
+                    tilesForJSP[x][y].setPass(false);
+                }
+            }
+        }
+
+//        return tilesForJSP;
+    }
 
 	public void alterTile(int x, int y, Tile newTile) {
 		getTiles()[x + y * getWidth()] = newTile;

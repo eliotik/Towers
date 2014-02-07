@@ -56,24 +56,30 @@ public class JPS {
 	}
 
     public JPS(){
+        this.draw = false;
         Node[][] tiles = Game.instance.getWorld().getLevel().getTilesForJSP();
         grid = new Grid(tiles);
-        this.startX = Portals.getEntrance().getCoordinates().getX()+Config.BOX_SIZE /2;
-        this.startY = Portals.getEntrance().getCoordinates().getY()+Config.BOX_SIZE /2;
+        this.startX = Portals.getEntrance().getCoordinates().getX();
+        this.startY = Portals.getEntrance().getCoordinates().getY();
         this.endX = Portals.getExit().getCoordinates().getX();
         this.endY = Portals.getExit().getCoordinates().getY();
 
         search();
     }
 
+    public ArrayList<Node> getTrail() {
+        return trail;
+    }
 
-	/**
+    /**
 	 * Orchestrates the Jump Point Search; it is explained further in comments below.
 	 */
 	public void search(){
 		System.out.println("Jump Point Search\n----------------");
 		System.out.println("Start X: "+startX+" Y: "+startY);  //Start and End points are printed for reference
 		System.out.println("End   X: "+endX+" Y: "+endY);
+//        System.out.println(Game.instance.getWorld().getLevel().getTile(startX, startY).isSolid()+"/"+Game.instance.getWorld().getLevel().getTile(endX, endY).isSolid());
+        System.out.println(grid.getNode(startX,startY).pass);
 		grid.getNode(startX,startY).updateGHFP(0, 0, null);
 		grid.heapAdd(grid.getNode(startX, startY));  //Start node is added to the heap
 		while (true){
@@ -83,7 +89,8 @@ public class JPS {
 				System.out.println("Path Found!");  //print "Path Found!"
 				if (draw){grid.drawStart(startX, startY); grid.drawEnd(endX, endY); grid.picPrint("2 - JumpPoints");} //draw start, end, and print the picture sans path
 				trail = grid.pathCreate(cur);    //the path is then created
-				if (draw){grid.picPrint("3 - PathAndPoints");}   //printed the picture with path
+                System.out.println(trail);
+                if (draw){grid.picPrint("3 - PathAndPoints");}   //printed the picture with path
 				break;				//loop is done
 			}
 			possibleSuccess = identifySuccessors(cur);  //get all possible successors of the current node

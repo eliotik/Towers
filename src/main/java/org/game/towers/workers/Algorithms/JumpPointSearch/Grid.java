@@ -79,8 +79,8 @@ public class Grid {
         this.grid = grid;
         heap = new Heap();
 
-//        this.xMax = Config.REAL_SCREEN_WIDTH;
-//        this.yMax = Config.REAL_SCREEN_HEIGHT;
+//        this.xMax = 591;
+//        this.yMax = 399;
 //        this.xMin = this.yMin = 0;
 //        map = new PixelDraw(this.xMax,this.yMax);
 //        map.picPrint("1 - Map");
@@ -228,7 +228,7 @@ public class Grid {
 			try{
 				trail.add(0,node);
 			}catch (Exception e){}
-			drawLine(node.parent.x, node.parent.y, node.x, node.y);
+			//drawLine(node.parent.x, node.parent.y, node.x, node.y);
 			node = node.parent;
 		}
 		System.out.println("Path Trace Complete!");
