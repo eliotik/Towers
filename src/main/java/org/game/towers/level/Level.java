@@ -42,7 +42,7 @@ public class Level implements GameActionListener {
 	private String imagePath;
 	private BufferedImage image;
 	private volatile List<Unit> units = new ArrayList<Unit>();
-//	private Store store;
+	private Store store;
 	private Camera camera;
 	private long nextWave = System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT;
 
@@ -51,11 +51,11 @@ public class Level implements GameActionListener {
 	private int playerResource = Config.DEFAULT_PLAYER_RESOURCE;
 
 	public Level(String imagePath) {
-			this.imagePath = imagePath;
-			loadLevelFromFile();
-//			initStore();
-			initCamera();
-            generateGridForJSP();
+		setImagePath(imagePath);
+		loadLevelFromFile();
+		initStore();
+		initCamera();
+        generateGridForJSP();
 	}
 
 	private void initCamera() {
@@ -64,9 +64,9 @@ public class Level implements GameActionListener {
 		}
 	}
 
-//	private void initStore() {
-//		setStore(new Store());
-//	}
+	private void initStore() {
+		setStore(new Store());
+	}
 
 	public void generateNpcs() {
 
@@ -117,7 +117,7 @@ public class Level implements GameActionListener {
 
 	private void loadLevelFromFile() {
 		try {
-			setImage(ImageIO.read(Level.class.getResource(this.imagePath)));
+			setImage(ImageIO.read(Level.class.getResource(this.getImagePath())));
 			setWidth(getImage().getWidth());
 			setHeight(getImage().getHeight());
 			setTiles(new Tile[getWidth() * getHeight()]);
@@ -136,8 +136,6 @@ public class Level implements GameActionListener {
 		}
 		return TileTypes.get("VOID").get(this, x, y, true);
 	}
-
-
 
 	private void loadTiles() {
 		int[] tiles = new int[getWidth() * getHeight()];
@@ -214,6 +212,8 @@ public class Level implements GameActionListener {
 			tile.tick();
 		}
 
+		getStore().tick();
+
 		synchronized (getUnits()) {
 			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
 				Unit unit = (Unit) it.next();
@@ -224,13 +224,7 @@ public class Level implements GameActionListener {
     	if (getCamera() != null) {
     		getCamera().tick();
 	    }
-
-//    	getStore().tick();
 	}
-
-//    public void renderStore(Screen screen) {
-//    	getStore().render(screen);
-//    }
 
 	public Coordinates getEntranceLocation() {
 		return getTileLocation(Config.TILE_ENTRANCE);
@@ -289,13 +283,13 @@ public class Level implements GameActionListener {
 		this.wave = wave;
 	}
 
-//	public Store getStore() {
-//		return store;
-//	}
-//
-//	public void setStore(Store store) {
-//		this.store = store;
-//	}
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
+	}
 
 	public Camera getCamera() {
 		return camera;
@@ -437,4 +431,12 @@ public class Level implements GameActionListener {
     public void setTilesForJSP(Node[][] tilesForJSP) {
         this.tilesForJSP = tilesForJSP;
     }
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 }

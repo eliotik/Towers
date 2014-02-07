@@ -6,6 +6,7 @@ import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.handlers.InputHandler;
 import org.game.towers.level.Level;
+import org.game.towers.towers.TowerTypesCollection;
 
 public class Camera {
 
@@ -14,7 +15,7 @@ public class Camera {
     private int y;
     private InputHandler inputHandler;
     private int speed;
-    private MouseBounds mouseBounds = new MouseBounds();
+    private MouseBounds mouseBounds;
 
     public Camera(Level level, int x, int y, InputHandler inputHandler, int speed) {
         setLevel(level);
@@ -22,6 +23,7 @@ public class Camera {
         setY(y);
         setInputHandler(inputHandler);
         setSpeed(speed);
+        setMouseBounds(new MouseBounds());
     }
 
     private class MouseBounds {
@@ -44,12 +46,13 @@ public class Camera {
             setRight(new Rectangle(Config.REAL_SCREEN_WIDTH-Config.BOX_SIZE * 2,
             						0,
             						Config.BOX_SIZE * 2,
-            						Config.REAL_SCREEN_HEIGHT));
+            						Config.REAL_SCREEN_HEIGHT - TowerTypesCollection.getItems().size()*Config.BOX_SIZE));
 
             setBottom(new Rectangle(0,
             						Config.REAL_SCREEN_HEIGHT-Config.BOX_SIZE * 2,
-            						Config.REAL_SCREEN_WIDTH,
+            						Config.SCREEN_WIDTH - TowerTypesCollection.getItems().size()*Config.BOX_SIZE,
             						Config.BOX_SIZE * 2));
+            System.out.println(Config.REAL_SCREEN_WIDTH);
         }
 
         public Rectangle getTop() {

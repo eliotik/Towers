@@ -23,6 +23,7 @@ import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler;
 import org.game.towers.handlers.MouseHandler;
 import org.game.towers.npcs.NpcTypesCollection;
+import org.game.towers.towers.TowerTypesCollection;
 import org.game.towers.workers.PathWorker;
 
 public class Game extends Canvas implements Runnable, FocusListener {
@@ -139,6 +140,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	private void init() {
 		initHomeDirectory();
 		initWorld();
+		initUnits();
 		initFocusListener();
 		initScreen();
 		initInput();
@@ -151,6 +153,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	private void initUnits() {
+		TowerTypesCollection.load();
 		NpcTypesCollection.load();
 	}
 
@@ -384,7 +387,6 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	public void setWorld(World world) {
 		this.world = world;
-		initUnits();
 	}
 
 	public void initLauncher() {

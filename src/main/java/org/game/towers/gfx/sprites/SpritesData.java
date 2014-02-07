@@ -3,6 +3,7 @@ package org.game.towers.gfx.sprites;
 import org.game.towers.configs.Config;
 
 public class SpritesData {
+
 	private static SpriteSheet[] spriteSheets = {
 			new BlockSpriteSheet(Config.SPRITESHEET_FILE),
 			new BlockSpriteSheet(Config.SPRITESHEET_PORTALS_FILE),
@@ -80,6 +81,10 @@ public class SpritesData {
 	public static Sprite MONEY = new Sprite("MONEY", 0, 2, 16, 16, "GUI");
 	public static Sprite HEART = new Sprite("HEART", 1, 2, 16, 16, "GUI");
 	public static Sprite RESOURCE = new Sprite("RESOURCE", 2, 2, 16, 16, "GUI");
+
+	public static Sprite STORE_BG_LEFT = new Sprite("STORE_BG_LEFT", 0, 1, 16, 16, "GUI");
+	public static Sprite STORE_BG_MIDDLE = new Sprite("STORE_BG_MIDDLE", 1, 1, 16, 16, "GUI");
+	public static Sprite STORE_BG_RIGHT = new Sprite("STORE_BG_RIGHT", 2, 1, 16, 16, "GUI");
 
 	public static SpriteSheet[] getSpriteSheets() {
 		return spriteSheets;

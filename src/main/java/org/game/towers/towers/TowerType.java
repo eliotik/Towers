@@ -8,6 +8,7 @@ public class TowerType extends Unit {
 
 	private static final long serialVersionUID = 1L;
 	private double radius;
+	private int price;
 
 	public TowerType() {
 	}
@@ -34,5 +35,13 @@ public class TowerType extends Unit {
 	public boolean hasCollided(int xa, int ya) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 }

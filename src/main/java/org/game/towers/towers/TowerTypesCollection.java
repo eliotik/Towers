@@ -54,10 +54,13 @@ public class TowerTypesCollection {
                 );
 
                 item.setRadius(Integer.parseInt(elemj.getAttribute("radius").toString()));
+                item.setPrice(Integer.parseInt(elemj.getAttribute("price").toString()));
+
 
                 item.setSprites(getSprites(item.getId()));
 
                 getItems().add(item);
+                Game.debug(DebugLevel.INFO, "Added Tower type: " + item.getId());
             }
         }
         Game.debug(DebugLevel.INFO, "Loaded Towers types: " + getItems().size());
