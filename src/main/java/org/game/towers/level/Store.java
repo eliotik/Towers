@@ -1,130 +1,92 @@
 package org.game.towers.level;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.gfx.Colors;
 import org.game.towers.gfx.Screen;
+import org.game.towers.gfx.sprites.Sprite;
+import org.game.towers.gfx.sprites.SpritesData;
+import org.game.towers.towers.TowerType;
+import org.game.towers.towers.TowerTypesCollection;
 
 public class Store {
 
-	private static final int STORE_SLOTS = 5;
-
-	private StoreSlot[] slots = new StoreSlot[STORE_SLOTS];
+	private int x;
+	private int y;
+	private boolean visible;
 
 	public Store() {
-		init();
-	}
-
-	public class StoreSlot {
-		private int id;
-		private boolean mouseOver = false;
-		private int scale = 1;
-		private int x = 0;
-		private int y = 0;
-		private int currentColor;
-		private int mouseOutColor;
-		private int mouseOverColor;
-		private int width = Config.BOX_SIZE * 2;
-		private int height = Config.BOX_SIZE * 2;
-
-		public StoreSlot(int id) {
-			setId(id);
-			mouseOutColor = Colors.get(500, 111, 200, 543);
-			mouseOverColor = Colors.get(500, 300, 200, 100);
-			setX((id+7) * Config.BOX_SIZE*2 + (id*2));
-			setY(Config.SCREEN_HEIGHT - Config.BOX_SIZE);
-		}
-
-		public void tick() {
-			Rectangle slot = new Rectangle(getX()*Config.SCALE, getY()*Config.SCALE, (getWidth()-(id*2) - 3)*Config.SCALE, getHeight()*Config.SCALE);
-			setMouseOver(slot.contains(Game.instance.getScreen().getMousePosition()));
-			currentColor = mouseOutColor;
-			if (isMouseOver()) {
-				currentColor = mouseOverColor;
-			}
-		}
-
-		public void render(Screen screen) {
-			int xTile = 0;
-			int yTile = 12;
-
-			int modifier = 8 * scale;
-			int xOffset = getX() - modifier / 2;
-			int yOffset = getY() - modifier / 2 - 4;
-
-//			screen.render(xOffset, yOffset, xTile + yTile * 32, currentColor);
-//			screen.render(xOffset + modifier, yOffset, (xTile + 1) + yTile * 32, currentColor);
-//			screen.render(xOffset, yOffset + modifier, xTile + (yTile + 1) * 32, currentColor);
-//			screen.render(xOffset + modifier, yOffset + modifier, (xTile + 1) + (yTile + 1) * 32, currentColor);
-		}
-
-		public int getId() {
-			return id;
-		}
-
-		public void setId(int id) {
-			this.id = id;
-		}
-
-		public boolean isMouseOver() {
-			return mouseOver;
-		}
-
-		public void setMouseOver(boolean mouseOver) {
-			this.mouseOver = mouseOver;
-		}
-
-		public int getX() {
-			return x;
-		}
-
-		public void setX(int x) {
-			this.x = x;
-		}
-
-		public int getY() {
-			return y;
-		}
-
-		public void setY(int y) {
-			this.y = y;
-		}
-
-		public int getWidth() {
-			return width;
-		}
-
-		public void setWidth(int width) {
-			this.width = width;
-		}
-
-		public int getHeight() {
-			return height;
-		}
-
-		public void setHeight(int height) {
-			this.height = height;
-		}
-	}
-
-
-	private void init() {
-		for (int i = 0; i < slots.length; i++) {
-			slots[i] = new StoreSlot(i);
-		}
+		setX(TowerTypesCollection.getItems().size() * Config.BOX_SIZE - 3);
+		setY(0);
 	}
 
 	public void tick() {
-		for (int i = 0; i < slots.length; i++) {
-			slots[i].tick();
-		}
+		setX(0);
 	}
 
 	public void render(Screen screen) {
-		for (int i = 0; i < slots.length; i++) {
-			slots[i].render(screen);
+		for (int i = 0; i < TowerTypesCollection.getItems().size(); i++) {
+			TowerType tower = TowerTypesCollection.getItems().get(i);
+			Sprite sprite = tower.getCurrentSprite();
+			int xp = (screen.getWidth() - (sprite.getWidth() / 2)) - (i << 4) - 8 + getX();
+			int yp = screen.getHeight() - sprite.getHeight();
+			for (int y = 0; y < sprite.getHeight(); y++) {
+				int yt = y + yp;
+				for (int x = 0; x < sprite.getWidth(); x++) {
+					int xt = x + xp;
+					if (0 > xt || xt >= screen.getWidth() || 0 > yt || yt >= screen.getHeight()) {
+						break;
+					}
+					if (xt < 0) {
+						xt = 0;
+					}
+					if (yt < 0) {
+						yt = 0;
+					}
+					int color = sprite.getPixels()[x + y * sprite.getWidth()];
+					if (color == 0xFFFF00FF || color == 0xFF800080) {
+						if (i == TowerTypesCollection.getItems().size() - 1) {
+							color = SpritesData.STORE_BG_LEFT.getPixels()[x + y * SpritesData.STORE_BG_LEFT.getWidth()];
+						} else {
+							color = SpritesData.STORE_BG_MIDDLE.getPixels()[x + y * SpritesData.STORE_BG_MIDDLE.getWidth()];
+						}
+					}
+					if (color != 0xFFFF00FF && color != 0xFF800080) {
+						screen.getPixels()[xt + yt * screen.getWidth()] = color;
+					}
+				}
+			}
+			int width = (screen.getWidth() * Config.SCALE - i * 33) - 5 + getX()*2;
+			int height = screen.getHeight() * Config.SCALE + 7;
+			screen.drawCenteredString(tower.getPrice() + "", width - 1, height - 1, 12, 1, Color.BLACK);
+			screen.drawCenteredString(tower.getPrice() + "", width, height, 12,	1, Color.WHITE);
 		}
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 }

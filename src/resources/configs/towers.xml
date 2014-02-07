@@ -16,6 +16,7 @@
 		radius="10"
 		animation_switch_delay="100"
 		animation_start_delay="0"
+		price="55"
 	/>
 
 </towers>

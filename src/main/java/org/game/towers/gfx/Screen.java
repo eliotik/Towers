@@ -15,6 +15,8 @@ import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.level.Level;
 import org.game.towers.level.tiles.Tile;
 import org.game.towers.npcs.NpcType;
+import org.game.towers.towers.TowerType;
+import org.game.towers.towers.TowerTypesCollection;
 import org.game.towers.units.Unit;
 
 public class Screen {
@@ -35,22 +37,12 @@ public class Screen {
 
 	private List<RenderedString> renderText = new ArrayList<RenderedString>();
 
-//	public SpriteSheet sheet;
-
 	public Screen(int width, int height) {
 		setWidth(width);
 		setHeight(height);
 
 		setPixels(new int[width * height]);
 	}
-
-//	public Screen(int width, int height, SpriteSheet sheet) {
-//		this.width = width;
-//		this.height = height;
-//		this.sheet = sheet;
-//
-//		pixels = new int[width * height];
-//	}
 
 	public void setGraphics(Graphics g) {
 		graphics = g;
@@ -313,6 +305,11 @@ public class Screen {
 	}
 
 	public void renderLevelGui() {
+		Game.instance.getWorld().getLevel().getStore().render(this);
+		renderIcons();
+	}
+
+	private void renderIcons() {
 		int fontSize = 22;
 		int yPos = getHeight() * Config.SCALE;
 		Level level = Game.instance.getWorld().getLevel();
