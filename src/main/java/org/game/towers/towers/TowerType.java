@@ -7,12 +7,10 @@ import org.game.towers.units.Unit;
 public class TowerType extends Unit {
 
 	private static final long serialVersionUID = 1L;
-
-	public TowerType(Level level) {
-//		super(level);
-	}
-
 	private double radius;
+
+	public TowerType() {
+	}
 
 	public double getRadius() {
 		return radius;
@@ -24,14 +22,12 @@ public class TowerType extends Unit {
 
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
-
+		super.tick();
 	}
 
 	@Override
 	public void render(Screen screen) {
-		// TODO Auto-generated method stub
-
+		screen.renderUnit((int) getX(), (int) getY(), this, getMirrorMask(), getScale());
 	}
 
 	@Override

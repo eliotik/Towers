@@ -49,9 +49,24 @@ public abstract class Unit implements Serializable {
 	private int animationSwitchDelay;
 	private int animationStartDelay;
 
-	public Unit() {}
+	public Unit() {
+		setSpriteIndex(0);
+		setAnimationStartDelay(0);
+		setLastIterationTime(System.currentTimeMillis());
+		setLastIterationStartTime(System.currentTimeMillis());
+	}
 
-	public abstract void tick();
+	public void tick() {
+		if ((System.currentTimeMillis() - getLastIterationStartTime()) >= (getAnimationStartDelay()) && !isPauseAnimation()) {
+			if ((System.currentTimeMillis() - getLastIterationTime()) >= (getAnimationSwitchDelay())) {
+				setLastIterationTime(System.currentTimeMillis());
+				setSpriteIndex((getSpriteIndex() + 1) % getSprites().size());
+				if (getSpriteIndex() >= getSprites().size() - 1) {
+					setLastIterationStartTime(System.currentTimeMillis());
+				}
+			}
+		}
+	};
 
 	public abstract void render(Screen screen);
 

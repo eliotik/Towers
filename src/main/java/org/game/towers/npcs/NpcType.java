@@ -15,10 +15,7 @@ public class NpcType extends Unit {
 	private ArrayList<String> hands;
 
 	public NpcType() {
-		setSpriteIndex(0);
-		setAnimationStartDelay(0);
-		setLastIterationTime(System.currentTimeMillis());
-		setLastIterationStartTime(System.currentTimeMillis());
+
 	}
 
 	public ArrayList<String> getHands() {
@@ -29,21 +26,9 @@ public class NpcType extends Unit {
 		this.hands = hands;
 	}
 
-    public boolean isConstruction() {
-        return false;
-    }
-
 	@Override
 	public void tick() {
-		if ((System.currentTimeMillis() - getLastIterationStartTime()) >= (getAnimationStartDelay()) && !isPauseAnimation()) {
-			if ((System.currentTimeMillis() - getLastIterationTime()) >= (getAnimationSwitchDelay())) {
-				setLastIterationTime(System.currentTimeMillis());
-				setSpriteIndex((getSpriteIndex() + 1) % getSprites().size());
-				if (getSpriteIndex() >= getSprites().size() - 1) {
-					setLastIterationStartTime(System.currentTimeMillis());
-				}
-			}
-		}
+		super.tick();
 		if (!isDead()) {
 			Point shifts = new Point();
 			Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts);
