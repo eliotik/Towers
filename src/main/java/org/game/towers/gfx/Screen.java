@@ -126,7 +126,7 @@ public class Screen {
 			int yt = y + yp;
 
 			int ySheet = y;
-			if (mirrorY) ySheet = 15 - y;
+			if (mirrorY) ySheet = Config.BOX_SIZE_FIXED - y;
 
 			int yPixel = y + yp + (y * scaleMap) - ((scaleMap << 4) / 2);
 
@@ -134,7 +134,7 @@ public class Screen {
 				int xt = x + xp;
 
 				int xSheet = x;
-				if (mirrorX) xSheet = 15 - x;
+				if (mirrorX) xSheet = Config.BOX_SIZE_FIXED - x;
 
 				int xPixel = x + xp + (x * scaleMap) - ((scaleMap << 4) / 2);
 
@@ -239,7 +239,7 @@ public class Screen {
 			int yt = y + yp;
 
 			int ySheet = y;
-			if (mirrorY) ySheet = 15 - y;
+			if (mirrorY) ySheet = Config.BOX_SIZE_FIXED - y;
 
 			int yPixel = y + yp + (y * scaleMap) - ((scaleMap << 4) / 2);
 
@@ -247,7 +247,7 @@ public class Screen {
 				int xt = x + xp;
 
 				int xSheet = x;
-				if (mirrorX) xSheet = 15 - x;
+				if (mirrorX) xSheet = Config.BOX_SIZE_FIXED - x;
 
 				int xPixel = x + xp + (x * scaleMap) - ((scaleMap << 4) / 2);
 
