@@ -81,22 +81,24 @@ public class JPS {
 		System.out.println("Jump Point Search\n----------------");
 		System.out.println("Start X: "+startX+" Y: "+startY);  //Start and End points are printed for reference
 		System.out.println("End   X: "+endX+" Y: "+endY);
-//        System.out.println(Game.instance.getWorld().getLevel().getTile(startX, startY).isSolid()+"/"+Game.instance.getWorld().getLevel().getTile(endX, endY).isSolid());
-        System.out.println(grid.getNode(startX,startY).pass);
 		grid.getNode(startX,startY).updateGHFP(0, 0, null);
 		grid.heapAdd(grid.getNode(startX, startY));  //Start node is added to the heap
 		while (true){
 			cur = grid.heapPopNode();              //the current node is removed from the heap.
 			if (draw){grid.drawVisited(cur.x, cur.y);}  //draw current point
 
-			int xa = cur.x >> 4;
-            int ya = cur.y >> 4;
-            Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(true);
-
+//            int xa = cur.x >> 4;
+//            int ya = cur.y >> 4;
+//            Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(true);
 			if (cur.x == endX && cur.y==endY){		//if the end node is found
 				System.out.println("Path Found!");  //print "Path Found!"
 				if (draw){grid.drawStart(startX, startY); grid.drawEnd(endX, endY); grid.picPrint("2 - JumpPoints");} //draw start, end, and print the picture sans path
 				trail = grid.pathCreate(cur);    //the path is then created
+                for (Node item : trail){
+                    int xa = item.x >> 4;
+                    int ya = item.y >> 4;
+                    Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(true);
+                }
                 if (draw){grid.picPrint("3 - PathAndPoints");}   //printed the picture with path
 				break;				//loop is done
 			}

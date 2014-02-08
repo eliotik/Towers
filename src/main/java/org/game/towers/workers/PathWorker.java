@@ -1,6 +1,8 @@
 package org.game.towers.workers;
 
+import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
+import org.game.towers.level.tiles.Tile;
 import org.game.towers.workers.Algorithms.JumpPointSearch.JPS;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
 
@@ -47,14 +49,16 @@ public class PathWorker {
         ArrayList<Node> visitedNodes = visitedNodesMap.get(id);
         nextNode = trail.get(visitedNodes.size());
 
-        if (x == nextNode.getX() && y == nextNode.getY()) {
+        Tile tile = Game.instance.getWorld().getLevel().getTile(nextNode.getX(), nextNode.getY());
+        if (x == tile.getX() && y == tile.getY()) {
             visitedNodes.add(nextNode);
             visitedNodesMap.put(id, visitedNodes);
         }
-        nextNode = trail.get(visitedNodes.size());
+//        nextNode = trail.get(visitedNodes.size());
+//        Tile tile = Game.instance.getWorld().getLevel().getTile(nextNode.getX(), nextNode.getY());
 //        System.out.println("id: "+ id +" nextNode.getX(): "+ nextNode.getX() + " nextNode.getY(): " + nextNode.getY());
-        dx = doShift(x, nextNode.getX());
-        dy = doShift(y, nextNode.getY());
+        dx = doShift(x, tile.getX());
+        dy = doShift(y, tile.getY());
 
         point.setLocation(dx, dy);
     }
