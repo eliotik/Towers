@@ -97,7 +97,7 @@ public class JPS {
                 for (Node item : trail){
                     int xa = item.x >> 4;
                     int ya = item.y >> 4;
-                    Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(true);
+                    Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(1.2);
                 }
                 if (draw){grid.picPrint("3 - PathAndPoints");}   //printed the picture with path
 				break;				//loop is done

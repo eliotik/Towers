@@ -15,7 +15,7 @@ public abstract class Tile {
 	private int x;
 	private int y;
 	private int mirrorMask = 0x00;
-	private boolean highlight = false;
+	private double highlight = 0;
 
 	public Tile(Level level, Sprite sprite, String name, int levelColor,
 			boolean isSolid, boolean isEmitter, int x, int y) {
@@ -104,11 +104,11 @@ public abstract class Tile {
 		this.mirrorMask = mirrorMask;
 	}
 
-	public boolean isHighlight() {
+	public double getHighlight() {
 		return highlight;
 	}
 
-	public void setHighlight(boolean highlight) {
+	public void setHighlight(double highlight) {
 		this.highlight = highlight;
 	}
 }
