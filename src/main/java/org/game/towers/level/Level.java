@@ -144,6 +144,7 @@ public class Level implements GameActionListener {
 			for (int x = 0; x < getWidth(); x++) {
 				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
 				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
+				System.out.println(key);
 				getTiles()[x + y * getWidth()] = tile;
 				if (!blocks.containsKey(key) && tile.isSolid()) {
                     blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));

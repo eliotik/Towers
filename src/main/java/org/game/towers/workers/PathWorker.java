@@ -1,5 +1,6 @@
 package org.game.towers.workers;
 
+import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
 import org.game.towers.level.tiles.Tile;
@@ -14,7 +15,7 @@ public class PathWorker {
 
     private HashMap<String, ArrayList<Node>> trailMap = new HashMap<String, ArrayList<Node>>();
     private HashMap<String, ArrayList<Node>> visitedNodesMap = new HashMap<String, ArrayList<Node>>();
-
+    private int steps = 0;
     private int doShift(int dimension1, int dimension2) {
         int deltaDim = dimension2 - dimension1;
         if (deltaDim > 0){
@@ -51,15 +52,22 @@ public class PathWorker {
 
         Tile tile = Game.instance.getWorld().getLevel().getTile(nextNode.getX(), nextNode.getY());
         Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
-        if (x == tile.getX() && y == tile.getY()) {
+        if (Game.instance.getWorld().getLevel().getUnits().get(0).getNumSteps() - steps >= 10) {
+	        System.out.println(">>>>====================");
+	    	System.out.println("tile x: "+tile.getX()+", nextnode x: "+nextNode.getX()+", npc x: "+ x+", tile x + boxsize/2: "+ (tile.getX()-Config.BOX_SIZE_FIXED - Config.BOX_SIZE_FIXED/2));
+	    	System.out.println("tile y: "+tile.getY()+", nextnode y: "+nextNode.getY()+", npc y: "+ y+", tile y + boxsize/2: "+ (tile.getY()-Config.BOX_SIZE_FIXED - Config.BOX_SIZE_FIXED/2));
+	    	System.out.println("<<<<====================");
+	    	steps = Game.instance.getWorld().getLevel().getUnits().get(0).getNumSteps();
+        }
+        if ( ((tile.getX()-Config.BOX_SIZE_FIXED) - Config.BOX_SIZE_FIXED/2) == x && ((tile.getY()-Config.BOX_SIZE_FIXED) - Config.BOX_SIZE_FIXED/2) == y ) {
             visitedNodes.add(nextNode);
             visitedNodesMap.put(id, visitedNodes);
         }
 //        nextNode = trail.get(visitedNodes.size());
 //        Tile tile = Game.instance.getWorld().getLevel().getTile(nextNode.getX(), nextNode.getY());
 //        System.out.println("id: "+ id +" nextNode.getX(): "+ nextNode.getX() + " nextNode.getY(): " + nextNode.getY());
-        dx = doShift(x, tile.getX());
-        dy = doShift(y, tile.getY());
+        dx = doShift(x, tile.getX()-Config.BOX_SIZE_FIXED);
+        dy = doShift(y, tile.getY()-Config.BOX_SIZE_FIXED);
 
         point.setLocation(dx, dy);
     }
