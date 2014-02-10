@@ -107,10 +107,10 @@ public class Level implements GameActionListener {
 //					drone2.setY(Portals.getEntrance().getCoordinates().getY());
 //					addNpc(drone2);
 
-					vent1.setLevel(this);
-					vent1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
-					vent1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
-					addNpc(vent1);
+//					vent1.setLevel(this);
+//					vent1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
+//					vent1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
+//					addNpc(vent1);
 				}
 		}
 	}

@@ -42,7 +42,8 @@ public class Config {
 	public static final int BOX_SIZE_FIXED = BOX_SIZE - 1;
 
 	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
-	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
+//	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
+	public static final String DEFAULT_LEVEL_FILENAME = "simple_level.png";
 	public static final int LEVEL_WAVE_TIMEOUT = 10000;
 
 	public static final String TILE_GRASS = "GRASS";
