@@ -59,7 +59,8 @@ public class PathWorker {
 	    	System.out.println("<<<<====================");
 	    	steps = Game.instance.getWorld().getLevel().getUnits().get(0).getNumSteps();
         }
-        if ( ((tile.getX()-Config.BOX_SIZE_FIXED) - Config.BOX_SIZE_FIXED/2) == x && ((tile.getY()-Config.BOX_SIZE_FIXED) - Config.BOX_SIZE_FIXED/2) == y ) {
+//        if ( ((tile.getX()-Config.BOX_SIZE_FIXED) - Config.BOX_SIZE_FIXED/2) == x && ((tile.getY()-Config.BOX_SIZE_FIXED) - Config.BOX_SIZE_FIXED/2) == y ) {
+    	if ((tile.getX() - Config.BOX_SIZE_FIXED) == x && (tile.getY() - Config.BOX_SIZE_FIXED) == y) {
             visitedNodes.add(nextNode);
             visitedNodesMap.put(id, visitedNodes);
         }
