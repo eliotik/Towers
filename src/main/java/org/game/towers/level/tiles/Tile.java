@@ -15,7 +15,7 @@ public abstract class Tile {
 	private int x;
 	private int y;
 	private int mirrorMask = 0x00;
-	private double highlight = 0;
+	private double highlight = 1;
 
 	public Tile(Level level, Sprite sprite, String name, int levelColor,
 			boolean isSolid, boolean isEmitter, int x, int y) {

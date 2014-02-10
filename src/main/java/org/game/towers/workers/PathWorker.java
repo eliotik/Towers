@@ -50,6 +50,7 @@ public class PathWorker {
         nextNode = trail.get(visitedNodes.size());
 
         Tile tile = Game.instance.getWorld().getLevel().getTile(nextNode.getX(), nextNode.getY());
+        Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
         if (x == tile.getX() && y == tile.getY()) {
             visitedNodes.add(nextNode);
             visitedNodesMap.put(id, visitedNodes);
