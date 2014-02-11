@@ -32,7 +32,7 @@ public class Level implements GameActionListener {
 
 	private String name;
     private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
-    private Node[][] tilesForJSP;
+    private volatile Node[][] tilesForJSP;
 	private Tile[] tiles;
 	private int width;
 	private int height;
@@ -172,15 +172,12 @@ public class Level implements GameActionListener {
             for(int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
                 int xa = x >> Config.COORDINATES_SHIFTING;
                 int ya = y >> Config.COORDINATES_SHIFTING;
-                Tile tile = getTile(xa, ya);
 //                Tile tile = getTile(x, y);
 //                System.out.println(">>-------------------");
 //                System.out.println(tile.getName()+": "+x+" / "+y+" / "+tile.isSolid());
 //                System.out.println("<<-------------------");
                 tilesForJSP[x][y] = new Node(x, y);
-                if (tile.isSolid() ) {
-                    tilesForJSP[x][y].setPass(false);
-                }
+                tilesForJSP[x][y].setPass(!getTile(xa, ya).isSolid());
             }
         }
 
