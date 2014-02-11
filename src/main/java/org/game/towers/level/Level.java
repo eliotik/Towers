@@ -32,7 +32,7 @@ public class Level implements GameActionListener {
 
 	private String name;
     private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
-    private volatile Node[][] tilesForJSP;
+    private volatile Node[][] jpsTiles;
 	private Tile[] tiles;
 	private int width;
 	private int height;
@@ -165,7 +165,7 @@ public class Level implements GameActionListener {
 //        System.out.println(Config.SCREEN_WIDTH+" / "+Config.SCREEN_HEIGHT);
 //        System.out.println(Config.REAL_SCREEN_WIDTH+" / "+Config.REAL_SCREEN_HEIGHT);
 //        System.out.println(getWidth()*Config.BOX_SIZE+" / "+getHeight()*Config.BOX_SIZE);
-        tilesForJSP = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
+        jpsTiles = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
 //        for (int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
 //            for (int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
         for(int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
@@ -176,8 +176,8 @@ public class Level implements GameActionListener {
 //                System.out.println(">>-------------------");
 //                System.out.println(tile.getName()+": "+x+" / "+y+" / "+tile.isSolid());
 //                System.out.println("<<-------------------");
-                tilesForJSP[x][y] = new Node(x, y);
-                tilesForJSP[x][y].setPass(!getTile(xa, ya).isSolid());
+                jpsTiles[x][y] = new Node(x, y);
+                jpsTiles[x][y].setPass(!getTile(xa, ya).isSolid());
             }
         }
 
@@ -423,11 +423,11 @@ public class Level implements GameActionListener {
 	}
 
     public Node[][] getTilesForJSP() {
-        return tilesForJSP;
+        return jpsTiles;
     }
 
     public void setTilesForJSP(Node[][] tilesForJSP) {
-        this.tilesForJSP = tilesForJSP;
+        this.jpsTiles = tilesForJSP;
     }
 
 	public String getImagePath() {
