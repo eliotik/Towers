@@ -114,14 +114,14 @@ public class Camera {
         if (getX() < 0) {
             setX(0);
         }
-        if (getX() > (getLevel().getWidth() << 4) - Game.instance.getScreen().getWidth()) {
-            setX((getLevel().getWidth() << 4) - Game.instance.getScreen().getWidth());
+        if (getX() > (getLevel().getWidth() << Config.COORDINATES_SHIFTING) - Game.instance.getScreen().getWidth()) {
+            setX((getLevel().getWidth() << Config.COORDINATES_SHIFTING) - Game.instance.getScreen().getWidth());
         }
         if (getY() < 0) {
             setY(0);
         }
-        if (getY() > (getLevel().getHeight() << 4) - Game.instance.getScreen().getHeight()) {
-            setY((getLevel().getHeight() << 4) - Game.instance.getScreen().getHeight());
+        if (getY() > (getLevel().getHeight() << Config.COORDINATES_SHIFTING) - Game.instance.getScreen().getHeight()) {
+            setY((getLevel().getHeight() << Config.COORDINATES_SHIFTING) - Game.instance.getScreen().getHeight());
         }
     }
 

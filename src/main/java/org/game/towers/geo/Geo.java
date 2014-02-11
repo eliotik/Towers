@@ -1,5 +1,7 @@
 package org.game.towers.geo;
 
+import org.game.towers.configs.Config;
+
 public class Geo {
 
 	private Coordinates topLeft = new Coordinates();
@@ -24,8 +26,8 @@ public class Geo {
 //		System.out.println("tlx="+topLeft.getX()+", tly="+topLeft.getY());
 		setTopLeft(topLeft);
 
-		getTopLeft().setX(getTopLeft().getX() << 4);
-		getTopLeft().setY(getTopLeft().getY() << 4);
+		getTopLeft().setX(getTopLeft().getX() << Config.COORDINATES_SHIFTING);
+		getTopLeft().setY(getTopLeft().getY() << Config.COORDINATES_SHIFTING);
 
 		getTopRight().setX(getTopLeft().getX() + shiftRight);
 		getTopRight().setY(getTopLeft().getY());

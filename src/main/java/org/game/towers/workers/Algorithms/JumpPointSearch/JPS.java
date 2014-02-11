@@ -95,8 +95,8 @@ public class JPS {
 				if (draw){grid.drawStart(startX, startY); grid.drawEnd(endX, endY); grid.picPrint("2 - JumpPoints");} //draw start, end, and print the picture sans path
 				trail = grid.pathCreate(cur);    //the path is then created
                 for (Node item : trail){
-                    int xa = item.x >> 4;
-                    int ya = item.y >> 4;
+                    int xa = item.x >> Config.COORDINATES_SHIFTING;
+                    int ya = item.y >> Config.COORDINATES_SHIFTING;
                     Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(1.2);
                 }
                 if (draw){grid.picPrint("3 - PathAndPoints");}   //printed the picture with path

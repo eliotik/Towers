@@ -37,6 +37,7 @@ public class Config {
 	public static final Dimension DIMENSIONS = new Dimension(REAL_SCREEN_WIDTH, REAL_SCREEN_HEIGHT);
 
 	public static final int BUFFER_STRATEGY_BUFFERS = 3;
+	public static final int COORDINATES_SHIFTING = 4;
 
 	public static final int BOX_SIZE = 16;
 	public static final int BOX_SIZE_FIXED = BOX_SIZE - 1;

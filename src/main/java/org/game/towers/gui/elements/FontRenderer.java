@@ -6,7 +6,7 @@ import org.game.towers.gfx.sprites.SpriteSheet;
 import org.game.towers.gui.Gui;
 
 public class FontRenderer {
-	
+
 	public static SpriteSheet FONT = new SpriteSheet(Config.FONT_FILE);
 
 	private static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ><    "
@@ -27,12 +27,12 @@ public class FontRenderer {
 			int charWidth = getCharWidth(msg.charAt(i));
 			if (charIndex < 0)
 				charIndex = 29;
-			GuiRenderer.render(gui, FONT, 
-					x + textWidth + scale * i, 
-					y, 
-					charIndex, 
+			GuiRenderer.render(gui, FONT,
+					x + textWidth + scale * i,
+					y,
+					charIndex,
 					Colors.get(-1, -1, -1, color),
-					0x00, 
+					0x00,
 					scale);
 			textWidth = textWidth + charWidth * scale;
 		}
@@ -43,7 +43,7 @@ public class FontRenderer {
 		FontRenderer.drawString(msg, gui, x - FontRenderer.getStringWidth(msg, scale) / 2, y,
 				color, scale);
 	}
-	
+
 	public static int getStringWidth(String msg, int scale) {
 		int textWidth = 0;
 		for (int i = 0; i < msg.length(); i++) {
@@ -52,7 +52,7 @@ public class FontRenderer {
 		}
 		return textWidth;
 	}
-	
+
 	private static int getCharWidth(char c) {
 		int charWidth = 5;
 		if(width5.indexOf(c) >= 0) {

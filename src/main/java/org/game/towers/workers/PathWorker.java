@@ -51,7 +51,7 @@ public class PathWorker {
         nextNode = trail.get(visitedNodes.size());
 
         Tile tile = Game.instance.getWorld().getLevel().getTile(nextNode.getX(), nextNode.getY());
-        Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
+        Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>Config.COORDINATES_SHIFTING, nextNode.getY()>>Config.COORDINATES_SHIFTING).setHighlight(0.8);
         if (Game.instance.getWorld().getLevel().getUnits().get(0).getNumSteps() - steps >= 10) {
 	        System.out.println(">>>>====================");
 	    	System.out.println("tile x: "+tile.getX()+", nextnode x: "+nextNode.getX()+", npc x: "+ x+", tile x + boxsize/2: "+ (tile.getX()-Config.BOX_SIZE_FIXED - Config.BOX_SIZE_FIXED/2));

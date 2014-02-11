@@ -10,6 +10,7 @@ import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.*;
 
@@ -34,9 +35,6 @@ public class TowerTypesCollection {
                 item.setTypeName(elemj.getAttribute("name").toString());
                 item.setType(elemj.getAttribute("type").toString());
 
-                item.setTileX(Integer.parseInt(elemj.getAttribute("tile_x").toString()));
-                item.setTileY(Integer.parseInt(elemj.getAttribute("tile_y").toString()));
-
                 item.setHealth(Integer.parseInt(elemj.getAttribute("health").toString()));
                 item.setMaxHealth(item.getHealth());
                 item.setArmour(Integer.parseInt(elemj.getAttribute("armour").toString()));
@@ -52,6 +50,20 @@ public class TowerTypesCollection {
                 		Integer.parseInt(elemj.getAttribute("height").toString())
             		)
                 );
+
+                item.setMinCollisionBox(
+                		new Point(
+                				Integer.parseInt(elemj.getAttribute("collision_box_min_x").toString()),
+                				Integer.parseInt(elemj.getAttribute("collision_box_min_y").toString())
+                				)
+                		);
+
+                item.setMaxCollisionBox(
+	            		new Point(
+		        				Integer.parseInt(elemj.getAttribute("collision_box_max_x").toString()),
+		        				Integer.parseInt(elemj.getAttribute("collision_box_max_y").toString())
+	            				)
+                		);
 
                 item.setRadius(Integer.parseInt(elemj.getAttribute("radius").toString()));
                 item.setPrice(Integer.parseInt(elemj.getAttribute("price").toString()));

@@ -31,7 +31,7 @@ public class Store {
 		for (int i = 0; i < TowerTypesCollection.getItems().size(); i++) {
 			TowerType tower = TowerTypesCollection.getItems().get(i);
 			Sprite sprite = tower.getCurrentSprite();
-			int xp = (screen.getWidth() - (sprite.getWidth() / 2)) - (i << 4) - 8 + getX();
+			int xp = (screen.getWidth() - (sprite.getWidth() / 2)) - (i << Config.COORDINATES_SHIFTING) - 8 + getX();
 			int yp = screen.getHeight() - sprite.getHeight();
 			for (int y = 0; y < sprite.getHeight(); y++) {
 				int yt = y + yp;

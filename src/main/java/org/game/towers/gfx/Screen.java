@@ -120,7 +120,7 @@ public class Screen {
 			int ySheet = y;
 			if (mirrorY) ySheet = Config.BOX_SIZE_FIXED - y;
 
-			int yPixel = y + yp + (y * scaleMap) - ((scaleMap << 4) / 2);
+			int yPixel = y + yp + (y * scaleMap) - ((scaleMap << Config.COORDINATES_SHIFTING) / 2);
 
 			for (int x = 0; x < tile.getSprite().getWidth(); x++) {
 				int xt = x + xp;
@@ -128,7 +128,7 @@ public class Screen {
 				int xSheet = x;
 				if (mirrorX) xSheet = Config.BOX_SIZE_FIXED - x;
 
-				int xPixel = x + xp + (x * scaleMap) - ((scaleMap << 4) / 2);
+				int xPixel = x + xp + (x * scaleMap) - ((scaleMap << Config.COORDINATES_SHIFTING) / 2);
 
 				if (0 - tile.getSprite().getWidth() > xt || xt >= getWidth()
 						|| 0 - tile.getSprite().getHeight() > yt || yt >= getHeight()) {
@@ -233,7 +233,7 @@ public class Screen {
 			int ySheet = y;
 			if (mirrorY) ySheet = Config.BOX_SIZE_FIXED - y;
 
-			int yPixel = y + yp + (y * scaleMap) - ((scaleMap << 4) / 2);
+			int yPixel = y + yp + (y * scaleMap) - ((scaleMap << Config.COORDINATES_SHIFTING) / 2);
 
 			for (int x = 0; x < unit.getCurrentSprite().getWidth(); x++) {
 				int xt = x + xp;
@@ -241,7 +241,7 @@ public class Screen {
 				int xSheet = x;
 				if (mirrorX) xSheet = Config.BOX_SIZE_FIXED - x;
 
-				int xPixel = x + xp + (x * scaleMap) - ((scaleMap << 4) / 2);
+				int xPixel = x + xp + (x * scaleMap) - ((scaleMap << Config.COORDINATES_SHIFTING) / 2);
 
 				if (0 - unit.getCurrentSprite().getWidth() > xt || xt >= getWidth()
 						|| 0 - unit.getCurrentSprite().getHeight() > yt

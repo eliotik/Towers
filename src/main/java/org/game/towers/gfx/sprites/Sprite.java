@@ -17,8 +17,8 @@ public class Sprite implements Serializable {
 	public Sprite(String name, int x, int y, int width, int height,
 			String spriteType) {
 		setName(name);
-		setX(x << 4);
-		setY(y << 4);
+		setX(x << Config.COORDINATES_SHIFTING);
+		setY(y << Config.COORDINATES_SHIFTING);
 		setWidth(width);
 		setHeight(height);
 		setPixels(new int[width * height]);

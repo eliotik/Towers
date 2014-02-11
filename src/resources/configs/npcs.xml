@@ -5,8 +5,6 @@
 		id="bulb"
 		type="base"
 		name="Bulb"
-		tile_x="0"
-		tile_y="20"
 		health="100"
 		armour="100"
 		speed="0.4"
@@ -15,14 +13,16 @@
 		height="16"
 		animation_switch_delay="160"
 		animation_start_delay="2000"
+		collision_box_min_x="4"
+		collision_box_max_x="12"
+		collision_box_min_y="4"
+		collision_box_max_y="12"
 	/>
 
 	<npc
 		id="drone"
 		type="base"
 		name="Drone"
-		tile_x="0"
-		tile_y="20"
 		health="100"
 		armour="100"
 		speed="0.6"
@@ -31,14 +31,16 @@
 		height="16"
 		animation_switch_delay="200"
 		animation_start_delay="0"
+		collision_box_min_x="4"
+		collision_box_max_x="12"
+		collision_box_min_y="4"
+		collision_box_max_y="12"
 	/>
 
 	<npc
 		id="vent"
 		type="base"
 		name="Vent"
-		tile_x="0"
-		tile_y="20"
 		health="200"
 		armour="100"
 		speed="0.2"
@@ -47,6 +49,10 @@
 		height="16"
 		animation_switch_delay="20"
 		animation_start_delay="0"
+		collision_box_min_x="4"
+		collision_box_max_x="12"
+		collision_box_min_y="4"
+		collision_box_max_y="12"
 	/>
 
 </npcs>

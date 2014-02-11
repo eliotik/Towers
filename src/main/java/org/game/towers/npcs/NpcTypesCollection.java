@@ -10,6 +10,7 @@ import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.*;
 
@@ -34,9 +35,6 @@ public class NpcTypesCollection {
 
                 item.setId(elemj.getAttribute("id").toString());
 
-                item.setTileX(Integer.parseInt(elemj.getAttribute("tile_x").toString()));
-                item.setTileY(Integer.parseInt(elemj.getAttribute("tile_y").toString()));
-
                 item.setHealth(Integer.parseInt(elemj.getAttribute("health").toString()));
                 item.setMaxHealth(item.getHealth());
                 item.setArmour(Integer.parseInt(elemj.getAttribute("armour").toString()));
@@ -44,6 +42,20 @@ public class NpcTypesCollection {
                 item.setDamage(Integer.parseInt(elemj.getAttribute("damage").toString()));
                 item.setAnimationSwitchDelay(Integer.parseInt(elemj.getAttribute("animation_switch_delay").toString()));
                 item.setAnimationStartDelay(Integer.parseInt(elemj.getAttribute("animation_start_delay").toString()));
+
+                item.setMinCollisionBox(
+                		new Point(
+                				Integer.parseInt(elemj.getAttribute("collision_box_min_x").toString()),
+                				Integer.parseInt(elemj.getAttribute("collision_box_min_y").toString())
+                				)
+                		);
+
+                item.setMaxCollisionBox(
+	            		new Point(
+		        				Integer.parseInt(elemj.getAttribute("collision_box_max_x").toString()),
+		        				Integer.parseInt(elemj.getAttribute("collision_box_max_y").toString())
+	            				)
+                		);
 
                 item.setGeo(new Rectangle(
                         0,
