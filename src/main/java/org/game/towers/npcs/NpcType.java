@@ -73,32 +73,31 @@ public class NpcType extends Unit {
 
 	@Override
 	public boolean hasCollided(int xa, int ya) {
-		//TODO: need to move collision box size to configuration file so we can use different sizes for each type of unit
-		int xMin = 4;
-		int xMax = 12;
+		double xMin = getMinCollisionBox().getX();
+		double xMax = getMaxCollisionBox().getX();
 
-		int yMin = 4;
-		int yMax = 12;
+		double yMin = getMinCollisionBox().getY();
+		double yMax = getMaxCollisionBox().getY();
 
-		for (int x = xMin; x < xMax; x++) {
+		for (double x = xMin; x < xMax; x++) {
 			if (isSolidTile(xa, ya, x, yMin)) {
 				return true;
 			}
 		}
 
-		for (int x = xMin; x < xMax; x++) {
+		for (double x = xMin; x < xMax; x++) {
 			if (isSolidTile(xa, ya, x, yMax)) {
 				return true;
 			}
 		}
 
-		for (int y = yMin; y < yMax; y++) {
+		for (double y = yMin; y < yMax; y++) {
 			if (isSolidTile(xa, ya, xMin, y)) {
 				return true;
 			}
 		}
 
-		for (int y = yMin; y < yMax; y++) {
+		for (double y = yMin; y < yMax; y++) {
 			if (isSolidTile(xa, ya, xMax, y)) {
 				return true;
 			}

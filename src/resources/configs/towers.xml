@@ -5,8 +5,6 @@
 		id="bulb"
 		type="base"
 		name="Bulb"
-		tile_x="0"
-		tile_y="0"
 		health="100"
 		armour="100"
 		speed="5"
@@ -17,6 +15,10 @@
 		animation_switch_delay="100"
 		animation_start_delay="0"
 		price="55"
+		collision_box_min_x="4"
+		collision_box_max_x="12"
+		collision_box_min_y="4"
+		collision_box_max_y="12"
 	/>
 
 </towers>

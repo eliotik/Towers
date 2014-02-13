@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildings>
 
-	<building 
-		id="electricity_station" 
+	<building
+		id="electricity_station"
 		type="base"
-		name="Electricity station" 
-		tile_x="0"
-		tile_y="0"
+		name="Electricity station"
 		health="100"
 		armour="80"
 		speed="5"
 		width="5"
-		height="5"
 		value="10"
+		animation_switch_delay="200"
+		animation_start_delay="0"
+		collision_box_min_x="4"
+		collision_box_max_x="12"
+		collision_box_min_y="4"
+		collision_box_max_y="12"
 		/>
 
 </buildings>

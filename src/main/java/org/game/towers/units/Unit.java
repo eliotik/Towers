@@ -3,10 +3,12 @@
  */
 package org.game.towers.units;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.List;
 
+import org.game.towers.configs.Config;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
@@ -32,8 +34,6 @@ public abstract class Unit implements Serializable {
 	private Rectangle geo;
     private double x;
     private double y;
-	private int tileX;
-	private int tileY;
 	private Level level;
 	private int numSteps = 0;
 	private boolean isMoving;
@@ -48,6 +48,8 @@ public abstract class Unit implements Serializable {
 	private long lastIterationStartTime;
 	private int animationSwitchDelay;
 	private int animationStartDelay;
+	private Point maxCollisionBox = new Point();
+	private Point minCollisionBox = new Point();
 
 	public Unit() {
 		setSpriteIndex(0);
@@ -76,12 +78,12 @@ public abstract class Unit implements Serializable {
 		return getSprites().get(getSpriteIndex());
 	}
 
-	protected boolean isSolidTile(int xa, int ya, int x, int y) {
+	protected boolean isSolidTile(double xa, double ya, double x, double y) {
 		if (getLevel() == null) {
 			return false;
 		}
-		Tile lastTile = getLevel().getTile((int)(getX() + x) >> 4, (int)(getY() + y) >> 4);
-		Tile newTile = getLevel().getTile((int)(getX() + x + xa) >> 4, (int)(getY() + y + ya) >> 4);
+		Tile lastTile = getLevel().getTile((int)(getX() + x) >> Config.COORDINATES_SHIFTING, (int)(getY() + y) >> Config.COORDINATES_SHIFTING);
+		Tile newTile = getLevel().getTile((int)(getX() + x + xa) >> Config.COORDINATES_SHIFTING, (int)(getY() + y + ya) >> Config.COORDINATES_SHIFTING);
 		if (!lastTile.equals(newTile) && newTile.isSolid()) {
 			return true;
 		}
@@ -182,24 +184,6 @@ public abstract class Unit implements Serializable {
 		return this;
 	}
 
-	public Unit setTileX(int tileX) {
-		this.tileX = tileX;
-		return this;
-	}
-
-	public int getTileX() {
-		return tileX;
-	}
-
-	public Unit setTileY(int tileY) {
-		this.tileY = tileY;
-		return this;
-	}
-
-	public int getTileY() {
-		return tileY;
-	}
-
     public void setX(double x) {
         this.x = x;
     }
@@ -214,10 +198,6 @@ public abstract class Unit implements Serializable {
 
     public double getY() {
         return y;
-    }
-
-    public boolean isConstruction() {
-        return true;
     }
 
 	public int getMovingDirection() {
@@ -404,5 +384,21 @@ public abstract class Unit implements Serializable {
 
 	public void setMirrorMask(int mirrorMask) {
 		this.mirrorMask = mirrorMask;
+	}
+
+	public Point getMaxCollisionBox() {
+		return maxCollisionBox;
+	}
+
+	public void setMaxCollisionBox(Point maxCollisionBox) {
+		this.maxCollisionBox = maxCollisionBox;
+	}
+
+	public Point getMinCollisionBox() {
+		return minCollisionBox;
+	}
+
+	public void setMinCollisionBox(Point minCollisionBox) {
+		this.minCollisionBox = minCollisionBox;
 	}
 }

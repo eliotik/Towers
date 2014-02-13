@@ -32,7 +32,7 @@ public class Level implements GameActionListener {
 
 	private String name;
     private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
-    private Node[][] tilesForJSP;
+    private volatile Node[][] jpsTiles;
 	private Tile[] tiles;
 	private int width;
 	private int height;
@@ -165,42 +165,39 @@ public class Level implements GameActionListener {
 //        System.out.println(Config.SCREEN_WIDTH+" / "+Config.SCREEN_HEIGHT);
 //        System.out.println(Config.REAL_SCREEN_WIDTH+" / "+Config.REAL_SCREEN_HEIGHT);
 //        System.out.println(getWidth()*Config.BOX_SIZE+" / "+getHeight()*Config.BOX_SIZE);
-        tilesForJSP = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
+        jpsTiles = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
 //        for (int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
 //            for (int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
         for(int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
             for(int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
-                int xa = x >> 4;
-                int ya = y >> 4;
-                Tile tile = getTile(xa, ya);
+                int xa = x >> Config.COORDINATES_SHIFTING;
+                int ya = y >> Config.COORDINATES_SHIFTING;
 //                Tile tile = getTile(x, y);
 //                System.out.println(">>-------------------");
 //                System.out.println(tile.getName()+": "+x+" / "+y+" / "+tile.isSolid());
 //                System.out.println("<<-------------------");
-                tilesForJSP[x][y] = new Node(x, y);
-                if (tile.isSolid() ) {
-                    tilesForJSP[x][y].setPass(false);
-                }
+                jpsTiles[x][y] = new Node(x, y);
+                jpsTiles[x][y].setPass(!getTile(xa, ya).isSolid());
             }
         }
 
 //        return tilesForJSP;
     }
 
-	public void alterTile(int x, int y, Tile newTile) {
+	public synchronized void alterTile(int x, int y, Tile newTile) {
 		getTiles()[x + y * getWidth()] = newTile;
 		getImage().setRGB(x, y, newTile.getLevelColor());
 	}
 
-    public Tile[] getTiles() {
+    public synchronized Tile[] getTiles() {
         return tiles;
     }
 
-	public Tile getTile(int index) {
+	public synchronized Tile getTile(int index) {
 		return getTiles()[index];
 	}
 
-    public Tile getTile(int x, int y) {
+    public synchronized Tile getTile(int x, int y) {
 		if (0 > x || x >= getWidth() || 0 > y || y >= getHeight()) {
 			return TileTypes.get("VOID").get(this, x, y, true);
 		}
@@ -241,8 +238,8 @@ public class Level implements GameActionListener {
 			for (int x = 0; x < getWidth(); x++) {
 				Tile tile = getTile(x, y);
 				if (tile.getName().equals(name)) {
-					coords.setX(x << 4);
-					coords.setY(y << 4);
+					coords.setX(x << Config.COORDINATES_SHIFTING);
+					coords.setY(y << Config.COORDINATES_SHIFTING);
 					return coords;
 				}
 			}
@@ -258,7 +255,7 @@ public class Level implements GameActionListener {
 		this.name = name;
 	}
 
-	public Tile getBackgroundTile(int x, int y) {
+	public synchronized Tile getBackgroundTile(int x, int y) {
 		return TileTypes.get(Config.TILE_GRASS).get(this, x, y, true);
 	}
 
@@ -357,16 +354,16 @@ public class Level implements GameActionListener {
 		int yOffset = getCamera().getY();
 
 		if(xOffset < 0) xOffset = 0;
-		if(xOffset > ((getWidth() << 4) - screen.getWidth())) xOffset = ((getWidth() << 4) - screen.getWidth());
+		if(xOffset > ((getWidth() << Config.COORDINATES_SHIFTING) - screen.getWidth())) xOffset = ((getWidth() << Config.COORDINATES_SHIFTING) - screen.getWidth());
 		if(yOffset < 0) yOffset = 0;
-		if(yOffset > ((getHeight() << 4) - screen.getHeight())) yOffset = ((getHeight() << 4) - screen.getHeight());
+		if(yOffset > ((getHeight() << Config.COORDINATES_SHIFTING) - screen.getHeight())) yOffset = ((getHeight() << Config.COORDINATES_SHIFTING) - screen.getHeight());
 
 		screen.setOffset(xOffset, yOffset);
 
-		int xMin = xOffset >> 4;
-	    int xMax = (xOffset + screen.getWidth()) >> 4;
-	    int yMin = yOffset >> 4;
-	    int yMax = (yOffset + screen.getHeight()) >> 4;
+		int xMin = xOffset >> Config.COORDINATES_SHIFTING;
+	    int xMax = (xOffset + screen.getWidth()) >> Config.COORDINATES_SHIFTING;
+	    int yMin = yOffset >> Config.COORDINATES_SHIFTING;
+	    int yMax = (yOffset + screen.getHeight()) >> Config.COORDINATES_SHIFTING;
 
 		for (int y = yMin; y < yMax + Config.BOX_SIZE_FIXED; y++) {
 			for (int x = xMin; x < xMax + Config.BOX_SIZE_FIXED; x++) {
@@ -426,11 +423,11 @@ public class Level implements GameActionListener {
 	}
 
     public Node[][] getTilesForJSP() {
-        return tilesForJSP;
+        return jpsTiles;
     }
 
     public void setTilesForJSP(Node[][] tilesForJSP) {
-        this.tilesForJSP = tilesForJSP;
+        this.jpsTiles = tilesForJSP;
     }
 
 	public String getImagePath() {
