@@ -3,6 +3,7 @@ package org.game.towers.workers;
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
+import org.game.towers.level.Portals;
 import org.game.towers.level.tiles.Tile;
 import org.game.towers.workers.Algorithms.JumpPointSearch.JPS;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
@@ -13,8 +14,8 @@ import java.util.List;
 
 public class PathWorker {
 
-    private HashMap<String, ArrayList<Node>> trailMap = new HashMap<String, ArrayList<Node>>();
-    private HashMap<String, ArrayList<Node>> visitedNodesMap = new HashMap<String, ArrayList<Node>>();
+    private HashMap<Integer, ArrayList<Node>> trailMap = new HashMap<Integer, ArrayList<Node>>();
+    private HashMap<Integer, ArrayList<Node>> visitedNodesMap = new HashMap<Integer, ArrayList<Node>>();
     private int steps = 0;
     private int doShift(int dimension1, int dimension2) {
         int deltaDim = dimension2 - dimension1;
@@ -28,7 +29,7 @@ public class PathWorker {
         return 0;
     }
 
-    private void initJPS(int x, int y, String id) {
+    private void initJPS(int x, int y, int id) {
         ArrayList<Node> trail = trailMap.get(id);
         ArrayList<Node> visitedNodes = new ArrayList<Node>();
         if (trail == null) {
@@ -40,7 +41,7 @@ public class PathWorker {
         }
     }
 
-    public synchronized void nextCoordinate(int x, int y, Point point, String id) {
+    public synchronized void nextCoordinate(int x, int y, Point point, int id) {
         int dx, dy;
         initJPS(x, y, id);
         Node nextNode;
@@ -50,8 +51,6 @@ public class PathWorker {
         ArrayList<Node> visitedNodes = visitedNodesMap.get(id);
         nextNode = trail.get(visitedNodes.size());
 
-//        Tile tile = Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4);
-//        Game.instance.getWorld().getLevel().getTile(nextNode.getX(), nextNode.getY()).setHighlight(0.8);
         Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
         int nextX = Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).getX()*Config.BOX_SIZE;
         int nextY = Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).getY()*Config.BOX_SIZE;
@@ -59,11 +58,7 @@ public class PathWorker {
             visitedNodes.add(nextNode);
             visitedNodesMap.put(id, visitedNodes);
         }
-//        nextNode = trail.get(visitedNodes.size());
-//        Tile tile = Game.instance.getWorld().getLevel().getTile(nextNode.getX(), nextNode.getY());
-//        System.out.println("id: "+ id +" nextNode.getX(): "+ nextNode.getX() + " nextNode.getY(): " + nextNode.getY());
-//        dx = doShift(x, tile.getX()-Config.BOX_SIZE_FIXED);
-//        dx = doShift(x, tile.getX()-Config.BOX_SIZE_FIXED);
+
         dx = doShift(x, nextX);
         dy = doShift(y, nextY);
 

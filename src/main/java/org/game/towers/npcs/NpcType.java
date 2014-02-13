@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.game.towers.game.Game;
 import org.game.towers.gfx.Screen;
+import org.game.towers.level.Portals;
 import org.game.towers.units.Unit;
 import org.game.towers.workers.Utils;
 
@@ -31,7 +32,14 @@ public class NpcType extends Unit {
 		super.tick();
 		if (!isDead()) {
 			Point shifts = new Point();
-			Game.instance.getPathWorker().nextCoordinate((int)getX(), (int)getY(), shifts, getId());
+
+            System.out.println("x = "+getX() + " y = "+getY());
+
+            if (Math.abs(Portals.getExit().getCoordinates().getX() - getX()) < 2  && Math.abs(Portals.getExit().getCoordinates().getY() - getY()) < 2) {
+                setDead(true);
+            }
+
+			Game.instance.getPathWorker().nextCoordinate((int) getX(), (int) getY(), shifts, hashCode());
 	        move((int)shifts.getX(), (int)shifts.getY());
 	        if (Utils.randInt(0, 100) > 95 && !isDead()) setHealth(getHealth()-2);
 		}
