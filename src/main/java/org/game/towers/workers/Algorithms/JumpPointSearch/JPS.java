@@ -66,8 +66,10 @@ public class JPS {
 //        this.startY = Portals.getEntrance().getCoordinates().getY();
         this.endX = Portals.getExit().getCoordinates().getX();
         this.endY = Portals.getExit().getCoordinates().getY();
-
+        long timeStart = System.currentTimeMillis();
         search();
+        long timeEnd = System.currentTimeMillis();
+        System.out.println("Time: "+(timeEnd-timeStart)+" ms");
     }
 
     public ArrayList<Node> getTrail() {

@@ -33,8 +33,6 @@ public class NpcType extends Unit {
 		if (!isDead()) {
 			Point shifts = new Point();
 
-            System.out.println("x = "+getX() + " y = "+getY());
-
             if (Math.abs(Portals.getExit().getCoordinates().getX() - getX()) < 2  && Math.abs(Portals.getExit().getCoordinates().getY() - getY()) < 2) {
                 setDead(true);
             }

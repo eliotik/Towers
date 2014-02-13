@@ -107,10 +107,10 @@ public class Level implements GameActionListener {
 					drone2.setY(Portals.getEntrance().getCoordinates().getY());
 					addNpc(drone2);
 
-//					vent1.setLevel(this);
-//					vent1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
-//					vent1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
-//					addNpc(vent1);
+/*					vent1.setLevel(this);
+//					vent1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*14);
+//					vent1.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
+					addNpc(vent1);*/
 				}
 		}
 	}
@@ -144,7 +144,7 @@ public class Level implements GameActionListener {
 			for (int x = 0; x < getWidth(); x++) {
 				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
 				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
-				System.out.println(key);
+//				System.out.println(key);
 				getTiles()[x + y * getWidth()] = tile;
 				if (!blocks.containsKey(key) && tile.isSolid()) {
                     blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
@@ -157,31 +157,15 @@ public class Level implements GameActionListener {
 	}
 
     private void generateGridForJSP() {
-
-//        tilesForJSP = new Node[Config.REAL_SCREEN_WIDTH][Config.REAL_SCREEN_HEIGHT];
-//        System.out.println(Portals.getEntrance().getCoordinates().getX()+" / "+Portals.getEntrance().getCoordinates().getY());
-//        System.out.println(Portals.getExit().getCoordinates().getX()+" / "+Portals.getExit().getCoordinates().getY());
-//        System.out.println(Game.instance.getScreen().getWidth()+" / "+Game.instance.getScreen().getHeight());
-//        System.out.println(Config.SCREEN_WIDTH+" / "+Config.SCREEN_HEIGHT);
-//        System.out.println(Config.REAL_SCREEN_WIDTH+" / "+Config.REAL_SCREEN_HEIGHT);
-//        System.out.println(getWidth()*Config.BOX_SIZE+" / "+getHeight()*Config.BOX_SIZE);
         jpsTiles = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
-//        for (int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
-//            for (int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
         for(int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
             for(int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
                 int xa = x >> Config.COORDINATES_SHIFTING;
                 int ya = y >> Config.COORDINATES_SHIFTING;
-//                Tile tile = getTile(x, y);
-//                System.out.println(">>-------------------");
-//                System.out.println(tile.getName()+": "+x+" / "+y+" / "+tile.isSolid());
-//                System.out.println("<<-------------------");
                 jpsTiles[x][y] = new Node(x, y);
                 jpsTiles[x][y].setPass(!getTile(xa, ya).isSolid());
             }
         }
-
-//        return tilesForJSP;
     }
 
 	public synchronized void alterTile(int x, int y, Tile newTile) {
