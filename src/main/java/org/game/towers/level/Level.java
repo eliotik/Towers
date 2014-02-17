@@ -7,6 +7,7 @@ import org.game.towers.geo.Coordinates;
 import org.game.towers.geo.Geo;
 import org.game.towers.gfx.Camera;
 import org.game.towers.gfx.Screen;
+import org.game.towers.gui.GuiLost;
 import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler.GameActionListener;
 import org.game.towers.handlers.InputHandler.InputEvent;
@@ -82,35 +83,35 @@ public class Level implements GameActionListener {
 				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
 				NpcType vent1 = UnitFactory.getNpc(Npcs.VENT);
 				if (bulb != null) {
-					bulb.setLevel(this);
-					bulb.setX(Portals.getEntrance().getCoordinates().getX());
-					bulb.setY(Portals.getEntrance().getCoordinates().getY());
-					addNpc(bulb);
-
-					bulb2.setLevel(this);
-					bulb2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
-					bulb2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
-					addNpc(bulb2);
-
-					bulb3.setLevel(this);
-					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
-					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
-					addNpc(bulb3);
-
+//					bulb.setLevel(this);
+//					bulb.setX(Portals.getEntrance().getCoordinates().getX());
+//					bulb.setY(Portals.getEntrance().getCoordinates().getY());
+//					addNpc(bulb);
+//
+//					bulb2.setLevel(this);
+//					bulb2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
+//					bulb2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
+//					addNpc(bulb2);
+//
+//					bulb3.setLevel(this);
+//					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
+//					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
+//					addNpc(bulb3);
+//
 					drone1.setLevel(this);
 					drone1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
 					drone1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
 					addNpc(drone1);
+//
+//					drone2.setLevel(this);
+//					drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
+//					drone2.setY(Portals.getEntrance().getCoordinates().getY());
+//					addNpc(drone2);
 
-					drone2.setLevel(this);
-					drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
-					drone2.setY(Portals.getEntrance().getCoordinates().getY());
-					addNpc(drone2);
-
-/*					vent1.setLevel(this);
-//					vent1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*14);
-//					vent1.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
-					addNpc(vent1);*/
+//					vent1.setLevel(this);
+//					vent1.setX(Portals.getEntrance().getCoordinates().getX());
+//					vent1.setY(Portals.getEntrance().getCoordinates().getY());
+//					addNpc(vent1);
 				}
 		}
 	}
@@ -210,6 +211,10 @@ public class Level implements GameActionListener {
     	if (getCamera() != null) {
     		getCamera().tick();
 	    }
+
+    	if (getPlayerHealth() <= 0) {
+    		Game.instance.showGui(new GuiLost(Game.instance, Game.instance.getWidth(), Game.instance.getHeight()));
+    	}
 	}
 
 	public Coordinates getEntranceLocation() {

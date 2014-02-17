@@ -9,23 +9,22 @@ import org.game.towers.gui.elements.FontRenderer;
 
 public class GuiMainMenu extends Gui {
 
-	public ChooseList list;
-	private String splash = Config.GAME_NAME;
+	private ChooseList list;
 
 	public GuiMainMenu(Game game, int width, int height) {
 		super(game, width, height);
-		this.pauseGame = true;
-		list = new ChooseList(0, this);
-		list.setMaximumDisplayed(10);
-		list.addOption(list.new Option(0, "Create"));
-		list.addOption(list.new Option(1, "Exit"));
+		setPauseGame(true);
+		setList(new ChooseList(0, this));
+		getList().setMaximumDisplayed(10);
+		getList().addOption(getList().new Option(0, "Create"));
+		getList().addOption(getList().new Option(1, "Exit"));
 	}
 
 	public void render() {
-		this.drawDefaultBackground();
+		drawDefaultBackground();
 		FontRenderer.drawCenteredString("Main Menu", this, Config.SCREEN_WIDTH / 2 + 1, 5, 225, 2);
-		list.render(this, 10, 30, 225);
-		FontRenderer.drawString(splash, this, 2, Config.SCREEN_HEIGHT - 10, 000, 1);
+		getList().render(this, 10, 30, 225);
+		FontRenderer.drawString(getSplash(), this, 2, Config.SCREEN_HEIGHT - 10, 000, 1);
 	}
 
 	public void tick(int ticks) {
@@ -33,11 +32,11 @@ public class GuiMainMenu extends Gui {
 	}
 
 	public void guiActionPerformed(int elementId, int action) {
-		if (elementId == list.getId()) {
+		if (elementId == getList().getId()) {
 			switch (action) {
 			case 0:
-				game.setWorld(new World(Config.DEFAULT_WORLD_NAME));
-				game.getWorld().getLevel().generateNpcs();
+				getGame().setWorld(new World(Config.DEFAULT_WORLD_NAME));
+				getGame().getWorld().getLevel().generateNpcs();
 				close();
 				break;
 			case 1:
@@ -49,6 +48,14 @@ public class GuiMainMenu extends Gui {
 	}
 
 	public void actionPerformed(InputEvent event) {
-		list.actionPerformed(event);
+		getList().actionPerformed(event);
+	}
+
+	public ChooseList getList() {
+		return list;
+	}
+
+	public void setList(ChooseList list) {
+		this.list = list;
 	}
 }

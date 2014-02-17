@@ -17,29 +17,31 @@ public abstract class Gui implements GameActionListener {
 	private double blue;
 
 	protected Gui parentGui;
-	protected Game game;
-	public InputHandler input;
+	private Game game;
+	private InputHandler input;
 
-	public SpriteSheet font;
+	private SpriteSheet font;
 
-	public int[] pixels;
-	public int[] bkgPixels;
-	public int width;
-	public int height;
+	private int[] pixels;
+	private int[] bkgPixels;
+	private int width;
+	private int height;
 
-	protected boolean pauseGame;
+	private boolean pauseGame;
 	protected boolean closeOnEscape = true;
 
+	private String splash = Config.GAME_NAME;
+
 	public Gui(Game game, int width, int height) {
-		this.game = game;
-		this.input = game.getInputHandler();
-		this.font = new SpriteSheet(Config.SPRITESHEET_FILE);
-		this.width = width;
-		this.height = height;
-		this.pixels = new int[width * height];
+		this.setGame(game);
+		this.setInput(game.getInputHandler());
+		this.setFont(new SpriteSheet(Config.SPRITESHEET_FILE));
+		this.setWidth(width);
+		this.setHeight(height);
+		this.setPixels(new int[width * height]);
 		this.setTint(0.3D, 0.3D, 0.3D);
 		if (game.getWorld() != null && game.getScreen().getPixels().length == Game.instance.getScreen().getPixels().length) {
-			bkgPixels = game.getPixels().clone();
+			setBkgPixels(game.getPixels().clone());
 		}
 	}
 
@@ -55,13 +57,13 @@ public abstract class Gui implements GameActionListener {
 
 
 	public boolean pausesGame() {
-		return pauseGame;
+		return isPauseGame();
 	}
 
 	public void drawDefaultBackground() {
-		if (bkgPixels != null) {
-			for (int i = 0; i < bkgPixels.length; i++) {
-				Game.instance.getScreen().getPixels()[i] = Colors.tint(bkgPixels[i], red, green, blue);
+		if (getBkgPixels() != null) {
+			for (int i = 0; i < getBkgPixels().length; i++) {
+				Game.instance.getScreen().getPixels()[i] = Colors.tint(getBkgPixels()[i], red, green, blue);
 			}
 		} else {
 			for (int i = 0; i < Game.instance.getScreen().getPixels().length; i++) {
@@ -70,30 +72,30 @@ public abstract class Gui implements GameActionListener {
 		}
 	}
 
-//	public void drawRect(int xPos, int yPos, int width, int height, int color) {
-//		if (xPos > this.width)
-//			xPos = this.width - 1;
-//		if (yPos > this.height)
-//			yPos = this.height - 1;
-//		if (xPos + width > this.width)
-//			width = this.width - xPos;
-//		if (yPos + height > this.height)
-//			height = this.height - yPos;
-//		width -= 1;
-//		height -= 1;
-//		for (int x = xPos; x < xPos + width; x++) {
-//			pixels[x + yPos * this.width] = color;
-//		}
-//		for (int y = yPos; y < yPos + height; y++) {
-//			pixels[xPos + y * this.width] = color;
-//		}
-//		for (int x = xPos; x < xPos + width; x++) {
-//			pixels[x + (yPos + height) * this.width] = color;
-//		}
-//		for (int y = yPos; y < yPos + height; y++) {
-//			pixels[(xPos + width) + y * this.width] = color;
-//		}
-//	}
+	public void drawRect(int xPos, int yPos, int width, int height, int color) {
+		if (xPos > getWidth())
+			xPos = getWidth() - 1;
+		if (yPos > getHeight())
+			yPos = getHeight() - 1;
+		if (xPos + width > getWidth())
+			width = getWidth() - xPos;
+		if (yPos + height > getHeight())
+			height = getHeight() - yPos;
+		width -= 1;
+		height -= 1;
+		for (int x = xPos; x < xPos + width; x++) {
+			getPixels()[x + yPos * getWidth()] = color;
+		}
+		for (int y = yPos; y < yPos + height; y++) {
+			getPixels()[xPos + y * getWidth()] = color;
+		}
+		for (int x = xPos; x < xPos + width; x++) {
+			getPixels()[x + (yPos + height) * getWidth()] = color;
+		}
+		for (int y = yPos; y < yPos + height; y++) {
+			getPixels()[(xPos + width) + y * getWidth()] = color;
+		}
+	}
 //
 //	public void fillRect(int xPos, int yPos, int width, int height, int color) {
 //		if (xPos > this.width)
@@ -113,7 +115,7 @@ public abstract class Gui implements GameActionListener {
 
 	@Override
 	public void actionPerformed(InputEvent event) {
-		if (event.key.id == input.esc.id
+		if (event.key.id == getInput().esc.id
 				&& event.type == InputEventType.PRESSED && closeOnEscape) {
 			last();
 		}
@@ -125,21 +127,93 @@ public abstract class Gui implements GameActionListener {
 		blue = b;
 	}
 
-	public Gui setParent(Gui gui) {
-		this.parentGui = gui;
-		return this;
-	}
+//	public Gui setParent(Gui gui) {
+//		this.parentGui = gui;
+//		return this;
+//	}
 
 	public void last() {
-		game.hideGui(this);
+		getGame().hideGui(this);
 	}
 
 	public void close() {
 		this.parentGui = null;
-		game.hideGui(this);
+		getGame().hideGui(this);
 	}
 
 	public Gui getParentGui() {
 		return parentGui;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public InputHandler getInput() {
+		return input;
+	}
+
+	public void setInput(InputHandler input) {
+		this.input = input;
+	}
+
+	public SpriteSheet getFont() {
+		return font;
+	}
+
+	public void setFont(SpriteSheet font) {
+		this.font = font;
+	}
+
+	public int[] getPixels() {
+		return pixels;
+	}
+
+	public void setPixels(int[] pixels) {
+		this.pixels = pixels;
+	}
+
+	public int[] getBkgPixels() {
+		return bkgPixels;
+	}
+
+	public void setBkgPixels(int[] bkgPixels) {
+		this.bkgPixels = bkgPixels;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	public boolean isPauseGame() {
+		return pauseGame;
+	}
+
+	public void setPauseGame(boolean pauseGame) {
+		this.pauseGame = pauseGame;
+	}
+
+	public String getSplash() {
+		return splash;
+	}
+
+	public void setSplash(String splash) {
+		this.splash = splash;
 	}
 }

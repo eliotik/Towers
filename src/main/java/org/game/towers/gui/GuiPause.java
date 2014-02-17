@@ -10,40 +10,39 @@ import org.game.towers.gui.elements.FontRenderer;
 public class GuiPause extends Gui{
 
 	private ChooseList list;
-	private String splash = Config.GAME_NAME;
 
 	public GuiPause(Game game, int width, int height) {
 		super(game, width, height);
-		this.pauseGame = true;
-		list = new ChooseList(0, this);
-		list.addOption(list.new Option(0, "Resume"));
-		list.addOption(list.new Option(1, "Restart"));
-		list.addOption(list.new Option(2, "Exit"));
+		setPauseGame(true);
+		setList(new ChooseList(0, this));
+		getList().addOption(getList().new Option(0, "Resume"));
+		getList().addOption(getList().new Option(1, "Restart"));
+		getList().addOption(getList().new Option(2, "Exit"));
 	}
 
 	public void actionPerformed(InputEvent event) {
-		list.actionPerformed(event);
+		getList().actionPerformed(event);
 	}
 
 	public void render() {
-		this.drawDefaultBackground();
+		drawDefaultBackground();
 		FontRenderer.drawCenteredString("Paused", this, Config.SCREEN_WIDTH / 2 + 2, 5, 222, 2);
-		FontRenderer.drawString(splash, this, 2, Config.SCREEN_HEIGHT - 10, 000, 1);
-		list.render(this, 20, 30, 555);
+		FontRenderer.drawString(getSplash(), this, 2, Config.SCREEN_HEIGHT - 10, 000, 1);
+		getList().render(this, 20, 30, 555);
 	}
 
 	public void tick(int ticks) {}
 
 	public void guiActionPerformed(int elementId, int action) {
-		if(elementId == list.getId()) {
+		if(elementId == getList().getId()) {
 			switch (action) {
 			case 0 :
 				close();
 				break;
 			case 1:
-				game.getWorld().reset();
-				game.setWorld(new World(Config.DEFAULT_WORLD_NAME));
-				game.getWorld().getLevel().generateNpcs();
+				getGame().getWorld().reset();
+				getGame().setWorld(new World(Config.DEFAULT_WORLD_NAME));
+				getGame().getWorld().getLevel().generateNpcs();
 				close();
 				break;
 			case 2:
@@ -53,6 +52,14 @@ public class GuiPause extends Gui{
 				break;
 			}
 		}
+	}
+
+	public ChooseList getList() {
+		return list;
+	}
+
+	public void setList(ChooseList list) {
+		this.list = list;
 	}
 
 }

@@ -25,7 +25,7 @@ public class ChooseList extends GuiElement implements GameActionListener {
 
 	public ChooseList(int id, Gui gui) {
 		super(id, gui);
-		setInput(gui.input);
+		setInput(gui.getInput());
 	}
 
 	public void addOption(Option option) {
