@@ -257,6 +257,7 @@ public class Grid {
 	 * @return (Node) takes data from popped float[] and returns the correct node
 	 */
 	public Node heapPopNode(){
+		System.out.println("[heap] size: "+heap.getSize());
 		float[] tmp = heap.pop();
 		return getNode((int)tmp[0],(int)tmp[1]);
 	}

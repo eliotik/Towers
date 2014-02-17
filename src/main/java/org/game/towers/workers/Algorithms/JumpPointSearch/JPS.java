@@ -93,6 +93,7 @@ public class JPS {
 //            int ya = cur.y >> 4;
 //            Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(true);
 			if (cur.x == endX && cur.y==endY){		//if the end node is found
+				System.out.println("[search equals]");
 				System.out.println("Path Found!");  //print "Path Found!"
 				if (draw){grid.drawStart(startX, startY); grid.drawEnd(endX, endY); grid.picPrint("2 - JumpPoints");} //draw start, end, and print the picture sans path
 				trail = grid.pathCreate(cur);    //the path is then created

@@ -78,41 +78,41 @@ public class Level implements GameActionListener {
 			case 1:
 				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
 //				NpcType bulb2 = UnitFactory.getNpc(Npcs.BULB);
-//				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
-//				NpcType drone1 = UnitFactory.getNpc(Npcs.DRONE);
-//				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
-				NpcType vent1 = UnitFactory.getNpc(Npcs.VENT);
+				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
+				NpcType drone1 = UnitFactory.getNpc(Npcs.DRONE);
+				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
+//				NpcType vent1 = UnitFactory.getNpc(Npcs.VENT);
 //				NpcType vent2 = UnitFactory.getNpc(Npcs.VENT);
 				if (bulb != null) {
 					bulb.setLevel(this);
 					bulb.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
 					bulb.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
 					addNpc(bulb);
-//
+
 //					bulb2.setLevel(this);
 //					bulb2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
 //					bulb2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
 //					addNpc(bulb2);
-//
-//					bulb3.setLevel(this);
-//					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
-//					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
-//					addNpc(bulb3);
-//
-//					drone1.setLevel(this);
-//					drone1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
-//					drone1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
-//					addNpc(drone1);
-//
-//					drone2.setLevel(this);
-//					drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
-//					drone2.setY(Portals.getEntrance().getCoordinates().getY());
-//					addNpc(drone2);
 
-					vent1.setLevel(this);
-					vent1.setX(Portals.getEntrance().getCoordinates().getX());
-					vent1.setY(Portals.getEntrance().getCoordinates().getY());
-					addNpc(vent1);
+					bulb3.setLevel(this);
+					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
+					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
+					addNpc(bulb3);
+//
+					drone1.setLevel(this);
+					drone1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*14);
+					drone1.setY(Portals.getEntrance().getCoordinates().getY());
+					addNpc(drone1);
+//
+					drone2.setLevel(this);
+					drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
+					drone2.setY(Portals.getEntrance().getCoordinates().getY());
+					addNpc(drone2);
+
+//					vent1.setLevel(this);
+//					vent1.setX(Portals.getEntrance().getCoordinates().getX());
+//					vent1.setY(Portals.getEntrance().getCoordinates().getY());
+//					addNpc(vent1);
 
 //					vent2.setLevel(this);
 //					vent2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
