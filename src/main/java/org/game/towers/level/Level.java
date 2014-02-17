@@ -200,6 +200,10 @@ public class Level implements GameActionListener {
 			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
 				Unit unit = (Unit) it.next();
 				unit.tick();
+				if (unit.isFinished()) {
+					setPlayerHealth(getPlayerHealth() - 1);
+					it.remove();
+				}
 			}
 		}
 

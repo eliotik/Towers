@@ -33,13 +33,11 @@ public class NpcType extends Unit {
 		if (!isDead() && !isFinished()) {
 			Point shifts = new Point();
 
-            if (Math.abs(Portals.getExit().getCoordinates().getX() - getX()) < 2  && Math.abs(Portals.getExit().getCoordinates().getY() - getY()) < 2) {
-                setFinished(true);
-            }
+            setFinished(Math.abs(Portals.getExit().getCoordinates().getX() - getX()) < 2  && Math.abs(Portals.getExit().getCoordinates().getY() - getY()) < 2);
 
 			Game.instance.getPathWorker().nextCoordinate((int) getX(), (int) getY(), shifts, hashCode());
 	        move((int)shifts.getX(), (int)shifts.getY());
-	        if (Utils.randInt(0, 100) > 95 && !isDead()) setHealth(getHealth()-2);
+	        //if (Utils.randInt(0, 100) > 95 && !isDead()) setHealth(getHealth()-2);
 		}
 	}
 
