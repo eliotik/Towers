@@ -44,6 +44,7 @@ public abstract class Unit implements Serializable {
 	private int spriteIndex = 0;
 	private boolean pauseAnimation = false;
 	private boolean isDead = false;
+	private boolean isFinished = false;
 	private long lastIterationTime;
 	private long lastIterationStartTime;
 	private int animationSwitchDelay;
@@ -287,7 +288,15 @@ public abstract class Unit implements Serializable {
 		return isDead;
 	}
 
-	public void setDead(boolean isDead) {
+	public boolean isFinished() {
+		return isFinished;
+	}
+
+	public void setFinished(boolean isFinished){
+        this.isFinished = isFinished;
+    }
+
+    public void setDead(boolean isDead) {
 		this.isDead = isDead;
 		if (isDead) {
 			switch (Utils.randInt(0, 8)) {

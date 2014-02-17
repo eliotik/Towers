@@ -30,11 +30,11 @@ public class NpcType extends Unit {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!isDead()) {
+		if (!isDead() && !isFinished()) {
 			Point shifts = new Point();
 
             if (Math.abs(Portals.getExit().getCoordinates().getX() - getX()) < 2  && Math.abs(Portals.getExit().getCoordinates().getY() - getY()) < 2) {
-                setDead(true);
+                setFinished(true);
             }
 
 			Game.instance.getPathWorker().nextCoordinate((int) getX(), (int) getY(), shifts, hashCode());
