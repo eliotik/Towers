@@ -79,7 +79,7 @@ public class JPS {
     /**
 	 * Orchestrates the Jump Point Search; it is explained further in comments below.
 	 */
-	public void search(){
+	public synchronized void search(){
 		System.out.println("Jump Point Search\n----------------");
 		System.out.println("Start X: "+startX+" Y: "+startY);  //Start and End points are printed for reference
 		System.out.println("End   X: "+endX+" Y: "+endY);

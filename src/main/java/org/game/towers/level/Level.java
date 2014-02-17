@@ -77,16 +77,17 @@ public class Level implements GameActionListener {
 		switch(getWave()) {
 			case 1:
 				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
-				NpcType bulb2 = UnitFactory.getNpc(Npcs.BULB);
-				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
-				NpcType drone1 = UnitFactory.getNpc(Npcs.DRONE);
-				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
+//				NpcType bulb2 = UnitFactory.getNpc(Npcs.BULB);
+//				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
+//				NpcType drone1 = UnitFactory.getNpc(Npcs.DRONE);
+//				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
 				NpcType vent1 = UnitFactory.getNpc(Npcs.VENT);
+//				NpcType vent2 = UnitFactory.getNpc(Npcs.VENT);
 				if (bulb != null) {
-//					bulb.setLevel(this);
-//					bulb.setX(Portals.getEntrance().getCoordinates().getX());
-//					bulb.setY(Portals.getEntrance().getCoordinates().getY());
-//					addNpc(bulb);
+					bulb.setLevel(this);
+					bulb.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
+					bulb.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
+					addNpc(bulb);
 //
 //					bulb2.setLevel(this);
 //					bulb2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
@@ -98,20 +99,25 @@ public class Level implements GameActionListener {
 //					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
 //					addNpc(bulb3);
 //
-					drone1.setLevel(this);
-					drone1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
-					drone1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
-					addNpc(drone1);
+//					drone1.setLevel(this);
+//					drone1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
+//					drone1.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
+//					addNpc(drone1);
 //
 //					drone2.setLevel(this);
 //					drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
 //					drone2.setY(Portals.getEntrance().getCoordinates().getY());
 //					addNpc(drone2);
 
-//					vent1.setLevel(this);
-//					vent1.setX(Portals.getEntrance().getCoordinates().getX());
-//					vent1.setY(Portals.getEntrance().getCoordinates().getY());
-//					addNpc(vent1);
+					vent1.setLevel(this);
+					vent1.setX(Portals.getEntrance().getCoordinates().getX());
+					vent1.setY(Portals.getEntrance().getCoordinates().getY());
+					addNpc(vent1);
+
+//					vent2.setLevel(this);
+//					vent2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
+//					vent2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
+//					addNpc(vent2);
 				}
 		}
 	}
@@ -145,7 +151,6 @@ public class Level implements GameActionListener {
 			for (int x = 0; x < getWidth(); x++) {
 				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
 				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
-//				System.out.println(key);
 				getTiles()[x + y * getWidth()] = tile;
 				if (!blocks.containsKey(key) && tile.isSolid()) {
                     blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));

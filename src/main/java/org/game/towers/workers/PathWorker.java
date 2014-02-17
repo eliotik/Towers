@@ -35,9 +35,11 @@ public class PathWorker {
         if (trail == null) {
             JPS jps = new JPS(x,y);
             trail = jps.getTrail();
-            trailMap.put(id, trail);
-            visitedNodes.add(trail.get(0));
-            visitedNodesMap.put(id, visitedNodes);
+            if (trail != null && trail.size() > 0) {
+	            trailMap.put(id, trail);
+	            visitedNodes.add(trail.get(0));
+	            visitedNodesMap.put(id, visitedNodes);
+            }
         }
     }
 
@@ -47,6 +49,10 @@ public class PathWorker {
         Node nextNode;
 
         ArrayList<Node> trail = trailMap.get(id);
+        if (trail == null || trail.size() == 0) {
+        	point.setLocation(0, 0);
+        	return;
+        }
 
         ArrayList<Node> visitedNodes = visitedNodesMap.get(id);
         nextNode = trail.get(visitedNodes.size());

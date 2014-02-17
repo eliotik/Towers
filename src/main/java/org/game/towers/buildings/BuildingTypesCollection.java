@@ -24,7 +24,7 @@ public class BuildingTypesCollection {
             Node firstNode=listOfElements.item(j);
             if( firstNode.getNodeType() == Node.ELEMENT_NODE ) {
                 org.w3c.dom.Element elemj = (org.w3c.dom.Element) firstNode;
-                BuildingType item = new BuildingType(Game.instance.getWorld().getLevel());
+                BuildingType item = new BuildingType();
 
                 item.setId(elemj.getAttribute("id").toString());
 

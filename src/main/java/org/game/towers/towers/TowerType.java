@@ -10,8 +10,8 @@ public class TowerType extends Unit {
 	private double radius;
 	private int price;
 
-	public TowerType() {
-	}
+//	public TowerType() {
+//	}
 
 	public double getRadius() {
 		return radius;

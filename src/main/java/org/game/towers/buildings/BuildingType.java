@@ -7,9 +7,9 @@ import org.game.towers.units.Unit;
 public class BuildingType extends Unit {
 	private static final long serialVersionUID = 1L;
 
-	public BuildingType(Level level) {
-//		super(level);
-	}
+//	public BuildingType(Level level) {
+////		super(level);
+//	}
 
 	private double value;
 

@@ -15,9 +15,9 @@ public class NpcType extends Unit {
 
 	private ArrayList<String> hands;
 
-	public NpcType() {
-
-	}
+//	public NpcType() {
+//
+//	}
 
 	public ArrayList<String> getHands() {
 		return hands;
