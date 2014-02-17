@@ -21,7 +21,7 @@ public class GuiMainMenu extends Gui {
 	}
 
 	public void render() {
-		drawDefaultBackground();
+		drawDefaultSolidBackground();
 		FontRenderer.drawCenteredString("Main Menu", this, Config.SCREEN_WIDTH / 2 + 1, 5, 225, 2);
 		getList().render(this, 10, 30, 225);
 		FontRenderer.drawString(getSplash(), this, 2, Config.SCREEN_HEIGHT - 10, 000, 1);

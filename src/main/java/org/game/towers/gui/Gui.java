@@ -66,9 +66,13 @@ public abstract class Gui implements GameActionListener {
 				Game.instance.getScreen().getPixels()[i] = Colors.tint(getBkgPixels()[i], red, green, blue);
 			}
 		} else {
-			for (int i = 0; i < Game.instance.getScreen().getPixels().length; i++) {
-				Game.instance.getScreen().getPixels()[i] = DEFAULT_BKG_COLOR;
-			}
+			drawDefaultSolidBackground();
+		}
+	}
+
+	public void drawDefaultSolidBackground() {
+		for (int i = 0; i < Game.instance.getScreen().getPixels().length; i++) {
+			Game.instance.getScreen().getPixels()[i] = DEFAULT_BKG_COLOR;
 		}
 	}
 
