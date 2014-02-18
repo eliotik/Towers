@@ -32,18 +32,14 @@ public class PathWorker {
     private void initJPS(int x, int y, int id) {
         ArrayList<Node> trail = trailMap.get(id);
         if (trail == null) {
-        	System.out.println("["+id+"] trail size: null");
-            JPS jps = new JPS(x,y);
+            JPS jps = new JPS(x, y, id);
             trail = jps.getTrail();
             if (trail != null && trail.size() > 0) {
-            	System.out.println("["+id+"] trail size recreated: "+trail.size());
 	            trailMap.put(id, trail);
 	            ArrayList<Node> visitedNodes = new ArrayList<Node>();
 	            visitedNodes.add(trail.get(0));
 	            visitedNodesMap.put(id, visitedNodes);
             }
-        } else {
-        	System.out.println("["+id+"] trail size: "+trail.size());
         }
     }
 

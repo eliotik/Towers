@@ -5,65 +5,33 @@ import java.util.ArrayList;
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.level.Portals;
-import org.game.towers.level.tiles.Tile;
 
 /**
  * @author Clint Mullins
  * @referenced Javascript version of JPS by aniero / https://github.com/aniero
  */
 public class JPS {
+
+    private int unitId;
 	Grid grid;
-	int xMax,yMax,xIsland,yIsland,startX,startY,endX,endY;  //variables for reference grid
-	int dxMax, dyMax, dstartX, dstartY, dendX, dendY;       //variables for Large Nod
+    int startX,startY,endX,endY;
 	int[] tmpXY;
 	int[][] neighbors;
 	float ng;
 	boolean draw;
-	Node tmpNode, cur;
+	Node tmpNode;
 	Node[] successors, possibleSuccess;
 	ArrayList<Node> trail;
 
-	/**
-	 * Initializer; sets up variables, creates reference grid and actual grid, gets start and end points, initiates search
-	 *
-	 * @param xMax (int) maximum x value on map + 1 (if xMax==100, actual x maximum is 99)
-	 * @param yMax (int) maximum y value on map + 1 (if yMax==100, actual y maximum is 99)
-	 * @param xIsland (int) when using uniform map generation, how many islands on the x axis
-	 * @param yIsland (int) when using uniform map generation, how many islands on the y axis
-	 * @param uniform (boolean) if true then land created is a uniform checkered pattern (depending on xIsland, yIsland), if false then random land generated
-	 */
-	public JPS(int xMax, int yMax, int xIsland, int yIsland, boolean uniform, boolean draw, Node[][] preMadeGrid){
-		this.xMax = xMax; //maximum x value on map + 1 (if xMax==100, actual x maximum is 99)
-		this.yMax = yMax; //maximum y value on map + 1 (if yMax==100, actual y maximum is 99)
-		this.xIsland = xIsland; //when using uniform map generation, how many islands on the x axis
-		this.yIsland = yIsland; //when using uniform map generation, how many islands on the y axis
-		this.draw = draw;
-		if (preMadeGrid==null){
-			grid = new Grid(xMax,yMax,xIsland,yIsland,uniform);  //grid is created
-		}
-		else{
-			grid = new Grid(xMax,yMax,xIsland,yIsland,preMadeGrid);  //preMadeGrid is passed in because there CAN BE ONLY ONE GRID
-		}
-		int[] startPos = grid.getOpenPos(); //startPos returns random {x,y} that does not lie on an obstacle
-		this.startX = startPos[0];   //the start point x value
-		this.startY = startPos[1];	  //the start point y value
-		int[] endPos = grid.getOpenPos(); //startPos returns random {x,y} that does not lie on an obstacle
-		this.endX = endPos[0];	  //the end point x value
-		this.endY = endPos[1];	  //the end point y value
-		long timeStart = System.currentTimeMillis();
-		search();
-		long timeEnd = System.currentTimeMillis();
-		System.out.println("Time: "+(timeEnd-timeStart)+" ms");
-	}
 
-    public JPS(int xStart, int yStart){
+    public JPS(int xStart, int yStart, int unitId){
+        this.unitId = unitId;
         this.draw = false;
-        Node[][] tiles = Game.instance.getWorld().getLevel().getTilesForJSP();
-        grid = new Grid(tiles);
+        Node[][] tiles = Game.instance.getWorld().getLevel().getTilesForJPS().clone();
+        this.grid = new Grid(tiles);
+        System.out.println("grid =" + grid);
         this.startX = xStart;
         this.startY = yStart;
-//        this.startX = Portals.getEntrance().getCoordinates().getX();
-//        this.startY = Portals.getEntrance().getCoordinates().getY();
         this.endX = Portals.getExit().getCoordinates().getX();
         this.endY = Portals.getExit().getCoordinates().getY();
         long timeStart = System.currentTimeMillis();
@@ -80,40 +48,38 @@ public class JPS {
 	 * Orchestrates the Jump Point Search; it is explained further in comments below.
 	 */
 	public synchronized void search(){
+        Node cur;
 		System.out.println("Jump Point Search\n----------------");
-		System.out.println("Start X: "+startX+" Y: "+startY);  //Start and End points are printed for reference
-		System.out.println("End   X: "+endX+" Y: "+endY);
+		//System.out.println("Start X: "+startX+" Y: "+startY);  //Start and End points are printed for reference
+		//System.out.println("End   X: "+endX+" Y: "+endY);
 		grid.getNode(startX,startY).updateGHFP(0, 0, null);
-		grid.heapAdd(grid.getNode(startX, startY));  //Start node is added to the heap
+		grid.heapAdd(grid.getNode(startX, startY), unitId);  //Start node is added to the heap
 		while (true){
 			cur = grid.heapPopNode();              //the current node is removed from the heap.
-			if (draw){grid.drawVisited(cur.x, cur.y);}  //draw current point
 
 //            int xa = cur.x >> 4;
 //            int ya = cur.y >> 4;
 //            Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(true);
 			if (cur.x == endX && cur.y==endY){		//if the end node is found
-				System.out.println("[search equals]");
+			//	System.out.println("[search equals]");
 				System.out.println("Path Found!");  //print "Path Found!"
-				if (draw){grid.drawStart(startX, startY); grid.drawEnd(endX, endY); grid.picPrint("2 - JumpPoints");} //draw start, end, and print the picture sans path
 				trail = grid.pathCreate(cur);    //the path is then created
                 for (Node item : trail){
                     int xa = item.x >> Config.COORDINATES_SHIFTING;
                     int ya = item.y >> Config.COORDINATES_SHIFTING;
                     Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(1.2);
                 }
-                if (draw){grid.picPrint("3 - PathAndPoints");}   //printed the picture with path
-				break;				//loop is done
+				break;
 			}
 			possibleSuccess = identifySuccessors(cur);  //get all possible successors of the current node
 			for (int i=0;i<possibleSuccess.length;i++){     //for each one of them
 				if (possibleSuccess[i]!=null){				//if it is not null
-					grid.heapAdd(possibleSuccess[i]);		//add it to the heap for later use (a possible future cur)
+					grid.heapAdd(possibleSuccess[i], unitId);		//add it to the heap for later use (a possible future cur)
 				}
 			}
 			if (grid.heapSize()==0){						//if the grid size is 0, and we have not found our end, the end is unreachable
 				System.out.println("No Path....");			//print "No Path...." to (lolSpark) notify user
-				if (draw){grid.picPrint("3 - No Path");} 		//print picture without path
+//				if (draw){grid.picPrint("3 - No Path");} 		//print picture without path
 				break;										//loop is done
 			}
 		}

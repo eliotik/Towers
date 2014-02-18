@@ -84,6 +84,11 @@ public class Level implements GameActionListener {
 //				NpcType vent1 = UnitFactory.getNpc(Npcs.VENT);
 //				NpcType vent2 = UnitFactory.getNpc(Npcs.VENT);
 				if (bulb != null) {
+                    drone2.setLevel(this);
+                    drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
+                    drone2.setY(Portals.getEntrance().getCoordinates().getY());
+                    addNpc(drone2);
+
 					bulb.setLevel(this);
 					bulb.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*2);
 					bulb.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
@@ -104,10 +109,7 @@ public class Level implements GameActionListener {
 					drone1.setY(Portals.getEntrance().getCoordinates().getY());
 					addNpc(drone1);
 //
-					drone2.setLevel(this);
-					drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
-					drone2.setY(Portals.getEntrance().getCoordinates().getY());
-					addNpc(drone2);
+
 
 //					vent1.setLevel(this);
 //					vent1.setX(Portals.getEntrance().getCoordinates().getX());
@@ -420,7 +422,7 @@ public class Level implements GameActionListener {
 		this.playerMoney = playerMoney;
 	}
 
-    public Node[][] getTilesForJSP() {
+    public Node[][] getTilesForJPS() {
         return jpsTiles;
     }
 

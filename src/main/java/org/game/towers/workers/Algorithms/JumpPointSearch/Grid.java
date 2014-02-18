@@ -3,6 +3,7 @@ package org.game.towers.workers.Algorithms.JumpPointSearch;
 import org.game.towers.configs.Config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -12,80 +13,14 @@ import java.util.Random;
  */
 public class Grid {
 	private Node[][] grid;
-	private boolean uniform;
-	private int xIsland, yIsland, xMax, yMax, xMin, yMin;
-	private int[] trailCol = {255, 255, 0};
-	private int[] expandedCol = {0, 0, 0};
-	private int[] visitedCol = {255, 255, 255};
-	private int[] landCol = {10, 100, 10};
-	private int[] waterCol = {0, 0, 255};
-	private int[] startCol = {0, 255, 0};
-	private int[] endCol = {255, 0, 0};
-	private PixelDraw map;
-	private Heap heap;
-
-	/**
-	 * Grid is created, Land is generated in either uniform or random fashion, landscape 'Map' is created in printed.
-	 *
-	 *
-	 * @param xMax - (int) maximum x coordinate
-	 * @param yMax - (int) maximum y coordinate
-	 * @param xIsland (int) number of islands along x axis
-	 * @param yIsland (int) number of islands along y axis
-	 * @param uniform (boolean) if true then land is generated in a uniform fashion, if false then land is randomly generated
-	 */
-	public Grid(int xMax, int yMax, int xIsland, int yIsland, boolean uniform){
-		this.xMax = xMax;
-		this.yMax = yMax;
-		this.xIsland = xIsland;
-		this.yIsland = yIsland;
-		this.xMin = this.yMin = 0;
-		this.uniform = uniform;
-		map = new PixelDraw(this.xMax,this.yMax);
-		grid = new Node[this.xMax][this.yMax];
-		if (uniform){
-			uniformLandGenerator();
-		}
-		else{
-			randomLandGenerator(xMax/20,xMax/6);
-		}
-		map.picPrint("1 - Map");
-		heap = new Heap();
-	}
-
-	/**
-	 * This is the constuctor used for comparison. It can be passed an entire Node[][] grid.
-	 *
-	 *
-	 * @param xMax - (int) maximum x coordinate
-	 * @param yMax - (int) maximum y coordinate
-	 * @param xIsland (int) number of islands along x axis
-	 * @param yIsland (int) number of islands along y axis
-	 * @param grid (Node[][]) an entire grid is passed through for comparison
-	 */
-	public Grid(int xMax, int yMax, int xIsland, int yIsland, Node[][] grid){
-		this.xMax = xMax;
-		this.yMax = yMax;
-		this.xIsland = xIsland;
-		this.yIsland = yIsland;
-		this.xMin = this.yMin = 0;
-		map = new PixelDraw(this.xMax,this.yMax);
-		this.grid = grid;
-		map.picPrint("1 - Map");
-		heap = new Heap();
-	}
+	private Heap heap = new Heap();
+    private int unitId;
+    private HashMap<Integer, Heap> heapHashMap = new HashMap<Integer, Heap>();
 
     public Grid(Node[][] grid){
         this.grid = grid;
         heap = new Heap();
-
-//        this.xMax = 591;
-//        this.yMax = 399;
-//        this.xMin = this.yMin = 0;
-//        map = new PixelDraw(this.xMax,this.yMax);
-//        map.picPrint("1 - Map");
     }
-
 
 	/**
 	 * returns all adjacent nodes that can be traversed
@@ -142,84 +77,15 @@ public class Grid {
 	 * @return (boolean) true if the node is obstacle free and on the map, false otherwise
 	 */
 	public boolean walkable(int x, int y){
-		if (uniform){
-			if ((x<xMax && y<yMax)         //smaller than max
-			 && (x>=xMin && y>=yMin)	   //larger than min
-			 && (Math.sin(Math.PI + xIsland*2.0*Math.PI*x/1000.0) + Math.cos(Math.PI/2.0 + yIsland*2.0*Math.PI*y/1000.0) > -.1)){   //walkable
-				return true;
-			}
-			return false;
-		}
-		else{    //for randomized land generation, all nodes always contain correct "pass" boolean
+
 			try{
 				return getNode(x,y).pass;
 			}
 			catch (Exception e){
 				return false;
 			}
-		}
 	}
 //--------------------------------------------------------------------//
-
-//---------------------------MAP DRAWING------------------------------//
-	/**
-	 * Draws visited pixel to the map
-	 *
-	 * @param x (int) point to be drawn's x coordinate
-	 * @param y (int) point to be drawn's y coordinate
-	 */
-	public void drawVisited(int x, int y){
-		map.drawPixel(x,y,visitedCol);
-	}
-
-	/**
-	 * Draws expanded pixel to the map
-	 *
-	 * @param x (int) point to be drawn's x coordinate
-	 * @param y (int) point to be drawn's y coordinate
-	 */
-	public void drawExpanded(int x, int y){
-		map.drawPixel(x,y,expandedCol);
-	}
-
-	/**
-	 * Saves the picture to a png file in the folder of the program
-	 *
-	 * @param name (String) the file will be called 'name'
-	 */
-	public void picPrint(String name){
-		map.picPrint(name);
-	}
-
-	/**
-	 * Draws a line from point (x,y) to point (px,py). The line is a nice mellow yellow.
-	 *
-	 * @param x (int) start point's x coordinate
-	 * @param y (int) start point's y coordinate
-	 * @param px (int) end point's x coordinate
-	 * @param py (int) end point's y coordinate
-	 */
-	public void drawLine(int x, int y, int px, int py){
-		map.drawLine(x, y, px, py, trailCol);
-	}
-
-	/**
-	 * Draws a start point at (x,y)
-	 * @param x (int) start point's x coordinate
-	 * @param y (int) start point's y coordinate
-	 */
-	public void drawStart(int x, int y){
-		map.drawPOI(x, y, startCol);
-	}
-
-	/**
-	 * Draws an end point at (x,y)
-	 * @param x (int) end point's x coordinate
-	 * @param y (int) end point's y coordinate
-	 */
-	public void drawEnd(int x, int y){
-		map.drawPOI(x, y, endCol);
-	}
 
 	public ArrayList<Node> pathCreate(Node node){
 		ArrayList<Node> trail = new ArrayList<Node>();
@@ -234,7 +100,6 @@ public class Grid {
 		System.out.println("Path Trace Complete!");
 		return trail;
 	}
-//-----------------------------------------------------------------//
 
 //--------------------------HEAP-----------------------------------//
 	/**
@@ -242,97 +107,31 @@ public class Grid {
 	 *
 	 * @param node (Node) node to be added to the heap
 	 */
-	public void heapAdd(Node node){
+	public void heapAdd(Node node, int unitId){
+        this.unitId = unitId;
 		float[] tmp = {node.x,node.y,node.f};
 		heap.add(tmp);
+        heapHashMap.put(unitId, heap);
 	}
 
 	/**
 	 * @return (int) size of the heap
 	 */
 	public int heapSize(){
-		return heap.getSize();
+        Heap currentHeap = heapHashMap.get(unitId);
+		return currentHeap.getSize();
 	}
 	/**
 	 * @return (Node) takes data from popped float[] and returns the correct node
 	 */
 	public Node heapPopNode(){
-		System.out.println("[heap] size: "+heap.getSize());
-		float[] tmp = heap.pop();
+		//System.out.println("[heap] size: "+heap.getSize());
+        Heap currentHeap = heapHashMap.get(unitId);
+		float[] tmp = currentHeap.pop();
 		return getNode((int)tmp[0],(int)tmp[1]);
 	}
 //-----------------------------------------------------------------//
 
-//-----------------------LAND GENERATION---------------------------//
-	/**
-	 * Generates land based on a formula. Land forms like a checkered pattern.
-	 */
-	public void uniformLandGenerator(){
-		for (int i=0;i<this.xMax;i++){
-			for (int j=0;j<this.yMax;j++){
-				grid[i][j] = new Node(i,j);
-				if (grid[i][j].setPass(walkable(i,j))){
-					map.drawPixel(i,j,waterCol);
-				}
-				else{
-					map.drawPixel(i,j,landCol);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Generates land based on random factors. Land forms like an ugly hanging gardens.
-	 *
-	 * @param amount (int) number of islands to produce
-	 * @param size (int) general size of islands (random size is directly correlated to this number).
-	 */
-	public void randomLandGenerator(int amount, int size){
-		for (int i=0;i<this.xMax;i++){
-			for (int j=0;j<this.yMax;j++){
-				grid[i][j] = new Node(i,j);
-				grid[i][j].f=-1;
-				map.drawPixel(i,j,waterCol);
-			}
-		}
-		Random rand = new Random();
-		int centerX,centerY;
-		int num1;
-		int num2;
-		for (int i=0;i<amount;i++){
-			centerX = rand.nextInt(xMax);
-			centerY = rand.nextInt(yMax);
-			num1 = rand.nextInt(size);
-			for (int j=0; j<num1; j++){
-				num2 = rand.nextInt(size);
-				for (int k=0; k<num2; k++){
-					try{
-						grid[centerX+j][centerY+k].pass=false;
-						map.drawPixel(centerX+j,centerY+k,landCol);
-					}
-					catch(Exception e){}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Finds an open spot. Used for finding random start/end points.
-	 *
-	 * @return int[] open spot
-	 */
-	public int[] getOpenPos(){
-		Random rand = new Random();
-		while (true){
-			int tA = rand.nextInt(xMax);   //gets random x
-			int tB = rand.nextInt(yMax);   //gets random y
-			if (walkable(tA,tB)){ 	   //if this (x,y) pair is walkable (not an obstacle and on the map)
-				int[] tmpInt = {tA, tB}; //combine the approved x and y
-				return tmpInt;	   //return this pair!
-			}
-		}
-	}
-//---------------------------------------------------------//
 	/**
 	 * Encapsulates x,y in an int[] for returning. A helper method for the jump method
 	 *
