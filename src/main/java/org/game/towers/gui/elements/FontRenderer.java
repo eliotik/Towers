@@ -25,8 +25,9 @@ public class FontRenderer {
 		for (int i = 0; i < msg.length(); i++) {
 			int charIndex = chars.indexOf(msg.charAt(i));
 			int charWidth = getCharWidth(msg.charAt(i));
-			if (charIndex < 0)
-				charIndex = 29;
+
+			if (charIndex < 0) charIndex = 29;
+
 			GuiRenderer.render(gui, FONT,
 					x + textWidth + scale * i,
 					y,
@@ -36,6 +37,10 @@ public class FontRenderer {
 					scale);
 			textWidth = textWidth + charWidth * scale;
 		}
+	}
+
+	public static void drawString(String msg, int x, int y,	int color, int scale) {
+		drawString(msg, null, x, y, color, scale);
 	}
 
 	public static void drawCenteredString(String msg, Gui gui, int x,

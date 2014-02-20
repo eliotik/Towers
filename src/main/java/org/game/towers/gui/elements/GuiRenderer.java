@@ -12,9 +12,9 @@ public class GuiRenderer {
 	public static void render(Gui gui, SpriteSheet sheet, int xPos, int yPos,
 			int tile, int color, int mirrorDir, int scale) {
 
-		if (gui == null) {
+		/*if (gui == null) {
 			return;
-		}
+		}*/
 
 		if (sheet == null) {
 			return;
@@ -57,7 +57,7 @@ public class GuiRenderer {
 					xSheet = 7 - x;
 				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 3) / 2);
 				int col = (color >> (sheet.getPixels()[xSheet + ySheet * sheet.getWidth()
-						+ tileOffset] * 8)) & 255;
+				                                       + tileOffset] * 8)) & 255;
 
 				if (col < 255) {
 					for (int yScale = 0; yScale < scale; yScale++) {
@@ -69,7 +69,7 @@ public class GuiRenderer {
 									|| xPixel + xScale >= Game.instance.getScreen().getWidth())
 								continue;
 							Game.instance.getScreen().getPixels()[(xPixel + xScale) + (yPixel + yScale)
-									* Game.instance.getScreen().getWidth()] = colors[col];
+							                                      * Game.instance.getScreen().getWidth()] = colors[col];
 						}
 					}
 				}

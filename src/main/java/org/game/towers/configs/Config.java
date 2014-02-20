@@ -29,7 +29,7 @@ public class Config {
 	public static final String TOWER_NODE_NAME = "tower";
 	public static final String BUILDING_NODE_NAME = "building";
 
-	public static final int SCREEN_WIDTH = 500;
+	public static final int SCREEN_WIDTH = 240;
 	public static final int SCREEN_HEIGHT = SCREEN_WIDTH/12*9;
 	public static final int SCALE = 2;
 	public static final int REAL_SCREEN_WIDTH = SCREEN_WIDTH * SCALE;
@@ -43,7 +43,8 @@ public class Config {
 	public static final int BOX_SIZE_FIXED = BOX_SIZE - 1;
 
 	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
-	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
+	public static final String DEFAULT_LEVEL_FILENAME = "labirinth_level.png";
+//	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
 //	public static final String DEFAULT_LEVEL_FILENAME = "simple_level.png";
 	public static final int LEVEL_WAVE_TIMEOUT = 10000;
 
@@ -55,7 +56,7 @@ public class Config {
 	public static final String TILE_ENTRANCE = "ENTRANCE";
 	public static final String TILE_EXIT = "EXIT";
 	public static final String TILE_NPC_BULB = "NPC_BULB";
-	public static final int DEFAULT_PLAYER_HEALTH = 1;
+	public static final int DEFAULT_PLAYER_HEALTH = 20;
 	public static final int DEFAULT_PLAYER_MONEY = 500;
 	public static final int DEFAULT_PLAYER_RESOURCE = 120;
 }

@@ -12,6 +12,8 @@ import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
+import org.game.towers.gui.Gui;
+import org.game.towers.gui.elements.FontRenderer;
 import org.game.towers.level.Level;
 import org.game.towers.level.tiles.Tile;
 import org.game.towers.npcs.NpcType;
@@ -310,23 +312,37 @@ public class Screen {
 	}
 
 	private void renderIcons() {
-		int fontSize = 22;
-		int yPos = getHeight() * Config.SCALE;
+		int fontScale = 2;
+		int margin = 4;
+		int iconXPos = 0;
+		int yPos = Config.SCREEN_HEIGHT - SpritesData.MONEY.getHeight() + 2;
+		int yBPos = yPos + 1;
+		int xPos = SpritesData.MONEY.getWidth() + margin;
+		int xBPos = xPos + 1;
+		int white = 555;
+		int black = 000;
 		Level level = Game.instance.getWorld().getLevel();
+		String playerMoneyText = level.getPlayerMoney() + "";
+		String playerHealthText = level.getPlayerHealth() + "";
+		String playerResource = level.getPlayerResource() + "";
 
-		renderIcon(SpritesData.MONEY, 0, getHeight() - SpritesData.MONEY.getHeight());
-		renderString(level.getPlayerMoney() + "", 33 + 2, yPos - 6, fontSize, 1, Color.BLACK);
-		renderString(level.getPlayerMoney() + "", 33, yPos - 8, fontSize, 1, Color.WHITE);
+		renderIcon(SpritesData.MONEY, iconXPos, getHeight() - SpritesData.MONEY.getHeight());
+		FontRenderer.drawString(playerMoneyText, xBPos, yBPos, black, fontScale);
+		FontRenderer.drawString(playerMoneyText, xPos, yPos, white, fontScale);
 
-		int xPos = SpritesData.MONEY.getWidth()+((level.getPlayerMoney() + "").length()*fontSize/2);
-		renderIcon(SpritesData.HEART, xPos, getHeight() - SpritesData.HEART.getHeight());
-		renderString(level.getPlayerHealth() + "", xPos*2 + 33 + 2, yPos - 6, fontSize, 1, Color.BLACK);
-		renderString(level.getPlayerHealth() + "", xPos*2 + 33, yPos - 8, fontSize, 1, Color.WHITE);
+		iconXPos = SpritesData.MONEY.getWidth()+FontRenderer.getStringWidth(playerMoneyText, fontScale) + Config.BOX_SIZE/2;
+		xPos = iconXPos + SpritesData.MONEY.getWidth() + margin;
+		xBPos = xPos + 1;
+		renderIcon(SpritesData.HEART, iconXPos, getHeight() - SpritesData.HEART.getHeight());
+		FontRenderer.drawString(playerHealthText, xBPos, yBPos, black, 2);
+		FontRenderer.drawString(playerHealthText, xPos, yPos, white, 2);
 
-		xPos = SpritesData.MONEY.getWidth()+SpritesData.HEART.getWidth()+(((level.getPlayerMoney() + "").length()+(level.getPlayerHealth() + "").length())*fontSize/2);
-		renderIcon(SpritesData.RESOURCE, xPos, getHeight() - SpritesData.RESOURCE.getHeight());
-		renderString(level.getPlayerResource() + "", xPos*2 + 33 + 2, yPos - 6, fontSize, 1, Color.BLACK);
-		renderString(level.getPlayerResource() + "", xPos*2 + 33, yPos - 8, fontSize, 1, Color.WHITE);
+		iconXPos = SpritesData.MONEY.getWidth()+SpritesData.HEART.getWidth()+FontRenderer.getStringWidth(playerMoneyText + playerHealthText, fontScale) + Config.BOX_SIZE;
+		xPos = iconXPos + SpritesData.HEART.getWidth() + margin;
+		xBPos = xPos + 1;
+		renderIcon(SpritesData.RESOURCE, iconXPos, getHeight() - SpritesData.RESOURCE.getHeight());
+		FontRenderer.drawString(playerResource, xBPos, yBPos, black, 2);
+		FontRenderer.drawString(playerResource, xPos, yPos, white, 2);
 	}
 
 	private void renderIcon(Sprite sprite, int xp, int yp) {
