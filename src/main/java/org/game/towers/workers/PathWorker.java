@@ -17,6 +17,7 @@ public class PathWorker {
     private HashMap<Integer, ArrayList<Node>> trailMap = new HashMap<Integer, ArrayList<Node>>();
     private HashMap<Integer, ArrayList<Node>> visitedNodesMap = new HashMap<Integer, ArrayList<Node>>();
     private int steps = 0;
+    private JPS jps;
     private int doShift(int dimension1, int dimension2) {
         int deltaDim = dimension2 - dimension1;
         if (deltaDim > 0){
@@ -29,33 +30,65 @@ public class PathWorker {
         return 0;
     }
 
-    private void initJPS(int x, int y, int id) {
-        ArrayList<Node> trail = trailMap.get(id);
-        if (trail == null) {
-            JPS jps = new JPS(x, y, id);
-            trail = jps.getTrail();
-            if (trail != null && trail.size() > 0) {
-	            trailMap.put(id, trail);
-	            ArrayList<Node> visitedNodes = new ArrayList<Node>();
-	            visitedNodes.add(trail.get(0));
-	            visitedNodesMap.put(id, visitedNodes);
-            }
+    private void initJPS() {
+        if (jps == null){
+            this.jps = new JPS();
         }
     }
 
+
+//        ArrayList<Node> trail = trailMap.get(id);
+//        if (trail == null) {
+//            JPS jps = new JPS(x, y, id);
+//            trail = jps.getTrail();
+//            if (trail != null && trail.size() > 0) {
+//	            trailMap.put(id, trail);
+//	            ArrayList<Node> visitedNodes = new ArrayList<Node>();
+//	            visitedNodes.add(trail.get(0));
+//	            visitedNodesMap.put(id, visitedNodes);
+//            }
+//        }
+
+
     public synchronized void nextCoordinate(int x, int y, Point point, int id) {
         int dx, dy;
-        initJPS(x, y, id);
+        initJPS();
+//        jps.search();
+        ArrayList<Node> temporaryTrail = null;
         Node nextNode;
+        ArrayList<Node> trailNodes;
+        ArrayList<Node> visitedNodes = new ArrayList<Node>();
 
-        ArrayList<Node> trail = trailMap.get(id);
-        if (trail == null || trail.size() == 0) {
-        	point.setLocation(0, 0);
-        	return;
+        if (trailMap.size() == 0) {
+            trailNodes = jps.search(x, y, id);
+            trailMap.put(id, trailNodes);
         }
 
-        ArrayList<Node> visitedNodes = visitedNodesMap.get(id);
-        nextNode = trail.get(visitedNodes.size());
+        trailNodes = trailMap.get(id);
+
+        if (visitedNodesMap.size() == 0) {
+            visitedNodes.add(trailNodes.get(0));
+            visitedNodesMap.put(id, visitedNodes);
+        }
+
+        visitedNodes = visitedNodesMap.get(id);
+
+//        try {
+//            visitedNodes = visitedNodesMap.get(id);
+//        } catch (NullPointerException e) {
+//            visitedNodes.add(temporaryTrail.get(0));
+//            visitedNodesMap.put(id, visitedNodes);
+//        }
+
+
+//        ArrayList<Node> trail = trailMap.get(id);
+//        if (trail == null || trail.size() == 0) {
+//        	point.setLocation(0, 0);
+//        	return;
+//        }
+//
+//        ArrayList<Node> visitedNodes = visitedNodesMap.get(id);
+        nextNode = trailNodes.get(visitedNodes.size());
 
         Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
         int nextX = Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).getX()*Config.BOX_SIZE;

@@ -23,6 +23,13 @@ public class JPS {
 	Node[] successors, possibleSuccess;
 	ArrayList<Node> trail;
 
+    public JPS(){
+        this.draw = false;
+        Node[][] tiles = Game.instance.getWorld().getLevel().getTilesForJPS().clone();
+        this.grid = new Grid(tiles);
+        this.endX = Portals.getExit().getCoordinates().getX();
+        this.endY = Portals.getExit().getCoordinates().getY();
+    }
 
     public JPS(int xStart, int yStart, int unitId){
         this.unitId = unitId;
@@ -84,6 +91,37 @@ public class JPS {
 			}
 		}
 
+    }
+
+    public synchronized ArrayList<Node> search(int xStart, int yStart, int unitId){
+        this.unitId = unitId;
+        Node cur;
+        ArrayList<Node> trailNodes;
+        grid.getNode(xStart,yStart).updateGHFP(0, 0, null);
+        grid.heapAdd(grid.getNode(xStart, yStart), unitId);
+        while (true){
+            cur = grid.heapPopNode();
+
+            if (cur.x == endX && cur.y==endY){
+                trailNodes = grid.pathCreate(cur);
+                for (Node item : trailNodes){
+                    int xa = item.x >> Config.COORDINATES_SHIFTING;
+                    int ya = item.y >> Config.COORDINATES_SHIFTING;
+                    Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(1.2);
+                }
+                break;
+            }
+            possibleSuccess = identifySuccessors(cur);
+            for (int i=0;i<possibleSuccess.length;i++){
+                if (possibleSuccess[i]!=null){
+                    grid.heapAdd(possibleSuccess[i], unitId);
+                }
+            }
+            if (grid.heapSize()==0){
+                return null;
+            }
+        }
+        return trailNodes;
     }
 
 	/**

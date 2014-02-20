@@ -1,6 +1,7 @@
 package org.game.towers.workers.Algorithms.JumpPointSearch;
 
 import org.game.towers.configs.Config;
+import org.game.towers.game.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,9 +109,13 @@ public class Grid {
 	 * @param node (Node) node to be added to the heap
 	 */
 	public void heapAdd(Node node, int unitId){
+        System.out.println("heap = " + heap);
         this.unitId = unitId;
 		float[] tmp = {node.x,node.y,node.f};
 		heap.add(tmp);
+        int xa = node.x >> Config.COORDINATES_SHIFTING;
+        int ya = node.y >> Config.COORDINATES_SHIFTING;
+        Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(1.5);
         heapHashMap.put(unitId, heap);
 	}
 
