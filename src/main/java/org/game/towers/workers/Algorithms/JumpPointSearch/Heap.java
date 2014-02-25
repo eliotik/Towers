@@ -13,7 +13,7 @@ public class Heap {
 		list = new LinkedList<float[]>();
 	}
 	
-	public void add(float[] newXY){
+	public synchronized void add(float[] newXY){
 		if (list.size()>0){
 			listit = list.iterator();
 			float[] tmp;
@@ -38,7 +38,7 @@ public class Heap {
 		}
 	}
 	
-	public float[] pop(){
+	public synchronized float[] pop(){
 		try{
 			float[] tmp = list.pop();
 			return tmp;
@@ -65,7 +65,7 @@ public class Heap {
 		System.out.println("------");
 	}
 	
-	public int getSize(){
+	public synchronized int getSize(){
 		return list.size();
 	}
 }

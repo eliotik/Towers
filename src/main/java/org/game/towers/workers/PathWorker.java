@@ -14,10 +14,12 @@ import java.util.List;
 
 public class PathWorker {
 
-    private HashMap<Integer, ArrayList<Node>> trailMap = new HashMap<Integer, ArrayList<Node>>();
-    private HashMap<Integer, ArrayList<Node>> visitedNodesMap = new HashMap<Integer, ArrayList<Node>>();
+    private volatile HashMap<Integer, ArrayList<Node>> trailMap = new HashMap<Integer, ArrayList<Node>>();
+    private volatile HashMap<Integer, ArrayList<Node>> visitedNodesMap = new HashMap<Integer, ArrayList<Node>>();
     private int steps = 0;
-    private JPS jps;
+    private volatile JPS jps;
+
+
     private int doShift(int dimension1, int dimension2) {
         int deltaDim = dimension2 - dimension1;
         if (deltaDim > 0){
@@ -36,24 +38,9 @@ public class PathWorker {
         }
     }
 
-
-//        ArrayList<Node> trail = trailMap.get(id);
-//        if (trail == null) {
-//            JPS jps = new JPS(x, y, id);
-//            trail = jps.getTrail();
-//            if (trail != null && trail.size() > 0) {
-//	            trailMap.put(id, trail);
-//	            ArrayList<Node> visitedNodes = new ArrayList<Node>();
-//	            visitedNodes.add(trail.get(0));
-//	            visitedNodesMap.put(id, visitedNodes);
-//            }
-//        }
-
-
     public synchronized void nextCoordinate(int x, int y, Point point, int id) {
         int dx, dy;
         initJPS();
-//        jps.search();
         ArrayList<Node> temporaryTrail = null;
         Node nextNode;
         ArrayList<Node> trailNodes;
@@ -73,21 +60,11 @@ public class PathWorker {
 
         visitedNodes = visitedNodesMap.get(id);
 
-//        try {
-//            visitedNodes = visitedNodesMap.get(id);
-//        } catch (NullPointerException e) {
-//            visitedNodes.add(temporaryTrail.get(0));
-//            visitedNodesMap.put(id, visitedNodes);
-//        }
-
-
-//        ArrayList<Node> trail = trailMap.get(id);
-//        if (trail == null || trail.size() == 0) {
-//        	point.setLocation(0, 0);
-//        	return;
-//        }
+        if (trailNodes == null || trailNodes.size() == 0) {
+        	point.setLocation(0, 0);
+        	return;
+        }
 //
-//        ArrayList<Node> visitedNodes = visitedNodesMap.get(id);
         nextNode = trailNodes.get(visitedNodes.size());
 
         Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
