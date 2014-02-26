@@ -97,7 +97,7 @@ public class JPS {
     }
 
     public synchronized ArrayList<Node> search(int xStart, int yStart, int unitId){
-        Node[][] tiles = Game.instance.getWorld().getLevel().getTilesForJPS();
+        Node[][] tiles = Game.instance.getWorld().getLevel().generateGridForJSP();
         Node[] possibleSuccessUnitId;
         Grid newGrid = new Grid(tiles);
         this.unitId = unitId;
@@ -126,12 +126,12 @@ public class JPS {
 //            if (possibleSuccessHashMap.get(unitId) == null) {
 //                possibleSuccessUnitId = identifySuccessors(cur, unitId);
 //            }
-            possibleSuccess = identifySuccessors(cur, unitId);
-//            possibleSuccessUnitId = possibleSuccessHashMap.get(unitId);
-//            possibleSuccessUnitId = identifySuccessors(cur, unitId);
-            for (int i=0;i<possibleSuccess.length;i++){
-                if (possibleSuccess[i]!=null){
-                    unitGrid.heapAdd(possibleSuccess[i], unitId);
+//            possibleSuccess = identifySuccessors(cur, unitId);
+            possibleSuccessUnitId = possibleSuccessHashMap.get(unitId);
+            possibleSuccessUnitId = identifySuccessors(cur, unitId);
+            for (int i=0;i<possibleSuccessUnitId.length;i++){
+                if (possibleSuccessUnitId[i]!=null){
+                    unitGrid.heapAdd(possibleSuccessUnitId[i], unitId);
                 }
             }
             if (unitGrid.heapSize()==0){
@@ -149,21 +149,21 @@ public class JPS {
 	 */
     public synchronized Node[] identifySuccessors(Node node, int unitId){
         Grid unitGrid = gridHashMap.get(unitId);
-        successors = new Node[8];				//empty successors list to be returned
-        neighbors = getNeighborsPrune(node, unitId);    //all neighbors after pruned
-        for (int i=0; i<neighbors.length; i++){ //for each of these neighbors
-            tmpXY = jump(neighbors[i][0],neighbors[i][1],node.x,node.y, unitId); //get next jump point
+        Node[] successorsUnit = new Node[8];				//empty successors list to be returned
+        int[][] neighborsUnit = getNeighborsPrune(node, unitId);    //all neighbors after pruned
+        for (int i=0; i<neighborsUnit.length; i++){ //for each of these neighbors
+            tmpXY = jump(neighborsUnit[i][0],neighborsUnit[i][1],node.x,node.y, unitId); //get next jump point
             if (tmpXY[0]!=-1){								//if that point is not null( {-1,-1} )
                 int x = tmpXY[0];
                 int y = tmpXY[1];
                 ng = (unitGrid.toPointApprox(x,y,node.x,node.y) + node.g);   //get the distance from start
                 if (unitGrid.getNode(x,y).f<=0 || unitGrid.getNode(x,y).g>ng){  //if this node is not already found, or we have a shorter distance from the current node
                     unitGrid.getNode(x,y).updateGHFP(unitGrid.toPointApprox(x,y,node.x,node.y)+node.g,unitGrid.toPointApprox(x,y,endX,endY),node); //then update the rest of it
-                    successors[i] = unitGrid.getNode(x,y);  //add this node to the successors list to be returned
+                    successorsUnit[i] = unitGrid.getNode(x,y);  //add this node to the successors list to be returned
                 }
             }
         }
-        return successors;  //finally, successors is returned
+        return successorsUnit;  //finally, successors is returned
     }
 
 

@@ -92,13 +92,19 @@ public class Level implements GameActionListener {
 					bulb.setLevel(this);
 					bulb.setX(Portals.getEntrance().getCoordinates().getX());
 					bulb.setY(Portals.getEntrance().getCoordinates().getY());
-					addNpc(bulb);
+
 
 
 					bulb2.setLevel(this);
-					bulb2.setX(Portals.getEntrance().getCoordinates().getX());
-					bulb2.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
-					addNpc(bulb2);
+					bulb2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
+					bulb2.setY(Portals.getEntrance().getCoordinates().getY() + 7*Config.BOX_SIZE);
+
+
+                    addNpc(bulb2);
+                    addNpc(bulb);
+
+
+
 
 //					bulb3.setLevel(this);
 //					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
@@ -165,16 +171,17 @@ public class Level implements GameActionListener {
 
 	}
 
-    private void generateGridForJSP() {
-        jpsTiles = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
+    public Node[][] generateGridForJSP() {
+        Node[][] jpsTilesT = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
         for(int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
             for(int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
                 int xa = x >> Config.COORDINATES_SHIFTING;
                 int ya = y >> Config.COORDINATES_SHIFTING;
-                jpsTiles[x][y] = new Node(x, y);
-                jpsTiles[x][y].setPass(!getTile(xa, ya).isSolid());
+                jpsTilesT[x][y] = new Node(x, y);
+                jpsTilesT[x][y].setPass(!getTile(xa, ya).isSolid());
             }
         }
+        return jpsTilesT;
     }
 
 	public synchronized void alterTile(int x, int y, Tile newTile) {

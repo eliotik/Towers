@@ -47,4 +47,8 @@ public class Node {
     public void setX(int x) {
         this.x = x;
     }
+
+    public boolean isPass() {
+        return pass;
+    }
 }

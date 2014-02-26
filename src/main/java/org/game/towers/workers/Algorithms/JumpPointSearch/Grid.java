@@ -29,7 +29,7 @@ public class Grid {
 	 * @param node (Node) finds the neighbors of this node
 	 * @return (int[][]) list of neighbors that can be traversed
 	 */
-	public synchronized int[][] getNeighbors(Node node){
+	public int[][] getNeighbors(Node node){
 		int[][] neighbors = new int[8][2];
 		int x = node.x;
 		int y = node.y;
@@ -77,7 +77,7 @@ public class Grid {
 	 * @param y (int) node's y coordinate
 	 * @return (boolean) true if the node is obstacle free and on the map, false otherwise
 	 */
-	public synchronized boolean walkable(int x, int y){
+	public boolean walkable(int x, int y){
 
 			try{
 				return getNode(x,y).pass;
@@ -108,7 +108,7 @@ public class Grid {
 	 *
 	 * @param node (Node) node to be added to the heap
 	 */
-	public synchronized void heapAdd(Node node, int unitId){
+	public void heapAdd(Node node, int unitId){
         this.unitId = unitId;
 		float[] tmp = {node.x,node.y,node.f};
 		heap.add(tmp);
@@ -121,14 +121,14 @@ public class Grid {
 	/**
 	 * @return (int) size of the heap
 	 */
-	public synchronized int heapSize(){
+	public int heapSize(){
         Heap currentHeap = heapHashMap.get(unitId);
 		return currentHeap.getSize();
 	}
 	/**
 	 * @return (Node) takes data from popped float[] and returns the correct node
 	 */
-	public synchronized Node heapPopNode(){
+	public Node heapPopNode(){
 		//System.out.println("[heap] size: "+heap.getSize());
         Heap currentHeap = heapHashMap.get(unitId);
 		float[] tmp = currentHeap.pop();
@@ -143,7 +143,7 @@ public class Grid {
 	 * @param y (int) point's y coordinate
 	 * @return ([]int) bundled x,y
 	 */
-	public synchronized int[] tmpInt (int x, int y){
+	public int[] tmpInt (int x, int y){
 		int[] tmpIntsTmpInt = {x,y};  //create the tmpInt's tmpInt[]
 		return tmpIntsTmpInt;         //return it
 	}
@@ -155,7 +155,7 @@ public class Grid {
 	 * @param y (int) desired node y coordinate
 	 * @return (Node) desired node
 	 */
-	public synchronized Node getNode(int x, int y){
+	public Node getNode(int x, int y){
 		try{
 			return grid[x][y];
 		}

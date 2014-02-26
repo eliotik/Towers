@@ -46,25 +46,25 @@ public class PathWorker {
         ArrayList<Node> trailNodes;
         ArrayList<Node> visitedNodes = new ArrayList<Node>();
 
-        if (trailMap.size() == 0) {
+        if (trailMap.get(id) == null) {
             trailNodes = jps.search(x, y, id);
             trailMap.put(id, trailNodes);
         }
 
         trailNodes = trailMap.get(id);
 
-        if (visitedNodesMap.size() == 0) {
+        if (trailNodes == null || trailNodes.size() == 0) {
+            point.setLocation(0, 0);
+            return;
+        }
+
+        if (visitedNodesMap.get(id) == null) {
             visitedNodes.add(trailNodes.get(0));
             visitedNodesMap.put(id, visitedNodes);
         }
 
         visitedNodes = visitedNodesMap.get(id);
 
-        if (trailNodes == null || trailNodes.size() == 0) {
-        	point.setLocation(0, 0);
-        	return;
-        }
-//
         nextNode = trailNodes.get(visitedNodes.size());
 
         Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
