@@ -95,7 +95,6 @@ public class Grid {
 			try{
 				trail.add(0,node);
 			}catch (Exception e){}
-			//drawLine(node.parent.x, node.parent.y, node.x, node.y);
 			node = node.parent;
 		}
 		System.out.println("Path Trace Complete!");
@@ -112,9 +111,6 @@ public class Grid {
         this.unitId = unitId;
 		float[] tmp = {node.x,node.y,node.f};
 		heap.add(tmp);
-//        int xa = node.x >> Config.COORDINATES_SHIFTING;
-//        int ya = node.y >> Config.COORDINATES_SHIFTING;
-//        Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(1.5);
         heapHashMap.put(unitId, heap);
 	}
 

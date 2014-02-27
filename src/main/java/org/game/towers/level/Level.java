@@ -77,34 +77,34 @@ public class Level implements GameActionListener {
 		switch(getWave()) {
 			case 1:
 				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
-				NpcType bulb2 = UnitFactory.getNpc(Npcs.BULB);
+//				NpcType bulb2 = UnitFactory.getNpc(Npcs.BULB);
 //				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
 //				NpcType drone1 = UnitFactory.getNpc(Npcs.DRONE);
 //				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
 //				NpcType vent1 = UnitFactory.getNpc(Npcs.VENT);
-//				NpcType vent2 = UnitFactory.getNpc(Npcs.VENT);
+				NpcType vent2 = UnitFactory.getNpc(Npcs.VENT);
 				if (bulb != null) {
 //                    drone2.setLevel(this);
 //                    drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
 //                    drone2.setY(Portals.getEntrance().getCoordinates().getY());
 //                    addNpc(drone2);
 
-					bulb.setLevel(this);
-					bulb.setX(Portals.getEntrance().getCoordinates().getX());
-					bulb.setY(Portals.getEntrance().getCoordinates().getY());
+                    vent2.setLevel(this);
+                    vent2.setX(Portals.getEntrance().getCoordinates().getX());
+                    vent2.setY(Portals.getEntrance().getCoordinates().getY());
 
 
 
-					bulb2.setLevel(this);
-					bulb2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
-					bulb2.setY(Portals.getEntrance().getCoordinates().getY() + 7*Config.BOX_SIZE);
+                    bulb.setLevel(this);
+                    bulb.setX(Portals.getEntrance().getCoordinates().getX() - 2*Config.BOX_SIZE);
+                    bulb.setY(Portals.getEntrance().getCoordinates().getY() + 7*Config.BOX_SIZE);
 
 
-                    addNpc(bulb2);
+
+
+
                     addNpc(bulb);
-
-
-
+                    addNpc(vent2);
 
 //					bulb3.setLevel(this);
 //					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
