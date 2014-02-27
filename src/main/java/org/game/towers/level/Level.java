@@ -33,7 +33,7 @@ public class Level implements GameActionListener {
 
 	private String name;
     private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
-    private volatile Node[][] jpsTiles;
+    private HashMap<Integer, Node[][]>  jpsTilesHashMap = new HashMap<Integer, Node[][]>();
 	private Tile[] tiles;
 	private int width;
 	private int height;
@@ -56,7 +56,7 @@ public class Level implements GameActionListener {
 		loadLevelFromFile();
 		initStore();
 		initCamera();
-        generateGridForJSP();
+//        generateGridForJSP();
 	}
 
 	private void initCamera() {
@@ -97,14 +97,15 @@ public class Level implements GameActionListener {
 
                     bulb.setLevel(this);
                     bulb.setX(Portals.getEntrance().getCoordinates().getX() - 2*Config.BOX_SIZE);
-                    bulb.setY(Portals.getEntrance().getCoordinates().getY() + 7*Config.BOX_SIZE);
-
-
-
+                    bulb.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
 
 
                     addNpc(bulb);
                     addNpc(vent2);
+
+
+
+
 
 //					bulb3.setLevel(this);
 //					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
@@ -171,17 +172,21 @@ public class Level implements GameActionListener {
 
 	}
 
-    public Node[][] generateGridForJSP() {
-        Node[][] jpsTilesT = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
-        for(int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
-            for(int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
-                int xa = x >> Config.COORDINATES_SHIFTING;
-                int ya = y >> Config.COORDINATES_SHIFTING;
-                jpsTilesT[x][y] = new Node(x, y);
-                jpsTilesT[x][y].setPass(!getTile(xa, ya).isSolid());
+    public Node[][] generateGridForJSP(int unitId) {
+        Node[][] jpsTiles = jpsTilesHashMap.get(unitId);
+        if (jpsTiles == null) {
+            jpsTiles = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
+            for(int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
+                for(int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
+                    int xa = x >> Config.COORDINATES_SHIFTING;
+                    int ya = y >> Config.COORDINATES_SHIFTING;
+                    jpsTiles[x][y] = new Node(x, y);
+                    jpsTiles[x][y].setPass(!getTile(xa, ya).isSolid());
+                }
+                jpsTilesHashMap.put(unitId, jpsTiles);
             }
         }
-        return jpsTilesT;
+        return jpsTiles;
     }
 
 	public synchronized void alterTile(int x, int y, Tile newTile) {
@@ -429,14 +434,6 @@ public class Level implements GameActionListener {
 	public void setPlayerMoney(int playerMoney) {
 		this.playerMoney = playerMoney;
 	}
-
-    public Node[][] getTilesForJPS() {
-        return jpsTiles;
-    }
-
-    public void setTilesForJSP(Node[][] tilesForJSP) {
-        this.jpsTiles = tilesForJSP;
-    }
 
 	public String getImagePath() {
 		return imagePath;

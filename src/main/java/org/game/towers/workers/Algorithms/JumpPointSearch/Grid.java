@@ -90,7 +90,6 @@ public class Grid {
 
 	public ArrayList<Node> pathCreate(Node node){
 		ArrayList<Node> trail = new ArrayList<Node>();
-		System.out.println("Tracing Back Path...");
 		while (node.parent!=null){
 			try{
 				trail.add(0,node);
