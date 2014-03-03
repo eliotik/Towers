@@ -46,7 +46,9 @@ public class Config {
 	public static final String DEFAULT_LEVEL_FILENAME = "labirinth_level.png";
 //	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
 //	public static final String DEFAULT_LEVEL_FILENAME = "simple_level.png";
+
 	public static final int LEVEL_WAVE_TIMEOUT = 10000;
+	public static final double LEVEL_WAVE_MULTIPLIER = 1.5;
 
 	public static final String TILE_GRASS = "GRASS";
 	public static final String TILE_SAND = "SAND";

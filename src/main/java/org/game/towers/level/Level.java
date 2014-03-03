@@ -51,12 +51,15 @@ public class Level implements GameActionListener {
 	private int playerMoney = Config.DEFAULT_PLAYER_MONEY;
 	private int playerResource = Config.DEFAULT_PLAYER_RESOURCE;
 
-	public Level(String imagePath) {
+    private long waveTime;
+    private int quantity;
+    private int remainingNpc;
+
+    public Level(String imagePath) {
 		setImagePath(imagePath);
 		loadLevelFromFile();
 		initStore();
 		initCamera();
-//        generateGridForJSP();
 	}
 
 	private void initCamera() {
@@ -68,6 +71,18 @@ public class Level implements GameActionListener {
 	private void initStore() {
 		setStore(new Store());
 	}
+
+
+    private void setNextWave(long currentTime) {
+        this.waveTime = currentTime + Config.LEVEL_WAVE_TIMEOUT;
+        this.wave++;
+        npcQuantity(wave);
+        this.remainingNpc += quantity;
+    }
+
+    private void npcQuantity(int wave) {
+        quantity = (int)Math.round(wave * Config.LEVEL_WAVE_MULTIPLIER);
+    }
 
 	public void generateNpcs() {
 
@@ -223,6 +238,9 @@ public class Level implements GameActionListener {
 				unit.tick();
 				if (unit.isFinished()) {
 					setPlayerHealth(getPlayerHealth() - 1);
+                    if (remainingNpc > 0) {
+                        remainingNpc--;
+                    }
 					it.remove();
 				}
 			}
@@ -399,9 +417,9 @@ public class Level implements GameActionListener {
 		return nextWave;
 	}
 
-	public void setNextWave(long nextWave) {
-		this.nextWave = nextWave;
-	}
+//	public void setNextWave(long nextWave) {
+//		this.nextWave = nextWave;
+//	}
 
 	public List<Unit> getUnits() {
 		return units;
