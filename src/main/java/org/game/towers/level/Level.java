@@ -52,8 +52,10 @@ public class Level implements GameActionListener {
 	private int playerResource = Config.DEFAULT_PLAYER_RESOURCE;
 
     private long waveTime;
+    private long waveTimeInterval;
     private int quantity;
     private int remainingNpc;
+    private int[] waveCheck;
 
     public Level(String imagePath) {
 		setImagePath(imagePath);
@@ -77,7 +79,11 @@ public class Level implements GameActionListener {
         this.waveTime = currentTime + Config.LEVEL_WAVE_TIMEOUT;
         this.wave++;
         npcQuantity(wave);
-        this.remainingNpc += quantity;
+        if (waveCheck[wave] == 0) {
+            this.remainingNpc += quantity;
+            waveCheck[wave] = quantity;
+            waveTimeInterval = Config.LEVEL_WAVE_TIMEOUT / remainingNpc;
+        }
     }
 
     private void npcQuantity(int wave) {
@@ -118,10 +124,6 @@ public class Level implements GameActionListener {
                     addNpc(bulb);
                     addNpc(vent2);
 
-
-
-
-
 //					bulb3.setLevel(this);
 //					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
 //					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
@@ -144,6 +146,15 @@ public class Level implements GameActionListener {
 //					vent2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
 //					addNpc(vent2);
 				}
+            default:
+                if (remainingNpc > 0){
+                    NpcType npc = UnitFactory.getNpc(Npcs.BULB);
+                    npc.setLevel(this);
+                    npc.setX(Portals.getEntrance().getCoordinates().getX());
+                    npc.setY(Portals.getEntrance().getCoordinates().getY());
+                    addNpc(npc);
+                    remainingNpc--;
+                }
 		}
 	}
 
@@ -231,16 +242,12 @@ public class Level implements GameActionListener {
 		}
 
 		getStore().tick();
-
 		synchronized (getUnits()) {
 			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
 				Unit unit = (Unit) it.next();
 				unit.tick();
 				if (unit.isFinished()) {
 					setPlayerHealth(getPlayerHealth() - 1);
-                    if (remainingNpc > 0) {
-                        remainingNpc--;
-                    }
 					it.remove();
 				}
 			}
