@@ -51,11 +51,12 @@ public class Level implements GameActionListener {
 	private int playerMoney = Config.DEFAULT_PLAYER_MONEY;
 	private int playerResource = Config.DEFAULT_PLAYER_RESOURCE;
 
-    private long waveTime;
+    private long waveTime = 0;
     private long waveTimeInterval;
+    private long npcLastStart = 0;
     private int quantity;
     private int remainingNpc;
-    private int[] waveCheck;
+    private HashMap<Integer, Integer> waveCheck = new HashMap<Integer, Integer>();
 
     public Level(String imagePath) {
 		setImagePath(imagePath);
@@ -74,14 +75,19 @@ public class Level implements GameActionListener {
 		setStore(new Store());
 	}
 
+    private void setNextWave() {
+        if (waveTime < System.currentTimeMillis()) {
+            waveTime = System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT;
+            wave++;
+        }
 
-    private void setNextWave(long currentTime) {
-        this.waveTime = currentTime + Config.LEVEL_WAVE_TIMEOUT;
-        this.wave++;
         npcQuantity(wave);
-        if (waveCheck[wave] == 0) {
+//        if (waveCheck.size() == 0){
+//            waveCheck.add(quantity);
+//        }
+        if (waveCheck.get(wave) == null) {
             this.remainingNpc += quantity;
-            waveCheck[wave] = quantity;
+            waveCheck.put(wave, quantity);
             waveTimeInterval = Config.LEVEL_WAVE_TIMEOUT / remainingNpc;
         }
     }
@@ -91,10 +97,11 @@ public class Level implements GameActionListener {
     }
 
 	public void generateNpcs() {
-
 //		if (System.currentTimeMillis() < getNextWave()) return;
 //		setNextWave(System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT);
 
+        setNextWave();
+        if (remainingNpc > 0 && npcLastStart < System.currentTimeMillis()) {
 		switch(getWave()) {
 			case 1:
 				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
@@ -145,17 +152,18 @@ public class Level implements GameActionListener {
 //					vent2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
 //					vent2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
 //					addNpc(vent2);
+                    npcLastStart = System.currentTimeMillis() + waveTimeInterval;
 				}
             default:
-                if (remainingNpc > 0){
                     NpcType npc = UnitFactory.getNpc(Npcs.BULB);
                     npc.setLevel(this);
                     npc.setX(Portals.getEntrance().getCoordinates().getX());
                     npc.setY(Portals.getEntrance().getCoordinates().getY());
                     addNpc(npc);
+                    npcLastStart = System.currentTimeMillis() + waveTimeInterval;
                     remainingNpc--;
                 }
-		}
+        }
 	}
 
 	private void loadLevelFromFile() {
@@ -242,6 +250,7 @@ public class Level implements GameActionListener {
 		}
 
 		getStore().tick();
+        generateNpcs();
 		synchronized (getUnits()) {
 			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
 				Unit unit = (Unit) it.next();
