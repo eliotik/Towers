@@ -55,6 +55,9 @@ public class Level implements GameActionListener {
     private int quantity;
     private int remainingNpc;
     private HashMap<Integer, Integer> waveCheck = new HashMap<Integer, Integer>();
+    private Random random = new Random();
+    private Npcs npcs = new Npcs();
+    private Class cls = npcs.getClass();
 
     public Level(String imagePath) {
 		setImagePath(imagePath);
@@ -103,20 +106,62 @@ public class Level implements GameActionListener {
         return shifted;
     }
 
-    private String getRandomUnitType(){
+    private int randomIndexByAmount(int amount, int length) {
+        int diff = Math.abs(amount - length);
+        if (diff >= length) {
+            return randomIndexByAmount(diff, length);
+        } else {
+            int result = random.nextInt(amount);
+            return result;
+        }
+    }
+
+    private String randomUnitType(){
         String type = "";
-        double randomMultiplier = 1 / (wave * randomInRange(0, 1));
-        Npcs npcs = new Npcs();
-        Class cls = npcs.getClass();
-        Field[] npscNames = cls.getDeclaredFields();
+        int npcTypeIndex = 0;
+        Field[] npcsNames = cls.getDeclaredFields();
+        if (getAmountNpcsTypesByWave() <= npcsNames.length - 1) {
+            if (getAmountNpcsTypesByWave() == 0) {
+                try {
+                    type = (String)npcsNames[npcTypeIndex].get(cls);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                return  type;
+            }
+            npcTypeIndex = random.nextInt(getAmountNpcsTypesByWave());
+            try {
+                type = (String)npcsNames[npcTypeIndex].get(cls);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        } else {
+            int randomIndexByAmount = randomIndexByAmount(getAmountNpcsTypesByWave(), npcsNames.length);
+            npcTypeIndex = 0;
+            if (randomIndexByAmount > 0) {
+                npcTypeIndex = random.nextInt(randomIndexByAmount);
+            }
+            try {
+                type = (String)npcsNames[npcTypeIndex].get(cls);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
         return  type;
+    }
+
+    private int getAmountNpcsTypesByWave(){
+        int amountTypes = (wave / 2);
+
+        return amountTypes;
     }
 
 	public void generateNpcs() {
         setNextWave();
         if (remainingNpc > 0 && npcLastStart < System.currentTimeMillis()) {
-            getRandomUnitType();
-            NpcType npc = UnitFactory.getNpc(Npcs.BULB);
+            NpcType npc = null;
+            npc = UnitFactory.getNpc(randomUnitType());
             npc.setLevel(this);
             npc.setX(Portals.getEntrance().getCoordinates().getX());
             npc.setY(Portals.getEntrance().getCoordinates().getY());
