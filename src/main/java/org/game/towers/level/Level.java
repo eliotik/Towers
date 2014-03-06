@@ -22,6 +22,7 @@ import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 import javax.imageio.ImageIO;
@@ -105,7 +106,9 @@ public class Level implements GameActionListener {
     private String getRandomUnitType(){
         String type = "";
         double randomMultiplier = 1 / (wave * randomInRange(0, 1));
-
+        Npcs npcs = new Npcs();
+        Class cls = npcs.getClass();
+        Field[] npscNames = cls.getDeclaredFields();
         return  type;
     }
 
