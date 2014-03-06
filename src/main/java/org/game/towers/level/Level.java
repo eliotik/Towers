@@ -22,10 +22,7 @@ import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 
@@ -92,77 +89,37 @@ public class Level implements GameActionListener {
         }
     }
 
+
     private void npcQuantity(int wave) {
         quantity = (int)Math.round(wave * Config.LEVEL_WAVE_MULTIPLIER);
     }
 
-	public void generateNpcs() {
-//		if (System.currentTimeMillis() < getNextWave()) return;
-//		setNextWave(System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT);
+    private double randomInRange(double min, double max) {
+        Random random = new Random();
+        double range = max - min;
+        double scaled = random.nextDouble() * range;
+        double shifted = scaled + min;
+        return shifted;
+    }
 
+    private String getRandomUnitType(){
+        String type = "";
+        double randomMultiplier = 1 / (wave * randomInRange(0, 1));
+
+        return  type;
+    }
+
+	public void generateNpcs() {
         setNextWave();
         if (remainingNpc > 0 && npcLastStart < System.currentTimeMillis()) {
-		switch(getWave()) {
-			case 1:
-				NpcType bulb = UnitFactory.getNpc(Npcs.BULB);
-//				NpcType bulb2 = UnitFactory.getNpc(Npcs.BULB);
-//				NpcType bulb3 = UnitFactory.getNpc(Npcs.BULB);
-//				NpcType drone1 = UnitFactory.getNpc(Npcs.DRONE);
-//				NpcType drone2 = UnitFactory.getNpc(Npcs.DRONE);
-//				NpcType vent1 = UnitFactory.getNpc(Npcs.VENT);
-				NpcType vent2 = UnitFactory.getNpc(Npcs.VENT);
-				if (bulb != null) {
-//                    drone2.setLevel(this);
-//                    drone2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*16);
-//                    drone2.setY(Portals.getEntrance().getCoordinates().getY());
-//                    addNpc(drone2);
-
-                    vent2.setLevel(this);
-                    vent2.setX(Portals.getEntrance().getCoordinates().getX());
-                    vent2.setY(Portals.getEntrance().getCoordinates().getY());
-
-
-
-                    bulb.setLevel(this);
-                    bulb.setX(Portals.getEntrance().getCoordinates().getX() - 2*Config.BOX_SIZE);
-                    bulb.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
-
-
-                    addNpc(bulb);
-                    addNpc(vent2);
-
-//					bulb3.setLevel(this);
-//					bulb3.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
-//					bulb3.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*3);
-//					addNpc(bulb3);
-////
-//					drone1.setLevel(this);
-//					drone1.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*14);
-//					drone1.setY(Portals.getEntrance().getCoordinates().getY());
-//					addNpc(drone1);
-//
-
-
-//					vent1.setLevel(this);
-//					vent1.setX(Portals.getEntrance().getCoordinates().getX());
-//					vent1.setY(Portals.getEntrance().getCoordinates().getY());
-//					addNpc(vent1);
-
-//					vent2.setLevel(this);
-//					vent2.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE*13);
-//					vent2.setY(Portals.getEntrance().getCoordinates().getY() - Config.BOX_SIZE*16);
-//					addNpc(vent2);
-                    npcLastStart = System.currentTimeMillis() + waveTimeInterval;
-				}
-            default:
-                    NpcType npc = UnitFactory.getNpc(Npcs.BULB);
-                    npc.setLevel(this);
-                    npc.setX(Portals.getEntrance().getCoordinates().getX());
-                    npc.setY(Portals.getEntrance().getCoordinates().getY());
-                    addNpc(npc);
-                    npcLastStart = System.currentTimeMillis() + waveTimeInterval;
-                    remainingNpc--;
-                }
+            getRandomUnitType();
+            NpcType npc = UnitFactory.getNpc(Npcs.BULB);
+            npc.setLevel(this);
+            npc.setX(Portals.getEntrance().getCoordinates().getX());
+            npc.setY(Portals.getEntrance().getCoordinates().getY());
+            addNpc(npc);
+            npcLastStart = System.currentTimeMillis() + waveTimeInterval;
+            remainingNpc--;
         }
 	}
 
@@ -203,7 +160,6 @@ public class Level implements GameActionListener {
 		}
         Portals.setEntrance(getEntranceLocation());
 		Portals.setExit(getExitLocation());
-
 	}
 
     public Node[][] generateGridForJSP(int unitId) {
