@@ -32,28 +32,28 @@ public class Utils {
 	    return randomNum;
 	}
 
-	public static HashMap<Coordinates, Integer> getCirclePixels(int radius, double x, double y) {
-		double minX = x - radius;
-		if (minX < 0) minX = 0;
-		double maxX = x + radius;
-		if (maxX > Config.SCREEN_WIDTH) maxX = Config.SCREEN_WIDTH;
-
-		double minY = y - radius;
-		if (minY < 0) minY = 0;
-
-		double maxY = y + radius;
-		if (maxY > Config.REAL_SCREEN_HEIGHT) maxY = Config.REAL_SCREEN_HEIGHT;
-
-		HashMap<Coordinates, Integer> circle = new HashMap<Coordinates, Integer>();
-		for(double i = minX; i < maxX; i++) {
-			Coordinates coordinates = new Coordinates(i, y);
-			circle.put(coordinates, 2);
-		}
-		for(double i = minY; i < maxY; i++) {
-			Coordinates coordinates = new Coordinates(x, i);
-			circle.put(coordinates, 2);
-		}
-
-		return circle;
-	}
+//	public static HashMap<Coordinates, Integer> getCirclePixels(int radius, double x, double y) {
+//		double minX = x - radius;
+//		if (minX < 0) minX = 0;
+//		double maxX = x + radius;
+//		if (maxX > Config.SCREEN_WIDTH) maxX = Config.SCREEN_WIDTH;
+//
+//		double minY = y - radius;
+//		if (minY < 0) minY = 0;
+//
+//		double maxY = y + radius;
+//		if (maxY > Config.REAL_SCREEN_HEIGHT) maxY = Config.REAL_SCREEN_HEIGHT;
+//
+//		HashMap<Coordinates, Integer> circle = new HashMap<Coordinates, Integer>();
+//		for(double i = minX; i < maxX; i++) {
+//			Coordinates coordinates = new Coordinates(i, y);
+//			circle.put(coordinates, 2);
+//		}
+//		for(double i = minY; i < maxY; i++) {
+//			Coordinates coordinates = new Coordinates(x, i);
+//			circle.put(coordinates, 2);
+//		}
+//
+//		return circle;
+//	}
 }

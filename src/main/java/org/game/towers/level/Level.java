@@ -23,6 +23,7 @@ import org.game.towers.units.UnitFactory;
 import org.game.towers.workers.Utils;
 //import org.game.towers.workers.Utils;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
+import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -90,11 +91,11 @@ public class Level implements GameActionListener {
         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 11);
         addUnit(tower);
 
-        tower = UnitFactory.getTower(Towers.BULB);
-        tower.setLevel(this);
-        tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
-        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 12);
-        addUnit(tower);
+//        tower = UnitFactory.getTower(Towers.BULB);
+//        tower.setLevel(this);
+//        tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
+//        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 12);
+//        addUnit(tower);
 	}
 
 	private void initFog(Screen screen) {
@@ -377,7 +378,8 @@ public class Level implements GameActionListener {
 	}
 
 	private void refineFogLayer(double x, double y, int radarSize) {
-		HashMap<Coordinates, Integer> circle = Utils.getCirclePixels(radarSize, x, y);
+//		HashMap<Coordinates, Integer> circle = Utils.getCirclePixels(radarSize, x, y);
+		HashMap<Coordinates, Integer> circle = MathAlgorithms.getInscribedCoordinates(x, y, radarSize);
 		Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
 		Screen screen = Game.instance.getScreen();
 		while (it.hasNext()) {

@@ -9,7 +9,7 @@ public class MathAlgorithms {
     public MathAlgorithms() {}
 
     public static HashMap<Coordinates, Integer> getInscribedCoordinates(double x, double y, int radius) {
-        Coordinates coordinatesCenter = new Coordinates((int)x, (int)y);
+        Coordinates coordinatesCenter = new Coordinates(x, y);
         Circle circle = new Circle(coordinatesCenter, radius);
 
         return circle.getInscribedCoordinates();
