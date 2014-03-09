@@ -55,19 +55,29 @@ class Circle {
         HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
         for (int x = minX; x <= maxX; x++) {
             List<Coordinates> listCoordinates = filter(having(on(Coordinates.class).getX(), Matchers.equalTo(x)), circle);
-            fromY = listCoordinates.get(0).getY();
-            toY = listCoordinates.get(1).getY();
-            for(Coordinates item : listCoordinates){
-                if (fromY >  item.getY()) {
-                    fromY = item.getY();
-                }
-                if (toY < item.getY()){
-                    toY = item.getY();
-                }
+
+            if (listCoordinates.size() == 0) {
+                continue;
             }
-            for (int y = fromY; y <= toY; y++) {
-                inscribedCoordinates.put(new Coordinates(x, y), 0);
+
+            if (listCoordinates.size() > 1){
+                fromY = listCoordinates.get(0).getY();
+                toY = listCoordinates.get(1).getY();
+                for(Coordinates item : listCoordinates){
+                    if (fromY >  item.getY()) {
+                        fromY = item.getY();
+                    }
+                    if (toY < item.getY()){
+                        toY = item.getY();
+                    }
+                }
+                for (int y = fromY; y <= toY; y++) {
+                    inscribedCoordinates.put(new Coordinates(x, y), 0);
+                }
+            } else {
+                inscribedCoordinates.put(new Coordinates(x, listCoordinates.get(0).getY()), 0);
             }
+
         }
 
         return inscribedCoordinates;
