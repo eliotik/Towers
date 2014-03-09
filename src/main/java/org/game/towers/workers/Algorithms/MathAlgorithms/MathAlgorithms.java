@@ -17,12 +17,12 @@ public class MathAlgorithms {
 
 
     // test
-    public static void main(String[] args) {
-        Coordinates coordinatesCenter = new Coordinates(100, 100);
-        int radius = 10;
-        Circle circle = new Circle(coordinatesCenter, radius);
-        HashMap<Coordinates, Integer> inscribedCoordinates = circle.getInscribedCoordinates();
-        System.out.println(inscribedCoordinates.size());
-    }
+//    public static void main(String[] args) {
+//        Coordinates coordinatesCenter = new Coordinates(100, 100);
+//        int radius = 12;
+//        Circle circle = new Circle(coordinatesCenter, radius);
+//        HashMap<Coordinates, Integer> inscribedCoordinates = circle.getInscribedCoordinates();
+//        System.out.println(inscribedCoordinates.size());
+//    }
 
 }

@@ -23,7 +23,7 @@ class Circle {
     private int minX, maxX, minY, maxY;
     private ArrayList<Coordinates> circle = new ArrayList<Coordinates>();
     private Coordinates[][] circleEqual;
-    private double epsilon = 0.1;
+    private double epsilon = 0.02;
 
 
     public Circle(Coordinates coordinatesCenter, int radius) {
@@ -65,9 +65,15 @@ class Circle {
                 continue;
             }
 
-            if (listCoordinates.size() > 1){
+            if (x == getMinX() || x == getMaxX()) {
+                inscribedCoordinates.put(new Coordinates(x, listCoordinates.get(0).getY()), 2);
+                continue;
+            }
+
+            if (listCoordinates.size() > 1) {
                 fromY = listCoordinates.get(0).getY();
                 toY = listCoordinates.get(1).getY();
+
                 for(Coordinates item : listCoordinates){
                     if (fromY >  item.getY()) {
                         fromY = item.getY();
@@ -80,11 +86,11 @@ class Circle {
                     inscribedCoordinates.put(new Coordinates(x, y), 2);
                 }
             } else {
-                inscribedCoordinates.put(new Coordinates(x, listCoordinates.get(0).getY()), 2);
+                for (int y = 0; y <= toY; y++) {
+                    inscribedCoordinates.put(new Coordinates(x, y), 2);
+                }
             }
-
         }
-
         return inscribedCoordinates;
     }
 
