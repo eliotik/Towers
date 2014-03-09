@@ -27,6 +27,7 @@ public class Screen {
 	public static final byte BIT_MIRROR_Y = 0x02;
 
 	private int[] pixels;
+	private int[] fog;
 	private Graphics graphics;
 
 	private int xOffset = 0;
@@ -154,7 +155,25 @@ public class Screen {
 					for (int xScale = 0; xScale < scale; xScale++) {
 						if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
 							continue;
-						getPixels()[(xPixel + xScale) + (yPixel + yScale) * getWidth()] = (tile.getHighlight() != 1)?Colors.brightness(color, tile.getHighlight()):color;
+						int pixelIndex = (xPixel + xScale) + (yPixel + yScale) * getWidth();
+						//System.out.println(pixelIndex+","+getFog().length);
+//						switch(getFog()[pixelIndex]){
+//						default:
+////							System.out.println("default");
+						getPixels()[pixelIndex] =
+								(tile.getHighlight() != 1)
+								? Colors.brightness(color, tile.getHighlight())
+								: color;
+								break;
+//						case 0:
+////							System.out.println("0");
+//							getPixels()[pixelIndex] = Config.DEFAULT_BKG_COLOR;
+//							break;
+//						case 1:
+////							System.out.println("1");
+//							getPixels()[pixelIndex] = Colors.tint(getPixels()[pixelIndex], 0.3D, 0.3D, 0.3D);
+//							break;
+//						}
 					}
 				}
 			}
@@ -223,7 +242,6 @@ public class Screen {
 	public void renderUnit(int xOrig, int yOrig, Unit unit, int mirrorDir, int scale) {
 		int xp = xOrig - getxOffset();
 		int yp = yOrig - getyOffset();
-
 		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
 		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
 
@@ -257,10 +275,9 @@ public class Screen {
 				if (yt < 0) {
 					yt = 0;
 				}
-				int color = unit.getCurrentSprite().getPixels()[xSheet + ySheet
-						* unit.getCurrentSprite().getWidth()];
-				if (color != 0xFFFF00FF && color != 0xFF800080) {
 
+				int color = unit.getCurrentSprite().getPixels()[xSheet + ySheet	* unit.getCurrentSprite().getWidth()];
+				if (color != 0xFFFF00FF && color != 0xFF800080) {
 					for (int yScale = 0; yScale < scale; yScale++) {
 						if (yPixel + yScale < 0 || yPixel + yScale >= getHeight())
 							continue;
@@ -274,6 +291,7 @@ public class Screen {
 			}
 		}
 
+		//rendering healthbar for npcs
 		if (unit instanceof NpcType && unit.getHealth() < unit.getMaxHealth() && !unit.isDead()) {
 			yp -= 8;
 			for (int y = 0; y < ((NpcType) unit).getCurrentHealthSprite().getHeight(); y++) {
@@ -293,9 +311,9 @@ public class Screen {
 					if (yt < 0) {
 						yt = 0;
 					}
-					int colour = ((NpcType) unit).getCurrentHealthSprite().getPixels()[x + y * ((NpcType) unit).getCurrentHealthSprite().getWidth()];
-					if (colour != 0xFFFF00FF && colour != 0xFF800080) {
-						getPixels()[xt + yt * getWidth()] = colour;
+					int color = ((NpcType) unit).getCurrentHealthSprite().getPixels()[x + y * ((NpcType) unit).getCurrentHealthSprite().getWidth()];
+					if (color != 0xFFFF00FF && color != 0xFF800080) {
+						getPixels()[xt + yt * getWidth()] = color;
 					}
 				}
 			}
@@ -363,6 +381,27 @@ public class Screen {
 				if (color != 0xFFFF00FF && color != 0xFF800080) {
 					getPixels()[xt + yt * getWidth()] = color;
 				}
+			}
+		}
+	}
+
+	public int[] getFog() {
+		return fog;
+	}
+
+	public void setFog(int[] fog) {
+		this.fog = fog;
+	}
+
+	public void renderFog() {
+		int shift = getxOffset()+getyOffset()*getWidth();
+//		System.out.println("["+shift+"]");
+		for (int i = 0; i < getPixels().length; i++) {
+//			System.out.println(">"+(i+shift)+"<");
+			switch (getFog()[i+shift]) {
+			//default:
+			case 0: getPixels()[i] = Config.DEFAULT_BKG_COLOR;
+			case 1: getPixels()[i] = Colors.tint(getPixels()[i], 0.3D, 0.3D, 0.3D);
 			}
 		}
 	}

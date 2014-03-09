@@ -66,8 +66,9 @@ public class PathWorker {
         visitedNodes = visitedNodesMap.get(id);
 
         nextNode = trailNodes.get(visitedNodes.size());
-
-        Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
+        if (Config.LEVEL_HIGHLIGHT_PATH_TILES) {
+        	Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
+        }
         int nextX = Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).getX()*Config.BOX_SIZE;
         int nextY = Game.instance.getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).getY()*Config.BOX_SIZE;
         if (nextX == x && nextY == y) {

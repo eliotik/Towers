@@ -2,6 +2,7 @@ package org.game.towers.level;
 
 import org.game.towers.configs.Config;
 import org.game.towers.configs.Npcs;
+import org.game.towers.configs.Towers;
 import org.game.towers.game.Game;
 import org.game.towers.geo.Coordinates;
 import org.game.towers.geo.Geo;
@@ -16,14 +17,19 @@ import org.game.towers.level.tiles.Tile;
 import org.game.towers.level.tiles.TileMap;
 import org.game.towers.level.tiles.TileTypes;
 import org.game.towers.npcs.NpcType;
+import org.game.towers.towers.TowerType;
 import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
+import org.game.towers.workers.Utils;
+//import org.game.towers.workers.Utils;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
@@ -56,14 +62,51 @@ public class Level implements GameActionListener {
     private int remainingNpc;
     private HashMap<Integer, Integer> waveCheck = new HashMap<Integer, Integer>();
     private Random random = new Random();
-    private Npcs npcs = new Npcs();
-    private Class cls = npcs.getClass();
+//    private Npcs npcs = new Npcs();
+//    private Class cls = npcs.getClass();
 
     public Level(String imagePath) {
 		setImagePath(imagePath);
 		loadLevelFromFile();
 		initStore();
 		initCamera();
+		initFog(Game.instance.getScreen());
+
+        TowerType tower = UnitFactory.getTower(Towers.BULB);
+        tower.setLevel(this);
+        tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
+        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
+        addUnit(tower);
+
+        tower = UnitFactory.getTower(Towers.BULB);
+        tower.setLevel(this);
+        tower.setX(Portals.getEntrance().getCoordinates().getX());
+        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 8);
+        addUnit(tower);
+
+        tower = UnitFactory.getTower(Towers.BULB);
+        tower.setLevel(this);
+        tower.setX(Portals.getEntrance().getCoordinates().getX() - Config.BOX_SIZE * 10);
+        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 11);
+        addUnit(tower);
+
+        tower = UnitFactory.getTower(Towers.BULB);
+        tower.setLevel(this);
+        tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
+        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 12);
+        addUnit(tower);
+	}
+
+	private void initFog(Screen screen) {
+		//System.out.println(getWidth()+"/"+getHeight()+", "+screen.getWidth()+"/"+screen.getHeight()+", "+Config.SCREEN_WIDTH+"/"+Config.SCREEN_HEIGHT+", "+Config.REAL_SCREEN_WIDTH+"/"+Config.REAL_SCREEN_HEIGHT);
+		if (Config.DEFAULT_LEVEL_USE_FOG) {
+			screen.setFog(new int[Config.REAL_SCREEN_WIDTH * Config.REAL_SCREEN_HEIGHT]);
+			refineFogLayer(
+				Portals.getExit().getCoordinates().getX() + Config.BOX_SIZE/2,
+				Portals.getExit().getCoordinates().getY() + Config.BOX_SIZE/2,
+				Config.DEFAULT_LEVEL_ENTRANCE_RADAR_VIEW_SIZE
+			);
+		}
 	}
 
 	private void initCamera() {
@@ -87,7 +130,7 @@ public class Level implements GameActionListener {
 //            waveCheck.add(quantity);
 //        }
         if (waveCheck.get(wave) == null) {
-            this.remainingNpc += quantity;
+            remainingNpc += quantity;
             waveCheck.put(wave, quantity);
             waveTimeInterval = Config.LEVEL_WAVE_TIMEOUT / remainingNpc;
         }
@@ -111,7 +154,7 @@ public class Level implements GameActionListener {
         if (diff >= length) {
             return randomIndexByAmount(diff, length);
         } else {
-            int result = random.nextInt(amount);
+            int result = /*Utils.randInt(0, amount);*/random.nextInt(amount);
             return result;
         }
     }
@@ -119,19 +162,19 @@ public class Level implements GameActionListener {
     private String randomUnitType(){
         String type = "";
         int npcTypeIndex = 0;
-        Field[] npcsNames = cls.getDeclaredFields();
+        Field[] npcsNames = Npcs.class.getDeclaredFields();
         if (getAmountNpcsTypesByWave() <= npcsNames.length - 1) {
             if (getAmountNpcsTypesByWave() == 0) {
                 try {
-                    type = (String)npcsNames[npcTypeIndex].get(cls);
+                    type = (String)npcsNames[npcTypeIndex].get(Npcs.class);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
                 return  type;
             }
-            npcTypeIndex = random.nextInt(getAmountNpcsTypesByWave());
+            npcTypeIndex = /*Utils.randInt(0, getAmountNpcsTypesByWave());*/random.nextInt(getAmountNpcsTypesByWave());
             try {
-                type = (String)npcsNames[npcTypeIndex].get(cls);
+                type = (String)npcsNames[npcTypeIndex].get(Npcs.class);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -139,10 +182,10 @@ public class Level implements GameActionListener {
             int randomIndexByAmount = randomIndexByAmount(getAmountNpcsTypesByWave(), npcsNames.length);
             npcTypeIndex = 0;
             if (randomIndexByAmount > 0) {
-                npcTypeIndex = random.nextInt(randomIndexByAmount);
+                npcTypeIndex = /*Utils.randInt(0, randomIndexByAmount);*/random.nextInt(randomIndexByAmount);
             }
             try {
-                type = (String)npcsNames[npcTypeIndex].get(cls);
+                type = (String)npcsNames[npcTypeIndex].get(Npcs.class);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -160,12 +203,11 @@ public class Level implements GameActionListener {
 	public void generateNpcs() {
         setNextWave();
         if (remainingNpc > 0 && npcLastStart < System.currentTimeMillis()) {
-            NpcType npc = null;
-            npc = UnitFactory.getNpc(randomUnitType());
+            NpcType npc = UnitFactory.getNpc(randomUnitType());
             npc.setLevel(this);
             npc.setX(Portals.getEntrance().getCoordinates().getX());
             npc.setY(Portals.getEntrance().getCoordinates().getY());
-            addNpc(npc);
+            addUnit(npc);
             npcLastStart = System.currentTimeMillis() + waveTimeInterval;
             remainingNpc--;
         }
@@ -254,12 +296,14 @@ public class Level implements GameActionListener {
 		}
 
 		getStore().tick();
+
         generateNpcs();
+
 		synchronized (getUnits()) {
 			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
 				Unit unit = (Unit) it.next();
 				unit.tick();
-				if (unit.isFinished()) {
+				if (unit instanceof NpcType && unit.isFinished()) {
 					setPlayerHealth(getPlayerHealth() - 1);
 					it.remove();
 				}
@@ -318,9 +362,31 @@ public class Level implements GameActionListener {
 		}
 	}
 
-	public void addNpc(NpcType npc) {
+	public void addUnit(Unit unit) {
 		synchronized (getUnits()) {
-			getUnits().add(npc);
+			getUnits().add(unit);
+			if (unit instanceof TowerType) {
+				if (Config.DEFAULT_LEVEL_USE_FOG) {
+					double x = unit.getX() + Config.BOX_SIZE/2;
+					double y = unit.getY() + Config.BOX_SIZE/2;
+					int radarSize = ((TowerType) unit).getRadarViewSize();
+					refineFogLayer(x, y, radarSize);
+				}
+			}
+		}
+	}
+
+	private void refineFogLayer(double x, double y, int radarSize) {
+		HashMap<Coordinates, Integer> circle = Utils.getCirclePixels(radarSize, x, y);
+		Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
+		Screen screen = Game.instance.getScreen();
+		while (it.hasNext()) {
+		    Map.Entry data = (Map.Entry)it.next();
+		    Coordinates coordinates = (Coordinates) data.getKey();
+		    int pixelIndex = coordinates.getX() + coordinates.getY() * Game.instance.getScreen().getWidth();
+		    if (pixelIndex < screen.getFog().length) {
+		    	screen.getFog()[pixelIndex] = (int) data.getValue();
+		    }
 		}
 	}
 
@@ -429,6 +495,9 @@ public class Level implements GameActionListener {
 				unit.render(screen);
 			}
 		}
+
+		if (Config.DEFAULT_LEVEL_USE_FOG)
+			screen.renderFog();
 
 		screen.renderLevelGui();
 	}

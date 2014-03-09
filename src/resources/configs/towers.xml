@@ -12,6 +12,7 @@
 		width="4"
 		height="4"
 		radius="10"
+		radar_view_size="48"
 		animation_switch_delay="100"
 		animation_start_delay="0"
 		price="55"

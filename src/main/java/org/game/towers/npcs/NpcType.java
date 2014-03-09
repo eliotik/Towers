@@ -15,10 +15,6 @@ public class NpcType extends Unit {
 
 	private ArrayList<String> hands;
 
-//	public NpcType() {
-//
-//	}
-
 	public ArrayList<String> getHands() {
 		return hands;
 	}
@@ -30,6 +26,7 @@ public class NpcType extends Unit {
 	@Override
 	public void tick() {
 		super.tick();
+
 		if (!isDead() && !isFinished()) {
 			Point shifts = new Point();
 

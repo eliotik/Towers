@@ -58,6 +58,8 @@ public class BuildingTypesCollection {
 	            				)
                 		);
 
+                item.setRadarViewSize(Integer.parseInt(elemj.getAttribute("radar_view_size;").toString()));
+
                 getItems().add(item);
             }
         }

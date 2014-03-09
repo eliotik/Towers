@@ -1,17 +1,17 @@
 package org.game.towers.towers;
 
 import org.game.towers.gfx.Screen;
+import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.level.Level;
 import org.game.towers.units.Unit;
 
 public class TowerType extends Unit {
 
 	private static final long serialVersionUID = 1L;
+
 	private double radius;
 	private int price;
-
-//	public TowerType() {
-//	}
+	private int radarViewSize;
 
 	public double getRadius() {
 		return radius;
@@ -33,7 +33,6 @@ public class TowerType extends Unit {
 
 	@Override
 	public boolean hasCollided(int xa, int ya) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -43,5 +42,13 @@ public class TowerType extends Unit {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+
+	public int getRadarViewSize() {
+		return radarViewSize;
+	}
+
+	public void setRadarViewSize(int radarViewSize) {
+		this.radarViewSize = radarViewSize;
 	}
 }

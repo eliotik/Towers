@@ -30,7 +30,7 @@ public class Store {
 	public void render(Screen screen) {
 		for (int i = 0; i < TowerTypesCollection.getItems().size(); i++) {
 			TowerType tower = TowerTypesCollection.getItems().get(i);
-			Sprite sprite = tower.getCurrentSprite();
+			Sprite sprite = tower.getSprite(0);
 			int xp = (screen.getWidth() - (sprite.getWidth() / 2)) - (i << Config.COORDINATES_SHIFTING) - 8 + getX();
 			int yp = screen.getHeight() - sprite.getHeight();
 			for (int y = 0; y < sprite.getHeight(); y++) {

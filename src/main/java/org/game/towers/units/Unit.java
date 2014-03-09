@@ -14,6 +14,7 @@ import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.level.Level;
 import org.game.towers.level.tiles.Tile;
+import org.game.towers.npcs.NpcType;
 import org.game.towers.workers.Utils;
 
 /**
@@ -60,7 +61,8 @@ public abstract class Unit implements Serializable {
 	}
 
 	public void tick() {
-		if ((System.currentTimeMillis() - getLastIterationStartTime()) >= (getAnimationStartDelay()) && !isPauseAnimation()) {
+		if ( (System.currentTimeMillis() - getLastIterationStartTime()) >= (getAnimationStartDelay()) &&
+			(!isPauseAnimation()) ) {
 			if ((System.currentTimeMillis() - getLastIterationTime()) >= (getAnimationSwitchDelay())) {
 				setLastIterationTime(System.currentTimeMillis());
 				setSpriteIndex((getSpriteIndex() + 1) % getSprites().size());
@@ -69,14 +71,14 @@ public abstract class Unit implements Serializable {
 				}
 			}
 		}
-	};
+	}
 
 	public abstract void render(Screen screen);
 
 	public abstract boolean hasCollided(int xa, int ya);
 
 	public Sprite getCurrentSprite() {
-		return getSprites().get(getSpriteIndex());
+		return getSprite(getSpriteIndex());
 	}
 
 	protected boolean isSolidTile(double xa, double ya, double x, double y) {
@@ -271,7 +273,7 @@ public abstract class Unit implements Serializable {
 	}
 
 	public boolean isPauseAnimation() {
-		if (!isMoving() && !isDead()) {
+		if (!isMoving() && !isDead() && this instanceof NpcType) {
 			setPauseAnimation(true);
 		}
 		return pauseAnimation;
@@ -409,5 +411,9 @@ public abstract class Unit implements Serializable {
 
 	public void setMinCollisionBox(Point minCollisionBox) {
 		this.minCollisionBox = minCollisionBox;
+	}
+
+	public Sprite getSprite(int spriteIndex) {
+		return getSprites().get(spriteIndex);
 	}
 }

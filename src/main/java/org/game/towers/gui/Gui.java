@@ -11,7 +11,6 @@ import org.game.towers.gfx.sprites.SpriteSheet;
 
 public abstract class Gui implements GameActionListener {
 
-	private static int DEFAULT_BKG_COLOR = 0x555555;
 	private double red;
 	private double green;
 	private double blue;
@@ -72,7 +71,7 @@ public abstract class Gui implements GameActionListener {
 
 	public void drawDefaultSolidBackground() {
 		for (int i = 0; i < Game.instance.getScreen().getPixels().length; i++) {
-			Game.instance.getScreen().getPixels()[i] = DEFAULT_BKG_COLOR;
+			Game.instance.getScreen().getPixels()[i] = Config.DEFAULT_BKG_COLOR;
 		}
 	}
 

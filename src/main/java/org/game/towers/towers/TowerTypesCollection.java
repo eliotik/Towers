@@ -6,6 +6,7 @@ import org.game.towers.game.Game;
 import org.game.towers.game.Game.DebugLevel;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
+import org.game.towers.workers.Utils;
 import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -68,6 +69,7 @@ public class TowerTypesCollection {
                 item.setRadius(Integer.parseInt(elemj.getAttribute("radius").toString()));
                 item.setPrice(Integer.parseInt(elemj.getAttribute("price").toString()));
 
+                item.setRadarViewSize(Integer.parseInt(elemj.getAttribute("radar_view_size").toString()));
 
                 item.setSprites(getSprites(item.getId()));
 
@@ -92,7 +94,6 @@ public class TowerTypesCollection {
 		sprites.add(SpritesData.TOWER_BULB_2);
 		sprites.add(SpritesData.TOWER_BULB_3);
 		sprites.add(SpritesData.TOWER_BULB_4);
-		sprites.add(SpritesData.TOWER_BULB_3);
 		sprites.add(SpritesData.TOWER_BULB_5);
 		sprites.add(SpritesData.TOWER_BULB_6);
 		sprites.add(SpritesData.TOWER_BULB_7);

@@ -43,7 +43,9 @@ public class JPS {
                 for (Node item : trailNodes){
                     int xa = item.x >> Config.COORDINATES_SHIFTING;
                     int ya = item.y >> Config.COORDINATES_SHIFTING;
-                    Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(1.2);
+                    if (Config.LEVEL_HIGHLIGHT_PATH_TILES) {
+                    	Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(1.2);
+                    }
                 }
                 break;
             }

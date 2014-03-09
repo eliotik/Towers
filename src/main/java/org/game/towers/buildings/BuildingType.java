@@ -7,9 +7,7 @@ import org.game.towers.units.Unit;
 public class BuildingType extends Unit {
 	private static final long serialVersionUID = 1L;
 
-//	public BuildingType(Level level) {
-////		super(level);
-//	}
+	private int radarViewSize;
 
 	private double value;
 
@@ -31,7 +29,14 @@ public class BuildingType extends Unit {
 
 	@Override
 	public boolean hasCollided(int xa, int ya) {
-		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public int getRadarViewSize() {
+		return radarViewSize;
+	}
+
+	public void setRadarViewSize(int radarViewSize) {
+		this.radarViewSize = radarViewSize;
 	}
 }

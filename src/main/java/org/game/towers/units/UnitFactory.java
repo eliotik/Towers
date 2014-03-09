@@ -9,6 +9,7 @@ import org.game.towers.game.Game.DebugLevel;
 import org.game.towers.npcs.NpcType;
 import org.game.towers.npcs.NpcTypesCollection;
 import org.game.towers.towers.TowerType;
+import org.game.towers.towers.TowerTypesCollection;
 import org.hamcrest.Matchers;
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -33,7 +34,20 @@ public class UnitFactory {
 		return null;
 	}
 
-	public static ArrayList<TowerType> getTower(){
+	public static TowerType getTower(String type){
+		try {
+			List<TowerType> types = filter(having(on(TowerType.class).getId(), Matchers.equalTo(type)),
+					TowerTypesCollection.getItems());
+			if (types == null || types.size() == 0) {
+				Game.debug(DebugLevel.WARNING, "Could not find NPC unit by type: " + type);
+				return null;
+			}
+			TowerType unit = (TowerType) types.get(0);
+			return SerializationUtils.clone(unit);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Game.debug(DebugLevel.ERROR, "Could not initialize Tower unit: " + type);
+		}
 		return null;
 	}
 
