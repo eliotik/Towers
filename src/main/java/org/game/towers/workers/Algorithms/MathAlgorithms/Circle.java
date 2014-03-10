@@ -23,7 +23,7 @@ class Circle {
     private int minX, maxX, minY, maxY;
     private ArrayList<Coordinates> circle = new ArrayList<Coordinates>();
     private Coordinates[][] circleEqual;
-    private double epsilon = 0.02;
+    private double epsilon = 0.05;
 
 
     public Circle(Coordinates coordinatesCenter, int radius) {
@@ -40,16 +40,33 @@ class Circle {
     }
 
     private void circleEqual(){
-        for(int x = getMinX(); x <= getMaxX(); x++) {
-            for (int y = getMinY(); y <= getMaxY(); y++) {
-                double radiusVector  = java.lang.Math.pow((double)(x - getCoordinates().getX()), 2) +
-                                       java.lang.Math.pow((double)(y - getCoordinates().getY()), 2);
+//        for(int x = getMinX(); x <= getMaxX(); x++) {
+//            for (int y = getMinY(); y <= getMaxY(); y++) {
+//                double radiusVector  = java.lang.Math.pow((double)(x - getCoordinates().getX()), 2) +
+//                                       java.lang.Math.pow((double)(y - getCoordinates().getY()), 2);
+//
+//                if ((radiusVector / java.lang.Math.pow((double)getRadius(), 2)) < 1 + getEpsilon() &&
+//                    (radiusVector / java.lang.Math.pow((double)getRadius(), 2)) > 1 - getEpsilon()) {
+//                    getCircle().add(new Coordinates(x, y));
+//                }
+//            }
+//        }
 
-                if ((radiusVector / java.lang.Math.pow((double)getRadius(), 2)) < 1 + getEpsilon() &&
-                    (radiusVector / java.lang.Math.pow((double)getRadius(), 2)) > 1 - getEpsilon()) {
-                    getCircle().add(new Coordinates(x, y));
-                }
+        for(double x = getMinX(); x <= getMaxX(); x+=epsilon) {
+            int y = (int)(java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinates().getX()), 2)) + getCoordinates().getY());
+
+            if (y < getMinY()) {
+                y = 0;
             }
+            getCircle().add(new Coordinates(x, y));
+        }
+        for(double x = getMinX(); x <= getMaxX(); x+=epsilon) {
+            int y = (int)(getCoordinates().getY() - java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinates().getX()), 2)));
+
+            if (y < getMinY()) {
+                y = 0;
+            }
+            getCircle().add(new Coordinates(x, y));
         }
     }
 
@@ -57,6 +74,8 @@ class Circle {
         circleEqual();
         int fromY = 0;
         int toY = 0;
+        int fromX = 0;
+        int toX = 0;
         HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
         for (int x = getMinX(); x <= getMaxX(); x++) {
             List<Coordinates> listCoordinates = filter(having(on(Coordinates.class).getX(), Matchers.equalTo(x)), getCircle());
@@ -85,12 +104,14 @@ class Circle {
                 for (int y = fromY; y <= toY; y++) {
                     inscribedCoordinates.put(new Coordinates(x, y), 2);
                 }
-            } else {
+            } /*else {
+                toY = listCoordinates.get(0).getY();
                 for (int y = 0; y <= toY; y++) {
                     inscribedCoordinates.put(new Coordinates(x, y), 2);
                 }
-            }
+            }*/
         }
+
         return inscribedCoordinates;
     }
 
