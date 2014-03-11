@@ -52,6 +52,8 @@ public class Config {
 
 	public static final int DEFAULT_PLAYER_HEALTH = 20;
 	public static final int DEFAULT_PLAYER_MONEY = 500;
+	public static final int EDGE_SIZE = 10;
+
 	public static final int DEFAULT_PLAYER_RESOURCE = 120;
 
 	public static final int LEVEL_WAVE_TIMEOUT = 10000;
