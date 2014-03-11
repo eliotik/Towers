@@ -102,7 +102,7 @@ public class Level implements GameActionListener {
 		//System.out.println(getWidth()+"/"+getHeight()+", "+screen.getWidth()+"/"+screen.getHeight()+", "+Config.SCREEN_WIDTH+"/"+Config.SCREEN_HEIGHT+", "+Config.REAL_SCREEN_WIDTH+"/"+Config.REAL_SCREEN_HEIGHT);
 		if (Config.DEFAULT_LEVEL_USE_FOG) {
 			screen.setFog(new int[Config.REAL_SCREEN_WIDTH * Config.REAL_SCREEN_HEIGHT]);
-			refineFogLayer(
+			screen.refineFogLayer(
 				Portals.getExit().getCoordinates().getX() + Config.BOX_SIZE/2,
 				Portals.getExit().getCoordinates().getY() + Config.BOX_SIZE/2,
 				Config.DEFAULT_LEVEL_ENTRANCE_RADAR_VIEW_SIZE
@@ -371,24 +371,9 @@ public class Level implements GameActionListener {
 					double x = unit.getX() + Config.BOX_SIZE/2;
 					double y = unit.getY() + Config.BOX_SIZE/2;
 					int radarSize = ((TowerType) unit).getRadarViewSize();
-					refineFogLayer(x, y, radarSize);
+					Game.instance.getScreen().refineFogLayer(x, y, radarSize);
 				}
 			}
-		}
-	}
-
-	private void refineFogLayer(double x, double y, int radarSize) {
-//		HashMap<Coordinates, Integer> circle = Utils.getCirclePixels(radarSize, x, y);
-		HashMap<Coordinates, Integer> circle = MathAlgorithms.getInscribedCoordinates(x, y, radarSize);
-		Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
-		Screen screen = Game.instance.getScreen();
-		while (it.hasNext()) {
-		    Map.Entry data = (Map.Entry)it.next();
-		    Coordinates coordinates = (Coordinates) data.getKey();
-		    int pixelIndex = coordinates.getX() + coordinates.getY() * Game.instance.getScreen().getWidth();
-		    if (pixelIndex < screen.getFog().length) {
-		    	screen.getFog()[pixelIndex] = (int) data.getValue();
-		    }
 		}
 	}
 

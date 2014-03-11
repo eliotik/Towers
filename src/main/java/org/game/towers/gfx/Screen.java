@@ -6,10 +6,15 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
+import org.game.towers.geo.Coordinates;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.gui.Gui;
@@ -20,6 +25,7 @@ import org.game.towers.npcs.NpcType;
 import org.game.towers.towers.TowerType;
 import org.game.towers.towers.TowerTypesCollection;
 import org.game.towers.units.Unit;
+import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
 
 public class Screen {
 
@@ -403,6 +409,25 @@ public class Screen {
 			case 0: getPixels()[i] = Config.DEFAULT_BKG_COLOR;
 			case 1: getPixels()[i] = Colors.tint(getPixels()[i], 0.3D, 0.3D, 0.3D);
 			}
+		}
+	}
+
+	public void refineFogLayer(double x, double y, int radarSize) {
+		HashMap<Coordinates, Integer> circle = MathAlgorithms.getInscribedCoordinates(x, y, radarSize);
+		Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
+		while (it.hasNext()) {
+		    Map.Entry data = (Map.Entry)it.next();
+		    Coordinates coordinates = (Coordinates) data.getKey();
+		    int pixelIndex = coordinates.getX() + coordinates.getY() * Game.instance.getScreen().getWidth();
+		    if (pixelIndex < getFog().length) {
+		    	int value = (int) data.getValue();
+		    	int oldValue = getFog()[pixelIndex];
+
+		    	if (value == 0 && oldValue != 0) value = oldValue;
+		    	if (value == 1 && oldValue > 1 ) value = oldValue;
+
+		    	getFog()[pixelIndex] = value;
+		    }
 		}
 	}
 }
