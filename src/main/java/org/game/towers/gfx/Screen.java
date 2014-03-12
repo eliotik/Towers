@@ -290,7 +290,9 @@ public class Screen {
 						for (int xScale = 0; xScale < scale; xScale++) {
 							if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
 								continue;
-							getPixels()[(xPixel + xScale) + (yPixel + yScale) * getWidth()] = color;
+							int pixelIndex = (xPixel + xScale) + (yPixel + yScale) * getWidth();
+							if (Config.DEFAULT_LEVEL_USE_FOG && getFog()[pixelIndex] < 2) continue;
+							getPixels()[pixelIndex] = color;
 						}
 					}
 				}
