@@ -27,13 +27,13 @@ class Circle {
     private ArrayList<Coordinates> internalCircle = new ArrayList<Coordinates>();
     HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
     private Coordinates[][] circleEqual;
-    private double epsilon = 1;
+    private double epsilon = 0.5;
 
 
     public Circle(Coordinates coordinatesCenter, int radius) {
         setCoordinates(coordinatesCenter);
         setRadius(radius);
-        setRadius(radius + Config.EDGE_SIZE);
+        setRadiusWithEdge(radius + Config.EDGE_SIZE);
         setMinX(getCoordinates().getX() - radius);
         setMaxX(getCoordinates().getX() + radius);
         setMinY(getCoordinates().getY() - radius);
@@ -45,26 +45,26 @@ class Circle {
     }
 
     private void generateExternalCircle(){
-        circleEqual(externalCircle, getRadiusWithEdge());
+        circleEqual(externalCircle, getRadiusWithEdge(), Config.EDGE_SIZE);
     }
 
     private void generateInternalCircle(){
-        circleEqual(internalCircle, getRadius());
+        circleEqual(internalCircle, getRadius(), 0);
     }
 
-    private void circleEqual(ArrayList<Coordinates> circle, int radius){
-        for(double x = getMinX(); x <= getMaxX(); x+=epsilon) {
+    private void circleEqual(ArrayList<Coordinates> circle, int radius, int delta){
+        for(double x = getMinX() - delta; x <= getMaxX() + delta; x+=epsilon) {
             int y = (int)(java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinates().getX()), 2)) + getCoordinates().getY());
 
-            if (y < (getMinY() - Config.EDGE_SIZE / 2)) {
+            if (y < 0) {
                 y = 0;
             }
             circle.add(new Coordinates(x, y));
         }
-        for(double x = getMinX(); x <= getMaxX(); x+=epsilon) {
+        for(double x = getMinX() - delta; x <= getMaxX() + delta; x+=epsilon) {
             int y = (int)(getCoordinates().getY() - java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinates().getX()), 2)));
 
-            if (y < getMinY()) {
+            if (y < 0) {
                 y = 0;
             }
             circle.add(new Coordinates(x, y));
@@ -82,11 +82,15 @@ class Circle {
     private HashMap<Coordinates, Integer> getCircleCoordinates(ArrayList<Coordinates> circle, int status){
         int fromY = 0;
         int toY = 0;
+        int offsetedMinX = getMinX();
         int offsetedMaxX = getMaxX();
         switch(status) {
             case 1:
                 generateExternalCircle();
-                offsetedMaxX += Config.EDGE_SIZE / 2;
+                offsetedMinX -= Config.EDGE_SIZE;
+                offsetedMaxX += Config.EDGE_SIZE;
+                if (offsetedMinX < 0) { offsetedMinX = 0; }
+                if (offsetedMaxX > Config.SCREEN_WIDTH) { offsetedMaxX = Config.SCREEN_WIDTH; }
                 break;
             case 2:
                 generateInternalCircle();
@@ -95,23 +99,21 @@ class Circle {
                 return null;
         }
 
-//        HashMap<Coordinates, Integer> coordinates = new HashMap<Coordinates, Integer>();
-        for (int x = getMinX(); x <= offsetedMaxX; x++) {
+        for (int x = offsetedMinX; x <= offsetedMaxX; x++) {
             List<Coordinates> listCoordinates = filter(having(on(Coordinates.class).getX(), Matchers.equalTo(x)), circle);
-
             if (listCoordinates.size() == 0) {
                 continue;
             }
 
-            if (x == getMinX() || x == offsetedMaxX) {
+            if (x == offsetedMinX || x == offsetedMaxX) {
                 inscribedCoordinates.put(new Coordinates(x, listCoordinates.get(0).getY()), status);
                 continue;
             }
 
             if (listCoordinates.size() > 1) {
+
                 fromY = listCoordinates.get(0).getY();
                 toY = listCoordinates.get(1).getY();
-
                 for(Coordinates item : listCoordinates){
                     if (fromY >  item.getY()) {
                         fromY = item.getY();
@@ -132,6 +134,7 @@ class Circle {
     public HashMap<Coordinates, Integer> getInscribedCoordinates(){
         generateExternalCoordinates();
         generateInternalCoordinates();
+
         return inscribedCoordinates;
     }
 
