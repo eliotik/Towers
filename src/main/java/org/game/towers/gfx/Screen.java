@@ -250,7 +250,7 @@ public class Screen {
 		int yp = yOrig - getyOffset();
 		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
 		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
-
+        int shift = getxOffset()+getyOffset()*getWidth();
 		int scaleMap = scale - 1;
 
 		for (int y = 0; y < unit.getCurrentSprite().getHeight(); y++) {
@@ -291,7 +291,7 @@ public class Screen {
 							if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
 								continue;
 							int pixelIndex = (xPixel + xScale) + (yPixel + yScale) * getWidth();
-							if (Config.DEFAULT_LEVEL_USE_FOG && getFog()[pixelIndex] < 2) continue;
+							if (Config.DEFAULT_LEVEL_USE_FOG && getFog()[pixelIndex + shift] < 2) continue;
 							getPixels()[pixelIndex] = color;
 						}
 					}
@@ -321,7 +321,9 @@ public class Screen {
 					}
 					int color = ((NpcType) unit).getCurrentHealthSprite().getPixels()[x + y * ((NpcType) unit).getCurrentHealthSprite().getWidth()];
 					if (color != 0xFFFF00FF && color != 0xFF800080) {
-						getPixels()[xt + yt * getWidth()] = color;
+                        int pixelIndex = xt + yt * getWidth();
+                        if (Config.DEFAULT_LEVEL_USE_FOG && getFog()[pixelIndex + shift] < 2) continue;
+                        getPixels()[pixelIndex] = color;
 					}
 				}
 			}
