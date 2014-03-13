@@ -12,6 +12,7 @@ public class TowerType extends Unit {
 	private double radius;
 	private int price;
 	private int radarViewSize;
+	private String bulletType;
 
 	public double getRadius() {
 		return radius;
@@ -50,5 +51,13 @@ public class TowerType extends Unit {
 
 	public void setRadarViewSize(int radarViewSize) {
 		this.radarViewSize = radarViewSize;
+	}
+
+	public String getBulletType() {
+		return bulletType;
+	}
+
+	public void setBulletType(String bulletType) {
+		this.bulletType = bulletType;
 	}
 }

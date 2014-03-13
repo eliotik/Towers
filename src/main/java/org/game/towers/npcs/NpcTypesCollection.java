@@ -107,7 +107,6 @@ public class NpcTypesCollection {
 	private static List<Sprite> getVentSprites() {
 		List<Sprite> sprites = new ArrayList<Sprite>();
 		sprites.add(SpritesData.NPC_VENT_0);
-		sprites.add(SpritesData.NPC_VENT_1);
 		sprites.add(SpritesData.NPC_VENT_2);
 		sprites.add(SpritesData.NPC_VENT_1);
 		return sprites;

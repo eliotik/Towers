@@ -22,6 +22,7 @@ public class Config {
 	public static final String SPRITESHEET_GUI_FILE = "spritesheets/gui.png";
 	public static final String SPRITESHEET_TOWERS_FILE = "spritesheets/towers.png";
 	public static final String SPRITESHEET_BUILDINGS_FILE = "spritesheets/buildings.png";
+	public static final String SPRITESHEET_BULLETS_FILE = "spritesheets/bullets.png";
 	public static final String FONT_FILE = "font.png";
 
 	public static final String NPC_NODE_NAME = "npc";

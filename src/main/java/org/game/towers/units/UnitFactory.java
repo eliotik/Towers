@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.game.towers.buildings.BuildingType;
+import org.game.towers.bullets.BulletType;
+import org.game.towers.bullets.BulletTypesCollection;
 import org.game.towers.game.Game;
 import org.game.towers.game.Game.DebugLevel;
 import org.game.towers.npcs.NpcType;
@@ -47,6 +49,25 @@ public class UnitFactory {
 		} catch (Exception e) {
 			e.printStackTrace();
 			Game.debug(DebugLevel.ERROR, "Could not initialize Tower unit: " + type);
+		}
+		return null;
+	}
+
+	public static BulletType getBullet(String type, Unit owner){
+		try {
+			List<BulletType> types = filter(having(on(BulletType.class).getId(), Matchers.equalTo(type)),
+					BulletTypesCollection.getItems());
+			if (types == null || types.size() == 0) {
+				Game.debug(DebugLevel.WARNING, "Could not find BULLET by type: " + type);
+				return null;
+			}
+			BulletType unit = (BulletType) types.get(0);
+			BulletType bullet = SerializationUtils.clone(unit);
+			bullet.setOwner(owner);
+			return bullet;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Game.debug(DebugLevel.ERROR, "Could not initialize Bullet unit: " + type);
 		}
 		return null;
 	}

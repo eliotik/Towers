@@ -70,6 +70,7 @@ public class TowerTypesCollection {
                 item.setPrice(Integer.parseInt(elemj.getAttribute("price").toString()));
 
                 item.setRadarViewSize(Integer.parseInt(elemj.getAttribute("radar_view_size").toString()));
+                item.setBulletType(elemj.getAttribute("bullet_type").toString());
 
                 item.setSprites(getSprites(item.getId()));
 
