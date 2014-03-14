@@ -19,6 +19,7 @@
 		collision_box_max_x="12"
 		collision_box_min_y="4"
 		collision_box_max_y="12"
+		award="1"
 	/>
 
 	<npc
@@ -37,6 +38,7 @@
 		collision_box_max_x="12"
 		collision_box_min_y="4"
 		collision_box_max_y="12"
+		award="3"
 	/>
 
 	<npc
@@ -55,6 +57,7 @@
 		collision_box_max_x="12"
 		collision_box_min_y="4"
 		collision_box_max_y="12"
+		award="6"
 	/>
 
 </npcs>

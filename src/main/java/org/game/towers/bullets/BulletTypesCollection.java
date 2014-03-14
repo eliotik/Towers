@@ -7,6 +7,7 @@ import org.game.towers.game.Game;
 import org.game.towers.game.Game.DebugLevel;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
+import org.game.towers.towers.TowerType;
 import org.game.towers.workers.Utils;
 import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
@@ -20,22 +21,34 @@ public class BulletTypesCollection {
 
 	private static ArrayList<BulletType> items = new ArrayList<BulletType>();
 
-    public static void init() {
+    public static void load() {
     	items = new ArrayList<BulletType>();
+        XmlReader.getStreamFromFile(Config.BULLETS_FILE);
+        NodeList listOfElements = XmlReader.read(Config.BULLET_NODE_NAME);
 
-    	BulletType b = new BulletType();
-    	b.setType(Bullets.BASE_DOT);
-    	b.setSprites(getBaseDotSprites());
-    	items.add(b);
-    	Game.debug(DebugLevel.INFO, "Added Bullet type: " + Bullets.BASE_DOT);
+        for( int j=0; j < listOfElements.getLength(); ++j ) {
+            Node firstNode=listOfElements.item(j);
+            if( firstNode.getNodeType() == Node.ELEMENT_NODE ) {
+                org.w3c.dom.Element elemj = (org.w3c.dom.Element) firstNode;
 
-    	b = new BulletType();
-    	b.setType(Bullets.BASE_TRIPPLE);
-    	b.setSprites(getBaseTrippleSprites());
-    	items.add(b);
-        Game.debug(DebugLevel.INFO, "Added Bullet type: " + Bullets.BASE_TRIPPLE);
+                BulletType item = new BulletType();
 
-        Game.debug(DebugLevel.INFO, "Initialized Bullets types: " + getItems().size());
+                item.setId(elemj.getAttribute("id").toString());
+
+                item.setTypeName(elemj.getAttribute("name").toString());
+                item.setType(elemj.getAttribute("type").toString());
+
+                item.setSpeed(Double.parseDouble(elemj.getAttribute("speed").toString()));
+                item.setAnimationSwitchDelay(Integer.parseInt(elemj.getAttribute("animation_switch_delay").toString()));
+                item.setAnimationStartDelay(Integer.parseInt(elemj.getAttribute("animation_start_delay").toString()));
+
+                item.setSprites(getSprites(item.getId()));
+
+                getItems().add(item);
+                Game.debug(DebugLevel.INFO, "Added Bullet type: " + item.getId());
+            }
+        }
+        Game.debug(DebugLevel.INFO, "Loaded Bullets types: " + getItems().size());
     }
 
 	private static List<Sprite> getSprites(String id) {

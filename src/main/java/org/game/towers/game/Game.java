@@ -14,6 +14,7 @@ import java.io.File;
 
 import javax.swing.JFrame;
 
+import org.game.towers.bullets.BulletTypesCollection;
 import org.game.towers.configs.Config;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gui.Gui;
@@ -154,6 +155,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	private void initUnits() {
 		TowerTypesCollection.load();
+		BulletTypesCollection.load();
 		NpcTypesCollection.load();
 	}
 
@@ -184,10 +186,10 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	private void tick() {
-		ticksCount++;
+		setTicksCount(getTicksCount() + 1);
 		getInputHandler().tick();
 		if (getGui() != null) {
-			getGui().tick(ticksCount);
+			getGui().tick(getTicksCount());
 			if (!getGui().pausesGame()) {
 				updateWorld();
 			}
@@ -320,7 +322,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	@Override
 	public void focusLost(FocusEvent arg0) {
-		if (arg0.getID() == FocusEvent.FOCUS_LOST) {
+		if (arg0.getID() == FocusEvent.FOCUS_LOST && Config.DEFAULT_PAUSE_ON_FOCUS_LOST) {
 			if ((getGui() != null && !getGui().pausesGame()) || getGui() == null) {
 				showGui(new GuiPause(this, getWidth(), getHeight()));
 			}
@@ -485,6 +487,14 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	public void setThread(Thread thread) {
 		this.thread = thread;
+	}
+
+	public int getTicksCount() {
+		return ticksCount;
+	}
+
+	public void setTicksCount(int ticksCount) {
+		this.ticksCount = ticksCount;
 	}
 
 }

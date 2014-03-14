@@ -416,4 +416,12 @@ public abstract class Unit implements Serializable {
 	public Sprite getSprite(int spriteIndex) {
 		return getSprites().get(spriteIndex);
 	}
+
+	public int getTileX() {
+		return (int) (Math.floor((double) getX() + 4) / Config.BOX_SIZE);
+	}
+
+	public int getTileY() {
+		return (int) (Math.floor((double) getY() + 2) / Config.BOX_SIZE);
+	}
 }

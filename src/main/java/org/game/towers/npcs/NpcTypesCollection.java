@@ -40,6 +40,7 @@ public class NpcTypesCollection {
                 item.setArmour(Integer.parseInt(elemj.getAttribute("armour").toString()));
                 item.setSpeed(Double.parseDouble(elemj.getAttribute("speed").toString()));
                 item.setDamage(Integer.parseInt(elemj.getAttribute("damage").toString()));
+                item.setAward(Integer.parseInt(elemj.getAttribute("award").toString()));
                 item.setAnimationSwitchDelay(Integer.parseInt(elemj.getAttribute("animation_switch_delay").toString()));
                 item.setAnimationStartDelay(Integer.parseInt(elemj.getAttribute("animation_start_delay").toString()));
 

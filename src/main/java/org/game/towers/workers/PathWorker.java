@@ -20,7 +20,7 @@ public class PathWorker {
     private volatile JPS jps;
 
 
-    private int doShift(int dimension1, int dimension2) {
+    /*private int doShift(int dimension1, int dimension2) {
         int deltaDim = dimension2 - dimension1;
         if (deltaDim > 0){
             return 1;
@@ -30,7 +30,7 @@ public class PathWorker {
         }
 
         return 0;
-    }
+    }*/
 
     private void initJPS() {
         if (jps == null){
@@ -76,8 +76,8 @@ public class PathWorker {
             visitedNodesMap.put(id, visitedNodes);
         }
 
-        dx = doShift(x, nextX);
-        dy = doShift(y, nextY);
+        dx = Utils.doShift(x, nextX);
+        dy = Utils.doShift(y, nextY);
 
         point.setLocation(dx, dy);
     }

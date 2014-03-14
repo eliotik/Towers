@@ -56,4 +56,16 @@ public class Utils {
 //
 //		return circle;
 //	}
+
+    public static int doShift(int dimension1, int dimension2) {
+        int deltaDim = dimension2 - dimension1;
+        if (deltaDim > 0){
+            return 1;
+        }
+        if (deltaDim < 0){
+            return -1;
+        }
+
+        return 0;
+    }
 }

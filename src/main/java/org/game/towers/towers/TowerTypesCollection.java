@@ -68,8 +68,10 @@ public class TowerTypesCollection {
 
                 item.setRadius(Integer.parseInt(elemj.getAttribute("radius").toString()));
                 item.setPrice(Integer.parseInt(elemj.getAttribute("price").toString()));
-
+                item.setPrice(Integer.parseInt(elemj.getAttribute("resources").toString()));
+                item.setCanShoot(Boolean.parseBoolean(elemj.getAttribute("can_shoot").toString()));
                 item.setRadarViewSize(Integer.parseInt(elemj.getAttribute("radar_view_size").toString()));
+                item.setShootingDelay(Integer.parseInt(elemj.getAttribute("shooting_delay").toString()));
                 item.setBulletType(elemj.getAttribute("bullet_type").toString());
 
                 item.setSprites(getSprites(item.getId()));

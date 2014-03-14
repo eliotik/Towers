@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<towers>
+
+	<bullet
+		id="base_dot"
+		type="base"
+		name="Base dot"
+		speed="0.9"
+		animation_switch_delay="100"
+		animation_start_delay="0"
+	/>
+
+	<bullet
+		id="base_tripple"
+		type="base"
+		name="Base tripple"
+		speed="0.6"
+		animation_switch_delay="100"
+		animation_start_delay="0"
+	/>
+
+</towers>

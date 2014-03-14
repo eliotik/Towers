@@ -14,6 +14,7 @@ public class NpcType extends Unit {
 	private static final long serialVersionUID = 1L;
 
 	private ArrayList<String> hands;
+	private int award;
 
 	public ArrayList<String> getHands() {
 		return hands;
@@ -34,7 +35,6 @@ public class NpcType extends Unit {
 
 			Game.instance.getPathWorker().nextCoordinate((int) getX(), (int) getY(), shifts, hashCode());
 	        move((int)shifts.getX(), (int)shifts.getY());
-	        //if (Utils.randInt(0, 100) > 95 && !isDead()) setHealth(getHealth()-2);
 		}
 	}
 
@@ -105,5 +105,13 @@ public class NpcType extends Unit {
 		}
 
 		return false;
+	}
+
+	public int getAward() {
+		return award;
+	}
+
+	public void setAward(int award) {
+		this.award = award;
 	}
 }

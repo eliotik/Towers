@@ -11,16 +11,19 @@
 		damage="15"
 		width="4"
 		height="4"
-		radius="10"
+		radius="40"
 		radar_view_size="48"
 		animation_switch_delay="100"
 		animation_start_delay="0"
 		price="55"
+		resources="20"
 		collision_box_min_x="4"
 		collision_box_max_x="12"
 		collision_box_min_y="4"
 		collision_box_max_y="12"
-		bullet_type="base_dot"
+		bullet_type="base_tripple"
+		can_shoot="true"
+		shooting_delay="1"
 	/>
 
 </towers>
