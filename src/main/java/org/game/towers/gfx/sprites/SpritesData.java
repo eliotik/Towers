@@ -88,17 +88,17 @@ public class SpritesData {
 	public static Sprite STORE_BG_MIDDLE = new Sprite("STORE_BG_MIDDLE", 1, 1, 16, 16, "GUI");
 	public static Sprite STORE_BG_RIGHT = new Sprite("STORE_BG_RIGHT", 2, 1, 16, 16, "GUI");
 
-	public static Sprite BULLET_BASE_DOT_0 = new Sprite("BULLET_BASE_DOT", 0, 0, 16, 16, "BULLET");
-	public static Sprite BULLET_BASE_DOT_1 = new Sprite("BULLET_BASE_DOT", 1, 0, 16, 16, "BULLET");
-	public static Sprite BULLET_BASE_DOT_2 = new Sprite("BULLET_BASE_DOT", 2, 0, 16, 16, "BULLET");
-	public static Sprite BULLET_BASE_DOT_3 = new Sprite("BULLET_BASE_DOT", 3, 0, 16, 16, "BULLET");
-	public static Sprite BULLET_BASE_DOT_4 = new Sprite("BULLET_BASE_DOT", 4, 0, 16, 16, "BULLET");
+	public static Sprite BULLET_BASE_DOT_0 = new Sprite("BULLET_BASE_DOT", 0, 1, 16, 16, "BULLET");
+	public static Sprite BULLET_BASE_DOT_1 = new Sprite("BULLET_BASE_DOT", 1, 1, 16, 16, "BULLET");
+	public static Sprite BULLET_BASE_DOT_2 = new Sprite("BULLET_BASE_DOT", 2, 1, 16, 16, "BULLET");
+	public static Sprite BULLET_BASE_DOT_3 = new Sprite("BULLET_BASE_DOT", 3, 1, 16, 16, "BULLET");
+	public static Sprite BULLET_BASE_DOT_4 = new Sprite("BULLET_BASE_DOT", 4, 1, 16, 16, "BULLET");
 
-	public static Sprite BULLET_BASE_TRIPPLE_0 = new Sprite("BULLET_BASE_TRIPPLE", 0, 1, 16, 16, "BULLET");
-	public static Sprite BULLET_BASE_TRIPPLE_1 = new Sprite("BULLET_BASE_TRIPPLE", 1, 1, 16, 16, "BULLET");
-	public static Sprite BULLET_BASE_TRIPPLE_2 = new Sprite("BULLET_BASE_TRIPPLE", 2, 1, 16, 16, "BULLET");
-	public static Sprite BULLET_BASE_TRIPPLE_3 = new Sprite("BULLET_BASE_TRIPPLE", 3, 1, 16, 16, "BULLET");
-	public static Sprite BULLET_BASE_TRIPPLE_4 = new Sprite("BULLET_BASE_TRIPPLE", 4, 1, 16, 16, "BULLET");
+	public static Sprite BULLET_BASE_TRIPPLE_0 = new Sprite("BULLET_BASE_TRIPPLE", 0, 0, 16, 16, "BULLET");
+	public static Sprite BULLET_BASE_TRIPPLE_1 = new Sprite("BULLET_BASE_TRIPPLE", 1, 0, 16, 16, "BULLET");
+	public static Sprite BULLET_BASE_TRIPPLE_2 = new Sprite("BULLET_BASE_TRIPPLE", 2, 0, 16, 16, "BULLET");
+	public static Sprite BULLET_BASE_TRIPPLE_3 = new Sprite("BULLET_BASE_TRIPPLE", 3, 0, 16, 16, "BULLET");
+	public static Sprite BULLET_BASE_TRIPPLE_4 = new Sprite("BULLET_BASE_TRIPPLE", 4, 0, 16, 16, "BULLET");
 
 	public static SpriteSheet[] getSpriteSheets() {
 		return spriteSheets;

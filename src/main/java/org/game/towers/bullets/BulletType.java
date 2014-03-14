@@ -27,9 +27,14 @@ public class BulletType extends Unit {
 	private void updatePosition() {
 		int shiftX = Utils.doShift((int) getX(), (int) getPoint().getX());
         int shiftY = Utils.doShift((int) getY(), (int) getPoint().getY());
-        setX(getX() + shiftX * getSpeed());
-		setY(getY() + shiftY * getSpeed());
-		setNumSteps(getNumSteps() + 1);
+        if (shiftX == 0 && shiftY == 0) {
+        	setMoving(false);
+        } else {
+        	setMoving(true);
+	        setX(getX() + shiftX * getSpeed());
+			setY(getY() + shiftY * getSpeed());
+			setNumSteps(getNumSteps() + 1);
+        }
 	}
 
 	@Override

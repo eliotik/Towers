@@ -76,23 +76,23 @@ public class Level implements GameActionListener {
         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
         addUnit(tower);
 
-//        tower = UnitFactory.getTower(Towers.BULB);
-//        tower.setLevel(this);
-//        tower.setX(Portals.getEntrance().getCoordinates().getX());
-//        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 8);
-//        addUnit(tower);
-//
-//        tower = UnitFactory.getTower(Towers.BULB);
-//        tower.setLevel(this);
-//        tower.setX(Portals.getEntrance().getCoordinates().getX() - Config.BOX_SIZE * 10);
-//        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 11);
-//        addUnit(tower);
+        tower = UnitFactory.getTower(Towers.BULB);
+        tower.setLevel(this);
+        tower.setX(Portals.getEntrance().getCoordinates().getX());
+        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 8);
+        addUnit(tower);
 
-//        tower = UnitFactory.getTower(Towers.BULB);
-//        tower.setLevel(this);
-//        tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
-//        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 12);
-//        addUnit(tower);
+        tower = UnitFactory.getTower(Towers.BULB);
+        tower.setLevel(this);
+        tower.setX(Portals.getEntrance().getCoordinates().getX() - Config.BOX_SIZE * 10);
+        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 11);
+        addUnit(tower);
+
+        tower = UnitFactory.getTower(Towers.BULB);
+        tower.setLevel(this);
+        tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
+        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 12);
+        addUnit(tower);
 	}
 
 	private void initFog(Screen screen) {
@@ -299,7 +299,6 @@ public class Level implements GameActionListener {
 
 		synchronized (getUnits()) {
 			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
-				System.out.println("[]"+getUnits().size());
 				Unit unit = (Unit) it.next();
 
 				for (Iterator<Unit> bulletIt = getBullets().iterator(); bulletIt.hasNext();) {
@@ -310,107 +309,23 @@ public class Level implements GameActionListener {
 							NpcType npc = (NpcType) unit;
 							npc.setHealth(npc.getHealth() - bullet.getDamage());
 							bulletIt.remove();
+						} else if (!bullet.isMoving()) {
+							bulletIt.remove();
 						}
 					}
 				}
 			}
-
-//			for (int i = 0, l = getUnits().size(); i < l; i++) {
-//				if (i > getUnits().size()-1) break;
-//				System.out.println("[]"+getUnits().size());
-//				Unit unit = (Unit) getUnits().get(i);
-//				for (int c = 0, d = getUnits().size(); c < d; c++) {
-//					if (c > getUnits().size()-1) break;
-//					Unit bullet = (Unit) getUnits().get(c);
-//					if (bullet instanceof BulletType && unit instanceof NpcType) {
-//						if (bullet.getTileX() == unit.getTileX() && bullet.getTileY() == unit.getTileY()) {
-//							NpcType npc = (NpcType) unit;
-//							npc.setHealth(npc.getHealth() - bullet.getDamage());
-//							//bulletIt.remove();
-//						}
-//					}
-//				}
-//			}
-
-//			Iterator<Unit> it = getUnits().iterator();
-//			while (it.hasNext()) {
-//				System.out.println("[]"+getUnits().size());
-//				Unit unit = (Unit) it.next();
-//
-//				Iterator<Unit> bulletIt = getUnits().iterator();
-//				while (bulletIt.hasNext()) {
-//					Unit bullet = (Unit) bulletIt.next();
-//					if (bullet instanceof BulletType && unit instanceof NpcType) {
-//						if (bullet.getTileX() == unit.getTileX() && bullet.getTileY() == unit.getTileY()) {
-//							NpcType npc = (NpcType) unit;
-//							npc.setHealth(npc.getHealth() - bullet.getDamage());
-//							//bulletIt.remove();
-//						}
-//					}
-//				}
-//			}
-
-//			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
-//				System.out.println("[]"+getUnits().size());
-//				Unit unit = (Unit) it.next();
-//
-//				for (Iterator<Unit> bulletIt = getUnits().iterator(); bulletIt.hasNext();) {
-//					Unit bullet = (Unit) bulletIt.next();
-//					if (bullet instanceof BulletType && unit instanceof NpcType) {
-//						if (bullet.getTileX() == unit.getTileX() && bullet.getTileY() == unit.getTileY()) {
-//							NpcType npc = (NpcType) unit;
-//							npc.setHealth(npc.getHealth() - bullet.getDamage());
-//							//bulletIt.remove();
-//						}
-//					}
-//				}
-//			}
 		}
 
 		synchronized (getUnits()) {
-//			for (int i = 0, l = getUnits().size(); i < l; i++) {
-//				System.out.println("<>"+getUnits().size());
-//				if (i > getUnits().size()-1) break;
-//				Unit unit = (Unit) getUnits().get(i);
-//				unit.tick();
-//				if (unit instanceof NpcType) {
-//					NpcType npc = (NpcType) unit;
-//					if (npc.isDead()) {
-//						setPlayerMoney(npc.getAward());
-//						getUnits().remove(i);
-//					} else if (npc.isFinished()) {
-//						setPlayerHealth(getPlayerHealth() - 1);
-//						getUnits().remove(i);
-//					}
-//				}
-//			}
-
-//			Iterator<Unit> it = getUnits().iterator();
-//			while (it.hasNext()) {
-//				System.out.println("<>"+getUnits().size());
-//				Unit unit = (Unit) it.next();
-//				unit.tick();
-//
-//				if (unit instanceof NpcType) {
-//					NpcType npc = (NpcType) unit;
-//					if (npc.isDead()) {
-//						setPlayerMoney(npc.getAward());
-//						it.remove();
-//					} else if (npc.isFinished()) {
-//						setPlayerHealth(getPlayerHealth() - 1);
-//						it.remove();
-//					}
-//				}
-//			}
 			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
-				System.out.println("<>"+getUnits().size());
 				Unit unit = (Unit) it.next();
 				unit.tick();
 
 				if (unit instanceof NpcType) {
 					NpcType npc = (NpcType) unit;
 					if (npc.isDead()) {
-						setPlayerMoney(npc.getAward());
+						setPlayerMoney(getPlayerMoney() + npc.getAward());
 						it.remove();
 					} else if (npc.isFinished()) {
 						setPlayerHealth(getPlayerHealth() - 1);

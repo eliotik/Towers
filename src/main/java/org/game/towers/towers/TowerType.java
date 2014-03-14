@@ -60,38 +60,6 @@ public class TowerType extends Unit {
 					}
 				}
 			}
-
-
-//			Iterator<Unit> it = Game.instance.getWorld().getLevel().getUnits().iterator();
-//			while (it.hasNext()) {
-//				Unit unit = (Unit) it.next();
-//				if (unit instanceof NpcType) {
-//
-//					int distanceToTarget = getDistanceToTarget((int)unit.getX(), (int)unit.getY());
-////					System.out.println(getX()+":"+getY()+", "+unit.getX()+":"+unit.getY()+", "+unit.getTileX()+":"+unit.getTileY()+", "+distanceToTarget+":"+getRadius());
-////					int distanceToTarget = getDistanceToTarget(unit.getTileX(), unit.getTileY());
-//					if ( distanceToTarget <= getRadius() && (System.currentTimeMillis() - getLastShootTime()) >= getShootingDelay() * 1000D) {
-//						shoot((int)unit.getX(), (int)unit.getY());
-////						shoot(unit.getTileX(), unit.getTileY());
-//						return;
-//					}
-//				}
-//			}
-
-//			for (Iterator<Unit> it = Game.instance.getWorld().getLevel().getUnits().iterator(); it.hasNext();) {
-//				Unit unit = (Unit) it.next();
-//				if (unit instanceof NpcType) {
-//
-//					int distanceToTarget = getDistanceToTarget((int)unit.getX(), (int)unit.getY());
-////					System.out.println(getX()+":"+getY()+", "+unit.getX()+":"+unit.getY()+", "+unit.getTileX()+":"+unit.getTileY()+", "+distanceToTarget+":"+getRadius());
-////					int distanceToTarget = getDistanceToTarget(unit.getTileX(), unit.getTileY());
-//					if ( distanceToTarget <= getRadius() && (System.currentTimeMillis() - getLastShootTime()) >= getShootingDelay() * 1000D) {
-//						shoot((int)unit.getX(), (int)unit.getY());
-////						shoot(unit.getTileX(), unit.getTileY());
-//						return;
-//					}
-//				}
-//			}
 		}
 	}
 
