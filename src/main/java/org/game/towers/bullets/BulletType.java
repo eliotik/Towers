@@ -2,6 +2,7 @@ package org.game.towers.bullets;
 
 import java.awt.Point;
 
+import org.game.towers.configs.Config;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.level.Level;

@@ -52,7 +52,7 @@ public class TowerType extends Unit {
 			for (int i = 0, l = level.getUnits().size(); i < l; i++) {
 				if (i > level.getUnits().size()-1) break;
 				Unit unit = (Unit) level.getUnits().get(i);
-				if (unit instanceof NpcType) {
+				if (unit instanceof NpcType && !unit.isDead()) {
 					int distanceToTarget = getDistanceToTarget((int)unit.getX(), (int)unit.getY());
 					if ( distanceToTarget <= getRadius() && (System.currentTimeMillis() - getLastShootTime()) >= getShootingDelay() * 1000D) {
 						shoot((int)unit.getX(), (int)unit.getY());

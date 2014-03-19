@@ -52,7 +52,7 @@ public class Config {
 //	public static final String DEFAULT_LEVEL_FILENAME = "simple_level.png";
 	public static final boolean DEFAULT_LEVEL_USE_FOG = false;
 	public static final int DEFAULT_LEVEL_ENTRANCE_RADAR_VIEW_SIZE = 80;
-
+	public static final long NPC_DEATH_MARK_VISIBILITY = 5000;
 
 	public static final int DEFAULT_PLAYER_HEALTH = 20;
 	public static final int DEFAULT_PLAYER_MONEY = 500;
@@ -72,5 +72,4 @@ public class Config {
 	public static final String TILE_ENTRANCE = "ENTRANCE";
 	public static final String TILE_EXIT = "EXIT";
 	public static final String TILE_NPC_BULB = "NPC_BULB";
-
 }

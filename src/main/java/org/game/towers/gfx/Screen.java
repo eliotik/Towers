@@ -362,15 +362,21 @@ public class Screen {
 		xPos = iconXPos + SpritesData.MONEY.getWidth() + margin;
 		xBPos = xPos + 1;
 		renderIcon(SpritesData.HEART, iconXPos, getHeight() - SpritesData.HEART.getHeight());
-		FontRenderer.drawString(playerHealthText, xBPos, yBPos, black, 2);
-		FontRenderer.drawString(playerHealthText, xPos, yPos, white, 2);
+		FontRenderer.drawString(playerHealthText, xBPos, yBPos, black, fontScale);
+		FontRenderer.drawString(playerHealthText, xPos, yPos, white, fontScale);
 
 		iconXPos = SpritesData.MONEY.getWidth()+SpritesData.HEART.getWidth()+FontRenderer.getStringWidth(playerMoneyText + playerHealthText, fontScale) + Config.BOX_SIZE;
 		xPos = iconXPos + SpritesData.HEART.getWidth() + margin;
 		xBPos = xPos + 1;
 		renderIcon(SpritesData.RESOURCE, iconXPos, getHeight() - SpritesData.RESOURCE.getHeight());
-		FontRenderer.drawString(playerResource, xBPos, yBPos, black, 2);
-		FontRenderer.drawString(playerResource, xPos, yPos, white, 2);
+		FontRenderer.drawString(playerResource, xBPos, yBPos, black, fontScale);
+		FontRenderer.drawString(playerResource, xPos, yPos, white, fontScale);
+
+		String waveMessage = "WAVE " + (level.getWave()-1);
+		int waveFontScale = fontScale-1;
+		int waveMessageX = getWidth()/2 - FontRenderer.getStringWidth(waveMessage, waveFontScale)/2;
+		FontRenderer.drawString(waveMessage, waveMessageX+1, 1, black, waveFontScale);
+		FontRenderer.drawString(waveMessage, waveMessageX, 0, white, waveFontScale);
 	}
 
 	private void renderIcon(Sprite sprite, int xp, int yp) {

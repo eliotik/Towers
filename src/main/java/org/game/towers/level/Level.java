@@ -302,13 +302,14 @@ public class Level implements GameActionListener {
 				Unit unit = (Unit) it.next();
 
 				for (Iterator<Unit> bulletIt = getBullets().iterator(); bulletIt.hasNext();) {
-					Unit bullet = (Unit) bulletIt.next();
-					bullet.tick();
-					if (bullet instanceof BulletType && unit instanceof NpcType) {
+					Unit bulletUnit = (Unit) bulletIt.next();
+					bulletUnit.tick();
+					if (bulletUnit instanceof BulletType && unit instanceof NpcType && !unit.isDead()) {
+						BulletType bullet = (BulletType) bulletUnit;
 						if (bullet.getTileX() == unit.getTileX() && bullet.getTileY() == unit.getTileY()) {
-							NpcType npc = (NpcType) unit;
-							npc.setHealth(npc.getHealth() - bullet.getDamage());
-							bulletIt.remove();
+								NpcType npc = (NpcType) unit;
+								npc.setHealth(npc.getHealth() - bullet.getDamage());
+								bulletIt.remove();
 						} else if (!bullet.isMoving()) {
 							bulletIt.remove();
 						}
@@ -324,12 +325,14 @@ public class Level implements GameActionListener {
 
 				if (unit instanceof NpcType) {
 					NpcType npc = (NpcType) unit;
-					if (npc.isDead()) {
-						setPlayerMoney(getPlayerMoney() + npc.getAward());
-						it.remove();
-					} else if (npc.isFinished()) {
-						setPlayerHealth(getPlayerHealth() - 1);
-						it.remove();
+					if (npc.isCanBeRemoved()) {
+						if (npc.isDead()) {
+							setPlayerMoney(getPlayerMoney() + npc.getAward());
+							it.remove();
+						} else if (npc.isFinished()) {
+							setPlayerHealth(getPlayerHealth() - 1);
+							it.remove();
+						}
 					}
 				}
 			}

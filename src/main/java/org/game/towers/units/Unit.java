@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.game.towers.configs.Config;
+import org.game.towers.game.Game;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
@@ -52,6 +53,8 @@ public abstract class Unit implements Serializable {
 	private int animationStartDelay;
 	private Point maxCollisionBox = new Point();
 	private Point minCollisionBox = new Point();
+	private boolean canBeRemoved = false;
+	private long deathTime;
 
 	public Unit() {
 		setSpriteIndex(0);
@@ -296,11 +299,15 @@ public abstract class Unit implements Serializable {
 
 	public void setFinished(boolean isFinished){
         this.isFinished = isFinished;
+        if (isFinished) {
+        	setCanBeRemoved(true);
+        }
     }
 
     public void setDead(boolean isDead) {
 		this.isDead = isDead;
 		if (isDead) {
+			setDeathTime(System.currentTimeMillis());
 			switch (Utils.randInt(0, 8)) {
 			case 1:
 			case 2:
@@ -423,5 +430,24 @@ public abstract class Unit implements Serializable {
 
 	public int getTileY() {
 		return (int) (Math.floor((double) getY() + 2) / Config.BOX_SIZE);
+	}
+
+	public boolean isCanBeRemoved() {
+		if (isDead() && System.currentTimeMillis() - getDeathTime() >= Config.NPC_DEATH_MARK_VISIBILITY) {
+			setCanBeRemoved(true);
+		}
+		return canBeRemoved;
+	}
+
+	public void setCanBeRemoved(boolean canBeRemoved) {
+		this.canBeRemoved = canBeRemoved;
+	}
+
+	public long getDeathTime() {
+		return deathTime;
+	}
+
+	public void setDeathTime(long deathTime) {
+		this.deathTime = deathTime;
 	}
 }
