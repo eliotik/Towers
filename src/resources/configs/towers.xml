@@ -21,9 +21,34 @@
 		collision_box_max_x="12"
 		collision_box_min_y="4"
 		collision_box_max_y="12"
+		bullet_type="base_dot"
+		can_shoot="true"
+		shooting_delay="0.2"
+	/>
+
+	<tower
+		id="blockpost"
+		type="base"
+		name="Blockpost"
+		health="300"
+		armour="180"
+		speed="0.2"
+		damage="30"
+		width="4"
+		height="4"
+		radius="25"
+		radar_view_size="30"
+		animation_switch_delay="100"
+		animation_start_delay="3000"
+		price="80"
+		resources="40"
+		collision_box_min_x="4"
+		collision_box_max_x="12"
+		collision_box_min_y="4"
+		collision_box_max_y="12"
 		bullet_type="base_tripple"
 		can_shoot="true"
-		shooting_delay="1"
+		shooting_delay="1.2"
 	/>
 
 </towers>

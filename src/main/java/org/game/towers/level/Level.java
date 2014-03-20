@@ -76,7 +76,7 @@ public class Level implements GameActionListener {
         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
         addUnit(tower);
 
-        tower = UnitFactory.getTower(Towers.BULB);
+        tower = UnitFactory.getTower(Towers.BLOCKPOST);
         tower.setLevel(this);
         tower.setX(Portals.getEntrance().getCoordinates().getX());
         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 8);

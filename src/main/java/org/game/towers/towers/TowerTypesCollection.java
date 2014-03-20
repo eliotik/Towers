@@ -1,12 +1,11 @@
 package org.game.towers.towers;
 
 import org.game.towers.configs.Config;
-import org.game.towers.configs.Npcs;
+import org.game.towers.configs.Towers;
 import org.game.towers.game.Game;
 import org.game.towers.game.Game.DebugLevel;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
-import org.game.towers.workers.Utils;
 import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -71,7 +70,7 @@ public class TowerTypesCollection {
                 item.setPrice(Integer.parseInt(elemj.getAttribute("resources").toString()));
                 item.setCanShoot(Boolean.parseBoolean(elemj.getAttribute("can_shoot").toString()));
                 item.setRadarViewSize(Integer.parseInt(elemj.getAttribute("radar_view_size").toString()));
-                item.setShootingDelay(Integer.parseInt(elemj.getAttribute("shooting_delay").toString()));
+                item.setShootingDelay(Double.parseDouble(elemj.getAttribute("shooting_delay").toString()));
                 item.setBulletType(elemj.getAttribute("bullet_type").toString());
 
                 item.setSprites(getSprites(item.getId()));
@@ -85,7 +84,8 @@ public class TowerTypesCollection {
 
 	private static List<Sprite> getSprites(String id) {
 		switch(id) {
-		case Npcs.BULB: return getBulbSprites();
+		case Towers.BULB: return getBulbSprites();
+		case Towers.BLOCKPOST: return getBlockpostSprites();
 		}
 		return new ArrayList<Sprite>();
 	}
@@ -100,6 +100,43 @@ public class TowerTypesCollection {
 		sprites.add(SpritesData.TOWER_BULB_5);
 		sprites.add(SpritesData.TOWER_BULB_6);
 		sprites.add(SpritesData.TOWER_BULB_7);
+		return sprites;
+	}
+
+	private static List<Sprite> getBlockpostSprites() {
+		List<Sprite> sprites = new ArrayList<Sprite>();
+		sprites.add(SpritesData.TOWER_BLOCKPOST_0);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_1);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_2);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_3);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_4);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_5);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_6);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_7);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_8);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_9);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_10);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_11);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_12);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_13);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_14);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_15);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_16);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_17);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_18);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_19);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_20);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_21);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_22);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_23);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_24);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_25);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_26);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_27);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_28);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_29);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_30);
+		sprites.add(SpritesData.TOWER_BLOCKPOST_0);
 		return sprites;
 	}
 

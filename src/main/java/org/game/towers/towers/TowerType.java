@@ -1,13 +1,10 @@
 package org.game.towers.towers;
 
 import java.awt.Point;
-import java.util.Iterator;
 
 import org.game.towers.bullets.BulletType;
-import org.game.towers.bullets.BulletTypesCollection;
 import org.game.towers.game.Game;
 import org.game.towers.gfx.Screen;
-import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.level.Level;
 import org.game.towers.npcs.NpcType;
 import org.game.towers.units.Unit;

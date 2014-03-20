@@ -32,8 +32,9 @@ public class BulletType extends Unit {
         	setMoving(false);
         } else {
         	setMoving(true);
-	        setX(getX() + shiftX * getSpeed());
-			setY(getY() + shiftY * getSpeed());
+        	double speed = (getSpeed() == 0) ? owner.getSpeed() : getSpeed();
+	        setX(getX() + shiftX * speed);
+			setY(getY() + shiftY * speed);
 			setNumSteps(getNumSteps() + 1);
         }
 	}
