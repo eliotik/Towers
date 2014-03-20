@@ -1,11 +1,8 @@
 package org.game.towers.workers.Algorithms.JumpPointSearch;
 
-import org.game.towers.game.Config;
-import org.game.towers.game.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 /**
  * Holds a Node[][] 2d array "grid" for path-finding tests, all drawing is done through here.

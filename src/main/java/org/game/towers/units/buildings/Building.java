@@ -1,6 +1,5 @@
 package org.game.towers.units.buildings;
 
-import org.game.towers.game.level.Level;
 import org.game.towers.gfx.Screen;
 import org.game.towers.units.Unit;
 

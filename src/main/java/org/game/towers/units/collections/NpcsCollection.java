@@ -1,10 +1,12 @@
-package org.game.towers.units.npcs;
+package org.game.towers.units.collections;
 
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.game.Game.DebugLevel;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
+import org.game.towers.units.npcs.Npc;
+import org.game.towers.units.npcs.Npcs;
 import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

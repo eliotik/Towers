@@ -18,12 +18,9 @@ import org.game.towers.game.level.Level;
 import org.game.towers.game.level.tiles.Tile;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
-import org.game.towers.gui.Gui;
 import org.game.towers.gui.elements.FontRenderer;
 import org.game.towers.units.Unit;
 import org.game.towers.units.npcs.Npc;
-import org.game.towers.units.towers.Tower;
-import org.game.towers.units.towers.TowersCollection;
 import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
 import org.game.towers.workers.geo.Coordinates;
 
@@ -426,7 +423,8 @@ public class Screen {
 		HashMap<Coordinates, Integer> circle = MathAlgorithms.getInscribedCoordinates(x, y, radarSize);
 		Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
 		while (it.hasNext()) {
-		    Map.Entry data = (Map.Entry)it.next();
+		    @SuppressWarnings("rawtypes")
+			Map.Entry data = (Map.Entry)it.next();
 		    Coordinates coordinates = (Coordinates) data.getKey();
 		    int pixelIndex = coordinates.getX() + coordinates.getY() * Game.instance.getScreen().getWidth();
 		    if (pixelIndex < getFog().length) {

@@ -1,13 +1,12 @@
 package org.game.towers.workers.Algorithms.MathAlgorithms;
 
 
-import ch.lambdaj.Lambda.*;
+//import ch.lambdaj.Lambda.*;
 
 import org.game.towers.game.Config;
 import org.game.towers.workers.geo.Coordinates;
 import org.hamcrest.Matchers;
 
-import java.lang.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -1,16 +1,13 @@
 package org.game.towers.game.level;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 
 import org.game.towers.game.Config;
-import org.game.towers.game.Game;
-import org.game.towers.gfx.Colors;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
+import org.game.towers.units.collections.TowersCollection;
 import org.game.towers.units.towers.Tower;
-import org.game.towers.units.towers.TowersCollection;
 
 public class Store {
 

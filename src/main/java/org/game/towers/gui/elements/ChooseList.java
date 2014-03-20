@@ -20,6 +20,7 @@ public class ChooseList extends GuiElement implements GameActionListener {
 	private int scroll;
 	private InputHandler input;
 
+	@SuppressWarnings("unused")
 	private int width;
 	private int height;
 

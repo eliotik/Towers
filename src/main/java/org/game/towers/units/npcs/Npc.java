@@ -7,7 +7,6 @@ import org.game.towers.game.Game;
 import org.game.towers.game.level.Portals;
 import org.game.towers.gfx.Screen;
 import org.game.towers.units.Unit;
-import org.game.towers.workers.Utils;
 
 public class Npc extends Unit {
 

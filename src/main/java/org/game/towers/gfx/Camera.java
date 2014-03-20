@@ -6,7 +6,7 @@ import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.game.level.Level;
 import org.game.towers.handlers.InputHandler;
-import org.game.towers.units.towers.TowersCollection;
+import org.game.towers.units.collections.TowersCollection;
 
 public class Camera {
 

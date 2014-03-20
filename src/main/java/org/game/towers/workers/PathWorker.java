@@ -2,21 +2,16 @@ package org.game.towers.workers;
 
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
-import org.game.towers.game.level.Portals;
-import org.game.towers.game.level.tiles.Tile;
 import org.game.towers.workers.Algorithms.JumpPointSearch.JPS;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
-import org.game.towers.workers.geo.Coordinates;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class PathWorker {
 
     private volatile HashMap<Integer, ArrayList<Node>> trailMap = new HashMap<Integer, ArrayList<Node>>();
     private volatile HashMap<Integer, ArrayList<Node>> visitedNodesMap = new HashMap<Integer, ArrayList<Node>>();
-    private int steps = 0;
     private volatile JPS jps;
 
 
@@ -41,7 +36,6 @@ public class PathWorker {
     public synchronized void nextCoordinate(int x, int y, Point point, int id) {
         int dx, dy;
         initJPS();
-        ArrayList<Node> temporaryTrail = null;
         Node nextNode;
         ArrayList<Node> trailNodes;
         ArrayList<Node> visitedNodes = new ArrayList<Node>();

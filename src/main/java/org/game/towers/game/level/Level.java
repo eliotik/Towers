@@ -139,13 +139,13 @@ public class Level implements GameActionListener {
         quantity = (int)Math.round(wave * Config.LEVEL_WAVE_MULTIPLIER);
     }
 
-    private double randomInRange(double min, double max) {
-        Random random = new Random();
-        double range = max - min;
-        double scaled = random.nextDouble() * range;
-        double shifted = scaled + min;
-        return shifted;
-    }
+//    private double randomInRange(double min, double max) {
+//        Random random = new Random();
+//        double range = max - min;
+//        double scaled = random.nextDouble() * range;
+//        double shifted = scaled + min;
+//        return shifted;
+//    }
 
     private int randomIndexByAmount(int amount, int length) {
         int diff = Math.abs(amount - length);
@@ -534,12 +534,12 @@ public class Level implements GameActionListener {
 		screen.renderLevelGui();
 	}
 
-	private void renderUnits(Screen screen, List<Unit> items) {
-		for (Iterator<Unit> it = getBullets().iterator(); it.hasNext();) {
-			Unit unit = (Unit) it.next();
-			unit.render(screen);
-		}
-	}
+//	private void renderUnits(Screen screen, List<Unit> items) {
+//		for (Iterator<Unit> it = getBullets().iterator(); it.hasNext();) {
+//			Unit unit = (Unit) it.next();
+//			unit.render(screen);
+//		}
+//	}
 
 	public long getNextWave() {
 		return nextWave;

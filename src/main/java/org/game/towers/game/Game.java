@@ -21,9 +21,9 @@ import org.game.towers.gui.GuiMainMenu;
 import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler;
 import org.game.towers.handlers.MouseHandler;
-import org.game.towers.units.bullets.BulletsCollection;
-import org.game.towers.units.npcs.NpcsCollection;
-import org.game.towers.units.towers.TowersCollection;
+import org.game.towers.units.collections.BulletsCollection;
+import org.game.towers.units.collections.NpcsCollection;
+import org.game.towers.units.collections.TowersCollection;
 import org.game.towers.workers.PathWorker;
 
 public class Game extends Canvas implements Runnable, FocusListener {

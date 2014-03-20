@@ -7,11 +7,11 @@ import org.game.towers.game.Game;
 import org.game.towers.game.Game.DebugLevel;
 import org.game.towers.units.buildings.Building;
 import org.game.towers.units.bullets.Bullet;
-import org.game.towers.units.bullets.BulletsCollection;
+import org.game.towers.units.collections.BulletsCollection;
+import org.game.towers.units.collections.NpcsCollection;
+import org.game.towers.units.collections.TowersCollection;
 import org.game.towers.units.npcs.Npc;
-import org.game.towers.units.npcs.NpcsCollection;
 import org.game.towers.units.towers.Tower;
-import org.game.towers.units.towers.TowersCollection;
 import org.hamcrest.Matchers;
 import org.apache.commons.lang3.SerializationUtils;
 
