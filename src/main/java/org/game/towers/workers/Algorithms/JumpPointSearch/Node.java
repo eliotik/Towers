@@ -1,6 +1,6 @@
 package org.game.towers.workers.Algorithms.JumpPointSearch;
 
-import org.game.towers.level.tiles.TileMap;
+import org.game.towers.game.level.tiles.TileMap;
 
 public class Node {
 	int x,y;

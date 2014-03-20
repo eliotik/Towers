@@ -3,8 +3,6 @@ package org.game.towers.game;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 
-import org.game.towers.configs.Config;
-
 public class GameLauncher extends Applet {
 
 	private static final long serialVersionUID = 1L;

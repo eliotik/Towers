@@ -2,9 +2,8 @@ package org.game.towers.game;
 
 import static java.lang.String.format;
 
-import org.game.towers.configs.Config;
 import org.game.towers.game.Game;
-import org.game.towers.level.Level;
+import org.game.towers.game.level.Level;
 
 public class World {
 

@@ -24,6 +24,7 @@
 		bullet_type="base_dot"
 		can_shoot="true"
 		shooting_delay="0.2"
+		modificator="none"
 	/>
 
 	<tower
@@ -49,6 +50,7 @@
 		bullet_type="base_tripple"
 		can_shoot="true"
 		shooting_delay="1.2"
+		modificator="snail"
 	/>
 
 </towers>

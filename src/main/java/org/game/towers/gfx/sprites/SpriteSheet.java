@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.game.towers.configs.Config;
+import org.game.towers.game.Config;
 
 public class SpriteSheet {
 	private String file;

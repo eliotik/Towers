@@ -3,8 +3,8 @@ package org.game.towers.workers.Algorithms.MathAlgorithms;
 
 import ch.lambdaj.Lambda.*;
 
-import org.game.towers.configs.Config;
-import org.game.towers.geo.Coordinates;
+import org.game.towers.game.Config;
+import org.game.towers.workers.geo.Coordinates;
 import org.hamcrest.Matchers;
 
 import java.lang.*;

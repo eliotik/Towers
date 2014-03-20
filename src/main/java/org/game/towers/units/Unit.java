@@ -8,14 +8,14 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.List;
 
-import org.game.towers.configs.Config;
+import org.game.towers.game.Config;
 import org.game.towers.game.Game;
+import org.game.towers.game.level.Level;
+import org.game.towers.game.level.tiles.Tile;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
-import org.game.towers.level.Level;
-import org.game.towers.level.tiles.Tile;
-import org.game.towers.npcs.NpcType;
+import org.game.towers.units.npcs.Npc;
 import org.game.towers.workers.Utils;
 
 /**
@@ -276,7 +276,7 @@ public abstract class Unit implements Serializable {
 	}
 
 	public boolean isPauseAnimation() {
-		if (!isMoving() && !isDead() && this instanceof NpcType) {
+		if (!isMoving() && !isDead() && this instanceof Npc) {
 			setPauseAnimation(true);
 		}
 		return pauseAnimation;

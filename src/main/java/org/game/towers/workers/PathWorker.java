@@ -1,12 +1,12 @@
 package org.game.towers.workers;
 
-import org.game.towers.configs.Config;
+import org.game.towers.game.Config;
 import org.game.towers.game.Game;
-import org.game.towers.geo.Coordinates;
-import org.game.towers.level.Portals;
-import org.game.towers.level.tiles.Tile;
+import org.game.towers.game.level.Portals;
+import org.game.towers.game.level.tiles.Tile;
 import org.game.towers.workers.Algorithms.JumpPointSearch.JPS;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
+import org.game.towers.workers.geo.Coordinates;
 
 import java.awt.*;
 import java.util.*;

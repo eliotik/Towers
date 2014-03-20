@@ -1,6 +1,6 @@
 package org.game.towers.workers.Algorithms.JumpPointSearch;
 
-import org.game.towers.configs.Config;
+import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class Grid {
 			}catch (Exception e){}
 			node = node.parent;
 		}
-		System.out.println("Path Trace Complete!");
+//		System.out.println("Path Trace Complete!");
 		return trail;
 	}
 

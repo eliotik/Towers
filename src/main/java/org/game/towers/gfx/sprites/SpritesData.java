@@ -1,6 +1,6 @@
 package org.game.towers.gfx.sprites;
 
-import org.game.towers.configs.Config;
+import org.game.towers.game.Config;
 
 public class SpritesData {
 

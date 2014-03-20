@@ -2,7 +2,7 @@ package org.game.towers.gfx.sprites;
 
 import java.io.Serializable;
 
-import org.game.towers.configs.Config;
+import org.game.towers.game.Config;
 
 public class Sprite implements Serializable {
 

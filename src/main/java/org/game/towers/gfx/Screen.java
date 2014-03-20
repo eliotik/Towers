@@ -12,20 +12,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.game.towers.configs.Config;
+import org.game.towers.game.Config;
 import org.game.towers.game.Game;
-import org.game.towers.geo.Coordinates;
+import org.game.towers.game.level.Level;
+import org.game.towers.game.level.tiles.Tile;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.gui.Gui;
 import org.game.towers.gui.elements.FontRenderer;
-import org.game.towers.level.Level;
-import org.game.towers.level.tiles.Tile;
-import org.game.towers.npcs.NpcType;
-import org.game.towers.towers.TowerType;
-import org.game.towers.towers.TowerTypesCollection;
 import org.game.towers.units.Unit;
+import org.game.towers.units.npcs.Npc;
+import org.game.towers.units.towers.Tower;
+import org.game.towers.units.towers.TowersCollection;
 import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
+import org.game.towers.workers.geo.Coordinates;
 
 public class Screen {
 
@@ -300,15 +300,15 @@ public class Screen {
 		}
 
 		//rendering healthbar for npcs
-		if (unit instanceof NpcType && unit.getHealth() < unit.getMaxHealth() && !unit.isDead()) {
+		if (unit instanceof Npc && unit.getHealth() < unit.getMaxHealth() && !unit.isDead()) {
 			yp -= 8;
-			for (int y = 0; y < ((NpcType) unit).getCurrentHealthSprite().getHeight(); y++) {
+			for (int y = 0; y < ((Npc) unit).getCurrentHealthSprite().getHeight(); y++) {
 				int yt = y + yp;
-				for (int x = 0; x < ((NpcType) unit).getCurrentHealthSprite().getWidth(); x++) {
+				for (int x = 0; x < ((Npc) unit).getCurrentHealthSprite().getWidth(); x++) {
 					int xt = x + xp;
-					if (0 - ((NpcType) unit).getCurrentHealthSprite().getWidth() > xt
+					if (0 - ((Npc) unit).getCurrentHealthSprite().getWidth() > xt
 							|| xt >= getWidth()
-							|| 0 - ((NpcType) unit).getCurrentHealthSprite().getHeight() > yt
+							|| 0 - ((Npc) unit).getCurrentHealthSprite().getHeight() > yt
 							|| yt >= getHeight()) {
 						break;
 					}
@@ -319,7 +319,7 @@ public class Screen {
 					if (yt < 0) {
 						yt = 0;
 					}
-					int color = ((NpcType) unit).getCurrentHealthSprite().getPixels()[x + y * ((NpcType) unit).getCurrentHealthSprite().getWidth()];
+					int color = ((Npc) unit).getCurrentHealthSprite().getPixels()[x + y * ((Npc) unit).getCurrentHealthSprite().getWidth()];
 					if (color != 0xFFFF00FF && color != 0xFF800080) {
                         int pixelIndex = xt + yt * getWidth();
                         if (Config.DEFAULT_LEVEL_USE_FOG && getFog()[pixelIndex + shift] < 2) continue;

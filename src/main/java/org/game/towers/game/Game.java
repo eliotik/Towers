@@ -14,8 +14,6 @@ import java.io.File;
 
 import javax.swing.JFrame;
 
-import org.game.towers.bullets.BulletTypesCollection;
-import org.game.towers.configs.Config;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gui.Gui;
 import org.game.towers.gui.GuiFocus;
@@ -23,8 +21,9 @@ import org.game.towers.gui.GuiMainMenu;
 import org.game.towers.gui.GuiPause;
 import org.game.towers.handlers.InputHandler;
 import org.game.towers.handlers.MouseHandler;
-import org.game.towers.npcs.NpcTypesCollection;
-import org.game.towers.towers.TowerTypesCollection;
+import org.game.towers.units.bullets.BulletsCollection;
+import org.game.towers.units.npcs.NpcsCollection;
+import org.game.towers.units.towers.TowersCollection;
 import org.game.towers.workers.PathWorker;
 
 public class Game extends Canvas implements Runnable, FocusListener {
@@ -154,9 +153,9 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	private void initUnits() {
-		TowerTypesCollection.load();
-		BulletTypesCollection.load();
-		NpcTypesCollection.load();
+		TowersCollection.load();
+		BulletsCollection.load();
+		NpcsCollection.load();
 	}
 
 	private void initMainMenu() {

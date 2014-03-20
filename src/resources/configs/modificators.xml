@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modificators>
+
+	<modificator
+		id="snail"
+		name="Snail"
+		description="Slowdown target for some time"
+		duration="5000">
+		<attribute
+			name="speed"
+			value="-0.5"
+		/>
+		<attribute
+			name="highlight"
+			value="true"
+		/>
+	</modificator>
+
+</modificators>

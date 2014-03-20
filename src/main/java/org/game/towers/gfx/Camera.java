@@ -2,11 +2,11 @@ package org.game.towers.gfx;
 
 import java.awt.Rectangle;
 
-import org.game.towers.configs.Config;
+import org.game.towers.game.Config;
 import org.game.towers.game.Game;
+import org.game.towers.game.level.Level;
 import org.game.towers.handlers.InputHandler;
-import org.game.towers.level.Level;
-import org.game.towers.towers.TowerTypesCollection;
+import org.game.towers.units.towers.TowersCollection;
 
 public class Camera {
 
@@ -46,11 +46,11 @@ public class Camera {
             setRight(new Rectangle(Config.REAL_SCREEN_WIDTH-Config.BOX_SIZE * 2,
             						0,
             						Config.BOX_SIZE * 2,
-            						Config.REAL_SCREEN_HEIGHT - TowerTypesCollection.getItems().size()*Config.BOX_SIZE));
+            						Config.REAL_SCREEN_HEIGHT - TowersCollection.getItems().size()*Config.BOX_SIZE));
 
             setBottom(new Rectangle(0,
             						Config.REAL_SCREEN_HEIGHT-Config.BOX_SIZE * 2,
-            						Config.SCREEN_WIDTH - TowerTypesCollection.getItems().size()*Config.BOX_SIZE,
+            						Config.SCREEN_WIDTH - TowersCollection.getItems().size()*Config.BOX_SIZE,
             						Config.BOX_SIZE * 2));
             System.out.println(Config.REAL_SCREEN_WIDTH);
         }

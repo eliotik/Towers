@@ -3,9 +3,9 @@ package org.game.towers.workers.Algorithms.JumpPointSearch;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.game.towers.configs.Config;
+import org.game.towers.game.Config;
 import org.game.towers.game.Game;
-import org.game.towers.level.Portals;
+import org.game.towers.game.level.Portals;
 
 /**
  * @author Clint Mullins

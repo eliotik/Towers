@@ -1,7 +1,8 @@
 package org.game.towers.workers.Algorithms.MathAlgorithms;
 
 
-import org.game.towers.geo.Coordinates;
+import org.game.towers.workers.geo.Coordinates;
+
 import java.util.HashMap;
 
 public class MathAlgorithms {

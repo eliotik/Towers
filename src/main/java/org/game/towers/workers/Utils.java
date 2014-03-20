@@ -4,10 +4,10 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Random;
 
-import org.game.towers.configs.Config;
+import org.game.towers.game.Config;
 import org.game.towers.game.Game;
-import org.game.towers.geo.Coordinates;
-import org.game.towers.level.Level;
+import org.game.towers.game.level.Level;
+import org.game.towers.workers.geo.Coordinates;
 
 public class Utils {
 	/**
