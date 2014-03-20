@@ -5,14 +5,17 @@
 		id="snail"
 		name="Snail"
 		description="Slowdown target for some time"
-		duration="5000">
+		duration="5000"
+		class="Npc">
 		<attribute
 			name="speed"
 			value="-0.5"
+			type="double"
 		/>
 		<attribute
 			name="highlight"
 			value="true"
+			type="boolean"
 		/>
 	</modificator>
 

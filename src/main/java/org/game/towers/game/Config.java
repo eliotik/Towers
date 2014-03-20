@@ -18,6 +18,7 @@ public class Config {
 	public static final String TOWERS_FILE = "towers.xml";
 	public static final String BUILDINGS_FILE = "buildings.xml";
 	public static final String BULLETS_FILE = "bullets.xml";
+	public static final String MODIFICATORS_FILE = "modificators.xml";
 	public static final String SPRITESHEET_FILE = "spritesheets/tiles.png";
 	public static final String SPRITESHEET_NPCS_FILE = "spritesheets/npcs.png";
 	public static final String SPRITESHEET_PORTALS_FILE = "spritesheets/portals.png";
@@ -31,6 +32,8 @@ public class Config {
 	public static final String TOWER_NODE_NAME = "tower";
 	public static final String BUILDING_NODE_NAME = "building";
 	public static final String BULLET_NODE_NAME = "bullet";
+	public static final String MODIFICATOR_NODE_NAME = "modificator";
+	public static final String ATTRIBUTE_NODE_NAME = "attribute";
 
 	public static final int SCREEN_WIDTH = 240;
 	public static final int SCREEN_HEIGHT = SCREEN_WIDTH/12*9;

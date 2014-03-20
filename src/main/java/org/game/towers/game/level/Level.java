@@ -15,10 +15,13 @@ import org.game.towers.handlers.InputHandler.InputEventType;
 import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
 import org.game.towers.units.bullets.Bullet;
+import org.game.towers.units.collections.ModificatorsCollection;
 import org.game.towers.units.npcs.Npc;
 import org.game.towers.units.npcs.Npcs;
 import org.game.towers.units.towers.Tower;
 import org.game.towers.units.towers.Towers;
+import org.game.towers.units.towers.modificators.Modificator;
+import org.game.towers.units.towers.modificators.Modificators;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
 import org.game.towers.workers.geo.Coordinates;
 import org.game.towers.workers.geo.Geo;
@@ -297,27 +300,19 @@ public class Level implements GameActionListener {
 
         generateNpcs();
 
-		synchronized (getUnits()) {
-			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
-				Unit unit = (Unit) it.next();
+		updateBullets();
+		updateUnits();
 
-				for (Iterator<Unit> bulletIt = getBullets().iterator(); bulletIt.hasNext();) {
-					Unit bulletUnit = (Unit) bulletIt.next();
-					bulletUnit.tick();
-					if (bulletUnit instanceof Bullet && unit instanceof Npc && !unit.isDead()) {
-						Bullet bullet = (Bullet) bulletUnit;
-						if (bullet.getTileX() == unit.getTileX() && bullet.getTileY() == unit.getTileY()) {
-								Npc npc = (Npc) unit;
-								npc.setHealth(npc.getHealth() - bullet.getDamage());
-								bulletIt.remove();
-						} else if (!bullet.isMoving()) {
-							bulletIt.remove();
-						}
-					}
-				}
-			}
-		}
+    	if (getCamera() != null) {
+    		getCamera().tick();
+	    }
 
+    	if (getPlayerHealth() <= 0) {
+    		Game.instance.showGui(new GuiLost(Game.instance, Game.instance.getWidth(), Game.instance.getHeight()));
+    	}
+	}
+
+	private void updateUnits() {
 		synchronized (getUnits()) {
 			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
 				Unit unit = (Unit) it.next();
@@ -337,14 +332,35 @@ public class Level implements GameActionListener {
 				}
 			}
 		}
+	}
 
-    	if (getCamera() != null) {
-    		getCamera().tick();
-	    }
+	private void updateBullets() {
+		synchronized (getUnits()) {
+			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
+				Unit unit = (Unit) it.next();
 
-    	if (getPlayerHealth() <= 0) {
-    		Game.instance.showGui(new GuiLost(Game.instance, Game.instance.getWidth(), Game.instance.getHeight()));
-    	}
+				for (Iterator<Unit> bulletIt = getBullets().iterator(); bulletIt.hasNext();) {
+					Unit bulletUnit = (Unit) bulletIt.next();
+					bulletUnit.tick();
+					if (bulletUnit instanceof Bullet && unit instanceof Npc && !unit.isDead()) {
+						Bullet bullet = (Bullet) bulletUnit;
+						if (bullet.getTileX() == unit.getTileX() && bullet.getTileY() == unit.getTileY()) {
+							Npc npc = (Npc) unit;
+							npc.setHealth(npc.getHealth() - bullet.getDamage());
+							if (!bullet.getOwner().getModificator().equals(Modificators.NONE)) {
+								Modificator modificator = ModificatorsCollection.getByType(bullet.getOwner().getModificator());
+								if (modificator != null) {
+									((Npc) unit).setNegativeImpact(modificator);
+								}
+							}
+							bulletIt.remove();
+						} else if (!bullet.isMoving()) {
+							bulletIt.remove();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public Coordinates getEntranceLocation() {

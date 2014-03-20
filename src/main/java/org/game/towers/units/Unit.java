@@ -47,6 +47,8 @@ public abstract class Unit implements Serializable {
 	private Point minCollisionBox = new Point();
 	private boolean canBeRemoved = false;
 	private long deathTime;
+	private String modificator;
+	private long lastTimeShooted;
 
 	public Unit() {
 		setSpriteIndex(0);
@@ -441,5 +443,21 @@ public abstract class Unit implements Serializable {
 
 	public void setDeathTime(long deathTime) {
 		this.deathTime = deathTime;
+	}
+
+	public String getModificator() {
+		return modificator;
+	}
+
+	public void setModificator(String modificator) {
+		this.modificator = modificator;
+	}
+
+	public long getLastTimeShooted() {
+		return lastTimeShooted;
+	}
+
+	public void setLastTimeShooted(long lastTimeShooted) {
+		this.lastTimeShooted = lastTimeShooted;
 	}
 }

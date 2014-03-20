@@ -73,6 +73,7 @@ public class TowersCollection {
                 item.setRadarViewSize(Integer.parseInt(elemj.getAttribute("radar_view_size").toString()));
                 item.setShootingDelay(Double.parseDouble(elemj.getAttribute("shooting_delay").toString()));
                 item.setBulletType(elemj.getAttribute("bullet_type").toString());
+                item.setModificator(elemj.getAttribute("modificator").toString());
 
                 item.setSprites(getSprites(item.getId()));
 

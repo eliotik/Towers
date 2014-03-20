@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 public class XmlReader {
 
 	private static DataInputStream out;
-	
+
     public static void getStreamFromFile(String fileName) {
         try {
             String file = format("%s%s", Config.XML_FILE_PATH, fileName);
@@ -33,8 +33,8 @@ public class XmlReader {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse ( out );
-            doc.getDocumentElement ().normalize ();
+            Document doc = docBuilder.parse( out );
+            doc.getDocumentElement().normalize();
 
             items = doc.getElementsByTagName(nodeName);
 
@@ -47,6 +47,6 @@ public class XmlReader {
         }
 
         return items;
-    }	
-	
+    }
+
 }
