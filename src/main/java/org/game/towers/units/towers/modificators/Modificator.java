@@ -1,6 +1,7 @@
 package org.game.towers.units.towers.modificators;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Modificator implements Serializable {
@@ -12,7 +13,7 @@ public class Modificator implements Serializable {
 	private int priority;
 	private String impact;
 	private long startTime;
-	private HashMap<String, HashMap<String, Object>> attributes = new HashMap<String, HashMap<String, Object>>();
+	private HashMap<String, ArrayList<HashMap<String, Object>>> attributes = new HashMap<String, ArrayList<HashMap<String, Object>>>();
 
 	public String getId() {
 		return id;
@@ -38,10 +39,10 @@ public class Modificator implements Serializable {
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
-	public HashMap<String, HashMap<String, Object>> getAttributes() {
+	public HashMap<String, ArrayList<HashMap<String, Object>>> getAttributes() {
 		return attributes;
 	}
-	public void setAttributes(HashMap<String, HashMap<String, Object>> attributes) {
+	public void setAttributes(HashMap<String, ArrayList<HashMap<String, Object>>> attributes) {
 		this.attributes = attributes;
 	}
 	public int getPriority() {

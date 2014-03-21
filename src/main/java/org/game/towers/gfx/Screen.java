@@ -288,7 +288,10 @@ public class Screen {
 							if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
 								continue;
 							int pixelIndex = (xPixel + xScale) + (yPixel + yScale) * getWidth();
-							if (Config.DEFAULT_LEVEL_USE_FOG && getFog()[pixelIndex + shift] < 2) continue;
+							if (Config.DEFAULT_LEVEL_USE_FOG) {
+								if (getFog()[pixelIndex + shift] < 2)
+									continue;
+							}
 							getPixels()[pixelIndex] = color;
 						}
 					}
@@ -319,7 +322,10 @@ public class Screen {
 					int color = ((Npc) unit).getCurrentHealthSprite().getPixels()[x + y * ((Npc) unit).getCurrentHealthSprite().getWidth()];
 					if (color != 0xFFFF00FF && color != 0xFF800080) {
                         int pixelIndex = xt + yt * getWidth();
-                        if (Config.DEFAULT_LEVEL_USE_FOG && getFog()[pixelIndex + shift] < 2) continue;
+                        if (Config.DEFAULT_LEVEL_USE_FOG) {
+							if (getFog()[pixelIndex + shift] < 2)
+								continue;
+						}
                         getPixels()[pixelIndex] = color;
 					}
 				}

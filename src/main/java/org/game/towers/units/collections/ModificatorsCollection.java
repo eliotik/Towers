@@ -48,7 +48,13 @@ public class ModificatorsCollection {
                 			Element attributeElement = (Element) mainAttributeNode;
                 			HashMap<String, Object> attribute = new HashMap<String, Object>();
                 			attribute.put(attributeElement.getAttribute("name").toString(), convertValueByType(attributeElement.getAttribute("type").toString(), attributeElement.getAttribute("value").toString()));
-                			item.getAttributes().put(element.getAttribute("class").toString(), attribute);
+                			if (item.getAttributes().containsKey(element.getAttribute("class").toString())) {
+                				item.getAttributes().get(element.getAttribute("class").toString()).add(attribute);
+                			} else {
+                				ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+                				list.add(attribute);
+                				item.getAttributes().put(element.getAttribute("class").toString(), list);
+                			}
                 		}
                 	}
                 }

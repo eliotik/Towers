@@ -52,7 +52,7 @@ public class Camera {
             						Config.REAL_SCREEN_HEIGHT-Config.BOX_SIZE * 2,
             						Config.SCREEN_WIDTH - TowersCollection.getItems().size()*Config.BOX_SIZE,
             						Config.BOX_SIZE * 2));
-            System.out.println(Config.REAL_SCREEN_WIDTH);
+            //System.out.println(Config.REAL_SCREEN_WIDTH);
         }
 
         public Rectangle getTop() {

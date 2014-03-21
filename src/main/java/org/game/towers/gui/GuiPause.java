@@ -42,7 +42,8 @@ public class GuiPause extends Gui{
 			case 1:
 				getGame().getWorld().reset();
 				getGame().setWorld(new World(Config.DEFAULT_WORLD_NAME));
-				getGame().getWorld().getLevel().generateNpcs();
+				//getGame().getWorld().getLevel().generateNpcs();
+				getGame().getWorld().getLevel().addTowers();
 				close();
 				break;
 			case 2:

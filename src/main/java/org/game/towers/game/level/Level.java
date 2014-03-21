@@ -78,31 +78,33 @@ public class Level implements GameActionListener {
         npc.setX(Portals.getEntrance().getCoordinates().getX());
         npc.setY(Portals.getEntrance().getCoordinates().getY());
         addUnit(npc);
-
-        Tower tower = UnitFactory.getTower(Towers.BLOCKPOST);
-        tower.setLevel(this);
-        tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
-        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
-        addUnit(tower);
-
-        tower = UnitFactory.getTower(Towers.BULB);
-        tower.setLevel(this);
-        tower.setX(Portals.getEntrance().getCoordinates().getX());
-        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 8);
-        addUnit(tower);
-
-        tower = UnitFactory.getTower(Towers.BULB);
-        tower.setLevel(this);
-        tower.setX(Portals.getEntrance().getCoordinates().getX() - Config.BOX_SIZE * 10);
-        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 11);
-        addUnit(tower);
-
-        tower = UnitFactory.getTower(Towers.BULB);
-        tower.setLevel(this);
-        tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
-        tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 12);
-        addUnit(tower);
 	}
+
+    public void addTowers() {
+    	 Tower tower = UnitFactory.getTower(Towers.BLOCKPOST);
+         tower.setLevel(this);
+         tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
+         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
+         addUnit(tower);
+
+         tower = UnitFactory.getTower(Towers.BULB);
+         tower.setLevel(this);
+         tower.setX(Portals.getEntrance().getCoordinates().getX());
+         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 8);
+         addUnit(tower);
+
+         tower = UnitFactory.getTower(Towers.BULB);
+         tower.setLevel(this);
+         tower.setX(Portals.getEntrance().getCoordinates().getX() - Config.BOX_SIZE * 10);
+         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 11);
+         addUnit(tower);
+
+         tower = UnitFactory.getTower(Towers.BULB);
+         tower.setLevel(this);
+         tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
+         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 12);
+         addUnit(tower);
+    }
 
 	private void initFog(Screen screen) {
 		//System.out.println(getWidth()+"/"+getHeight()+", "+screen.getWidth()+"/"+screen.getHeight()+", "+Config.SCREEN_WIDTH+"/"+Config.SCREEN_HEIGHT+", "+Config.REAL_SCREEN_WIDTH+"/"+Config.REAL_SCREEN_HEIGHT);
