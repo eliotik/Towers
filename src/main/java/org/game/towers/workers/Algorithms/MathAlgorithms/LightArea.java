@@ -1,9 +1,11 @@
 package org.game.towers.workers.Algorithms.MathAlgorithms;
 
 import org.game.towers.game.Config;
+import org.game.towers.game.Game;
 import org.game.towers.workers.geo.Coordinates;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class LightArea
 {
@@ -12,6 +14,7 @@ class LightArea
     private int minX, maxX, minY, maxY;
     private ArrayList<Coordinates> upperCircleLightEdge = new ArrayList<>();
     private ArrayList<Coordinates> lowerCircleLightEdge = new ArrayList<>();
+    private HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
     private ArrayList<Coordinates> lightEdge = new ArrayList<>();
     private double epsilon = 1;
 
@@ -37,11 +40,11 @@ class LightArea
                 lowerCircleLightEdge.add(new Coordinates(x, y));
             }
         }
-        for(double x = getMaxX(); x < getMinX(); x++) {
-            int y = (int)(getCoordinatesCenter().getY() - java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinatesCenter().getX()), 2)));
+        for(double x = getMaxX(); x > getMinX(); x--) {
+            int y = (int)(java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinatesCenter().getX()), 2)) - getCoordinatesCenter().getY());
 
-            if (lowerCircleLightEdge.size() == 0) {
-                lowerCircleLightEdge.add(new Coordinates(x, y));
+            if (upperCircleLightEdge.size() == 0) {
+                upperCircleLightEdge.add(new Coordinates(x, y));
                 continue;
             }
 
@@ -54,9 +57,68 @@ class LightArea
     private void generateLightEdge(){
         generateCircleLightEdge();
 
-        for(Coordinates item : upperCircleLightEdge) {
+        for(Coordinates point : upperCircleLightEdge) {
+            if (point.getX() < coordinatesCenter.getX()){
+                for (int x = coordinatesCenter.getX(); x > point.getX(); x--) {
+                    if (addPoints(x, point)) {
+                        break;
+                    }
+                }
+            } else {
+                for (int x = coordinatesCenter.getX(); x < point.getX(); x++) {
+                    if (addPoints(x, point)) {
+                        break;
+                    }
+                }
+            }
 
         }
+
+        for(Coordinates point : lowerCircleLightEdge) {
+            if (point.getX() < coordinatesCenter.getX()){
+                for (int x = coordinatesCenter.getX(); x > point.getX(); x--) {
+                    if (addPoints(x, point)) {
+                        break;
+                    }
+                }
+            } else {
+                for (int x = coordinatesCenter.getX(); x < point.getX(); x++) {
+                    if (addPoints(x, point)) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean addPoints(int x, Coordinates point) {
+        int y, xa, ya;
+        boolean stop = false;
+        y = (int)lineEquation(x, point);
+
+        if (x < 0) { x = 0; }
+        if (y < 0) { y = 0; }
+        if (x > Config.SCREEN_WIDTH) { x = Config.SCREEN_WIDTH; }
+        if (y > Config.REAL_SCREEN_HEIGHT) { y = Config.REAL_SCREEN_HEIGHT; }
+
+        xa = x >> Config.COORDINATES_SHIFTING;
+        ya = y >> Config.COORDINATES_SHIFTING;
+
+        if (!Game.instance.getWorld().getLevel().getTile(xa, ya).isSolid()){
+            lightEdge.add(point);
+            stop = true;
+            return stop;
+        }
+
+        inscribedCoordinates.put(point, 2);
+
+        return stop;
+    }
+
+    public HashMap<Coordinates, Integer> getInscribedCoordinates(){
+        generateLightEdge();
+
+        return inscribedCoordinates;
     }
 
     private double lineEquation(int x, Coordinates item){

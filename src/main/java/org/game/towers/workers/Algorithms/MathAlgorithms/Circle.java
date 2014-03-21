@@ -21,7 +21,7 @@ class Circle {
     private ArrayList<Coordinates> circle = new ArrayList<Coordinates>();
     private ArrayList<Coordinates> externalCircle = new ArrayList<Coordinates>();
     private ArrayList<Coordinates> internalCircle = new ArrayList<Coordinates>();
-    HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
+    private HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
     private Coordinates[][] circleEqual;
     private double epsilon = 0.5;
 

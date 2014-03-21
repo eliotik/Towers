@@ -16,6 +16,13 @@ public class MathAlgorithms {
         return circle.getInscribedCoordinates();
     }
 
+    public static HashMap<Coordinates, Integer> getLightCoordinates(double x, double y, int radius) {
+        Coordinates coordinatesCenter = new Coordinates(x, y);
+        LightArea la = new LightArea(coordinatesCenter, radius);
+        System.out.println(la.getInscribedCoordinates().size());
+        return la.getInscribedCoordinates();
+    }
+
 
     // test
 //    public static void main(String[] args) {

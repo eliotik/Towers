@@ -4,6 +4,7 @@ import static java.lang.String.format;
 
 import org.game.towers.game.Game;
 import org.game.towers.game.level.Level;
+import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
 
 public class World {
 
@@ -34,6 +35,8 @@ public class World {
 	public void render() {
 		if (getLevel() != null) {
 			getLevel().render(Game.instance.getScreen());
+
+            MathAlgorithms.getLightCoordinates(100, 100, 20);
 //			getLevel().renderStore(screen);
 		}
 	}
