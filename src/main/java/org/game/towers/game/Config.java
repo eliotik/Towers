@@ -53,7 +53,7 @@ public class Config {
 	public static final String DEFAULT_LEVEL_FILENAME = "labirinth_level.png";
 //	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
 //	public static final String DEFAULT_LEVEL_FILENAME = "simple_level.png";
-	public static final boolean DEFAULT_LEVEL_USE_FOG = true;
+	public static final boolean DEFAULT_LEVEL_USE_FOG = false;
 	public static final int DEFAULT_LEVEL_ENTRANCE_RADAR_VIEW_SIZE = 80;
 	public static final long NPC_DEATH_MARK_VISIBILITY = 5000;
 

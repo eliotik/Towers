@@ -5,8 +5,10 @@
 		id="snail"
 		name="Snail"
 		description="Slowdown target for some time"
-		duration="5000"
-		class="Npc">
+		duration="2000"
+		class="Npc"
+		priority="1"
+		impact="negative">
 		<attribute
 			name="speed"
 			value="-0.5"

@@ -73,13 +73,19 @@ public class Level implements GameActionListener {
 		initCamera();
 		initFog(Game.instance.getScreen());
 
-        Tower tower = UnitFactory.getTower(Towers.BULB);
+		Npc npc = UnitFactory.getNpc(randomUnitType());
+        npc.setLevel(this);
+        npc.setX(Portals.getEntrance().getCoordinates().getX());
+        npc.setY(Portals.getEntrance().getCoordinates().getY());
+        addUnit(npc);
+
+        Tower tower = UnitFactory.getTower(Towers.BLOCKPOST);
         tower.setLevel(this);
         tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
         addUnit(tower);
 
-        tower = UnitFactory.getTower(Towers.BLOCKPOST);
+        tower = UnitFactory.getTower(Towers.BULB);
         tower.setLevel(this);
         tower.setX(Portals.getEntrance().getCoordinates().getX());
         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 8);
@@ -203,6 +209,7 @@ public class Level implements GameActionListener {
 
 	public void generateNpcs() {
         setNextWave();
+
         if (remainingNpc > 0 && npcLastStart < System.currentTimeMillis()) {
             Npc npc = UnitFactory.getNpc(randomUnitType());
             npc.setLevel(this);
@@ -298,7 +305,7 @@ public class Level implements GameActionListener {
 
 		getStore().tick();
 
-        generateNpcs();
+        //generateNpcs();
 
 		updateBullets();
 		updateUnits();
@@ -350,7 +357,7 @@ public class Level implements GameActionListener {
 							if (!bullet.getOwner().getModificator().equals(Modificators.NONE)) {
 								Modificator modificator = ModificatorsCollection.getByType(bullet.getOwner().getModificator());
 								if (modificator != null) {
-									((Npc) unit).setNegativeImpact(modificator);
+									((Npc) unit).addImpact(modificator);
 								}
 							}
 							bulletIt.remove();
