@@ -90,16 +90,18 @@ public abstract class Unit implements Serializable {
 		return false;
 	}
 
-	public Unit setArmour(int armour) {
+	public void setArmour(int armour) {
 		this.armour = armour;
-		return this;
 	}
 
 	public int getArmour() {
 		return armour;
 	}
 
-	public Unit setHealth(int health) {
+	public void setHealth(int health) {
+		if (health < getHealth()) {
+			setLastTimeShooted(System.currentTimeMillis());
+		}
 		this.health = health;
 		if (health <= 0) {
 			setDead(true);
@@ -121,54 +123,48 @@ public abstract class Unit implements Serializable {
 			}
 
 		}
-		return this;
 	}
 
 	public int getHealth() {
 		return health;
 	}
 
-	public Unit setDamage(int damage) {
+	public void setDamage(int damage) {
 		this.damage = damage;
-		return this;
 	}
 
 	public int getDamage() {
 		return damage;
 	}
 
-	public Unit setSpeed(double speed) {
+	public void setSpeed(double speed) {
 		this.speed = speed;
-		return this;
 	}
 
 	public double getSpeed() {
 		return speed;
 	}
 
-	public Unit setType(String type) {
+	public void setType(String type) {
 		this.type = type;
-		return this;
 	}
 
 	public String getType() {
 		return type;
 	}
 
-	public Unit setTypeName(String typeName) {
+	public void setTypeName(String typeName) {
 		this.typeName = typeName;
-		return this;
 	}
 
 	public String getTypeName() {
 		return typeName;
 	}
 
-	public Unit setGeo(Rectangle cell) {
+	public void setGeo(Rectangle cell) {
 		this.geo = cell;
 		this.x = (int) cell.getX();
 		this.y = (int) cell.getY();
-		return this;
 	}
 
 	public Rectangle getGeo() {
@@ -179,9 +175,8 @@ public abstract class Unit implements Serializable {
 		return id;
 	}
 
-	public Unit setId(String id) {
+	public void setId(String id) {
 		this.id = id;
-		return this;
 	}
 
     public void setX(double x) {
@@ -248,9 +243,8 @@ public abstract class Unit implements Serializable {
 		return maxHealth;
 	}
 
-	public Unit setMaxHealth(int maxHealth) {
+	public void setMaxHealth(int maxHealth) {
 		this.maxHealth = maxHealth;
-		return this;
 	}
 
 	public List<Sprite> getSprites() {

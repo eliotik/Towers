@@ -37,14 +37,17 @@ public class ModificatorsCollection {
                 item.setName(element.getAttribute("name").toString());
                 item.setDescription(element.getAttribute("type").toString());
                 item.setDuration(Integer.parseInt(element.getAttribute("duration").toString()));
+                item.setPriority(Integer.parseInt(element.getAttribute("priority").toString()));
+                item.setImpact(element.getAttribute("impact").toString());
 
                 NodeList attributes = element.getElementsByTagName(Config.ATTRIBUTE_NODE_NAME);
                 if (attributes.getLength() > 0) {
                 	for(int a = 0; a < attributes.getLength(); ++a) {
                 		Node mainAttributeNode = attributes.item(i);
                 		if( mainAttributeNode.getNodeType() == Node.ELEMENT_NODE ) {
+                			Element attributeElement = (Element) mainAttributeNode;
                 			HashMap<String, Object> attribute = new HashMap<String, Object>();
-                			attribute.put(element.getAttribute("name").toString(), convertValueByType(element.getAttribute("type").toString(), element.getAttribute("value").toString()));
+                			attribute.put(attributeElement.getAttribute("name").toString(), convertValueByType(attributeElement.getAttribute("type").toString(), attributeElement.getAttribute("value").toString()));
                 			item.getAttributes().put(element.getAttribute("class").toString(), attribute);
                 		}
                 	}

@@ -9,6 +9,9 @@ public class Modificator implements Serializable {
 	private String name;
 	private String description;
 	private int duration;
+	private int priority;
+	private String impact;
+	private long startTime;
 	private HashMap<String, HashMap<String, Object>> attributes = new HashMap<String, HashMap<String, Object>>();
 
 	public String getId() {
@@ -40,5 +43,23 @@ public class Modificator implements Serializable {
 	}
 	public void setAttributes(HashMap<String, HashMap<String, Object>> attributes) {
 		this.attributes = attributes;
+	}
+	public int getPriority() {
+		return priority;
+	}
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+	public String getImpact() {
+		return impact;
+	}
+	public void setImpact(String impact) {
+		this.impact = impact;
+	}
+	public long getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
 	}
 }

@@ -20,6 +20,10 @@ import static ch.lambdaj.Lambda.*;
 public class UnitFactory {
 
 	public static Npc getNpc(String type) {
+		return getNpc(type, true);
+	}
+
+	public static Npc getNpc(String type, boolean copy) {
 		try {
 			List<Npc> types = filter(having(on(Npc.class).getId(), Matchers.equalTo(type)),
 					NpcsCollection.getItems());
@@ -28,7 +32,11 @@ public class UnitFactory {
 				return null;
 			}
 			Npc unit = (Npc) types.get(0);
-			return SerializationUtils.clone(unit);
+			if (copy) {
+				return SerializationUtils.clone(unit);
+			} else {
+				return unit;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			Game.debug(DebugLevel.ERROR, "Could not initialize NPC unit: " + type);
