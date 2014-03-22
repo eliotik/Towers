@@ -52,39 +52,16 @@ public class Npc extends Unit {
 		if (getImpacts().size() > 0) {
 			Npc canonical = UnitFactory.getNpc(getId(), false);
 			if (canonical == null) return;
-			boolean firstLoop = true;
-			System.out.println("APPLY IMPACT: "+getId()+": "+getImpacts().size());
 			for (Iterator<Modificator> it = getImpacts().iterator(); it.hasNext();) {
 				Modificator modificator = (Modificator) it.next();
-				System.out.println((System.currentTimeMillis() - modificator.getStartTime()) +" == "+ modificator.getDuration());
 				if (System.currentTimeMillis() - modificator.getStartTime() >= modificator.getDuration()) {
-					ArrayList<HashMap<String, Object>> attributes = modificator.getAttributes().get(this.getClass().getSimpleName());
-					if (attributes != null && attributes.size() > 0) {
-						System.out.println("attributes size: "+attributes.size());
-						Iterator<HashMap<String, Object>> ait = attributes.iterator();
-					    while (ait.hasNext()) {
-					        HashMap<String, Object> pairs = (HashMap<String, Object>)ait.next();
-					        for ( String key : pairs.keySet() ) {
-								try {
-									if (firstLoop) {
-										Object defaultValue = PropertyUtils.getProperty(canonical, (String) key);
-										PropertyUtils.setProperty(this, (String) key, defaultValue);
-										System.out.println("FIRSTLOOP: "+defaultValue);
-									} else {
-										Object currentValue = PropertyUtils.getProperty(this, (String) key);
-										System.out.println(currentValue+" / "+currentValue.getClass().getSimpleName());
-									}
-								} catch (IllegalAccessException
-										| InvocationTargetException
-										| NoSuchMethodException e) {
-									e.printStackTrace();
-								}
-					        }
-					    }
-					}
+					modificator.clear(this, canonical);
 					it.remove();
+				} else {
+					if (!modificator.isApplied()) {
+						modificator.apply(this);
+					}
 				}
-				if (firstLoop) firstLoop = !firstLoop;
 			}
 		}
 	}
@@ -176,6 +153,11 @@ public class Npc extends Unit {
 
 	public void addImpact(Modificator impact) {
 		if (getImpacts().contains(impact)) {
+			int index = getImpacts().indexOf(impact);
+			Modificator oldImpact = getImpacts().get(index);
+			if (oldImpact.isApplied()) {
+				oldImpact.restore(this);
+			}
 			getImpacts().remove(impact);
 			getImpacts().add(impact);
 		} else {

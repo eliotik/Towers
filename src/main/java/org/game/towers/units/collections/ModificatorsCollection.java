@@ -43,11 +43,14 @@ public class ModificatorsCollection {
                 NodeList attributes = element.getElementsByTagName(Config.ATTRIBUTE_NODE_NAME);
                 if (attributes.getLength() > 0) {
                 	for(int a = 0; a < attributes.getLength(); ++a) {
-                		Node mainAttributeNode = attributes.item(i);
+
+                		Node mainAttributeNode = attributes.item(a);
                 		if( mainAttributeNode.getNodeType() == Node.ELEMENT_NODE ) {
+
                 			Element attributeElement = (Element) mainAttributeNode;
                 			HashMap<String, Object> attribute = new HashMap<String, Object>();
                 			attribute.put(attributeElement.getAttribute("name").toString(), convertValueByType(attributeElement.getAttribute("type").toString(), attributeElement.getAttribute("value").toString()));
+
                 			if (item.getAttributes().containsKey(element.getAttribute("class").toString())) {
                 				item.getAttributes().get(element.getAttribute("class").toString()).add(attribute);
                 			} else {
@@ -55,7 +58,9 @@ public class ModificatorsCollection {
                 				list.add(attribute);
                 				item.getAttributes().put(element.getAttribute("class").toString(), list);
                 			}
+
                 		}
+
                 	}
                 }
 

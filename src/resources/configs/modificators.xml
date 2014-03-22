@@ -11,13 +11,13 @@
 		impact="negative">
 		<attribute
 			name="speed"
-			value="-0.5"
+			value="0.5"
 			type="double"
 		/>
 		<attribute
 			name="highlight"
-			value="true"
-			type="boolean"
+			value="0.5"
+			type="double"
 		/>
 	</modificator>
 

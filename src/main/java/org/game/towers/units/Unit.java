@@ -49,6 +49,7 @@ public abstract class Unit implements Serializable {
 	private long deathTime;
 	private String modificator;
 	private long lastTimeShooted;
+	private double highlight = 1;
 
 	public Unit() {
 		setSpriteIndex(0);
@@ -453,5 +454,13 @@ public abstract class Unit implements Serializable {
 
 	public void setLastTimeShooted(long lastTimeShooted) {
 		this.lastTimeShooted = lastTimeShooted;
+	}
+
+	public double getHighlight() {
+		return highlight;
+	}
+
+	public void setHighlight(double highlight) {
+		this.highlight = highlight;
 	}
 }
