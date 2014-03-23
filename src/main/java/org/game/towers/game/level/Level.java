@@ -135,9 +135,6 @@ public class Level implements GameActionListener {
         }
 
         npcQuantity(wave);
-//        if (waveCheck.size() == 0){
-//            waveCheck.add(quantity);
-//        }
         if (waveCheck.get(wave) == null) {
             remainingNpc += quantity;
             waveCheck.put(wave, quantity);
@@ -160,10 +157,10 @@ public class Level implements GameActionListener {
 
     private int randomIndexByAmount(int amount, int length) {
         int diff = Math.abs(amount - length);
-        if (diff >= length) {
+        if (diff > length) {
             return randomIndexByAmount(diff, length);
         } else {
-            int result = /*Utils.randInt(0, amount);*/random.nextInt(amount);
+            int result = random.nextInt(amount);
             return result;
         }
     }
@@ -181,17 +178,17 @@ public class Level implements GameActionListener {
                 }
                 return  type;
             }
-            npcTypeIndex = /*Utils.randInt(0, getAmountNpcsTypesByWave());*/random.nextInt(getAmountNpcsTypesByWave());
+            npcTypeIndex = random.nextInt(getAmountNpcsTypesByWave());
             try {
                 type = (String)npcsNames[npcTypeIndex].get(Npcs.class);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         } else {
-            int randomIndexByAmount = randomIndexByAmount(getAmountNpcsTypesByWave(), npcsNames.length);
+            int randomIndexByAmount = randomIndexByAmount(getAmountNpcsTypesByWave(), npcsNames.length - 1);
             npcTypeIndex = 0;
             if (randomIndexByAmount > 0) {
-                npcTypeIndex = /*Utils.randInt(0, randomIndexByAmount);*/random.nextInt(randomIndexByAmount);
+                npcTypeIndex = random.nextInt(randomIndexByAmount);
             }
             try {
                 type = (String)npcsNames[npcTypeIndex].get(Npcs.class);
