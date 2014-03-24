@@ -105,7 +105,7 @@ class LightArea
         xa = x >> Config.COORDINATES_SHIFTING;
         ya = y >> Config.COORDINATES_SHIFTING;
 
-        if (Game.instance.getWorld().getLevel().getTile(xa, ya).isSolid()){
+        if (Game.getInstance().getWorld().getLevel().getTile(xa, ya).isSolid()){
             lightEdge.add(point);
             stop = true;
             return stop;

@@ -24,7 +24,7 @@ public class JPS {
     }
 
     public synchronized ArrayList<Node> search(int xStart, int yStart, int unitId){
-        Node[][] tiles = Game.instance.getWorld().getLevel().generateGridForJSP(unitId);
+        Node[][] tiles = Game.getInstance().getWorld().getLevel().generateGridForJSP(unitId);
         Node[] possibleSuccessUnitId;
         Grid newGrid = new Grid(tiles);
         if (gridHashMap.get(unitId) == null) {
@@ -44,7 +44,7 @@ public class JPS {
                     int xa = item.x >> Config.COORDINATES_SHIFTING;
                     int ya = item.y >> Config.COORDINATES_SHIFTING;
                     if (Config.LEVEL_HIGHLIGHT_PATH_TILES) {
-                    	Game.instance.getWorld().getLevel().getTile(xa, ya).setHighlight(1.2);
+                    	Game.getInstance().getWorld().getLevel().getTile(xa, ya).setHighlight(1.2);
                     }
                 }
                 break;

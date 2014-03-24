@@ -44,8 +44,8 @@ public class Tower extends Unit {
 	}
 
 	private void checkShootingPossibility() {
-		synchronized (Game.instance.getWorld().getLevel().getUnits()) {
-			Level level = Game.instance.getWorld().getLevel();
+		synchronized (Game.getInstance().getWorld().getLevel().getUnits()) {
+			Level level = Game.getInstance().getWorld().getLevel();
 			for (int i = 0, l = level.getUnits().size(); i < l; i++) {
 				if (i > level.getUnits().size()-1) break;
 				Unit unit = (Unit) level.getUnits().get(i);
@@ -68,7 +68,7 @@ public class Tower extends Unit {
 		bullet.setX(getX());
 		bullet.setY(getY());
 
-		Game.instance.getWorld().getLevel().addBullet(bullet);
+		Game.getInstance().getWorld().getLevel().addBullet(bullet);
 	}
 
 	private int getDistanceToTarget(int x, int y) {

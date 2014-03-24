@@ -10,7 +10,7 @@ public class GameLauncher extends Applet {
 	public static Game game;
 
 	public void init() {
-		Game.instance = new Game(true);
+		Game.setInstance(new Game(true));
 		setMinimumSize(Config.DIMENSIONS);
 		setMaximumSize(Config.DIMENSIONS);
 		setPreferredSize(Config.DIMENSIONS);
@@ -18,7 +18,7 @@ public class GameLauncher extends Applet {
 		setLayout(new BorderLayout());
 
 
-		add(Game.instance, BorderLayout.CENTER);
+		add(Game.getInstance(), BorderLayout.CENTER);
 	}
 
 	public void start() {

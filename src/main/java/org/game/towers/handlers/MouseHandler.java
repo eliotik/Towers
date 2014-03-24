@@ -35,10 +35,10 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     }
 
     public void mouseMoved(MouseEvent e) {
-    	Game.instance.getScreen().setMousePosition(new Point(e.getX(), e.getY()));
+    	Game.getInstance().getScreen().setMousePosition(new Point(e.getX(), e.getY()));
     }
 
 	public void mouseDragged(MouseEvent e) {
-		Game.instance.getScreen().setMousePosition(new Point(e.getX(), e.getY()));
+		Game.getInstance().getScreen().setMousePosition(new Point(e.getX(), e.getY()));
 	}
 }

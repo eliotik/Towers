@@ -92,19 +92,19 @@ public class Camera {
         int xa = 0;
         int ya = 0;
         if (getInputHandler().left.isPressed() ||
-    		getMouseBounds().getLeft().contains(Game.instance.getScreen().getMousePosition())) {
+    		getMouseBounds().getLeft().contains(Game.getInstance().getScreen().getMousePosition())) {
             xa--;
         }
         if (getInputHandler().right.isPressed() ||
-    		getMouseBounds().getRight().contains(Game.instance.getScreen().getMousePosition())) {
+    		getMouseBounds().getRight().contains(Game.getInstance().getScreen().getMousePosition())) {
             xa++;
         }
         if (getInputHandler().up.isPressed() ||
-    		getMouseBounds().getTop().contains(Game.instance.getScreen().getMousePosition())) {
+    		getMouseBounds().getTop().contains(Game.getInstance().getScreen().getMousePosition())) {
             ya--;
         }
         if (getInputHandler().down.isPressed() ||
-    		getMouseBounds().getBottom().contains(Game.instance.getScreen().getMousePosition())) {
+    		getMouseBounds().getBottom().contains(Game.getInstance().getScreen().getMousePosition())) {
             ya++;
         }
 
@@ -114,14 +114,14 @@ public class Camera {
         if (getX() < 0) {
             setX(0);
         }
-        if (getX() > (getLevel().getWidth() << Config.COORDINATES_SHIFTING) - Game.instance.getScreen().getWidth()) {
-            setX((getLevel().getWidth() << Config.COORDINATES_SHIFTING) - Game.instance.getScreen().getWidth());
+        if (getX() > (getLevel().getWidth() << Config.COORDINATES_SHIFTING) - Game.getInstance().getScreen().getWidth()) {
+            setX((getLevel().getWidth() << Config.COORDINATES_SHIFTING) - Game.getInstance().getScreen().getWidth());
         }
         if (getY() < 0) {
             setY(0);
         }
-        if (getY() > (getLevel().getHeight() << Config.COORDINATES_SHIFTING) - Game.instance.getScreen().getHeight()) {
-            setY((getLevel().getHeight() << Config.COORDINATES_SHIFTING) - Game.instance.getScreen().getHeight());
+        if (getY() > (getLevel().getHeight() << Config.COORDINATES_SHIFTING) - Game.getInstance().getScreen().getHeight()) {
+            setY((getLevel().getHeight() << Config.COORDINATES_SHIFTING) - Game.getInstance().getScreen().getHeight());
         }
     }
 

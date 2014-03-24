@@ -39,7 +39,7 @@ public abstract class Gui implements GameActionListener {
 		this.setHeight(height);
 		this.setPixels(new int[width * height]);
 		this.setTint(0.3D, 0.3D, 0.3D);
-		if (game.getWorld() != null && game.getScreen().getPixels().length == Game.instance.getScreen().getPixels().length) {
+		if (game.getWorld() != null && game.getScreen().getPixels().length == Game.getInstance().getScreen().getPixels().length) {
 			setBkgPixels(game.getPixels().clone());
 		}
 	}
@@ -62,7 +62,7 @@ public abstract class Gui implements GameActionListener {
 	public void drawDefaultBackground() {
 		if (getBkgPixels() != null) {
 			for (int i = 0; i < getBkgPixels().length; i++) {
-				Game.instance.getScreen().getPixels()[i] = Colors.tint(getBkgPixels()[i], red, green, blue);
+				Game.getInstance().getScreen().getPixels()[i] = Colors.tint(getBkgPixels()[i], red, green, blue);
 			}
 		} else {
 			drawDefaultSolidBackground();
@@ -70,8 +70,8 @@ public abstract class Gui implements GameActionListener {
 	}
 
 	public void drawDefaultSolidBackground() {
-		for (int i = 0; i < Game.instance.getScreen().getPixels().length; i++) {
-			Game.instance.getScreen().getPixels()[i] = Config.DEFAULT_BKG_COLOR;
+		for (int i = 0; i < Game.getInstance().getScreen().getPixels().length; i++) {
+			Game.getInstance().getScreen().getPixels()[i] = Config.DEFAULT_BKG_COLOR;
 		}
 	}
 

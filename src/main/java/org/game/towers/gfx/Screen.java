@@ -338,7 +338,7 @@ public class Screen {
 	}
 
 	public void renderLevelGui() {
-		Game.instance.getWorld().getLevel().getStore().render(this);
+		Game.getInstance().getWorld().getLevel().getStore().render(this);
 		renderIcons();
 	}
 
@@ -352,7 +352,7 @@ public class Screen {
 		int xBPos = xPos + 1;
 		int white = 555;
 		int black = 000;
-		Level level = Game.instance.getWorld().getLevel();
+		Level level = Game.getInstance().getWorld().getLevel();
 		String playerMoneyText = level.getPlayerMoney() + "";
 		String playerHealthText = level.getPlayerHealth() + "";
 		String playerResource = level.getPlayerResource() + "";
@@ -426,13 +426,14 @@ public class Screen {
 	}
 
 	public void refineFogLayer(double x, double y, int radarSize) {
-		HashMap<Coordinates, Integer> circle = MathAlgorithms.getInscribedCoordinates(x, y, radarSize);
+//		HashMap<Coordinates, Integer> circle = MathAlgorithms.getInscribedCoordinates(x, y, radarSize);
+		HashMap<Coordinates, Integer> circle = MathAlgorithms.getLightCoordinates(x, y, radarSize);
 		Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
 		while (it.hasNext()) {
 		    @SuppressWarnings("rawtypes")
 			Map.Entry data = (Map.Entry)it.next();
 		    Coordinates coordinates = (Coordinates) data.getKey();
-		    int pixelIndex = coordinates.getX() + coordinates.getY() * Game.instance.getScreen().getWidth();
+		    int pixelIndex = coordinates.getX() + coordinates.getY() * Game.getInstance().getScreen().getWidth();
 		    if (pixelIndex < getFog().length) {
 		    	int value = (int) data.getValue();
 		    	int oldValue = getFog()[pixelIndex];

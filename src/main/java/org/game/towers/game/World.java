@@ -18,11 +18,11 @@ public class World {
 	public World(String name) {
 		this.name = name;
 		setLevel(new Level(format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME)));
-		Game.instance.getInputHandler().addListener(getLevel(), true);
+		Game.getInstance().getInputHandler().addListener(getLevel(), true);
 	}
 
 	public void reset() {
-		Game.instance.getInputHandler().removeListener(getLevel());
+		Game.getInstance().getInputHandler().removeListener(getLevel());
 		setLevel(null);
 	}
 
@@ -34,9 +34,9 @@ public class World {
 
 	public void render() {
 		if (getLevel() != null) {
-			getLevel().render(Game.instance.getScreen());
+			getLevel().render(Game.getInstance().getScreen());
 
-            MathAlgorithms.getLightCoordinates(100, 100, 20);
+//            MathAlgorithms.getLightCoordinates(100, 100, 20);
 //			getLevel().renderStore(screen);
 		}
 	}

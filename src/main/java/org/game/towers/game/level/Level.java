@@ -69,9 +69,6 @@ public class Level implements GameActionListener {
     public Level(String imagePath) {
 		setImagePath(imagePath);
 		loadLevelFromFile();
-		initStore();
-		initCamera();
-		initFog(Game.instance.getScreen());
 
 //		Npc npc = UnitFactory.getNpc(randomUnitType());
 //        npc.setLevel(this);
@@ -80,6 +77,12 @@ public class Level implements GameActionListener {
 //        addUnit(npc);
 	}
 
+    public void initComponents() {
+		initStore();
+		initCamera();
+		initFog(Game.getInstance().getScreen());
+    }
+
     public void addTowers() {
     	 Tower tower = UnitFactory.getTower(Towers.BULB);
          tower.setLevel(this);
@@ -87,23 +90,23 @@ public class Level implements GameActionListener {
          tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
          addUnit(tower);
 
-         tower = UnitFactory.getTower(Towers.BLOCKPOST);
-         tower.setLevel(this);
-         tower.setX(Portals.getEntrance().getCoordinates().getX());
-         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 8);
-         addUnit(tower);
-
-         tower = UnitFactory.getTower(Towers.BULB);
-         tower.setLevel(this);
-         tower.setX(Portals.getEntrance().getCoordinates().getX() - Config.BOX_SIZE * 10);
-         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 11);
-         addUnit(tower);
-
-         tower = UnitFactory.getTower(Towers.BULB);
-         tower.setLevel(this);
-         tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
-         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 12);
-         addUnit(tower);
+//         tower = UnitFactory.getTower(Towers.BLOCKPOST);
+//         tower.setLevel(this);
+//         tower.setX(Portals.getEntrance().getCoordinates().getX());
+//         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 8);
+//         addUnit(tower);
+//
+//         tower = UnitFactory.getTower(Towers.BULB);
+//         tower.setLevel(this);
+//         tower.setX(Portals.getEntrance().getCoordinates().getX() - Config.BOX_SIZE * 10);
+//         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 11);
+//         addUnit(tower);
+//
+//         tower = UnitFactory.getTower(Towers.BULB);
+//         tower.setLevel(this);
+//         tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
+//         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE * 12);
+//         addUnit(tower);
     }
 
 	private void initFog(Screen screen) {
@@ -120,7 +123,7 @@ public class Level implements GameActionListener {
 
 	private void initCamera() {
 		if (getCamera() == null) {
-			setCamera(new Camera(this, 0, 0, Game.instance.getInputHandler(), 4));
+			setCamera(new Camera(this, 0, 0, Game.getInstance().getInputHandler(), 4));
 		}
 	}
 
@@ -314,7 +317,7 @@ public class Level implements GameActionListener {
 	    }
 
     	if (getPlayerHealth() <= 0) {
-    		Game.instance.showGui(new GuiLost(Game.instance, Game.instance.getWidth(), Game.instance.getHeight()));
+    		Game.getInstance().showGui(new GuiLost(Game.getInstance(), Game.getInstance().getWidth(), Game.getInstance().getHeight()));
     	}
 	}
 
@@ -406,9 +409,9 @@ public class Level implements GameActionListener {
 
 	@Override
 	public void actionPerformed(InputEvent event) {
-		if (event.key.id == Game.instance.getInputHandler().esc.id
+		if (event.key.id == Game.getInstance().getInputHandler().esc.id
 				&& event.type == InputEventType.PRESSED) {
-			Game.instance.showGui(new GuiPause(Game.instance, Game.instance.getWidth(), Game.instance.getHeight()));
+			Game.getInstance().showGui(new GuiPause(Game.getInstance(), Game.getInstance().getWidth(), Game.getInstance().getHeight()));
 		}
 	}
 
@@ -423,7 +426,7 @@ public class Level implements GameActionListener {
 					double x = unit.getX() + Config.BOX_SIZE/2;
 					double y = unit.getY() + Config.BOX_SIZE/2;
 					int radarSize = ((Tower) unit).getRadarViewSize();
-					Game.instance.getScreen().refineFogLayer(x, y, radarSize);
+					Game.getInstance().getScreen().refineFogLayer(x, y, radarSize);
 				}
 			}
 		}

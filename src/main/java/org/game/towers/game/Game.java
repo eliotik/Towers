@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Game instance;
+	private static Game instance;
 
 	private JFrame frame;
 	private Thread thread;
@@ -393,8 +393,8 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	}
 
 	public void initLauncher() {
-		if (Game.instance == null) {
-			Game.instance = this;
+		if (Game.getInstance() == null) {
+			Game.setInstance(this);
 		}
 		initSizes();
 		initFrame();
@@ -498,4 +498,18 @@ public class Game extends Canvas implements Runnable, FocusListener {
 		this.ticksCount = ticksCount;
 	}
 
+	public static Game getInstance() {
+		return instance;
+	}
+
+	public static void setInstance(Game instance) {
+		Game.instance = instance;
+	}
+
+	public void initWorldLevel() {
+		setWorld(new World(Config.DEFAULT_WORLD_NAME));
+		getWorld().getLevel().initComponents();
+		getWorld().getLevel().generateNpcs();
+		getWorld().getLevel().addTowers();
+	}
 }

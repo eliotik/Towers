@@ -43,7 +43,7 @@ public class Npc extends Unit {
 
             setFinished(Math.abs(Portals.getExit().getCoordinates().getX() - getX()) < 2  && Math.abs(Portals.getExit().getCoordinates().getY() - getY()) < 2);
 
-			Game.instance.getPathWorker().nextCoordinate((int) getX(), (int) getY(), shifts, hashCode());
+			Game.getInstance().getPathWorker().nextCoordinate((int) getX(), (int) getY(), shifts, hashCode());
 	        move((int)shifts.getX(), (int)shifts.getY());
 		}
 	}

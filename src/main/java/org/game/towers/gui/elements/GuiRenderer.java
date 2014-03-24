@@ -62,14 +62,14 @@ public class GuiRenderer {
 				if (col < 255) {
 					for (int yScale = 0; yScale < scale; yScale++) {
 						if (yPixel + yScale < 0
-								|| yPixel + yScale >= Game.instance.getScreen().getHeight())
+								|| yPixel + yScale >= Game.getInstance().getScreen().getHeight())
 							continue;
 						for (int xScale = 0; xScale < scale; xScale++) {
 							if (xPixel + xScale < 0
-									|| xPixel + xScale >= Game.instance.getScreen().getWidth())
+									|| xPixel + xScale >= Game.getInstance().getScreen().getWidth())
 								continue;
-							Game.instance.getScreen().getPixels()[(xPixel + xScale) + (yPixel + yScale)
-							                                      * Game.instance.getScreen().getWidth()] = colors[col];
+							Game.getInstance().getScreen().getPixels()[(xPixel + xScale) + (yPixel + yScale)
+							                                      * Game.getInstance().getScreen().getWidth()] = colors[col];
 						}
 					}
 				}
