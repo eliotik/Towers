@@ -16,7 +16,8 @@ class LightArea
     private ArrayList<Coordinates> lowerCircleLightEdge = new ArrayList<>();
     private HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
     private ArrayList<Coordinates> lightEdge = new ArrayList<>();
-    private double epsilon = 1;
+    private double epsilon = 0.5;
+    private double delta = 0.1;
 
     public LightArea(Coordinates coordinatesCenter, int radius) {
         setCoordinatesCenter(coordinatesCenter);
@@ -28,7 +29,7 @@ class LightArea
     }
 
     private void generateCircleLightEdge() {
-        for(double x = getMinX(); x <= getMaxX(); x++) {
+        for(double x = getMinX(); x <= getMaxX(); x+=delta) {
             int y = (int)(java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinatesCenter().getX()), 2)) + getCoordinatesCenter().getY());
 
             if (lowerCircleLightEdge.size() == 0) {
@@ -40,7 +41,7 @@ class LightArea
                 lowerCircleLightEdge.add(new Coordinates(x, y));
             }
         }
-        for(double x = getMaxX(); x > getMinX(); x--) {
+        for(double x = getMaxX(); x > getMinX(); x-=delta) {
             int y = (int)(java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinatesCenter().getX()), 2)) - getCoordinatesCenter().getY());
 
             if (upperCircleLightEdge.size() == 0) {
@@ -104,7 +105,7 @@ class LightArea
         xa = x >> Config.COORDINATES_SHIFTING;
         ya = y >> Config.COORDINATES_SHIFTING;
 
-        if (!Game.instance.getWorld().getLevel().getTile(xa, ya).isSolid()){
+        if (Game.instance.getWorld().getLevel().getTile(xa, ya).isSolid()){
             lightEdge.add(point);
             stop = true;
             return stop;
