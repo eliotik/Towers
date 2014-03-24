@@ -41,6 +41,8 @@ class LightArea
                 lowerCircleLightEdge.add(new Coordinates(x, y));
             }
         }
+        System.out.println("lowerCircleLightEdge size " + lowerCircleLightEdge.size());
+
         for(double x = getMaxX(); x > getMinX(); x-=delta) {
             int y = (int)(java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinatesCenter().getX()), 2)) - getCoordinatesCenter().getY());
 
@@ -53,6 +55,7 @@ class LightArea
                 upperCircleLightEdge.add(new Coordinates(x, y));
             }
         }
+        System.out.println("upperCircleLightEdge size " + upperCircleLightEdge.size());
     }
 
     private void generateLightEdge(){
@@ -94,26 +97,38 @@ class LightArea
 
     private boolean addPoints(int x, Coordinates point) {
         int y, xa, ya;
-        boolean stop = false;
         y = (int)lineEquation(x, point);
 
-        if (x < 0) { x = 0; }
-        if (y < 0) { y = 0; }
-        if (x > Config.SCREEN_WIDTH) { x = Config.SCREEN_WIDTH; }
-        if (y > Config.REAL_SCREEN_HEIGHT) { y = Config.REAL_SCREEN_HEIGHT; }
+        if (x < 0 || y < 0 || x > Config.REAL_SCREEN_WIDTH || y > Config.REAL_SCREEN_HEIGHT) {
+            return false;
+        }
+//        if (y < 0) {
+//            lightEdge.add(point);
+//            stop = true;
+//            return stop;
+//        }
+//        if (x > Config.SCREEN_WIDTH) {
+//            lightEdge.add(point);
+//            stop = true;
+//            return stop;
+//        }
+//        if (y > Config.REAL_SCREEN_HEIGHT) {
+//            lightEdge.add(point);
+//            stop = true;
+//            return stop;
+//        }
 
         xa = x >> Config.COORDINATES_SHIFTING;
         ya = y >> Config.COORDINATES_SHIFTING;
 
         if (Game.getInstance().getWorld().getLevel().getTile(xa, ya).isSolid()){
             lightEdge.add(point);
-            stop = true;
-            return stop;
+            return true;
         }
 
         inscribedCoordinates.put(point, 2);
 
-        return stop;
+        return false;
     }
 
     public HashMap<Coordinates, Integer> getInscribedCoordinates(){
