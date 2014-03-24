@@ -35,7 +35,7 @@ public class Config {
 	public static final String MODIFICATOR_NODE_NAME = "modificator";
 	public static final String ATTRIBUTE_NODE_NAME = "attribute";
 
-	public static final int SCREEN_WIDTH = 240;
+	public static final int SCREEN_WIDTH = 340;
 	public static final int SCREEN_HEIGHT = SCREEN_WIDTH/12*9;
 	public static final int SCALE = 2;
 	public static final int REAL_SCREEN_WIDTH = SCREEN_WIDTH * SCALE;
@@ -60,7 +60,7 @@ public class Config {
 
 	public static final int DEFAULT_PLAYER_HEALTH = 20;
 	public static final int DEFAULT_PLAYER_MONEY = 500;
-	public static final int EDGE_SIZE = 3;
+	public static final int EDGE_SIZE = 2;
 
 	public static final int DEFAULT_PLAYER_RESOURCE = 120;
 

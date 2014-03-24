@@ -30,7 +30,7 @@ public class Screen {
 	public static final byte BIT_MIRROR_Y = 0x02;
 
 	private int[] pixels;
-	private int[] fog;
+	private HashMap<String, Integer> fog;
 	private Graphics graphics;
 
 	private int xOffset = 0;
@@ -114,7 +114,6 @@ public class Screen {
 	public void renderTile(Level level, int xOrig, int yOrig, Tile tile, int mirrorDir, int scale) {
 		int xp = (xOrig * tile.getSprite().getWidth()) - getxOffset();
 		int yp = (yOrig * tile.getSprite().getHeight()) - getyOffset();
-		int shift = getxOffset() + getyOffset() * getWidth();
 
 		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
 		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
@@ -131,7 +130,6 @@ public class Screen {
 
 			for (int x = 0; x < tile.getSprite().getWidth(); x++) {
 				int xt = x + xp;
-
 				int xSheet = x;
 				if (mirrorX) xSheet = Config.BOX_SIZE_FIXED - x;
 
@@ -160,31 +158,33 @@ public class Screen {
 						if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
 							continue;
 						int pixelIndex = (xPixel + xScale) + (yPixel + yScale) * getWidth();
-						//System.out.println(pixelIndex+","+getFog().length);
-//						if (Config.DEFAULT_LEVEL_USE_FOG) {
-//							switch(getFog()[pixelIndex+shift]) {
-//							default:
-////								System.out.println("default");
-//							getPixels()[pixelIndex] =
-//									(tile.getHighlight() != 1)
-//									? Colors.brightness(color, tile.getHighlight())
-//									: color;
-//									break;
-//							case 0:
-////								System.out.println("0");
-//								getPixels()[pixelIndex] = Config.DEFAULT_BKG_COLOR;
-//								break;
-//							case 1:
-////								System.out.println("1");
-//								getPixels()[pixelIndex] = Colors.tint(getPixels()[pixelIndex], 0.3D, 0.3D, 0.3D);
-//								break;
-//							}
-//						} else {
+						if (Config.DEFAULT_LEVEL_USE_FOG) {
+							String key = "x"+(xt+getxOffset())+"y"+(yt+getyOffset());
+							if (getFog().containsKey(key)) {
+								switch(getFog().get(key)) {
+								default:
+								getPixels()[pixelIndex] =
+										(tile.getHighlight() != 1)
+										? Colors.brightness(color, tile.getHighlight())
+										: color;
+										break;
+								case 0:
+									getPixels()[pixelIndex] = Colors.tint(getPixels()[pixelIndex], 0.3D, 0.3D, 0.3D);
+									break;
+								case 1:
+									getPixels()[pixelIndex] = Config.DEFAULT_BKG_COLOR;
+									break;
+								}
+							} else {
+								System.out.println("key "+key+" not found");
+								getPixels()[pixelIndex] = Colors.tint(getPixels()[pixelIndex], 0.3D, 0.3D, 0.3D);
+							}
+						} else {
 							getPixels()[pixelIndex] =
 									(tile.getHighlight() != 1)
 									? Colors.brightness(color, tile.getHighlight())
 									: color;
-//						}
+						}
 					}
 				}
 			}
@@ -255,7 +255,6 @@ public class Screen {
 		int yp = yOrig - getyOffset();
 		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
 		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
-        int shift = getxOffset() + getyOffset() * getWidth();
 		int scaleMap = scale - 1;
 
 		for (int y = 0; y < unit.getCurrentSprite().getHeight(); y++) {
@@ -296,9 +295,12 @@ public class Screen {
 							if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
 								continue;
 							int pixelIndex = (xPixel + xScale) + (yPixel + yScale) * getWidth();
+
 							if (Config.DEFAULT_LEVEL_USE_FOG) {
-								if (getFog()[pixelIndex + shift] < 2)
+								String key = "x"+(xt+getxOffset())+"y"+(yt+getyOffset());
+								if (getFog().containsKey(key) && getFog().get(key) < 2) {
 									continue;
+								}
 							}
 							getPixels()[pixelIndex] = color;
 						}
@@ -330,9 +332,11 @@ public class Screen {
 					int color = ((Npc) unit).getCurrentHealthSprite().getPixels()[x + y * ((Npc) unit).getCurrentHealthSprite().getWidth()];
 					if (color != 0xFFFF00FF && color != 0xFF800080) {
                         int pixelIndex = xt + yt * getWidth();
-                        if (Config.DEFAULT_LEVEL_USE_FOG) {
-							if (getFog()[pixelIndex + shift] < 2)
+						if (Config.DEFAULT_LEVEL_USE_FOG) {
+							String key = "x"+(xt+getxOffset())+"y"+(yt+getyOffset());
+							if (getFog().containsKey(key) && getFog().get(key) < 2) {
 								continue;
+							}
 						}
                         getPixels()[pixelIndex] = color;
 					}
@@ -412,26 +416,6 @@ public class Screen {
 		}
 	}
 
-	public int[] getFog() {
-		return fog;
-	}
-
-	public void setFog(int[] fog) {
-		this.fog = fog;
-	}
-
-	public void renderFog() {
-		int shift = getxOffset() + getyOffset() * getWidth();
-//		System.out.println("["+shift+"]");
-		for (int i = 0; i < getPixels().length; i++) {
-//			System.out.println(">"+(i+shift)+"<");
-			switch (getFog()[i+shift]) {
-			case 0: getPixels()[i] = Config.DEFAULT_BKG_COLOR; break;
-			case 1: getPixels()[i] = Colors.tint(getPixels()[i], 0.3D, 0.3D, 0.3D); break;
-			}
-		}
-	}
-
 	public void refineFogLayer(double x, double y, int radarSize) {
 		HashMap<Coordinates, Integer> circle = Utils.getVisiblePixels(Config.VIEW_TYPE_CIRCLE, x, y, radarSize);
 		Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
@@ -439,16 +423,22 @@ public class Screen {
 		    @SuppressWarnings("rawtypes")
 			Map.Entry data = (Map.Entry)it.next();
 		    Coordinates coordinates = (Coordinates) data.getKey();
-		    int pixelIndex = coordinates.getX() + coordinates.getY() * getWidth();
-		    if (pixelIndex < getFog().length) {
-		    	int value = (int) data.getValue();
-		    	int oldValue = getFog()[pixelIndex];
-
+		    String key = "x"+coordinates.getX()+"y"+coordinates.getY();
+		    int value = (int) data.getValue();
+		    if (getFog().containsKey(key)) {
+		    	int oldValue = getFog().get(key);
 		    	if (value == 0 && oldValue != 0) value = oldValue;
 		    	if (value == 1 && oldValue > 1 ) value = oldValue;
-
-		    	getFog()[pixelIndex] = value;
 		    }
+		    getFog().put(key, value);
 		}
+	}
+
+	public HashMap<String, Integer> getFog() {
+		return fog;
+	}
+
+	public void setFog(HashMap<String, Integer> fog) {
+		this.fog = fog;
 	}
 }

@@ -3,7 +3,6 @@ package org.game.towers.game.level;
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.game.level.tiles.Tile;
-//import org.game.towers.game.level.tiles.TileMap;
 import org.game.towers.game.level.tiles.TileTypes;
 import org.game.towers.gfx.Camera;
 import org.game.towers.gfx.Screen;
@@ -24,7 +23,7 @@ import org.game.towers.units.towers.modificators.Modificator;
 import org.game.towers.units.towers.modificators.Modificators;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
 import org.game.towers.workers.geo.Coordinates;
-//import org.game.towers.workers.geo.Geo;
+
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -36,7 +35,6 @@ import javax.imageio.ImageIO;
 public class Level implements GameActionListener {
 
 	private String name;
-//    private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
     private HashMap<Integer, Node[][]>  jpsTilesHashMap = new HashMap<Integer, Node[][]>();
 	private Tile[] tiles;
 	private int width;
@@ -63,8 +61,6 @@ public class Level implements GameActionListener {
     private int remainingNpc;
     private HashMap<Integer, Integer> waveCheck = new HashMap<Integer, Integer>();
     private Random random = new Random();
-//    private Npcs npcs = new Npcs();
-//    private Class cls = npcs.getClass();
 
     public Level(String imagePath) {
 		setImagePath(imagePath);
@@ -110,16 +106,22 @@ public class Level implements GameActionListener {
     }
 
 	private void initFog(Screen screen) {
-		System.out.println(getWidth()+"/"+getHeight()+", "+screen.getWidth()+"/"+screen.getHeight()+", "+Config.SCREEN_WIDTH+"/"+Config.SCREEN_HEIGHT+", "+Config.REAL_SCREEN_WIDTH+"/"+Config.REAL_SCREEN_HEIGHT);
+//		System.out.println(getWidth()+"/"+getHeight()+", "+screen.getWidth()+"/"+screen.getHeight()+", "+Config.SCREEN_WIDTH+"/"+Config.SCREEN_HEIGHT+", "+Config.REAL_SCREEN_WIDTH+"/"+Config.REAL_SCREEN_HEIGHT);
 		if (Config.DEFAULT_LEVEL_USE_FOG) {
-			screen.setFog(new int[Config.REAL_SCREEN_WIDTH * Config.REAL_SCREEN_HEIGHT]);
-			/*screen.refineFogLayer(
+			HashMap<String, Integer> fog = new HashMap<String, Integer>();
+			for (int y = 0; y < getHeight() * Config.BOX_SIZE; y++) {
+				for (int x = 0; x < getWidth() * Config.BOX_SIZE; x++) {
+					String key = "x"+x+"y"+y;
+					fog.put(key, 0);
+				}
+			}
+			screen.setFog(fog);
+			screen.refineFogLayer(
 				Portals.getExit().getCoordinates().getX() + Config.BOX_SIZE/2,
 				Portals.getExit().getCoordinates().getY() + Config.BOX_SIZE/2,
 				Config.DEFAULT_LEVEL_ENTRANCE_RADAR_VIEW_SIZE
-			);*/
+			);
 		}
-		System.out.println(screen.getPixels().length+" / "+screen.getFog().length);
 	}
 
 	private void initCamera() {
@@ -150,14 +152,6 @@ public class Level implements GameActionListener {
     private void npcQuantity(int wave) {
         quantity = (int)Math.round(wave * Config.LEVEL_WAVE_MULTIPLIER);
     }
-
-//    private double randomInRange(double min, double max) {
-//        Random random = new Random();
-//        double range = max - min;
-//        double scaled = random.nextDouble() * range;
-//        double shifted = scaled + min;
-//        return shifted;
-//    }
 
     private int randomIndexByAmount(int amount, int length) {
         int diff = Math.abs(amount - length);
@@ -252,11 +246,7 @@ public class Level implements GameActionListener {
         for (int y = 0; y < getHeight(); y++) {
 			for (int x = 0; x < getWidth(); x++) {
 				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
-//				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
 				getTiles()[x + y * getWidth()] = tile;
-//				if (!blocks.containsKey(key) && tile.isSolid()) {
-//                    blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
-//				}
 			}
 		}
         Portals.setEntrance(getEntranceLocation());
@@ -463,14 +453,6 @@ public class Level implements GameActionListener {
 		this.camera = camera;
 	}
 
-//    public HashMap<String, TileMap> getBlocks() {
-//        return blocks;
-//    }
-//
-//    public void setBlocks(HashMap<String, TileMap> blocks) {
-//        this.blocks = blocks;
-//    }
-
 	public int getWidth() {
 		return width;
 	}
@@ -543,7 +525,6 @@ public class Level implements GameActionListener {
 				Unit unit = (Unit) it.next();
 				unit.render(screen);
 			}
-			//renderUnits(screen, getUnits());
 		}
 
 		synchronized (getBullets()) {
@@ -551,30 +532,14 @@ public class Level implements GameActionListener {
 				Unit unit = (Unit) it.next();
 				unit.render(screen);
 			}
-			//renderUnits(screen, getBullets());
-		}
-
-		if (Config.DEFAULT_LEVEL_USE_FOG) {
-			screen.renderFog();
 		}
 
 		screen.renderLevelGui();
 	}
 
-//	private void renderUnits(Screen screen, List<Unit> items) {
-//		for (Iterator<Unit> it = getBullets().iterator(); it.hasNext();) {
-//			Unit unit = (Unit) it.next();
-//			unit.render(screen);
-//		}
-//	}
-
 	public long getNextWave() {
 		return nextWave;
 	}
-
-//	public void setNextWave(long nextWave) {
-//		this.nextWave = nextWave;
-//	}
 
 	public List<Unit> getUnits() {
 		return units;
