@@ -169,15 +169,15 @@ public class Screen {
 										: color;
 										break;
 								case 0:
-									getPixels()[pixelIndex] = Colors.tint(getPixels()[pixelIndex], 0.3D, 0.3D, 0.3D);
+									if (getPixels()[pixelIndex] != 0) System.out.println(getPixels()[pixelIndex]);
+									getPixels()[pixelIndex] = Config.DEFAULT_BKG_COLOR_DARK;
 									break;
 								case 1:
-									getPixels()[pixelIndex] = Config.DEFAULT_BKG_COLOR;
+									getPixels()[pixelIndex] = Colors.tint(color, 0.5D, 0.5D, 0.5D);
 									break;
 								}
 							} else {
-								System.out.println("key "+key+" not found");
-								getPixels()[pixelIndex] = Colors.tint(getPixels()[pixelIndex], 0.3D, 0.3D, 0.3D);
+								getPixels()[pixelIndex] = Config.DEFAULT_BKG_COLOR_DARK;
 							}
 						} else {
 							getPixels()[pixelIndex] =

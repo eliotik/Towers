@@ -42,6 +42,7 @@ public class Config {
 	public static final int REAL_SCREEN_HEIGHT = SCREEN_HEIGHT * SCALE;
 	public static final Dimension DIMENSIONS = new Dimension(REAL_SCREEN_WIDTH, REAL_SCREEN_HEIGHT);
 	public static final int DEFAULT_BKG_COLOR = 0x555555;
+	public static final int DEFAULT_BKG_COLOR_DARK = 0x000000;
 
 	public static final int BUFFER_STRATEGY_BUFFERS = 3;
 	public static final int COORDINATES_SHIFTING = 4;
@@ -60,7 +61,7 @@ public class Config {
 
 	public static final int DEFAULT_PLAYER_HEALTH = 20;
 	public static final int DEFAULT_PLAYER_MONEY = 500;
-	public static final int EDGE_SIZE = 2;
+	public static final int EDGE_SIZE = 3;
 
 	public static final int DEFAULT_PLAYER_RESOURCE = 120;
 
