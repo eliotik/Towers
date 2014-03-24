@@ -1,6 +1,11 @@
 package org.game.towers.workers;
 
+import java.util.HashMap;
 import java.util.Random;
+
+import org.game.towers.game.Config;
+import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
+import org.game.towers.workers.geo.Coordinates;
 
 public class Utils {
 	/**
@@ -61,4 +66,12 @@ public class Utils {
 
         return 0;
     }
+
+	public static HashMap<Coordinates, Integer> getVisiblePixels(String type, double x, double y, int radarSize) {
+		switch(type) {
+		case Config.VIEW_TYPE_LIGHT: return MathAlgorithms.getLightCoordinates(x, y, radarSize);
+		default:
+		case Config.VIEW_TYPE_CIRCLE: return MathAlgorithms.getInscribedCoordinates(x, y, radarSize);
+		}
+	}
 }

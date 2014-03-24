@@ -36,7 +36,7 @@ class Circle {
         setMaxY(getCoordinates().getY() + radius);
 		if (getMinX() < 0) setMinX(0);
 		if (getMinY() < 0) setMinY(0);
-		if (getMaxX() > Config.SCREEN_WIDTH) setMaxX(Config.SCREEN_WIDTH);
+		if (getMaxX() > Config.REAL_SCREEN_WIDTH) setMaxX(Config.REAL_SCREEN_WIDTH);
 		if (getMaxY() > Config.REAL_SCREEN_HEIGHT) setMaxY(Config.REAL_SCREEN_HEIGHT);
     }
 
@@ -86,7 +86,7 @@ class Circle {
                 offsetedMinX -= Config.EDGE_SIZE;
                 offsetedMaxX += Config.EDGE_SIZE;
                 if (offsetedMinX < 0) { offsetedMinX = 0; }
-                if (offsetedMaxX > Config.SCREEN_WIDTH) { offsetedMaxX = Config.SCREEN_WIDTH; }
+                if (offsetedMaxX > Config.REAL_SCREEN_WIDTH) { offsetedMaxX = Config.REAL_SCREEN_WIDTH; }
                 break;
             case 2:
                 generateInternalCircle();

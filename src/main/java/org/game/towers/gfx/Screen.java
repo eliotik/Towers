@@ -21,7 +21,7 @@ import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.gui.elements.FontRenderer;
 import org.game.towers.units.Unit;
 import org.game.towers.units.npcs.Npc;
-import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
+import org.game.towers.workers.Utils;
 import org.game.towers.workers.geo.Coordinates;
 
 public class Screen {
@@ -247,7 +247,7 @@ public class Screen {
 		int yp = yOrig - getyOffset();
 		boolean mirrorX = (mirrorDir & BIT_MIRROR_X) > 0;
 		boolean mirrorY = (mirrorDir & BIT_MIRROR_Y) > 0;
-        int shift = getxOffset()+getyOffset()*getWidth();
+        int shift = getxOffset() + getyOffset() * getWidth();
 		int scaleMap = scale - 1;
 
 		for (int y = 0; y < unit.getCurrentSprite().getHeight(); y++) {
@@ -413,7 +413,7 @@ public class Screen {
 	}
 
 	public void renderFog() {
-		int shift = getxOffset()+getyOffset()*getWidth();
+		int shift = getxOffset() + getyOffset() * getWidth();
 //		System.out.println("["+shift+"]");
 		for (int i = 0; i < getPixels().length; i++) {
 //			System.out.println(">"+(i+shift)+"<");
@@ -426,14 +426,13 @@ public class Screen {
 	}
 
 	public void refineFogLayer(double x, double y, int radarSize) {
-//		HashMap<Coordinates, Integer> circle = MathAlgorithms.getInscribedCoordinates(x, y, radarSize);
-		HashMap<Coordinates, Integer> circle = MathAlgorithms.getLightCoordinates(x, y, radarSize);
+		HashMap<Coordinates, Integer> circle = Utils.getVisiblePixels(Config.VIEW_TYPE_CIRCLE, x, y, radarSize);
 		Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
 		while (it.hasNext()) {
 		    @SuppressWarnings("rawtypes")
 			Map.Entry data = (Map.Entry)it.next();
 		    Coordinates coordinates = (Coordinates) data.getKey();
-		    int pixelIndex = coordinates.getX() + coordinates.getY() * Game.getInstance().getScreen().getWidth();
+		    int pixelIndex = coordinates.getX() + coordinates.getY() * getWidth();
 		    if (pixelIndex < getFog().length) {
 		    	int value = (int) data.getValue();
 		    	int oldValue = getFog()[pixelIndex];

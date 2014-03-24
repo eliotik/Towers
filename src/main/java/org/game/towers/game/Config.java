@@ -50,7 +50,8 @@ public class Config {
 	public static final int BOX_SIZE_FIXED = BOX_SIZE - 1;
 
 	public static final String DEFAULT_LEVELS_PATH = "/images/levels/";
-	public static final String DEFAULT_LEVEL_FILENAME = "labirinth_level.png";
+	public static final String DEFAULT_LEVEL_FILENAME = "lighttest_level.png";
+//	public static final String DEFAULT_LEVEL_FILENAME = "labirinth_level.png";
 //	public static final String DEFAULT_LEVEL_FILENAME = "default_level.png";
 //	public static final String DEFAULT_LEVEL_FILENAME = "simple_level.png";
 	public static final boolean DEFAULT_LEVEL_USE_FOG = true;
@@ -75,4 +76,7 @@ public class Config {
 	public static final String TILE_ENTRANCE = "ENTRANCE";
 	public static final String TILE_EXIT = "EXIT";
 	public static final String TILE_NPC_BULB = "NPC_BULB";
+
+	public static final String VIEW_TYPE_LIGHT = "LIGHT";
+	public static final String VIEW_TYPE_CIRCLE = "CIRCLE";
 }

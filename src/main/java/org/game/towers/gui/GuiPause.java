@@ -2,7 +2,6 @@ package org.game.towers.gui;
 
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
-import org.game.towers.game.World;
 import org.game.towers.handlers.InputHandler.InputEvent;
 import org.game.towers.gui.elements.ChooseList;
 import org.game.towers.gui.elements.FontRenderer;

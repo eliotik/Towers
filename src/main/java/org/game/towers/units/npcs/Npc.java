@@ -1,13 +1,10 @@
 package org.game.towers.units.npcs;
 
 import java.awt.Point;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.game.towers.game.Game;
 import org.game.towers.game.level.Portals;
 import org.game.towers.gfx.Screen;

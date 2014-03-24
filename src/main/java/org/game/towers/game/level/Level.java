@@ -3,7 +3,7 @@ package org.game.towers.game.level;
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.game.level.tiles.Tile;
-import org.game.towers.game.level.tiles.TileMap;
+//import org.game.towers.game.level.tiles.TileMap;
 import org.game.towers.game.level.tiles.TileTypes;
 import org.game.towers.gfx.Camera;
 import org.game.towers.gfx.Screen;
@@ -24,7 +24,7 @@ import org.game.towers.units.towers.modificators.Modificator;
 import org.game.towers.units.towers.modificators.Modificators;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
 import org.game.towers.workers.geo.Coordinates;
-import org.game.towers.workers.geo.Geo;
+//import org.game.towers.workers.geo.Geo;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -36,7 +36,7 @@ import javax.imageio.ImageIO;
 public class Level implements GameActionListener {
 
 	private String name;
-    private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
+//    private HashMap<String, TileMap> blocks = new HashMap<String, TileMap>();
     private HashMap<Integer, Node[][]>  jpsTilesHashMap = new HashMap<Integer, Node[][]>();
 	private Tile[] tiles;
 	private int width;
@@ -87,7 +87,7 @@ public class Level implements GameActionListener {
     	 Tower tower = UnitFactory.getTower(Towers.BULB);
          tower.setLevel(this);
          tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
-         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE);
+         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*13);
          addUnit(tower);
 
 //         tower = UnitFactory.getTower(Towers.BLOCKPOST);
@@ -110,7 +110,7 @@ public class Level implements GameActionListener {
     }
 
 	private void initFog(Screen screen) {
-		//System.out.println(getWidth()+"/"+getHeight()+", "+screen.getWidth()+"/"+screen.getHeight()+", "+Config.SCREEN_WIDTH+"/"+Config.SCREEN_HEIGHT+", "+Config.REAL_SCREEN_WIDTH+"/"+Config.REAL_SCREEN_HEIGHT);
+		System.out.println(getWidth()+"/"+getHeight()+", "+screen.getWidth()+"/"+screen.getHeight()+", "+Config.SCREEN_WIDTH+"/"+Config.SCREEN_HEIGHT+", "+Config.REAL_SCREEN_WIDTH+"/"+Config.REAL_SCREEN_HEIGHT);
 		if (Config.DEFAULT_LEVEL_USE_FOG) {
 			screen.setFog(new int[Config.REAL_SCREEN_WIDTH * Config.REAL_SCREEN_HEIGHT]);
 			screen.refineFogLayer(
@@ -251,11 +251,11 @@ public class Level implements GameActionListener {
         for (int y = 0; y < getHeight(); y++) {
 			for (int x = 0; x < getWidth(); x++) {
 				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
-				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
+//				String key = "x:"+tile.getX()+"y:"+tile.getY()+"bx:"+(tile.getX()+Config.BOX_SIZE)+"by:"+(tile.getY()+Config.BOX_SIZE);
 				getTiles()[x + y * getWidth()] = tile;
-				if (!blocks.containsKey(key) && tile.isSolid()) {
-                    blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
-				}
+//				if (!blocks.containsKey(key) && tile.isSolid()) {
+//                    blocks.put(key, new TileMap(tile, new Geo(new Coordinates(tile.getX(), tile.getY()), Config.BOX_SIZE)));
+//				}
 			}
 		}
         Portals.setEntrance(getEntranceLocation());
@@ -462,13 +462,13 @@ public class Level implements GameActionListener {
 		this.camera = camera;
 	}
 
-    public HashMap<String, TileMap> getBlocks() {
-        return blocks;
-    }
-
-    public void setBlocks(HashMap<String, TileMap> blocks) {
-        this.blocks = blocks;
-    }
+//    public HashMap<String, TileMap> getBlocks() {
+//        return blocks;
+//    }
+//
+//    public void setBlocks(HashMap<String, TileMap> blocks) {
+//        this.blocks = blocks;
+//    }
 
 	public int getWidth() {
 		return width;
