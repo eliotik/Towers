@@ -113,12 +113,13 @@ public class Level implements GameActionListener {
 		System.out.println(getWidth()+"/"+getHeight()+", "+screen.getWidth()+"/"+screen.getHeight()+", "+Config.SCREEN_WIDTH+"/"+Config.SCREEN_HEIGHT+", "+Config.REAL_SCREEN_WIDTH+"/"+Config.REAL_SCREEN_HEIGHT);
 		if (Config.DEFAULT_LEVEL_USE_FOG) {
 			screen.setFog(new int[Config.REAL_SCREEN_WIDTH * Config.REAL_SCREEN_HEIGHT]);
-			screen.refineFogLayer(
+			/*screen.refineFogLayer(
 				Portals.getExit().getCoordinates().getX() + Config.BOX_SIZE/2,
 				Portals.getExit().getCoordinates().getY() + Config.BOX_SIZE/2,
 				Config.DEFAULT_LEVEL_ENTRANCE_RADAR_VIEW_SIZE
-			);
+			);*/
 		}
+		System.out.println(screen.getPixels().length+" / "+screen.getFog().length);
 	}
 
 	private void initCamera() {
@@ -553,8 +554,9 @@ public class Level implements GameActionListener {
 			//renderUnits(screen, getBullets());
 		}
 
-		if (Config.DEFAULT_LEVEL_USE_FOG)
+		if (Config.DEFAULT_LEVEL_USE_FOG) {
 			screen.renderFog();
+		}
 
 		screen.renderLevelGui();
 	}
