@@ -1,11 +1,16 @@
 package org.game.towers.units.bullets;
 
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.Point2D;
+import java.util.Vector;
 
+import org.game.towers.game.Config;
 import org.game.towers.gfx.Screen;
 import org.game.towers.units.Unit;
 import org.game.towers.units.towers.Tower;
 import org.game.towers.workers.Utils;
+import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
 
 public class Bullet extends Unit {
 
@@ -13,7 +18,9 @@ public class Bullet extends Unit {
 
 	private double distance;
 	private Unit owner;
-	private Point point;
+	private Unit target;
+	private Point endPoint;
+	private Point startPoint;
 
 	@Override
 	public void tick() {
@@ -22,17 +29,42 @@ public class Bullet extends Unit {
 	}
 
 	private void updatePosition() {
-		int shiftX = Utils.doShift((int) getX(), (int) getPoint().getX());
-        int shiftY = Utils.doShift((int) getY(), (int) getPoint().getY());
+		if (getTarget() != null) {
+//			double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
+//			// calculate the vector from our center to their center
+//			Point2D enemyVec = Vector.vec_sub(endPoint.getX(), endPoint.getY(), getX(), getY());
+//			// measure the "distance" the bullet will travel
+//			double dist = Vector.vec_mag(enemyVec.getX(), enemyVec.getY());
+//			// adjust for target position based on the amount of "time units" to travel "dist"
+//			// and the targets speed vector
+//			Point2D targetSpeed = new Point2D.Double();
+//			targetSpeed.setLocation(getTarget().getSpeed(), getTarget().getSpeed());
+//			enemyVec = Vector.vec_add(endPoint.getX(), endPoint.getY(), Vector.vec_mul(targetSpeed, dist/speed));
+//			// calculate trajectory of bullet
+//			Point2D bulletTrajectory = Vector.vec_mul(Vector.vec_normal(enemyVec.getX(), enemyVec.getY()), speed);
+//			// assign values
+//			double nextX = bulletTrajectory.getX();
+//			double nextY = bulletTrajectory.getY();
+//
+//			System.out.println(">>>>>>>>>>>>>>>");
+//			System.out.println(getX()+", "+getY()+" | "+getStartPoint().getX()+", "+getStartPoint().getY()+" | "+getEndPoint().getX()+", "+getEndPoint().getY()+" | "+nextX+", "+nextY);
+
+		}
+		int shiftX = Utils.doShift((int) getX(), (int) getEndPoint().getX());
+        int shiftY = Utils.doShift((int) getY(), (int) getEndPoint().getY());
         if (shiftX == 0 && shiftY == 0) {
         	setMoving(false);
         } else {
-        	setMoving(true);
-        	double speed = (getSpeed() == 0) ? owner.getSpeed() : getSpeed();
-	        setX(getX() + shiftX * speed);
-			setY(getY() + shiftY * speed);
-			setNumSteps(getNumSteps() + 1);
+        	move(shiftX, shiftY);
         }
+	}
+
+	private void move(int shiftX, int shiftY) {
+		setMoving(true);
+		double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
+        setX(getX() + shiftX * speed);
+		setY(getY() + shiftY * speed);
+		setNumSteps(getNumSteps() + 1);
 	}
 
 	@Override
@@ -48,6 +80,28 @@ public class Bullet extends Unit {
 	@Override
 	public boolean hasCollided(int xa, int ya) {
 		return false;
+	}
+
+	public boolean hasCollision(Unit unit) {
+		int bXMin = (int) getMinCollisionBox().getX();
+		int bXMax = (int) getMaxCollisionBox().getX();
+		int bYMin = (int) getMinCollisionBox().getY();
+		int bYMax = (int) getMaxCollisionBox().getY();
+
+		int uXMin = (int) unit.getMinCollisionBox().getX();
+		int uXMax = (int) unit.getMaxCollisionBox().getX();
+		int uYMin = (int) unit.getMinCollisionBox().getY();
+		int uYMax = (int) unit.getMaxCollisionBox().getY();
+
+		System.out.println("-----------------------------------");
+		System.out.println(endPoint.getX()+", "+endPoint.getY());
+		System.out.println((int)getX()+", "+(int)getY()+" | "+bXMin+", "+bYMin+" | "+(int)(getX() + bXMin)+", "+(int)(getY() + bYMin)+" | "+(bXMax - bXMin)+", "+(bYMax - bYMin));
+		System.out.println((int)unit.getX()+", "+(int)unit.getY()+" | "+uXMin+", "+uYMin+" | "+(int)(unit.getX() + uXMin)+", "+(int)(unit.getY() + uYMin)+" | "+(uXMax - uXMin)+", "+(uYMax - uYMin));
+
+		Rectangle bulletBox = new Rectangle((int) getX() + bXMin, (int) getY() + bYMin, bXMax - bXMin, bYMax - bYMin);
+		Rectangle unitBox = new Rectangle((int) unit.getX() + uXMin, (int) unit.getY() + uYMin, uXMax - uXMin, uYMax - uYMin);
+
+		return unitBox.contains(bulletBox);
 	}
 
 	public double getDistance() {
@@ -66,11 +120,27 @@ public class Bullet extends Unit {
 		return owner;
 	}
 
-	public void setPoint(Point point) {
-		this.point = point;
+	public void setEndPoint(Point point) {
+		this.endPoint = point;
 	}
 
-	public Point getPoint() {
-		return point;
+	public Point getEndPoint() {
+		return endPoint;
+	}
+
+	public Point getStartPoint() {
+		return startPoint;
+	}
+
+	public void setStartPoint(Point point) {
+		this.startPoint = point;
+	}
+
+	public Unit getTarget() {
+		return target;
+	}
+
+	public void setTarget(Unit target) {
+		this.target = target;
 	}
 }

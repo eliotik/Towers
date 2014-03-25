@@ -61,7 +61,7 @@ public class UnitFactory {
 		return null;
 	}
 
-	public static Bullet getBullet(String type, Unit owner){
+	public static Bullet getBullet(String type, Unit owner, Unit target){
 		try {
 			List<Bullet> types = filter(having(on(Bullet.class).getId(), Matchers.equalTo(type)),
 					BulletsCollection.getItems());
@@ -72,6 +72,7 @@ public class UnitFactory {
 			Bullet unit = (Bullet) types.get(0);
 			Bullet bullet = SerializationUtils.clone(unit);
 			bullet.setOwner(owner);
+			bullet.setTarget(target);
 			return bullet;
 		} catch (Exception e) {
 			e.printStackTrace();

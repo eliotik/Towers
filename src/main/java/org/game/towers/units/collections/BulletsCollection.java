@@ -11,6 +11,7 @@ import org.game.towers.workers.XmlReader;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.awt.Point;
 import java.util.*;
 
 public class BulletsCollection {
@@ -37,6 +38,20 @@ public class BulletsCollection {
                 item.setSpeed(Double.parseDouble(elemj.getAttribute("speed").toString()));
                 item.setAnimationSwitchDelay(Integer.parseInt(elemj.getAttribute("animation_switch_delay").toString()));
                 item.setAnimationStartDelay(Integer.parseInt(elemj.getAttribute("animation_start_delay").toString()));
+
+                item.setMinCollisionBox(
+                		new Point(
+                				Integer.parseInt(elemj.getAttribute("collision_box_min_x").toString()),
+                				Integer.parseInt(elemj.getAttribute("collision_box_min_y").toString())
+                				)
+                		);
+
+                item.setMaxCollisionBox(
+	            		new Point(
+		        				Integer.parseInt(elemj.getAttribute("collision_box_max_x").toString()),
+		        				Integer.parseInt(elemj.getAttribute("collision_box_max_y").toString())
+	            				)
+                		);
 
                 item.setSprites(getSprites(item.getId()));
 

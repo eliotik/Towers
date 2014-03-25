@@ -463,4 +463,23 @@ public abstract class Unit implements Serializable {
 	public void setHighlight(double highlight) {
 		this.highlight = highlight;
 	}
+
+	public int getPosition(int x, int y) {
+		int position = 0;
+		//0
+//		if ( getX() >= x && getY() > y ) return position;
+//		//1
+//		if ( getX() < x && getY() > y ) return 1;
+//		//2
+//		if ( getX() < x  && getY() >= y ) return 1;
+		//3
+		//4
+		//5
+		//6
+		//7
+
+
+
+		return position;
+	}
 }

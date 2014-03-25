@@ -2,6 +2,7 @@ package org.game.towers.units.towers;
 
 import java.awt.Point;
 
+import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.game.level.Level;
 import org.game.towers.gfx.Screen;
@@ -22,6 +23,7 @@ public class Tower extends Unit {
 	private boolean canShoot = false;
 	private double shootingDelay;
 	private long lastShootTime;
+	private boolean allowToShoot = true;
 
 	public Tower() {
 		setLastShootTime((long) (System.currentTimeMillis() - (getShootingDelay() * 1000D)));
@@ -38,7 +40,7 @@ public class Tower extends Unit {
 	@Override
 	public void tick() {
 		super.tick();
-		if (isCanShoot()) {
+		if (isCanShoot() && allowToShoot) {
 			checkShootingPossibility();
 		}
 	}
@@ -52,7 +54,7 @@ public class Tower extends Unit {
 				if (unit instanceof Npc && !unit.isDead()) {
 					int distanceToTarget = getDistanceToTarget((int)unit.getX(), (int)unit.getY());
 					if ( distanceToTarget <= getRadius() && (System.currentTimeMillis() - getLastShootTime()) >= getShootingDelay() * 1000D) {
-						shoot((int)unit.getX(), (int)unit.getY());
+						shoot((int)unit.getX(), (int)unit.getY(), unit);
 						return;
 					}
 				}
@@ -60,15 +62,38 @@ public class Tower extends Unit {
 		}
 	}
 
-	private void shoot(int x, int y) {
+	private void shoot(int x, int y, Unit unit) {
 		setLastShootTime(System.currentTimeMillis());
 
-		Bullet bullet = UnitFactory.getBullet(getBulletType(), this);
-		bullet.setPoint(new Point(x, y));
+		int halfBox = (int) (Config.BOX_SIZE/2 + (Config.BOX_SIZE/2)*unit.getSpeed());
+		Bullet bullet = UnitFactory.getBullet(getBulletType(), this, unit);
+		int position = getPosition(x, y);
+
+		switch(unit.getMovingDirection()) {
+		case 0:
+
+			y -= halfBox + bullet.getMaxCollisionBox().getY();
+			if (y < 0) y = 0;
+			break;
+		case 1:
+			y += halfBox - bullet.getMaxCollisionBox().getY();
+			break;
+		case 2:
+			x -= halfBox + bullet.getMaxCollisionBox().getX();
+			if (x < 0) x = 0;
+			break;
+		case 3:
+			x += halfBox -  bullet.getMaxCollisionBox().getX();
+			break;
+		}
+
+		bullet.setEndPoint(new Point(x + halfBox, y + halfBox));
+		bullet.setStartPoint(new Point((int) getX(), (int) getY()));
 		bullet.setX(getX());
 		bullet.setY(getY());
 
 		Game.getInstance().getWorld().getLevel().addBullet(bullet);
+		allowToShoot = false;
 	}
 
 	private int getDistanceToTarget(int x, int y) {
