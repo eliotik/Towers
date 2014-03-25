@@ -35,4 +35,12 @@ public class MathAlgorithms {
         return x;
     }
 
+    public static int direction(int x1, int x2, int y1, int y2) {
+        double quotient = (y1 - y2) / (x2 - x1);
+        double grade = Math.atan(quotient);
+        double degrees = Math.toDegrees(grade);
+
+        return 0;
+    }
+
 }
