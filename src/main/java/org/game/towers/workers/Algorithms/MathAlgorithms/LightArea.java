@@ -41,10 +41,10 @@ class LightArea
                 lowerCircleLightEdge.add(new Coordinates(x, y));
             }
         }
-        System.out.println("lowerCircleLightEdge size " + lowerCircleLightEdge.size());
+//        System.out.println("lowerCircleLightEdge size " + lowerCircleLightEdge.size());
 
         for(double x = getMaxX(); x > getMinX(); x-=delta) {
-            int y = (int)(java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinatesCenter().getX()), 2)) - getCoordinatesCenter().getY());
+            int y = (int)(getCoordinatesCenter().getY() - java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinatesCenter().getX()), 2)));
 
             if (upperCircleLightEdge.size() == 0) {
                 upperCircleLightEdge.add(new Coordinates(x, y));
@@ -55,7 +55,7 @@ class LightArea
                 upperCircleLightEdge.add(new Coordinates(x, y));
             }
         }
-        System.out.println("upperCircleLightEdge size " + upperCircleLightEdge.size());
+//        System.out.println("upperCircleLightEdge size " + upperCircleLightEdge.size());
     }
 
     private void generateLightEdge(){
@@ -63,30 +63,29 @@ class LightArea
 
         for(Coordinates point : upperCircleLightEdge) {
             if (point.getX() < coordinatesCenter.getX()){
-                for (int x = coordinatesCenter.getX(); x > point.getX(); x--) {
+                for (double x = coordinatesCenter.getX(); x > point.getX(); x-=delta) {
                     if (addPoints(x, point)) {
                         break;
                     }
                 }
             } else {
-                for (int x = coordinatesCenter.getX(); x < point.getX(); x++) {
+                for (double x = coordinatesCenter.getX(); x < point.getX(); x+=delta) {
                     if (addPoints(x, point)) {
                         break;
                     }
                 }
             }
-
         }
 
         for(Coordinates point : lowerCircleLightEdge) {
             if (point.getX() < coordinatesCenter.getX()){
-                for (int x = coordinatesCenter.getX(); x > point.getX(); x--) {
+                for (double x = coordinatesCenter.getX(); x > point.getX(); x-=delta) {
                     if (addPoints(x, point)) {
                         break;
                     }
                 }
             } else {
-                for (int x = coordinatesCenter.getX(); x < point.getX(); x++) {
+                for (double x = coordinatesCenter.getX(); x < point.getX(); x+=delta) {
                     if (addPoints(x, point)) {
                         break;
                     }
@@ -95,30 +94,15 @@ class LightArea
         }
     }
 
-    private boolean addPoints(int x, Coordinates point) {
+    private boolean addPoints(double x, Coordinates point) {
         int y, xa, ya;
         y = (int)lineEquation(x, point);
 
         if (x < 0 || y < 0 || x > Config.REAL_SCREEN_WIDTH || y > Config.REAL_SCREEN_HEIGHT) {
             return false;
         }
-//        if (y < 0) {
-//            lightEdge.add(point);
-//            stop = true;
-//            return stop;
-//        }
-//        if (x > Config.SCREEN_WIDTH) {
-//            lightEdge.add(point);
-//            stop = true;
-//            return stop;
-//        }
-//        if (y > Config.REAL_SCREEN_HEIGHT) {
-//            lightEdge.add(point);
-//            stop = true;
-//            return stop;
-//        }
-
-        xa = x >> Config.COORDINATES_SHIFTING;
+        int newX = (int)x;
+        xa = newX >> Config.COORDINATES_SHIFTING;
         ya = y >> Config.COORDINATES_SHIFTING;
 
         if (Game.getInstance().getWorld().getLevel().getTile(xa, ya).isSolid()){
@@ -126,7 +110,7 @@ class LightArea
             return true;
         }
 
-        inscribedCoordinates.put(point, 2);
+        inscribedCoordinates.put(new Coordinates(newX, y), 2);
 
         return false;
     }
@@ -137,9 +121,10 @@ class LightArea
         return inscribedCoordinates;
     }
 
-    private double lineEquation(int x, Coordinates item){
+    private double lineEquation(double x, Coordinates item){
         double aFactor = (x - item.getX()) / (coordinatesCenter.getX() - item.getX());
-        return coordinatesCenter.getY() + ( aFactor * (coordinatesCenter.getY() - item.getY()) );
+        double y = coordinatesCenter.getY() + ( aFactor * (coordinatesCenter.getY() - item.getY()) );
+        return y;
     }
 
     private double getRadiusVector(double x, double y, Coordinates coordinate) {
