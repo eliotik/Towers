@@ -66,11 +66,13 @@ public class Level implements GameActionListener {
 		setImagePath(imagePath);
 		loadLevelFromFile();
 
-//		Npc npc = UnitFactory.getNpc(randomUnitType());
-//        npc.setLevel(this);
-//        npc.setX(Portals.getEntrance().getCoordinates().getX());
-//        npc.setY(Portals.getEntrance().getCoordinates().getY());
-//        addUnit(npc);
+		if (!Config.DEFAULT_LEVEL_USE_WAVES) {
+			Npc npc = UnitFactory.getNpc(randomUnitType());
+	        npc.setLevel(this);
+	        npc.setX(Portals.getEntrance().getCoordinates().getX());
+	        npc.setY(Portals.getEntrance().getCoordinates().getY());
+	        addUnit(npc);
+		}
 	}
 
     public void initComponents() {
@@ -298,7 +300,9 @@ public class Level implements GameActionListener {
 
 		getStore().tick();
 
-        generateNpcs();
+		if (Config.DEFAULT_LEVEL_USE_WAVES) {
+			generateNpcs();
+		}
 
 		updateBullets();
 		updateUnits();
@@ -344,7 +348,8 @@ public class Level implements GameActionListener {
 					bulletUnit.tick();
 					if (bulletUnit instanceof Bullet && unit instanceof Npc && !unit.isDead()) {
 						Bullet bullet = (Bullet) bulletUnit;
-						if (bullet.getTileX() == unit.getTileX() && bullet.getTileY() == unit.getTileY()) {
+//						if (bullet.getTileX() == unit.getTileX() && bullet.getTileY() == unit.getTileY()) {
+						if (bullet.hasCollision(unit)) {
 							Npc npc = (Npc) unit;
 							npc.setHealth(npc.getHealth() - bullet.getDamage());
 							if (!bullet.getOwner().getModificator().equals(Modificators.NONE)) {

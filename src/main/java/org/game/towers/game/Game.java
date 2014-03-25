@@ -509,7 +509,9 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	public void initWorldLevel() {
 		setWorld(new World(Config.DEFAULT_WORLD_NAME));
 		getWorld().getLevel().initComponents();
-		getWorld().getLevel().generateNpcs();
+		if (Config.DEFAULT_LEVEL_USE_WAVES) {
+			getWorld().getLevel().generateNpcs();
+		}
 		getWorld().getLevel().addTowers();
 	}
 }
