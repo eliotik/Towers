@@ -19,18 +19,20 @@ public class MathAlgorithms {
     public static HashMap<Coordinates, Integer> getLightCoordinates(double x, double y, int radius) {
         Coordinates coordinatesCenter = new Coordinates(x, y);
         LightArea la = new LightArea(coordinatesCenter, radius);
-        System.out.println(la.getInscribedCoordinates().size());
+        System.out.println("getInscribedCoordinates size = " + la.getInscribedCoordinates().size());
         return la.getInscribedCoordinates();
     }
 
+    public static int dependentYFromX(int x, int x1, int x2, int y1, int y2) {
+        double aFactor = (x - x1) / (x2 - x1);
+        int y = (int)(y2 + ( aFactor * (y2 - y1) ));
+        return y;
+    }
 
-    // test
-//    public static void main(String[] args) {
-//        Coordinates coordinatesCenter = new Coordinates(100, 100);
-//        int radius = 12;
-//        Circle circle = new Circle(coordinatesCenter, radius);
-//        HashMap<Coordinates, Integer> inscribedCoordinates = circle.getInscribedCoordinates();
-//        System.out.println(inscribedCoordinates.size());
-//    }
+    public static int dependentXFromY(int y, int x1, int x2, int y1, int y2) {
+        double aFactor = (x2 - x1) / (y2 - y1);
+        int x = (int)(aFactor * (y - y2) + x1);
+        return x;
+    }
 
 }
