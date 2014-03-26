@@ -9,6 +9,7 @@ import org.game.towers.game.Config;
 import org.game.towers.gfx.Screen;
 import org.game.towers.units.Unit;
 import org.game.towers.units.towers.Tower;
+import org.game.towers.workers.Algorithms.MathAlgorithms.LinearAlgorithms;
 import org.game.towers.workers.Utils;
 import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
 
@@ -66,6 +67,23 @@ public class Bullet extends Unit {
 		setY(getY() + shiftY * speed);
 		setNumSteps(getNumSteps() + 1);
 	}
+
+    private void move(int x1, int x2, int y1, int y2){
+        setMoving(true);
+        double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
+        double direction = LinearAlgorithms.direction(x1, x2, y1, y2);
+        if ((direction > 67 && direction < 113) || (direction < -67 && direction > -113)) {
+            setNumSteps(getNumSteps() + 1);
+            double shiftX = LinearAlgorithms.dependentXFromY((getY() + getNumSteps()*speed), x1, x2, y1, y2);
+            setX(shiftX);
+            setX(getY() + getNumSteps()*speed);
+        } else {
+            setNumSteps(getNumSteps() + 1);
+            double shiftY = LinearAlgorithms.dependentYFromX((getX() + getNumSteps()*speed), x1, x2, y1, y2);
+            setX(getX() + getNumSteps()*speed);
+            setX(shiftY);
+        }
+    }
 
 	@Override
 	public void render(Screen screen) {
