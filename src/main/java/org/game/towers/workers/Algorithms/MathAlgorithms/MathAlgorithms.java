@@ -23,24 +23,10 @@ public class MathAlgorithms {
         return la.getInscribedCoordinates();
     }
 
-    public static int dependentYFromX(int x, int x1, int x2, int y1, int y2) {
-        double aFactor = (x - x1) / (x2 - x1);
-        int y = (int)(y2 + ( aFactor * (y2 - y1) ));
-        return y;
-    }
 
-    public static int dependentXFromY(int y, int x1, int x2, int y1, int y2) {
-        double aFactor = (x2 - x1) / (y2 - y1);
-        int x = (int)(aFactor * (y - y2) + x1);
-        return x;
-    }
 
-    public static int direction(int x1, int x2, int y1, int y2) {
-        double quotient = (y1 - y2) / (x2 - x1);
-        double grade = Math.atan(quotient);
-        double degrees = Math.toDegrees(grade);
-
-        return 0;
-    }
+//    public static void main(String[] args) {
+//
+//    }
 
 }
