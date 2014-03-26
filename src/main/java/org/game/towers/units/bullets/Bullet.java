@@ -56,7 +56,8 @@ public class Bullet extends Unit {
         if (shiftX == 0 && shiftY == 0) {
         	setMoving(false);
         } else {
-        	move(shiftX, shiftY);
+//        	move(shiftX, shiftY);
+            move(getStartPoint().getX(), getEndPoint().getX(), getStartPoint().getY(), getEndPoint().getY());
         }
 	}
 
@@ -68,21 +69,38 @@ public class Bullet extends Unit {
 		setNumSteps(getNumSteps() + 1);
 	}
 
-    private void move(int x1, int x2, int y1, int y2){
+    private void move(double x1, double x2, double y1, double y2){
         setMoving(true);
         double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
         double direction = LinearAlgorithms.direction(x1, x2, y1, y2);
-        if ((direction > 67 && direction < 113) || (direction < -67 && direction > -113)) {
+        if ((direction > 67 && direction < 113)) {
             setNumSteps(getNumSteps() + 1);
-            double shiftX = LinearAlgorithms.dependentXFromY((getY() + getNumSteps()*speed), x1, x2, y1, y2);
+            double shiftX = LinearAlgorithms.dependentXFromY((getY() + getNumSteps() * speed), x1, x2, y1, y2);
             setX(shiftX);
-            setX(getY() + getNumSteps()*speed);
-        } else {
+            setY(getY() + getNumSteps() * speed);
+        }
+
+        if (direction < -67 && direction > -113) {
+            setNumSteps(getNumSteps() + 1);
+            double shiftX = LinearAlgorithms.dependentXFromY((getY() - getNumSteps()*speed), x1, x2, y1, y2);
+            setX(shiftX);
+            setY(getY() - getNumSteps() * speed);
+        }
+          
+        if ((direction < -113 && direction >= -180) || (direction >= 0 && direction <= 67)) {
             setNumSteps(getNumSteps() + 1);
             double shiftY = LinearAlgorithms.dependentYFromX((getX() + getNumSteps()*speed), x1, x2, y1, y2);
             setX(getX() + getNumSteps()*speed);
-            setX(shiftY);
+            setY(shiftY);
         }
+
+        if ((direction >= 113 && direction <= 180 ) || (direction >= -67 && direction <= -1)) {
+            setNumSteps(getNumSteps() + 1);
+            double shiftY = LinearAlgorithms.dependentYFromX((getX() - getNumSteps()*speed), x1, x2, y1, y2);
+            setX(getX() - getNumSteps()*speed);
+            setY(shiftY);
+        }
+
     }
 
 	@Override
