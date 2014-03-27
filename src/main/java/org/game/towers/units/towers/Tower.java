@@ -6,41 +6,28 @@ import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.game.level.Level;
 import org.game.towers.gfx.Screen;
+import org.game.towers.units.ShootingUnit;
 import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
 import org.game.towers.units.bullets.Bullet;
 import org.game.towers.units.npcs.Npc;
 
-public class Tower extends Unit {
+public class Tower extends ShootingUnit {
 
 	private static final long serialVersionUID = 1L;
 
-	private double radius;
 	private int price;
 	private int radarViewSize;
-	private String bulletType;
 	private int resources;
-	private boolean canShoot = false;
-	private double shootingDelay;
-	private long lastShootTime;
-	private boolean allowToShoot = true;
 
 	public Tower() {
 		setLastShootTime((long) (System.currentTimeMillis() - (getShootingDelay() * 1000D)));
 	}
 
-	public double getRadius() {
-		return radius;
-	}
-
-	public void setRadius(double radius) {
-		this.radius = radius;
-	}
-
 	@Override
 	public void tick() {
 		super.tick();
-		if (isCanShoot() && allowToShoot) {
+		if (isCanShoot() && isAllowToShoot()) {
 			checkShootingPossibility();
 		}
 	}
@@ -67,7 +54,6 @@ public class Tower extends Unit {
 
 		int halfBox = (int) (Config.BOX_SIZE/2 + (Config.BOX_SIZE/2)*unit.getSpeed());
 		Bullet bullet = UnitFactory.getBullet(getBulletType(), this, unit);
-		int position = getPosition(x, y);
 
 		switch(unit.getMovingDirection()) {
 		case 0:
@@ -93,7 +79,7 @@ public class Tower extends Unit {
 		bullet.setY(getY());
 
 		Game.getInstance().getWorld().getLevel().addBullet(bullet);
-		allowToShoot = false;
+		setAllowToShoot(false);
 	}
 
 	private int getDistanceToTarget(int x, int y) {
@@ -126,43 +112,11 @@ public class Tower extends Unit {
 		this.radarViewSize = radarViewSize;
 	}
 
-	public String getBulletType() {
-		return bulletType;
-	}
-
-	public void setBulletType(String bulletType) {
-		this.bulletType = bulletType;
-	}
-
 	public int getResources() {
 		return resources;
 	}
 
 	public void setResources(int resources) {
 		this.resources = resources;
-	}
-
-	public boolean isCanShoot() {
-		return canShoot;
-	}
-
-	public void setCanShoot(boolean canShoot) {
-		this.canShoot = canShoot;
-	}
-
-	public double getShootingDelay() {
-		return shootingDelay;
-	}
-
-	public void setShootingDelay(double shootingDelay) {
-		this.shootingDelay = shootingDelay;
-	}
-
-	public long getLastShootTime() {
-		return lastShootTime;
-	}
-
-	public void setLastShootTime(long lastShootTime) {
-		this.lastShootTime = lastShootTime;
 	}
 }

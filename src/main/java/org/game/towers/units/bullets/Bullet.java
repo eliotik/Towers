@@ -2,16 +2,12 @@ package org.game.towers.units.bullets;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.Point2D;
-import java.util.Vector;
 
-import org.game.towers.game.Config;
 import org.game.towers.gfx.Screen;
 import org.game.towers.units.Unit;
 import org.game.towers.units.towers.Tower;
 import org.game.towers.workers.Algorithms.MathAlgorithms.LinearAlgorithms;
 import org.game.towers.workers.Utils;
-import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
 
 public class Bullet extends Unit {
 
@@ -61,13 +57,13 @@ public class Bullet extends Unit {
         }
 	}
 
-	private void move(int shiftX, int shiftY) {
-		setMoving(true);
-		double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
-        setX(getX() + shiftX * speed);
-		setY(getY() + shiftY * speed);
-		setNumSteps(getNumSteps() + 1);
-	}
+//	private void move(int shiftX, int shiftY) {
+//		setMoving(true);
+//		double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
+//        setX(getX() + shiftX * speed);
+//		setY(getY() + shiftY * speed);
+//		setNumSteps(getNumSteps() + 1);
+//	}
 
     private void move(double x1, double x2, double y1, double y2){
         setMoving(true);
@@ -86,7 +82,7 @@ public class Bullet extends Unit {
             setX(shiftX);
             setY(getY() - getNumSteps() * speed);
         }
-          
+
         if ((direction < -113 && direction >= -180) || (direction >= 0 && direction <= 67)) {
             setNumSteps(getNumSteps() + 1);
             double shiftY = LinearAlgorithms.dependentYFromX((getX() + getNumSteps()*speed), x1, x2, y1, y2);
