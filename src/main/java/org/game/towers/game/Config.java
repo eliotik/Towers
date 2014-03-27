@@ -81,4 +81,6 @@ public class Config {
 
 	public static final String VIEW_TYPE_LIGHT = "LIGHT";
 	public static final String VIEW_TYPE_CIRCLE = "CIRCLE";
+
+	public static final boolean UNIT_ONE_SHOOT_STRATEGY = false;
 }
