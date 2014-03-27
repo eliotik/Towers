@@ -67,34 +67,41 @@ public class Bullet extends Unit {
 
     private void move(double x1, double x2, double y1, double y2){
         setMoving(true);
+        double eps = 0.05;
         double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
         double direction = LinearAlgorithms.direction(x1, x2, y1, y2);
+
+        if ((LinearAlgorithms.radiusVector(x1, getX(), y1, getY()) / (((Tower)getOwner()).getRadius()) < 1 + eps) &&
+            (LinearAlgorithms.radiusVector(x1, getX(), y1, getY()) / (((Tower)getOwner()).getRadius()) > 1 - eps)) {
+            setMoving(false);
+            return;
+        }
         if ((direction > 67 && direction < 113)) {
-            setNumSteps(getNumSteps() + 1);
             double shiftX = LinearAlgorithms.dependentXFromY((getY() + getNumSteps() * speed), x1, x2, y1, y2);
             setX(shiftX);
             setY(getY() + getNumSteps() * speed);
+            setNumSteps(getNumSteps() + 1);
         }
 
         if (direction < -67 && direction > -113) {
-            setNumSteps(getNumSteps() + 1);
             double shiftX = LinearAlgorithms.dependentXFromY((getY() - getNumSteps()*speed), x1, x2, y1, y2);
             setX(shiftX);
             setY(getY() - getNumSteps() * speed);
+            setNumSteps(getNumSteps() + 1);
         }
 
         if ((direction < -113 && direction >= -180) || (direction >= 0 && direction <= 67)) {
-            setNumSteps(getNumSteps() + 1);
             double shiftY = LinearAlgorithms.dependentYFromX((getX() + getNumSteps()*speed), x1, x2, y1, y2);
             setX(getX() + getNumSteps()*speed);
             setY(shiftY);
+            setNumSteps(getNumSteps() + 1);
         }
 
         if ((direction >= 113 && direction <= 180 ) || (direction >= -67 && direction <= -1)) {
-            setNumSteps(getNumSteps() + 1);
             double shiftY = LinearAlgorithms.dependentYFromX((getX() - getNumSteps()*speed), x1, x2, y1, y2);
             setX(getX() - getNumSteps()*speed);
             setY(shiftY);
+            setNumSteps(getNumSteps() + 1);
         }
 
     }
