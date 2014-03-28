@@ -146,7 +146,7 @@ public class Bullet extends Unit {
 		Rectangle bulletBox = new Rectangle((int) getX() + bXMin, (int) getY() + bYMin, bXMax - bXMin, bYMax - bYMin);
 		Rectangle unitBox = new Rectangle((int) unit.getX() + uXMin, (int) unit.getY() + uYMin, uXMax - uXMin, uYMax - uYMin);
 
-		return unitBox.contains(bulletBox);
+		return unitBox.intersects(bulletBox);
 	}
 
 	public double getDistance() {

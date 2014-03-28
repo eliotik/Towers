@@ -80,6 +80,7 @@ public class ShootingUnit extends Unit {
 
 	@Override
 	public void tick() {
+		super.tick();
 		if (isCanShoot() && isAllowToShoot()) {
 			checkShootingPossibility();
 		}

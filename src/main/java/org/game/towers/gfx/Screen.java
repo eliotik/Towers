@@ -303,6 +303,10 @@ public class Screen {
 								}
 							}
 							getPixels()[pixelIndex] = color;
+							getPixels()[pixelIndex] =
+									(unit.getHighlight() != 1)
+									? Colors.brightness(color, unit.getHighlight())
+									: color;
 						}
 					}
 				}
