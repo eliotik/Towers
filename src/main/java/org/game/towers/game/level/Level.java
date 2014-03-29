@@ -2,6 +2,7 @@ package org.game.towers.game.level;
 
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
+import org.game.towers.game.level.Portals.Portal;
 import org.game.towers.game.level.tiles.Tile;
 import org.game.towers.game.level.tiles.TileTypes;
 import org.game.towers.gfx.Camera;
@@ -24,7 +25,6 @@ import org.game.towers.units.towers.modificators.Modificators;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
 import org.game.towers.workers.geo.Coordinates;
 
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -41,7 +41,6 @@ public class Level implements GameActionListener {
 	private int height;
 	private int xOffset = 0;
 	private int yOffset = 0;
-	private int wave = 1;
 	private String imagePath;
 	private BufferedImage image;
 	private volatile List<Unit> units = new ArrayList<Unit>();
@@ -54,20 +53,15 @@ public class Level implements GameActionListener {
 	private int playerMoney = Config.DEFAULT_PLAYER_MONEY;
 	private int playerResource = Config.DEFAULT_PLAYER_RESOURCE;
 
-    private long waveTime = 0;
-    private long waveTimeInterval;
-    private long npcLastStart = 0;
-    private int quantity;
-    private int remainingNpc;
-    private HashMap<Integer, Integer> waveCheck = new HashMap<Integer, Integer>();
-    private Random random = new Random();
+    private Wave currentWave;
 
     public Level(String imagePath) {
 		setImagePath(imagePath);
 		loadLevelFromFile();
+		setCurrentWave(new Wave(this));
 
 		if (!Config.DEFAULT_LEVEL_USE_WAVES) {
-			Npc npc = UnitFactory.getNpc(randomUnitType());
+			Npc npc = UnitFactory.getNpc(getCurrentWave().randomUnitType());
 	        npc.setLevel(this);
 	        npc.setX(Portals.getEntrance().getCoordinates().getX());
 	        npc.setY(Portals.getEntrance().getCoordinates().getY());
@@ -84,8 +78,8 @@ public class Level implements GameActionListener {
     public void addTowers() {
     	 Tower tower = UnitFactory.getTower(Towers.BULB);
          tower.setLevel(this);
-         tower.setX(Portals.getEntrance().getCoordinates().getX() + Config.BOX_SIZE);
-         tower.setY(Portals.getEntrance().getCoordinates().getY() + Config.BOX_SIZE*13);
+         tower.setX(240);
+         tower.setY(208);
          addUnit(tower);
          System.out.println("TOWER POSITION: "+tower.getX()+" : "+tower.getY());
 //         tower = UnitFactory.getTower(Towers.BLOCKPOST);
@@ -136,88 +130,9 @@ public class Level implements GameActionListener {
 		setStore(new Store());
 	}
 
-    private void setNextWave() {
-        if (waveTime < System.currentTimeMillis()) {
-            waveTime = System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT;
-            wave++;
-        }
-
-        npcQuantity(wave);
-        if (waveCheck.get(wave) == null) {
-            remainingNpc += quantity;
-            waveCheck.put(wave, quantity);
-            waveTimeInterval = Config.LEVEL_WAVE_TIMEOUT / remainingNpc;
-        }
-    }
-
-
-    private void npcQuantity(int wave) {
-        quantity = (int)Math.round(wave * Config.LEVEL_WAVE_MULTIPLIER);
-    }
-
-    private int randomIndexByAmount(int amount, int length) {
-        int diff = Math.abs(amount - length);
-        if (diff > length) {
-            return randomIndexByAmount(diff, length);
-        } else {
-            int result = random.nextInt(amount);
-            return result;
-        }
-    }
-
-    private String randomUnitType(){
-        String type = "";
-        int npcTypeIndex = 0;
-        Field[] npcsNames = Npcs.class.getDeclaredFields();
-        if (getAmountNpcsTypesByWave() <= npcsNames.length - 1) {
-            if (getAmountNpcsTypesByWave() == 0) {
-                try {
-                    type = (String)npcsNames[npcTypeIndex].get(Npcs.class);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                return  type;
-            }
-            npcTypeIndex = random.nextInt(getAmountNpcsTypesByWave());
-            try {
-                type = (String)npcsNames[npcTypeIndex].get(Npcs.class);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        } else {
-            int randomIndexByAmount = randomIndexByAmount(getAmountNpcsTypesByWave(), npcsNames.length - 1);
-            npcTypeIndex = 0;
-            if (randomIndexByAmount > 0) {
-                npcTypeIndex = random.nextInt(randomIndexByAmount);
-            }
-            try {
-                type = (String)npcsNames[npcTypeIndex].get(Npcs.class);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return  type;
-    }
-
-    private int getAmountNpcsTypesByWave(){
-        int amountTypes = (wave / 2);
-
-        return amountTypes;
-    }
-
 	public void generateNpcs() {
-        setNextWave();
-
-        if (remainingNpc > 0 && npcLastStart < System.currentTimeMillis()) {
-            Npc npc = UnitFactory.getNpc(randomUnitType());
-            npc.setLevel(this);
-            npc.setX(Portals.getEntrance().getCoordinates().getX());
-            npc.setY(Portals.getEntrance().getCoordinates().getY());
-            addUnit(npc);
-            npcLastStart = System.currentTimeMillis() + waveTimeInterval;
-            remainingNpc--;
-        }
+        getCurrentWave().setNextWave();
+        getCurrentWave().generateNpcs();
 	}
 
 	private void loadLevelFromFile() {
@@ -251,11 +166,28 @@ public class Level implements GameActionListener {
 				getTiles()[x + y * getWidth()] = tile;
 			}
 		}
-        Portals.setEntrance(getEntranceLocation());
-		Portals.setExit(getExitLocation());
+        locatePortals();
+//        Portals.setEntrance(getEntranceLocation());
+//		Portals.setExit(getExitLocation());
 	}
 
-    public Node[][] generateGridForJSP(int unitId) {
+    private void locatePortals() {
+		for (int y = 0; y < getHeight(); ++y) {
+			for (int x = 0; x < getWidth(); ++x) {
+				Tile tile = getTile(x, y);
+				switch (tile.getName()) {
+				case Config.TILE_ENTRANCE:
+					Portals.addEntrance(Portals.createPortal(x, y));
+					break;
+				case Config.TILE_EXIT:
+					Portals.addExit(Portals.createPortal(x, y));
+					break;
+				}
+			}
+		}
+	}
+
+	public Node[][] generateGridForJSP(int unitId) {
         Node[][] jpsTiles = jpsTilesHashMap.get(unitId);
         if (jpsTiles == null) {
             jpsTiles = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
@@ -368,28 +300,28 @@ public class Level implements GameActionListener {
 		}
 	}
 
-	public Coordinates getEntranceLocation() {
-		return getTileLocation(Config.TILE_ENTRANCE);
-	}
+//	public Coordinates getEntranceLocation() {
+//		return getTileLocation(Config.TILE_ENTRANCE);
+//	}
+//
+//	public Coordinates getExitLocation() {
+//		return getTileLocation(Config.TILE_EXIT);
+//	}
 
-	public Coordinates getExitLocation() {
-		return getTileLocation(Config.TILE_EXIT);
-	}
-
-	public Coordinates getTileLocation(String name) {
-		Coordinates coords = new Coordinates();
-		for (int y = 0; y < getHeight(); y++) {
-			for (int x = 0; x < getWidth(); x++) {
-				Tile tile = getTile(x, y);
-				if (tile.getName().equals(name)) {
-					coords.setX(x << Config.COORDINATES_SHIFTING);
-					coords.setY(y << Config.COORDINATES_SHIFTING);
-					return coords;
-				}
-			}
-		}
-		return coords;
-	}
+//	public Coordinates getTileLocation(String name) {
+//		Coordinates coords = new Coordinates();
+//		for (int y = 0; y < getHeight(); y++) {
+//			for (int x = 0; x < getWidth(); x++) {
+//				Tile tile = getTile(x, y);
+//				if (tile.getName().equals(name)) {
+//					coords.setX(x << Config.COORDINATES_SHIFTING);
+//					coords.setY(y << Config.COORDINATES_SHIFTING);
+//					return coords;
+//				}
+//			}
+//		}
+//		return coords;
+//	}
 
 	public String getName() {
 		return name;
@@ -432,14 +364,6 @@ public class Level implements GameActionListener {
 		synchronized (getUnits()) {
 			getBullets().add(unit);
 		}
-	}
-
-	public int getWave() {
-		return wave;
-	}
-
-	public void setWave(int wave) {
-		this.wave = wave;
 	}
 
 	public Store getStore() {
@@ -592,5 +516,13 @@ public class Level implements GameActionListener {
 
 	public void setBullets(List<Unit> bullets) {
 		this.bullets = bullets;
+	}
+
+	public Wave getCurrentWave() {
+		return currentWave;
+	}
+
+	public void setCurrentWave(Wave currentWave) {
+		this.currentWave = currentWave;
 	}
 }

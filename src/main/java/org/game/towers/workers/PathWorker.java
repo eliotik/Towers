@@ -28,8 +28,8 @@ public class PathWorker {
     }*/
 
     private void initJPS() {
-        if (jps == null){
-            this.jps = new JPS();
+        if (getJps() == null){
+            setJps(new JPS());
         }
     }
 
@@ -40,26 +40,26 @@ public class PathWorker {
         ArrayList<Node> trailNodes;
         ArrayList<Node> visitedNodes = new ArrayList<Node>();
 
-        if (trailMap.get(id) == null) {
-            trailNodes = jps.search(x, y, id);
-            trailMap.put(id, trailNodes);
+        if (getTrailMap().get(id) == null) {
+            trailNodes = getJps().search(x, y, id);
+            getTrailMap().put(id, trailNodes);
         }
 
-        trailNodes = trailMap.get(id);
+        trailNodes = getTrailMap().get(id);
 
         if (trailNodes == null || trailNodes.size() == 0) {
             point.setLocation(0, 0);
             return;
         }
 
-        if (visitedNodesMap.get(id) == null) {
+        if (getVisitedNodesMap().get(id) == null) {
             visitedNodes.add(trailNodes.get(0));
-            visitedNodesMap.put(id, visitedNodes);
+            getVisitedNodesMap().put(id, visitedNodes);
         }
 
-        visitedNodes = visitedNodesMap.get(id);
+        visitedNodes = getVisitedNodesMap().get(id);
 
-        nextNode = trailNodes.get(visitedNodes.size());
+        nextNode = trailNodes.get((trailNodes.size()==visitedNodes.size()) ? visitedNodes.size()-1 : ((visitedNodes.size() > trailNodes.size())?trailNodes.size()-1:visitedNodes.size()-1));
         if (Config.LEVEL_HIGHLIGHT_PATH_TILES) {
         	Game.getInstance().getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
         }
@@ -67,7 +67,7 @@ public class PathWorker {
         int nextY = Game.getInstance().getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).getY()*Config.BOX_SIZE;
         if (nextX == x && nextY == y) {
             visitedNodes.add(nextNode);
-            visitedNodesMap.put(id, visitedNodes);
+            getVisitedNodesMap().put(id, visitedNodes);
         }
 
         dx = Utils.doShift(x, nextX);
@@ -75,5 +75,29 @@ public class PathWorker {
 
         point.setLocation(dx, dy);
     }
+
+	public JPS getJps() {
+		return jps;
+	}
+
+	public void setJps(JPS jps) {
+		this.jps = jps;
+	}
+
+	public HashMap<Integer, ArrayList<Node>> getTrailMap() {
+		return trailMap;
+	}
+
+	public void setTrailMap(HashMap<Integer, ArrayList<Node>> trailMap) {
+		this.trailMap = trailMap;
+	}
+
+	public HashMap<Integer, ArrayList<Node>> getVisitedNodesMap() {
+		return visitedNodesMap;
+	}
+
+	public void setVisitedNodesMap(HashMap<Integer, ArrayList<Node>> visitedNodesMap) {
+		this.visitedNodesMap = visitedNodesMap;
+	}
 
 }

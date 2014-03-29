@@ -72,8 +72,8 @@ public class Bullet extends Unit {
         double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
 //        double direction = LinearAlgorithms.direction(x1, x2, y1, y2);
         double direction = LinearAlgorithms.angleByCoordinate(x1, x2, y1, y2);
-        double radius = LinearAlgorithms.radiusVector(x1, x2, y1, y2);
-        double deltaRadius = radius / speed;
+//        double radius = LinearAlgorithms.radiusVector(x1, x2, y1, y2);
+//        double deltaRadius = radius / speed;
 
         if ((LinearAlgorithms.radiusVector(x1, getX(), y1, getY()) / (((Tower)getOwner()).getRadius() + (double)Config.BOX_SIZE) < 1 + eps) &&
             (LinearAlgorithms.radiusVector(x1, getX(), y1, getY()) / (((Tower)getOwner()).getRadius() + (double)Config.BOX_SIZE) > 1 - eps)) {

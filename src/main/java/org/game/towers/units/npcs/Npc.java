@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.game.towers.game.Game;
 import org.game.towers.game.level.Portals;
+import org.game.towers.game.level.Portals.Portal;
 import org.game.towers.gfx.Screen;
 import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
@@ -19,6 +20,9 @@ public class Npc extends Unit {
 	private ArrayList<String> hands;
 	private int award;
 	private List<Modificator> impacts = new ArrayList<Modificator>();
+
+	private Portal entrance;
+	private Portal exit;
 
 	public ArrayList<String> getHands() {
 		return hands;
@@ -161,5 +165,21 @@ public class Npc extends Unit {
 			impact.setStartTime(System.currentTimeMillis());
 			getImpacts().add(impact);
 		}
+	}
+
+	public Portal getEntrance() {
+		return entrance;
+	}
+
+	public void setEntrance(Portal entrance) {
+		this.entrance = entrance;
+	}
+
+	public Portal getExit() {
+		return exit;
+	}
+
+	public void setExit(Portal exit) {
+		this.exit = exit;
 	}
 }

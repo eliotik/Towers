@@ -391,7 +391,7 @@ public class Screen {
 		FontRenderer.drawString(playerResource, xBPos, yBPos, black, fontScale);
 		FontRenderer.drawString(playerResource, xPos, yPos, white, fontScale);
 
-		String waveMessage = "WAVE " + (level.getWave()-1);
+		String waveMessage = "WAVE " + (level.getCurrentWave().getId());
 		int waveFontScale = fontScale-1;
 		int waveMessageX = getWidth()/2 - FontRenderer.getStringWidth(waveMessage, waveFontScale)/2;
 		FontRenderer.drawString(waveMessage, waveMessageX+1, 1, black, waveFontScale);
