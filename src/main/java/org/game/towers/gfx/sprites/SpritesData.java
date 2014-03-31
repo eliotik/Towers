@@ -115,10 +115,17 @@ public class SpritesData {
 	public static Sprite MONEY = new Sprite("MONEY", 0, 2, 16, 16, "GUI");
 	public static Sprite HEART = new Sprite("HEART", 1, 2, 16, 16, "GUI");
 	public static Sprite RESOURCE = new Sprite("RESOURCE", 2, 2, 16, 16, "GUI");
+	public static Sprite STORE = new Sprite("STORE", 3, 2, 16, 16, "GUI");
 
 	public static Sprite STORE_BG_LEFT = new Sprite("STORE_BG_LEFT", 0, 1, 16, 16, "GUI");
 	public static Sprite STORE_BG_MIDDLE = new Sprite("STORE_BG_MIDDLE", 1, 1, 16, 16, "GUI");
 	public static Sprite STORE_BG_RIGHT = new Sprite("STORE_BG_RIGHT", 2, 1, 16, 16, "GUI");
+
+	public static Sprite STORE_BG_SIDE = new Sprite("STORE_BG_SIDE", 3, 1, 16, 16, "GUI");
+	public static Sprite STORE_BG_CORNER = new Sprite("STORE_BG_CORNER", 4, 1, 16, 16, "GUI");
+	public static Sprite STORE_BG_INSIDE = new Sprite("STORE_BG_INSIDE", 5, 1, 16, 16, "GUI");
+	public static Sprite STORE_BG_CELL_OFF = new Sprite("STORE_BG_CELL_OFF", 6, 1, 16, 16, "GUI");
+	public static Sprite STORE_BG_CELL_ON = new Sprite("STORE_BG_CELL_ON", 7, 1, 16, 16, "GUI");
 
 	public static Sprite BULLET_BASE_DOT_0 = new Sprite("BULLET_BASE_DOT", 0, 1, 16, 16, "BULLET");
 	public static Sprite BULLET_BASE_DOT_1 = new Sprite("BULLET_BASE_DOT", 1, 1, 16, 16, "BULLET");

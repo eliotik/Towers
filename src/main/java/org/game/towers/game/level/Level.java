@@ -462,7 +462,7 @@ public class Level implements GameActionListener {
 				unit.render(screen);
 			}
 		}
-
+		getStore().render(screen);
 		screen.renderLevelGui();
 	}
 
