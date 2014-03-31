@@ -354,7 +354,6 @@ public class Screen {
 	}
 
 	public void renderLevelGui() {
-		Game.getInstance().getWorld().getLevel().getStore().render(this);
 		renderIcons();
 	}
 

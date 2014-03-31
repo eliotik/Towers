@@ -54,7 +54,7 @@ public class Bullet extends Unit {
         	setMoving(false);
         } else {
 //        	move(shiftX, shiftY);
-            move(getStartPoint().getX(), getEndPoint().getX(), getStartPoint().getY(), getEndPoint().getY() - Config.BOX_SIZE / 2);
+            move(getStartPoint().getX(), getEndPoint().getX(), getStartPoint().getY(), getEndPoint().getY());
         }
 	}
 
@@ -75,8 +75,8 @@ public class Bullet extends Unit {
 //        double radius = LinearAlgorithms.radiusVector(x1, x2, y1, y2);
 //        double deltaRadius = radius / speed;
 
-        if ((LinearAlgorithms.radiusVector(x1, getX(), y1, getY()) / (((Tower)getOwner()).getRadius() + 2 * Config.BOX_SIZE_FIXED) < 1 + eps) &&
-            (LinearAlgorithms.radiusVector(x1, getX(), y1, getY()) / (((Tower)getOwner()).getRadius() + 2 * Config.BOX_SIZE_FIXED) > 1 - eps)) {
+        if ((LinearAlgorithms.radiusVector(x1, getX(), y1, getY()) / (((Tower)getOwner()).getRadius() + (double)Config.BOX_SIZE) < 1 + eps) &&
+            (LinearAlgorithms.radiusVector(x1, getX(), y1, getY()) / (((Tower)getOwner()).getRadius() + (double)Config.BOX_SIZE) > 1 - eps)) {
             setMoving(false);
             return;
         }
@@ -136,23 +136,23 @@ public class Bullet extends Unit {
 	}
 
 	public boolean hasCollision(Unit unit) {
-//		int bXMin = (int) getMinCollisionBox().getX();
-//		int bXMax = (int) getMaxCollisionBox().getX();
-//		int bYMin = (int) getMinCollisionBox().getY();
-//		int bYMax = (int) getMaxCollisionBox().getY();
-//
-//		int uXMin = (int) unit.getMinCollisionBox().getX();
-//		int uXMax = (int) unit.getMaxCollisionBox().getX();
-//		int uYMin = (int) unit.getMinCollisionBox().getY();
-//		int uYMax = (int) unit.getMaxCollisionBox().getY();
+		int bXMin = (int) getMinCollisionBox().getX();
+		int bXMax = (int) getMaxCollisionBox().getX();
+		int bYMin = (int) getMinCollisionBox().getY();
+		int bYMax = (int) getMaxCollisionBox().getY();
+
+		int uXMin = (int) unit.getMinCollisionBox().getX();
+		int uXMax = (int) unit.getMaxCollisionBox().getX();
+		int uYMin = (int) unit.getMinCollisionBox().getY();
+		int uYMax = (int) unit.getMaxCollisionBox().getY();
 
 //		System.out.println("-----------------------------------");
 //		System.out.println(endPoint.getX()+", "+endPoint.getY());
 //		System.out.println((int)getX()+", "+(int)getY()+" | "+bXMin+", "+bYMin+" | "+(int)(getX() + bXMin)+", "+(int)(getY() + bYMin)+" | "+(bXMax - bXMin)+", "+(bYMax - bYMin));
 //		System.out.println((int)unit.getX()+", "+(int)unit.getY()+" | "+uXMin+", "+uYMin+" | "+(int)(unit.getX() + uXMin)+", "+(int)(unit.getY() + uYMin)+" | "+(uXMax - uXMin)+", "+(uYMax - uYMin));
 
-		Rectangle bulletBox = getCollisionBox();//  new Rectangle((int) getX() + bXMin, (int) getY() + bYMin, bXMax - bXMin, bYMax - bYMin);
-		Rectangle unitBox = unit.getCollisionBox();//new Rectangle((int) unit.getX() + uXMin, (int) unit.getY() + uYMin, uXMax - uXMin, uYMax - uYMin);
+		Rectangle bulletBox = new Rectangle((int) getX() + bXMin, (int) getY() + bYMin, bXMax - bXMin, bYMax - bYMin);
+		Rectangle unitBox = new Rectangle((int) unit.getX() + uXMin, (int) unit.getY() + uYMin, uXMax - uXMin, uYMax - uYMin);
 
 		return unitBox.intersects(bulletBox);
 	}
