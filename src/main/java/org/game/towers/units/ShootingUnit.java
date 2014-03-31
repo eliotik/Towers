@@ -47,23 +47,23 @@ public class ShootingUnit extends Unit {
 		int halfBox = (int) (Config.BOX_SIZE/2 + (Config.BOX_SIZE/2)*unit.getSpeed());
 		Bullet bullet = UnitFactory.getBullet(getBulletType(), this, unit);
 
-		switch(unit.getMovingDirection()) {
-		case 0:
-
-			y -= halfBox + bullet.getMaxCollisionBox().getY();
-			if (y < 0) y = 0;
-			break;
-		case 1:
-			y += halfBox - bullet.getMaxCollisionBox().getY();
-			break;
-		case 2:
-			x -= halfBox + bullet.getMaxCollisionBox().getX();
-			if (x < 0) x = 0;
-			break;
-		case 3:
-			x += halfBox -  bullet.getMaxCollisionBox().getX();
-			break;
-		}
+//		switch(unit.getMovingDirection()) {
+//		case 0:
+//
+//			y -= halfBox + bullet.getMaxCollisionBox().getY();
+//			if (y < 0) y = 0;
+//			break;
+//		case 1:
+//			y += halfBox - bullet.getMaxCollisionBox().getY();
+//			break;
+//		case 2:
+//			x -= halfBox + bullet.getMaxCollisionBox().getX();
+//			if (x < 0) x = 0;
+//			break;
+//		case 3:
+//			x += halfBox -  bullet.getMaxCollisionBox().getX();
+//			break;
+//		}
 
 		bullet.setEndPoint(new Point(x + halfBox, y + halfBox));
 		bullet.setStartPoint(new Point((int) getX(), (int) getY()));

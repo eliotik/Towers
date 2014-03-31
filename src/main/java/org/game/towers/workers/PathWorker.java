@@ -12,30 +12,42 @@ public class PathWorker {
 
     private volatile HashMap<Integer, ArrayList<Node>> trailMap = new HashMap<Integer, ArrayList<Node>>();
     private volatile HashMap<Integer, ArrayList<Node>> visitedNodesMap = new HashMap<Integer, ArrayList<Node>>();
+    private HashMap<String, JPS> jpsContainer = new HashMap<>();
     private volatile JPS jps;
 
 
-    /*private int doShift(int dimension1, int dimension2) {
-        int deltaDim = dimension2 - dimension1;
-        if (deltaDim > 0){
-            return 1;
-        }
-        if (deltaDim < 0){
-            return -1;
-        }
 
-        return 0;
-    }*/
 
     private void initJPS() {
-        if (getJps() == null){
+        if (getJpsWithoutEndPoint() == null){
             setJps(new JPS());
+            jpsContainer.put("none", jps);
+            return;
         }
+        setJps(getJpsWithoutEndPoint());
+    }
+
+    private void initJPS(int endX, int endY) {
+        if (getJpsByPoint(endX, endY) == null){
+            setJps(new JPS(endX, endY));
+            jpsContainer.put(endX + " " + endY, jps);
+            return;
+        }
+        setJps(getJpsByPoint(endX, endY));
     }
 
     public synchronized void nextCoordinate(int x, int y, Point point, int id) {
-        int dx, dy;
         initJPS();
+        search(x, y, point, id);
+    }
+
+    public synchronized void nextCoordinate(int x, int y, Point point, int id, int endX, int endY) {
+        initJPS(endX, endY);
+        search(x, y, point, id);
+    }
+
+    private synchronized void search(int x, int y, Point point, int id){
+        int dx, dy;
         Node nextNode;
         ArrayList<Node> trailNodes;
         ArrayList<Node> visitedNodes = new ArrayList<Node>();
@@ -61,7 +73,7 @@ public class PathWorker {
 
         nextNode = trailNodes.get((trailNodes.size()==visitedNodes.size()) ? visitedNodes.size()-1 : ((visitedNodes.size() > trailNodes.size())?trailNodes.size()-1:visitedNodes.size()-1));
         if (Config.LEVEL_HIGHLIGHT_PATH_TILES) {
-        	Game.getInstance().getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
+            Game.getInstance().getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).setHighlight(0.8);
         }
         int nextX = Game.getInstance().getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).getX()*Config.BOX_SIZE;
         int nextY = Game.getInstance().getWorld().getLevel().getTile(nextNode.getX()>>4, nextNode.getY()>>4).getY()*Config.BOX_SIZE;
@@ -76,9 +88,16 @@ public class PathWorker {
         point.setLocation(dx, dy);
     }
 
-	public JPS getJps() {
-		return jps;
+	public JPS getJpsByPoint(int endX, int endY) {
+        return jpsContainer.get(endX + " " + endY);
 	}
+	public JPS getJpsWithoutEndPoint() {
+		return jpsContainer.get("none");
+	}
+
+    public JPS getJps() {
+        return jps;
+    }
 
 	public void setJps(JPS jps) {
 		this.jps = jps;
