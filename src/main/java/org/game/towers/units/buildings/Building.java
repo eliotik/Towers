@@ -38,4 +38,16 @@ public class Building extends Unit {
 	public void setRadarViewSize(int radarViewSize) {
 		this.radarViewSize = radarViewSize;
 	}
+
+	@Override
+	public void onMouseHover() {}
+
+	@Override
+	public void onMouseOut() {}
+
+	@Override
+	public void onMouseHolded() {}
+
+	@Override
+	public void onMouseClicked() {}
 }

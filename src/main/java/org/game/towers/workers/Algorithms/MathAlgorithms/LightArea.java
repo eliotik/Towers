@@ -16,6 +16,8 @@ class LightArea
     private ArrayList<Coordinates> lowerCircleLightEdge = new ArrayList<>();
     private HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
     private ArrayList<Coordinates> lightEdge = new ArrayList<>();
+    private HashMap<String, Integer> checkOnUnique = new HashMap<>();
+    private int uniqueSize = 0;
     private double epsilon = 0.5;
     private double delta = 0.1;
 
@@ -110,7 +112,7 @@ class LightArea
             return true;
         }
 
-        inscribedCoordinates.put(new Coordinates(newX, y), 2);
+        putUniqueCoordinate(new Coordinates(newX, y), 2);
 
         return false;
     }
@@ -119,6 +121,25 @@ class LightArea
         generateLightEdge();
 
         return inscribedCoordinates;
+    }
+
+    private void putUniqueCoordinate(Coordinates coordinates, int status) {
+        boolean unique = false;
+        if (checkOnUnique.size() == 0) {
+            checkOnUnique.put(coordinates.getX() + "-" + coordinates.getY(), 0);
+            uniqueSize = checkOnUnique.size();
+            unique = true;
+        }
+
+        checkOnUnique.put(coordinates.getX() + "-" + coordinates.getY(), 0);
+        if (uniqueSize != checkOnUnique.size())   {
+            uniqueSize = checkOnUnique.size();
+            unique = true;
+        }
+
+        if (unique) {
+            inscribedCoordinates.put(coordinates, status);
+        }
     }
 
     private double lineEquation(double x, Coordinates item){

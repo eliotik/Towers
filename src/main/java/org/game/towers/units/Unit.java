@@ -13,7 +13,6 @@ import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.units.npcs.Npc;
-import org.game.towers.units.towers.Tower;
 import org.game.towers.workers.Utils;
 
 public abstract class Unit implements Serializable {
@@ -71,11 +70,32 @@ public abstract class Unit implements Serializable {
 				}
 			}
 		}
+		int box = Config.BOX_SIZE/4;
+		Point mousePositionAtLevel = Utils.transformMousePositionToLevel(Game.getInstance().getScreen().getMousePosition().getX(), Game.getInstance().getScreen().getMousePosition().getY());
+		Rectangle mouseCoursor = new Rectangle((int)mousePositionAtLevel.getX(), (int)mousePositionAtLevel.getY(), box, box);
+		Rectangle unit = getCollisionBox();
+
+		if (unit.intersects(mouseCoursor)) {
+			if (Game.getInstance().getMouseHandler().isMouseBtnHolded()) {
+				onMouseHolded();
+			} else {
+				onMouseHover();
+			}
+		} else {
+			onMouseOut();
+		}
+	}
+
+	public Rectangle getCollisionBox() {
+		return new Rectangle((int)(getX()+getMinCollisionBox().getX()), (int)(getY()+getMinCollisionBox().getY()), (int)(getMaxCollisionBox().getX() - getMinCollisionBox().getX()), (int)(getMaxCollisionBox().getY() - getMinCollisionBox().getY()));
 	}
 
 	public abstract void render(Screen screen);
-
 	public abstract boolean hasCollided(int xa, int ya);
+	public abstract void onMouseHover();
+	public abstract void onMouseOut();
+	public abstract void onMouseHolded();
+	public abstract void onMouseClicked();
 
 	public Sprite getCurrentSprite() {
 		return getSprite(getSpriteIndex());
@@ -267,9 +287,6 @@ public abstract class Unit implements Serializable {
 	}
 
 	public boolean isPauseAnimation() {
-		if (!isMoving() && !isDead() && this instanceof Npc) {
-			setPauseAnimation(true);
-		}
 		return pauseAnimation;
 	}
 
@@ -465,24 +482,5 @@ public abstract class Unit implements Serializable {
 
 	public void setHighlight(double highlight) {
 		this.highlight = highlight;
-	}
-
-	public int getPosition(int x, int y) {
-		int position = 0;
-		//0
-//		if ( getX() >= x && getY() > y ) return position;
-//		//1
-//		if ( getX() < x && getY() > y ) return 1;
-//		//2
-//		if ( getX() < x  && getY() >= y ) return 1;
-		//3
-		//4
-		//5
-		//6
-		//7
-
-
-
-		return position;
 	}
 }

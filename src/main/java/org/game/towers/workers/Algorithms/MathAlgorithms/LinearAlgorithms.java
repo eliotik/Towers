@@ -23,13 +23,22 @@ public class LinearAlgorithms {
     }
 
     public static double angleByCoordinate(double x1, double x2, double y1, double y2) {
+
+        if (x2 == x1) {
+            return Math.PI/2;
+        }
+
         double quotient = (y2 - y1) / (x2 - x1);
         double grade = Math.atan(quotient);
+
+        if (x2 - x1 < 0) {
+            grade+=Math.PI;
+        }
         return grade;
     }
 
     public static double radiusVector(double x1, double x2, double y1, double y2){
-        double radiusVector = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        double radiusVector = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
         return radiusVector;
     }
 
@@ -37,8 +46,10 @@ public class LinearAlgorithms {
         double[] coordinates = new double[2];
         double x = radius * Math.cos(angle);
         double y = radius * Math.sin(angle);
-        coordinates[0] = (-1)*x;
-        coordinates[1] = (-1)*y;
+
+
+        coordinates[0] = x;
+        coordinates[1] = y;
         return coordinates;
     }
 }

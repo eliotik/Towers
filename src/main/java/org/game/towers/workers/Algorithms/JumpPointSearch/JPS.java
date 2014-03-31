@@ -19,8 +19,14 @@ public class JPS {
     private HashMap<Integer, Grid> gridHashMap = new HashMap<Integer, Grid>();
 
     public JPS(){
-        this.endX = Portals.getExit().getCoordinates().getX();
-        this.endY = Portals.getExit().getCoordinates().getY();
+        setEndX(Portals.getExit().getCoordinates().getX());
+        setEndY(Portals.getExit().getCoordinates().getY());
+    }
+
+    public JPS(int endX, int endY){
+        System.out.println(endX +" : "+ endY);
+        setEndX(endX);
+        setEndY(endY);
     }
 
     public synchronized ArrayList<Node> search(int xStart, int yStart, int unitId){
@@ -226,5 +232,21 @@ public class JPS {
             return unitGrid.getNeighbors(node); //adds initial nodes to be jumped from!
         }
         return neighbors; //this returns the neighbors, you know
+    }
+
+    public int getEndX() {
+        return endX;
+    }
+
+    public void setEndX(int endX) {
+        this.endX = endX;
+    }
+
+    public int getEndY() {
+        return endY;
+    }
+
+    public void setEndY(int endY) {
+        this.endY = endY;
     }
 }

@@ -44,7 +44,7 @@ public class Npc extends Unit {
 
             setFinished(Math.abs(Portals.getExit().getCoordinates().getX() - getX()) < 2  && Math.abs(Portals.getExit().getCoordinates().getY() - getY()) < 2);
 
-			Game.getInstance().getPathWorker().nextCoordinate((int) getX(), (int) getY(), shifts, hashCode());
+			Game.getInstance().getPathWorker().nextCoordinate((int) getX(), (int) getY(), shifts, hashCode(), getExit().getCoordinates().getX(), getExit().getCoordinates().getY());
 	        move((int)shifts.getX(), (int)shifts.getY());
 		}
 	}
@@ -167,6 +167,14 @@ public class Npc extends Unit {
 		}
 	}
 
+	@Override
+	public boolean isPauseAnimation() {
+		if (!isMoving() && !isDead()) {
+			setPauseAnimation(true);
+		}
+		return super.isPauseAnimation();
+	}
+
 	public Portal getEntrance() {
 		return entrance;
 	}
@@ -182,4 +190,16 @@ public class Npc extends Unit {
 	public void setExit(Portal exit) {
 		this.exit = exit;
 	}
+
+	@Override
+	public void onMouseHover() {}
+
+	@Override
+	public void onMouseHolded() {}
+
+	@Override
+	public void onMouseClicked() {}
+
+	@Override
+	public void onMouseOut() {}
 }

@@ -9,7 +9,7 @@ public class FontRenderer {
 
 	public static SpriteSheet FONT = new SpriteSheet(Config.FONT_FILE);
 
-	private static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ><    "
+	private static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ><$   "
 			+ "abcdefghijklmnopqrstuvwxyz{}    "
 			+ "1234567890+-*/,.()[]<>!?=\"':;^  ";
 	private static String width5 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdeghkmnopqrsuvwxyz1234567890+-=?{}^";
