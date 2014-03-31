@@ -167,6 +167,14 @@ public class Npc extends Unit {
 		}
 	}
 
+	@Override
+	public boolean isPauseAnimation() {
+		if (!isMoving() && !isDead()) {
+			setPauseAnimation(true);
+		}
+		return super.isPauseAnimation();
+	}
+
 	public Portal getEntrance() {
 		return entrance;
 	}

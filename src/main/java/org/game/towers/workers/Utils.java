@@ -1,9 +1,12 @@
 package org.game.towers.workers;
 
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Random;
 
 import org.game.towers.game.Config;
+import org.game.towers.game.Game;
+import org.game.towers.gfx.Screen;
 import org.game.towers.workers.Algorithms.MathAlgorithms.MathAlgorithms;
 import org.game.towers.workers.geo.Coordinates;
 
@@ -28,6 +31,16 @@ public class Utils {
 	    int randomNum = rand.nextInt((max - min) + 1) + min;
 
 	    return randomNum;
+	}
+
+	public static Point transformMousePositionToScreen(double x, double y) {
+		return new Point((int)(x/Config.SCALE), (int)(y/Config.SCALE));
+	}
+
+	public static Point transformMousePositionToLevel(double x, double y) {
+		Point screenPosition = transformMousePositionToScreen(x, y);
+		Screen screen = Game.getInstance().getScreen();
+		return new Point((int)(screenPosition.getX()+screen.getxOffset()), (int)(screenPosition.getY() + screen.getyOffset()));
 	}
 
 //	public static HashMap<Coordinates, Integer> getCirclePixels(int radius, double x, double y) {

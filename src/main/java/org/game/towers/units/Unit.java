@@ -1,6 +1,5 @@
 package org.game.towers.units;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.Serializable;
@@ -14,7 +13,6 @@ import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.units.npcs.Npc;
-import org.game.towers.units.towers.Tower;
 import org.game.towers.workers.Utils;
 
 public abstract class Unit implements Serializable {
@@ -72,8 +70,10 @@ public abstract class Unit implements Serializable {
 				}
 			}
 		}
-		Rectangle mouseCoursor = new Rectangle((int)(((Game.getInstance().getScreen().getMousePosition().getX()/Config.SCALE)+Game.getInstance().getScreen().getxOffset())), (int)(((Game.getInstance().getScreen().getMousePosition().getY()/Config.SCALE)+Game.getInstance().getScreen().getyOffset())), Config.BOX_SIZE/3, Config.BOX_SIZE/3);
-		Rectangle unit = new Rectangle((int)(getX()+getMinCollisionBox().getX()), (int)(getY()+getMinCollisionBox().getY()), (int)(getMaxCollisionBox().getX() - getMinCollisionBox().getX()), (int)(getMaxCollisionBox().getY() - getMinCollisionBox().getY()));
+		int box = Config.BOX_SIZE/4;
+		Point mousePositionAtLevel = Utils.transformMousePositionToLevel(Game.getInstance().getScreen().getMousePosition().getX(), Game.getInstance().getScreen().getMousePosition().getY());
+		Rectangle mouseCoursor = new Rectangle((int)mousePositionAtLevel.getX(), (int)mousePositionAtLevel.getY(), box, box);
+		Rectangle unit = getCollisionBox();
 
 		if (unit.intersects(mouseCoursor)) {
 			if (Game.getInstance().getMouseHandler().isMouseBtnHolded()) {
@@ -86,10 +86,12 @@ public abstract class Unit implements Serializable {
 		}
 	}
 
+	public Rectangle getCollisionBox() {
+		return new Rectangle((int)(getX()+getMinCollisionBox().getX()), (int)(getY()+getMinCollisionBox().getY()), (int)(getMaxCollisionBox().getX() - getMinCollisionBox().getX()), (int)(getMaxCollisionBox().getY() - getMinCollisionBox().getY()));
+	}
+
 	public abstract void render(Screen screen);
-
 	public abstract boolean hasCollided(int xa, int ya);
-
 	public abstract void onMouseHover();
 	public abstract void onMouseOut();
 	public abstract void onMouseHolded();
@@ -285,9 +287,6 @@ public abstract class Unit implements Serializable {
 	}
 
 	public boolean isPauseAnimation() {
-		if (!isMoving() && !isDead() && this instanceof Npc) {
-			setPauseAnimation(true);
-		}
 		return pauseAnimation;
 	}
 
