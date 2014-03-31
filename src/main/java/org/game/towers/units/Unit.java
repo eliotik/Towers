@@ -308,6 +308,7 @@ public abstract class Unit implements Serializable {
 				getSprites().add(SpritesData.NPC_DEAD_0);
 				getSprites().add(SpritesData.NPC_DEAD_1);
 				getSprites().add(SpritesData.NPC_DEAD_2);
+
 				break;
 			default:
 			case 0:
