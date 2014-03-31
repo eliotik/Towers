@@ -19,6 +19,7 @@ public class Bullet extends Unit {
 	private Unit target;
 	private Point endPoint;
 	private Point startPoint;
+    private double radiusVector = 0;
 
 	@Override
 	public void tick() {
@@ -53,71 +54,25 @@ public class Bullet extends Unit {
         if (shiftX == 0 && shiftY == 0) {
         	setMoving(false);
         } else {
-//        	move(shiftX, shiftY);
-            move(getStartPoint().getX(), getEndPoint().getX(), getStartPoint().getY(), getEndPoint().getY());
+            move(getStartPoint().getX(), getEndPoint().getX(), getStartPoint().getY(), getEndPoint().getY() - Config.BOX_SIZE / 2);
         }
 	}
 
-//	private void move(int shiftX, int shiftY) {
-//		setMoving(true);
-//		double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
-//        setX(getX() + shiftX * speed);
-//		setY(getY() + shiftY * speed);
-//		setNumSteps(getNumSteps() + 1);
-//	}
-
     private void move(double x1, double x2, double y1, double y2){
         setMoving(true);
-        double eps = 0.05;
         double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
-//        double direction = LinearAlgorithms.direction(x1, x2, y1, y2);
         double direction = LinearAlgorithms.angleByCoordinate(x1, x2, y1, y2);
-//        double radius = LinearAlgorithms.radiusVector(x1, x2, y1, y2);
-//        double deltaRadius = radius / speed;
-
-        if ((LinearAlgorithms.radiusVector(x1, getX(), y1, getY()) / (((Tower)getOwner()).getRadius() + (double)Config.BOX_SIZE) < 1 + eps) &&
-            (LinearAlgorithms.radiusVector(x1, getX(), y1, getY()) / (((Tower)getOwner()).getRadius() + (double)Config.BOX_SIZE) > 1 - eps)) {
+        double currentRadius = LinearAlgorithms.radiusVector(x1, getX(), y1, getY());
+        if (currentRadius >= ((Tower)getOwner()).getRadius()) {
             setMoving(false);
             return;
         }
-
-        double[] coordinates = LinearAlgorithms.shiftingByPolarSystem((speed * getNumSteps()), direction);
+        radiusVector += speed;
+        double[] coordinates = LinearAlgorithms.shiftingByPolarSystem(radiusVector, direction);
         setX(getX() + coordinates[0]);
         setY(getY() + coordinates[1]);
         setNumSteps(getNumSteps() + 1);
 
-//        if ((direction > 67 && direction < 113)) {
-//            System.out.println("test1 " +  direction);
-//            double shiftX = LinearAlgorithms.dependentXFromY((getY() - speed), x1, x2, y1, y2);
-//            System.out.println("shiftX =" + shiftX + " y =" + (getY() - speed));
-//            setY(getY() - speed);
-//            setNumSteps(getNumSteps() + 1);
-//        }
-//
-//        if (direction < -67 && direction > -113) {
-//            System.out.println("test2 " +  direction);
-//            double shiftX = LinearAlgorithms.dependentXFromY((getY() + speed), x1, x2, y1, y2);
-//            setX(shiftX);
-//            setY(getY() + speed);
-//            setNumSteps(getNumSteps() + 1);
-//        }
-//
-//        if ( (direction < -113 && direction >= -180 ) || (direction >= 0 && direction <= 67) ) {
-//            System.out.println("test3 " +  direction);
-//            double shiftY = LinearAlgorithms.dependentYFromX((getX() - speed), x1, x2, y1, y2);
-//            setX(getX() - speed);
-//            setY(shiftY);
-//            System.out.println("x =" + (getX() - speed) + " y ="+shiftY);
-//            setNumSteps(getNumSteps() + 1);
-//        }
-//
-//        if ((direction >= -67 && direction <= -1) || (direction >= 113 && direction <= 180))  {
-//            System.out.println("test4 " +  direction);
-//            double shiftY = LinearAlgorithms.dependentYFromX((getX() - speed), x1, x2, y1, y2);
-//            setX(getX() - speed);
-//            setY(shiftY);
-//            setNumSteps(getNumSteps() + 1);
-//        }
     }
 
 	@Override
