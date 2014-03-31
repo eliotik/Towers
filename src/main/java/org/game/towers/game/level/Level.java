@@ -2,32 +2,29 @@ package org.game.towers.game.level;
 
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
-import org.game.towers.game.level.Portals.Portal;
 import org.game.towers.game.level.tiles.Tile;
 import org.game.towers.game.level.tiles.TileTypes;
 import org.game.towers.gfx.Camera;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gui.GuiLost;
 import org.game.towers.gui.GuiPause;
-import org.game.towers.handlers.InputHandler.GameActionListener;
-import org.game.towers.handlers.InputHandler.InputEvent;
-import org.game.towers.handlers.InputHandler.InputEventType;
+import org.game.towers.handlers.GameActionListener;
+import org.game.towers.handlers.InputEvent;
+import org.game.towers.handlers.InputEventType;
+import org.game.towers.handlers.MouseInputEvent;
 import org.game.towers.units.Unit;
 import org.game.towers.units.UnitFactory;
 import org.game.towers.units.bullets.Bullet;
 import org.game.towers.units.collections.ModificatorsCollection;
 import org.game.towers.units.npcs.Npc;
-import org.game.towers.units.npcs.Npcs;
 import org.game.towers.units.towers.Tower;
 import org.game.towers.units.towers.Towers;
 import org.game.towers.units.towers.modificators.Modificator;
 import org.game.towers.units.towers.modificators.Modificators;
 import org.game.towers.workers.Algorithms.JumpPointSearch.Node;
-import org.game.towers.workers.geo.Coordinates;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.*;
 
 import javax.imageio.ImageIO;
@@ -48,6 +45,8 @@ public class Level implements GameActionListener {
 	private Store store;
 	private Camera camera;
 	private long nextWave = System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT;
+	private volatile TileTypes backgroundTileTypes;
+	private volatile TileTypes voidTileTypes;
 
 	private int playerHealth = Config.DEFAULT_PLAYER_HEALTH;
 	private int playerMoney = Config.DEFAULT_PLAYER_MONEY;
@@ -58,6 +57,8 @@ public class Level implements GameActionListener {
     public Level(String imagePath) {
 		setImagePath(imagePath);
 		loadLevelFromFile();
+		setBackgroundTileTypes(TileTypes.get(Config.TILE_GRASS));
+		setVoidTileTypes(TileTypes.get("VOID"));
 		setCurrentWave(new Wave(this));
 
 		if (!Config.DEFAULT_LEVEL_USE_WAVES) {
@@ -70,7 +71,7 @@ public class Level implements GameActionListener {
 	}
 
     public void initComponents() {
-		initStore();
+		initStore(Game.getInstance().getScreen());
 		initCamera();
 		initFog(Game.getInstance().getScreen());
     }
@@ -81,7 +82,8 @@ public class Level implements GameActionListener {
          tower.setX(240);
          tower.setY(208);
          addUnit(tower);
-         System.out.println("TOWER POSITION: "+tower.getX()+" : "+tower.getY());
+
+//         System.out.println("TOWER POSITION: "+tower.getX()+" : "+tower.getY());
 //         tower = UnitFactory.getTower(Towers.BLOCKPOST);
 //         tower.setLevel(this);
 //         tower.setX(Portals.getEntrance().getCoordinates().getX());
@@ -126,8 +128,8 @@ public class Level implements GameActionListener {
 		}
 	}
 
-	private void initStore() {
-		setStore(new Store());
+	private void initStore(Screen screen) {
+		setStore(new Store(screen));
 	}
 
 	public void generateNpcs() {
@@ -167,8 +169,6 @@ public class Level implements GameActionListener {
 			}
 		}
         locatePortals();
-//        Portals.setEntrance(getEntranceLocation());
-//		Portals.setExit(getExitLocation());
 	}
 
     private void locatePortals() {
@@ -219,7 +219,7 @@ public class Level implements GameActionListener {
 
     public synchronized Tile getTile(int x, int y) {
 		if (0 > x || x >= getWidth() || 0 > y || y >= getHeight()) {
-			return TileTypes.get("VOID").get(this, x, y, true);
+			return getVoidTileTypes().get(this, x, y, true);
 		}
 		return getTiles()[x + y * getWidth()];
 	}
@@ -300,29 +300,6 @@ public class Level implements GameActionListener {
 		}
 	}
 
-//	public Coordinates getEntranceLocation() {
-//		return getTileLocation(Config.TILE_ENTRANCE);
-//	}
-//
-//	public Coordinates getExitLocation() {
-//		return getTileLocation(Config.TILE_EXIT);
-//	}
-
-//	public Coordinates getTileLocation(String name) {
-//		Coordinates coords = new Coordinates();
-//		for (int y = 0; y < getHeight(); y++) {
-//			for (int x = 0; x < getWidth(); x++) {
-//				Tile tile = getTile(x, y);
-//				if (tile.getName().equals(name)) {
-//					coords.setX(x << Config.COORDINATES_SHIFTING);
-//					coords.setY(y << Config.COORDINATES_SHIFTING);
-//					return coords;
-//				}
-//			}
-//		}
-//		return coords;
-//	}
-
 	public String getName() {
 		return name;
 	}
@@ -332,13 +309,13 @@ public class Level implements GameActionListener {
 	}
 
 	public synchronized Tile getBackgroundTile(int x, int y) {
-		return TileTypes.get(Config.TILE_GRASS).get(this, x, y, true);
+		return getBackgroundTileTypes().get(this, x, y, true);
 	}
 
 	@Override
 	public void actionPerformed(InputEvent event) {
-		if (event.key.id == Game.getInstance().getInputHandler().esc.id
-				&& event.type == InputEventType.PRESSED) {
+		if (event.getKey().getId() == Game.getInstance().getInputHandler().getEsc().getId()
+				&& event.getType() == InputEventType.PRESSED) {
 			Game.getInstance().showGui(new GuiPause(Game.getInstance(), Game.getInstance().getWidth(), Game.getInstance().getHeight()));
 		}
 	}
@@ -449,6 +426,13 @@ public class Level implements GameActionListener {
 			}
 		}
 
+		synchronized (getBullets()) {
+			for (Iterator<Unit> it = getBullets().iterator(); it.hasNext();) {
+				Unit unit = (Unit) it.next();
+				unit.render(screen);
+			}
+		}
+
 		synchronized (getUnits()) {
 			for (Iterator<Unit> it = getUnits().iterator(); it.hasNext();) {
 				Unit unit = (Unit) it.next();
@@ -456,13 +440,7 @@ public class Level implements GameActionListener {
 			}
 		}
 
-		synchronized (getBullets()) {
-			for (Iterator<Unit> it = getBullets().iterator(); it.hasNext();) {
-				Unit unit = (Unit) it.next();
-				unit.render(screen);
-			}
-		}
-		getStore().render(screen);
+		getStore().render();
 		screen.renderLevelGui();
 	}
 
@@ -524,5 +502,24 @@ public class Level implements GameActionListener {
 
 	public void setCurrentWave(Wave currentWave) {
 		this.currentWave = currentWave;
+	}
+
+	@Override
+	public void actionPerformed(MouseInputEvent event) {}
+
+	public TileTypes getBackgroundTileTypes() {
+		return backgroundTileTypes;
+	}
+
+	public void setBackgroundTileTypes(TileTypes backgroundTileTypes) {
+		this.backgroundTileTypes = backgroundTileTypes;
+	}
+
+	public TileTypes getVoidTileTypes() {
+		return voidTileTypes;
+	}
+
+	public void setVoidTileTypes(TileTypes voidTileTypes) {
+		this.voidTileTypes = voidTileTypes;
 	}
 }

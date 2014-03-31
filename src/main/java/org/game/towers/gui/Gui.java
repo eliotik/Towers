@@ -3,9 +3,9 @@ package org.game.towers.gui;
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.handlers.InputHandler;
-import org.game.towers.handlers.InputHandler.GameActionListener;
-import org.game.towers.handlers.InputHandler.InputEvent;
-import org.game.towers.handlers.InputHandler.InputEventType;
+import org.game.towers.handlers.GameActionListener;
+import org.game.towers.handlers.InputEvent;
+import org.game.towers.handlers.InputEventType;
 import org.game.towers.gfx.Colors;
 import org.game.towers.gfx.sprites.SpriteSheet;
 
@@ -118,8 +118,8 @@ public abstract class Gui implements GameActionListener {
 
 	@Override
 	public void actionPerformed(InputEvent event) {
-		if (event.key.id == getInput().esc.id
-				&& event.type == InputEventType.PRESSED && closeOnEscape) {
+		if (event.getKey().getId() == getInput().getEsc().getId()
+				&& event.getType() == InputEventType.PRESSED && closeOnEscape) {
 			last();
 		}
 	}

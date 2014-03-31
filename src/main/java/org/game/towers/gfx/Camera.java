@@ -91,19 +91,19 @@ public class Camera {
     public void tick() {
         int xa = 0;
         int ya = 0;
-        if (getInputHandler().left.isPressed() ||
+        if (getInputHandler().getLeft().isPressed() ||
     		getMouseBounds().getLeft().contains(Game.getInstance().getScreen().getMousePosition())) {
             xa--;
         }
-        if (getInputHandler().right.isPressed() ||
+        if (getInputHandler().getRight().isPressed() ||
     		getMouseBounds().getRight().contains(Game.getInstance().getScreen().getMousePosition())) {
             xa++;
         }
-        if (getInputHandler().up.isPressed() ||
+        if (getInputHandler().getUp().isPressed() ||
     		getMouseBounds().getTop().contains(Game.getInstance().getScreen().getMousePosition())) {
             ya--;
         }
-        if (getInputHandler().down.isPressed() ||
+        if (getInputHandler().getDown().isPressed() ||
     		getMouseBounds().getBottom().contains(Game.getInstance().getScreen().getMousePosition())) {
             ya++;
         }

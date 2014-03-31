@@ -1,7 +1,8 @@
 package org.game.towers.gui;
 
 import org.game.towers.game.Game;
-import org.game.towers.handlers.InputHandler.InputEvent;
+import org.game.towers.handlers.InputEvent;
+import org.game.towers.handlers.MouseInputEvent;
 import org.game.towers.gui.elements.FontRenderer;
 
 public class GuiFocus extends Gui {
@@ -32,4 +33,7 @@ public class GuiFocus extends Gui {
 	public void guiActionPerformed(int elementId, int action) {
 
 	}
+
+	@Override
+	public void actionPerformed(MouseInputEvent event) {}
 }

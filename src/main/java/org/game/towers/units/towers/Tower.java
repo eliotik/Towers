@@ -1,9 +1,5 @@
 package org.game.towers.units.towers;
 
-import java.awt.Rectangle;
-
-import org.game.towers.game.Config;
-import org.game.towers.game.Game;
 import org.game.towers.gfx.Screen;
 import org.game.towers.units.ShootingUnit;
 

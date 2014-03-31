@@ -1,63 +1,51 @@
 package org.game.towers.game.level;
 
 
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import org.game.towers.game.Config;
+import org.game.towers.game.Game;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
-import org.game.towers.gui.elements.FontRenderer;
+import org.game.towers.workers.Utils;
 
 public class Store {
 
 	private int x;
 	private int y;
 	private boolean visible;
+	private Rectangle collisionBox = new Rectangle();
+	private int scale = 1;
+	private double highlight = 1;
+	private Screen screen;
 
-	public Store() {
+	public Store(Screen screen) {
 		setX(0);
 		setY(0);
+		setScreen(screen);
+		setVisible(true);
 	}
 
-	public void tick() {}
-
-	public void render(Screen screen) {
-		Sprite sprite = SpritesData.STORE;
-		int xp = (screen.getWidth() - (sprite.getWidth() / 2)) - (0 << Config.COORDINATES_SHIFTING) - 8 + getX();
-		int yp = screen.getHeight() - sprite.getHeight();
-		for (int y = 0; y < sprite.getHeight(); y++) {
-			int yt = y + yp;
-			for (int x = 0; x < sprite.getWidth(); x++) {
-				int xt = x + xp;
-				if (0 > xt || xt >= screen.getWidth() || 0 > yt || yt >= screen.getHeight()) {
-					break;
-				}
-				if (xt < 0) {
-					xt = 0;
-				}
-				if (yt < 0) {
-					yt = 0;
-				}
-				int color = sprite.getPixels()[x + y * sprite.getWidth()];
-				if (color == 0xFFFF00FF || color == 0xFF800080) {
-					color = SpritesData.STORE_BG_LEFT.getPixels()[x + y * SpritesData.STORE_BG_LEFT.getWidth()];
-				}
-				if (color != 0xFFFF00FF && color != 0xFF800080) {
-					screen.getPixels()[xt + yt * screen.getWidth()] = color;
-				}
-			}
+	public void tick() {
+		Point mousePosition = Game.getInstance().getScreen().getMousePosition();
+		mousePosition = Utils.transformMousePositionToScreen(mousePosition.getX(), mousePosition.getY());
+		int box = Config.BOX_SIZE/4;
+		if (getCollisionBox().intersects(new Rectangle((int)mousePosition.getX(), (int)mousePosition.getY(), box, box))) {
+			setHighlight(1.15);
+		} else {
+			setHighlight(1);
 		}
-//		int width = (screen.getWidth() * Config.SCALE) - 5 + getX()*2;
-//		int height = screen.getHeight() * Config.SCALE + 7;
-//		int white = 555;
-//		int black = 000;
-//		int fontScale = 1;
-//		int yPos = Config.SCREEN_HEIGHT - sprite.getHeight();
-//		int yBPos = yPos + 1;
-//		int xPos = Config.SCREEN_WIDTH - sprite.getWidth() + 2;
-//		int xBPos = xPos + 1;
-//		String iconName = "$";
-//		FontRenderer.drawString(iconName, xBPos, yBPos, black, fontScale);
-//		FontRenderer.drawString(iconName, xPos, yPos, white, fontScale);
+	}
+
+	public void render() {
+		if (!isVisible()) return;
+		Sprite sprite = SpritesData.STORE;
+		int xp = (getScreen().getWidth() - (sprite.getWidth() / 2)) - (0 << Config.COORDINATES_SHIFTING) - 10 + getX();
+		int yp = getScreen().getHeight() - sprite.getHeight();
+		getScreen().renderIcon(sprite, xp, yp, getScale(), getHighlight());
+		getCollisionBox().setRect(xp, yp, SpritesData.STORE_BG_LEFT.getWidth(), SpritesData.STORE_BG_LEFT.getHeight());
 	}
 
 	public int getX() {
@@ -82,5 +70,37 @@ public class Store {
 
 	public void setVisible(boolean visible) {
 		this.visible = visible;
+	}
+
+	public Rectangle getCollisionBox() {
+		return collisionBox;
+	}
+
+	public void setCollisionBox(Rectangle collisionBox) {
+		this.collisionBox = collisionBox;
+	}
+
+	public int getScale() {
+		return scale;
+	}
+
+	public void setScale(int scale) {
+		this.scale = scale;
+	}
+
+	public double getHighlight() {
+		return highlight;
+	}
+
+	public void setHighlight(double highlight) {
+		this.highlight = highlight;
+	}
+
+	public Screen getScreen() {
+		return screen;
+	}
+
+	public void setScreen(Screen screen) {
+		this.screen = screen;
 	}
 }

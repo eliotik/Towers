@@ -3,6 +3,7 @@ package org.game.towers.gui;
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.gui.elements.FontRenderer;
+import org.game.towers.handlers.MouseInputEvent;
 
 public class GuiStore extends Gui {
 
@@ -22,4 +23,7 @@ public class GuiStore extends Gui {
 
 	public void tick(int ticks) {}
 	public void guiActionPerformed(int elementId, int action) {}
+
+	@Override
+	public void actionPerformed(MouseInputEvent event) {}
 }

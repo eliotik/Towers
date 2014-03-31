@@ -12,7 +12,6 @@ import org.game.towers.game.level.tiles.Tile;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
-import org.game.towers.units.npcs.Npc;
 import org.game.towers.workers.Utils;
 
 public abstract class Unit implements Serializable {

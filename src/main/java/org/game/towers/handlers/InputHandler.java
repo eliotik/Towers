@@ -9,13 +9,13 @@ import org.game.towers.game.Game;
 
 public class InputHandler implements KeyListener {
 
-	public Key[] keys = new Key[6];
-	public Key up = new Key();
-	public Key down = new Key();
-	public Key left = new Key();
-	public Key right = new Key();
-	public Key action = new Key();
-	public Key esc = new Key();
+	private Key[] keys = new Key[6];
+	private Key up;
+	private Key down;
+	private Key left;
+	private Key right;
+	private Key action;
+	private Key esc;
 
 	private List<GameActionListener> listeners = new ArrayList<GameActionListener>();
 	private List<GameActionListener> newListeners = new ArrayList<GameActionListener>();
@@ -23,91 +23,39 @@ public class InputHandler implements KeyListener {
 	private boolean actionPerformed;
 
 	public InputHandler(Game game) {
+		setUp(new Key(this));
+		setDown(new Key(this));
+		setLeft(new Key(this));
+		setRight(new Key(this));
+		setAction(new Key(this));
+		setEsc(new Key(this));
 		game.addKeyListener(this);
 	}
 
 	public void tick() {
-		for (int i = 0; i < keys.length; i++) {
-			if (keys[i] != null) {
-				keys[i].update();
+		for (int i = 0; i < getKeys().length; i++) {
+			if (getKeys()[i] != null) {
+				getKeys()[i].update();
 			}
 		}
-		if (actionPerformed) {
+		if (isActionPerformed()) {
 			notifyListeners();
-			actionPerformed = false;
+			setActionPerformed(false);
 		}
 	}
 
 	private void notifyListeners() {
-		for (int j = 0; j < keys.length; j++) {
-			if (keys[j].gotPressed()) {
-				for (int i = 0; i < listeners.size(); i++) {
-					if(!newListeners.contains(listeners.get(i))) {
-						listeners.get(i).actionPerformed(new InputEvent(keys[j], InputEventType.PRESSED));
+		for (int j = 0; j < getKeys().length; j++) {
+			if (getKeys()[j].gotPressed()) {
+				for (int i = 0; i < getListeners().size(); i++) {
+					if(!getNewListeners().contains(getListeners().get(i))) {
+						getListeners().get(i).actionPerformed(new InputEvent(getKeys()[j], InputEventType.PRESSED));
 					} else {
-						newListeners.remove(listeners.get(i));
+						getNewListeners().remove(getListeners().get(i));
 					}
 				}
 			}
 		}
-	}
-
-	public class Key {
-
-		public int id;
-		boolean isPressed;
-		private boolean lastState;
-		private boolean gotPressed;
-
-		public Key() {
-			for (int i = 0; i < keys.length; i++) {
-				if (keys[i] == null) {
-					this.id = i;
-					keys[i] = this;
-					break;
-				}
-			}
-		}
-
-		public void toggle(boolean pressed) {
-			isPressed = pressed;
-		}
-
-		public void update() {
-			if (lastState != isPressed && isPressed == true) {
-				gotPressed = true;
-				lastState = isPressed;
-			} else {
-				gotPressed = false;
-				lastState = isPressed;
-			}
-		}
-
-		public boolean isPressed() {
-			return isPressed;
-		}
-
-		public boolean gotPressed() {
-			return gotPressed;
-		}
-	}
-
-	public enum InputEventType {
-		PRESSED, RELEASED;
-	}
-
-	public class InputEvent {
-		public InputEventType type;
-		public Key key;
-
-		public InputEvent(Key key, InputEventType type) {
-			this.key = key;
-			this.type = type;
-		}
-	}
-
-	public interface GameActionListener {
-		public abstract void actionPerformed(InputEvent event);
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -119,24 +67,24 @@ public class InputHandler implements KeyListener {
 	}
 
 	public void toggleKey(int keyCode, boolean pressed) {
-		actionPerformed = true;
+		setActionPerformed(true);
 		if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
-			up.toggle(pressed);
+			getUp().toggle(pressed);
 		}
 		if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
-			down.toggle(pressed);
+			getDown().toggle(pressed);
 		}
 		if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
-			left.toggle(pressed);
+			getLeft().toggle(pressed);
 		}
 		if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
-			right.toggle(pressed);
+			getRight().toggle(pressed);
 		}
 		if (keyCode == KeyEvent.VK_E || keyCode == KeyEvent.VK_ENTER) {
-			action.toggle(pressed);
+			getAction().toggle(pressed);
 		}
 		if (keyCode == KeyEvent.VK_ESCAPE) {
-			esc.toggle(pressed);
+			getEsc().toggle(pressed);
 		}
 	}
 
@@ -150,7 +98,7 @@ public class InputHandler implements KeyListener {
 	}
 
 	public void removeListener(GameActionListener listener) {
-		listeners.remove(listener);
+		getListeners().remove(listener);
 	}
 
 	public boolean isKeyPressed(Key key) {
@@ -159,8 +107,88 @@ public class InputHandler implements KeyListener {
 
 	public void addListener(GameActionListener listener, boolean onlyListeners) {
 		if (!onlyListeners) {
-			newListeners.add(listener);
+			getNewListeners().add(listener);
 		}
-		listeners.add(listener);
+		getListeners().add(listener);
+	}
+
+	public Key[] getKeys() {
+		return keys;
+	}
+
+	public void setKeys(Key[] keys) {
+		this.keys = keys;
+	}
+
+	public Key getUp() {
+		return up;
+	}
+
+	public void setUp(Key up) {
+		this.up = up;
+	}
+
+	public Key getDown() {
+		return down;
+	}
+
+	public void setDown(Key down) {
+		this.down = down;
+	}
+
+	public Key getLeft() {
+		return left;
+	}
+
+	public void setLeft(Key left) {
+		this.left = left;
+	}
+
+	public Key getRight() {
+		return right;
+	}
+
+	public void setRight(Key right) {
+		this.right = right;
+	}
+
+	public Key getAction() {
+		return action;
+	}
+
+	public void setAction(Key action) {
+		this.action = action;
+	}
+
+	public Key getEsc() {
+		return esc;
+	}
+
+	public void setEsc(Key esc) {
+		this.esc = esc;
+	}
+
+	public List<GameActionListener> getListeners() {
+		return listeners;
+	}
+
+	public void setListeners(List<GameActionListener> listeners) {
+		this.listeners = listeners;
+	}
+
+	public List<GameActionListener> getNewListeners() {
+		return newListeners;
+	}
+
+	public void setNewListeners(List<GameActionListener> newListeners) {
+		this.newListeners = newListeners;
+	}
+
+	public boolean isActionPerformed() {
+		return actionPerformed;
+	}
+
+	public void setActionPerformed(boolean actionPerformed) {
+		this.actionPerformed = actionPerformed;
 	}
 }

@@ -2,7 +2,8 @@ package org.game.towers.gui;
 
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
-import org.game.towers.handlers.InputHandler.InputEvent;
+import org.game.towers.handlers.InputEvent;
+import org.game.towers.handlers.MouseInputEvent;
 import org.game.towers.gui.elements.ChooseList;
 import org.game.towers.gui.elements.FontRenderer;
 
@@ -59,5 +60,8 @@ public class GuiPause extends Gui{
 	public void setList(ChooseList list) {
 		this.list = list;
 	}
+
+	@Override
+	public void actionPerformed(MouseInputEvent event) {}
 
 }

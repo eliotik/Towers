@@ -2,9 +2,10 @@ package org.game.towers.gui.elements;
 
 
 import org.game.towers.handlers.InputHandler;
-import org.game.towers.handlers.InputHandler.GameActionListener;
-import org.game.towers.handlers.InputHandler.InputEvent;
-import org.game.towers.handlers.InputHandler.InputEventType;
+import org.game.towers.handlers.GameActionListener;
+import org.game.towers.handlers.InputEvent;
+import org.game.towers.handlers.InputEventType;
+import org.game.towers.handlers.MouseInputEvent;
 import org.game.towers.gui.Gui;
 
 import java.util.ArrayList;
@@ -59,12 +60,12 @@ public class ChooseList extends GuiElement implements GameActionListener {
 	}
 
 	public void actionPerformed(InputEvent event) {
-		if (event.key.id == getInput().down.id
-				&& event.type == InputEventType.PRESSED) {
+		if (event.getKey().getId() == getInput().getDown().getId()
+				&& event.getType() == InputEventType.PRESSED) {
 			setSelectedEntry(getSelectedEntry() + 1);
 		}
-		if (event.key.id == getInput().up.id
-				&& event.type == InputEventType.PRESSED) {
+		if (event.getKey().getId() == getInput().getUp().getId()
+				&& event.getType() == InputEventType.PRESSED) {
 			setSelectedEntry(getSelectedEntry() - 1);
 		}
 		if (getSelectedEntry() < 0) {
@@ -74,12 +75,12 @@ public class ChooseList extends GuiElement implements GameActionListener {
 			setSelectedEntry(0);
 		}
 
-		if (event.key.id == getInput().action.id
-				&& event.type == InputEventType.PRESSED) {
+		if (event.getKey().getId() == getInput().getAction().getId()
+				&& event.getType() == InputEventType.PRESSED) {
 			parent.guiActionPerformed(id, getSelectedEntry());
 		}
-		if (event.key.id == getInput().esc.id
-				&& event.type == InputEventType.PRESSED) {
+		if (event.getKey().getId() == getInput().getEsc().getId()
+				&& event.getType() == InputEventType.PRESSED) {
 			parent.guiActionPerformed(id, -1);
 		}
 		if (getSelectedEntry() >= ENTRIES_DISPLAYED) {
@@ -176,4 +177,7 @@ public class ChooseList extends GuiElement implements GameActionListener {
 	public void setOptions(List<Option> options) {
 		this.options = options;
 	}
+
+	@Override
+	public void actionPerformed(MouseInputEvent event) {}
 }

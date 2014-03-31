@@ -120,7 +120,7 @@ public class Screen {
 
 		int scaleMap = scale - 1;
 
-		for (int y = 0; y < tile.getSprite().getHeight(); y++) {
+		for (int y = 0; y < tile.getSprite().getHeight(); ++y) {
 			int yt = y + yp;
 
 			int ySheet = y;
@@ -128,7 +128,7 @@ public class Screen {
 
 			int yPixel = y + yp + (y * scaleMap) - ((scaleMap << Config.COORDINATES_SHIFTING) / 2);
 
-			for (int x = 0; x < tile.getSprite().getWidth(); x++) {
+			for (int x = 0; x < tile.getSprite().getWidth(); ++x) {
 				int xt = x + xp;
 				int xSheet = x;
 				if (mirrorX) xSheet = Config.BOX_SIZE_FIXED - x;
@@ -151,10 +151,10 @@ public class Screen {
 					Tile bgTile = level.getBackgroundTile(xOrig, yOrig);
 					color = bgTile.getSprite().getPixels()[x	+ y * bgTile.getSprite().getWidth()];
 				}
-				for (int yScale = 0; yScale < scale; yScale++) {
+				for (int yScale = 0; yScale < scale; ++yScale) {
 					if (yPixel + yScale < 0 || yPixel + yScale >= getHeight())
 						continue;
-					for (int xScale = 0; xScale < scale; xScale++) {
+					for (int xScale = 0; xScale < scale; ++xScale) {
 						if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
 							continue;
 						int pixelIndex = (xPixel + xScale) + (yPixel + yScale) * getWidth();
@@ -302,7 +302,6 @@ public class Screen {
 									continue;
 								}
 							}
-							getPixels()[pixelIndex] = color;
 							getPixels()[pixelIndex] =
 									(unit.getHighlight() != 1)
 									? Colors.brightness(color, unit.getHighlight())
@@ -397,11 +396,21 @@ public class Screen {
 		FontRenderer.drawString(waveMessage, waveMessageX, 0, white, waveFontScale);
 	}
 
-	private void renderIcon(Sprite sprite, int xp, int yp) {
+	public void renderIcon(Sprite sprite, int xp, int yp) {
+		renderIcon(sprite, xp, yp, 1, 1);
+	}
+
+	public void renderIcon(Sprite sprite, int xp, int yp, int scale, double highlight) {
+		int scaleMap = scale - 1;
+
 		for (int y = 0; y < sprite.getHeight(); y++) {
 			int yt = y + yp;
+			int yPixel = y + yp + (y * scaleMap) - ((scaleMap << Config.COORDINATES_SHIFTING) / 2);
+
 			for (int x = 0; x < sprite.getWidth(); x++) {
 				int xt = x + xp;
+				int xPixel = x + xp + (x * scaleMap) - ((scaleMap << Config.COORDINATES_SHIFTING) / 2);
+
 				if (0 > xt || xt >= getWidth() || 0 > yt || yt >= getHeight()) {
 					break;
 				}
@@ -413,7 +422,20 @@ public class Screen {
 				}
 				int color = sprite.getPixels()[x + y * sprite.getWidth()];
 				if (color != 0xFFFF00FF && color != 0xFF800080) {
-					getPixels()[xt + yt * getWidth()] = color;
+					for (int yScale = 0; yScale < scale; yScale++) {
+						if (yPixel + yScale < 0 || yPixel + yScale >= getHeight())
+							continue;
+						for (int xScale = 0; xScale < scale; xScale++) {
+							if (xPixel + xScale < 0 || xPixel + xScale >= getWidth())
+								continue;
+							int pixelIndex = (xPixel + xScale) + (yPixel + yScale) * getWidth();
+							getPixels()[pixelIndex] =
+									(highlight != 1)
+									? Colors.brightness(color, highlight)
+									: color;
+						}
+					}
+					//getPixels()[xt + yt * getWidth()] = color;
 				}
 			}
 		}

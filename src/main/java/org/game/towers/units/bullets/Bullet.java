@@ -19,36 +19,14 @@ public class Bullet extends Unit {
 	private Unit target;
 	private Point endPoint;
 	private Point startPoint;
-    private double radiusVector = 0;
 
-	@Override
+    @Override
 	public void tick() {
 		super.tick();
 		updatePosition();
 	}
 
 	private void updatePosition() {
-		if (getTarget() != null) {
-//			double speed = (getSpeed() == 0) ? getOwner().getSpeed() : getSpeed();
-//			// calculate the vector from our center to their center
-//			Point2D enemyVec = Vector.vec_sub(endPoint.getX(), endPoint.getY(), getX(), getY());
-//			// measure the "distance" the bullet will travel
-//			double dist = Vector.vec_mag(enemyVec.getX(), enemyVec.getY());
-//			// adjust for target position based on the amount of "time units" to travel "dist"
-//			// and the targets speed vector
-//			Point2D targetSpeed = new Point2D.Double();
-//			targetSpeed.setLocation(getTarget().getSpeed(), getTarget().getSpeed());
-//			enemyVec = Vector.vec_add(endPoint.getX(), endPoint.getY(), Vector.vec_mul(targetSpeed, dist/speed));
-//			// calculate trajectory of bullet
-//			Point2D bulletTrajectory = Vector.vec_mul(Vector.vec_normal(enemyVec.getX(), enemyVec.getY()), speed);
-//			// assign values
-//			double nextX = bulletTrajectory.getX();
-//			double nextY = bulletTrajectory.getY();
-//
-//			System.out.println(">>>>>>>>>>>>>>>");
-//			System.out.println(getX()+", "+getY()+" | "+getStartPoint().getX()+", "+getStartPoint().getY()+" | "+getEndPoint().getX()+", "+getEndPoint().getY()+" | "+nextX+", "+nextY);
-
-		}
 		int shiftX = Utils.doShift((int) getX(), (int) getEndPoint().getX());
         int shiftY = Utils.doShift((int) getY(), (int) getEndPoint().getY());
         if (shiftX == 0 && shiftY == 0) {
