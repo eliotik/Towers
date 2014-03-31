@@ -142,4 +142,20 @@ public class ShootingUnit extends Unit {
 		this.allowToShoot = allowToShoot;
 	}
 
+	@Override
+	public void onMouseHover() {
+		setHighlight(1.5);
+	}
+
+	@Override
+	public void onMouseOut() {
+		setHighlight(1);
+	}
+
+	@Override
+	public void onMouseHolded() {}
+
+	@Override
+	public void onMouseClicked() {}
+
 }

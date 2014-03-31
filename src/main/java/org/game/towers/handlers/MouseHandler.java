@@ -10,6 +10,8 @@ import org.game.towers.game.Game;
 
 public class MouseHandler implements MouseListener, MouseMotionListener {
 
+	private boolean mouseBtnHolded = false;
+
 	public MouseHandler(Game game){
 		game.addMouseListener(this);
 		game.addMouseMotionListener(this);
@@ -20,11 +22,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	}
 
     public void mousePressed(MouseEvent e) {
-
+    	setMouseBtnHolded(true);
     }
 
     public void mouseReleased(MouseEvent e) {
-
+    	setMouseBtnHolded(false);
     }
 
     public void mouseEntered(MouseEvent e) {
@@ -42,5 +44,13 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	public void mouseDragged(MouseEvent e) {
 		Game.getInstance().getScreen().setMousePosition(new Point(e.getX(), e.getY()));
+	}
+
+	public boolean isMouseBtnHolded() {
+		return mouseBtnHolded;
+	}
+
+	public void setMouseBtnHolded(boolean mouseBtnHolded) {
+		this.mouseBtnHolded = mouseBtnHolded;
 	}
 }

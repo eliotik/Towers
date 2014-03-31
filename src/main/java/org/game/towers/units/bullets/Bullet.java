@@ -196,4 +196,16 @@ public class Bullet extends Unit {
 	public void setTarget(Unit target) {
 		this.target = target;
 	}
+
+	@Override
+	public void onMouseHover() {}
+
+	@Override
+	public void onMouseOut() {}
+
+	@Override
+	public void onMouseHolded() {}
+
+	@Override
+	public void onMouseClicked() {}
 }

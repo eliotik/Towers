@@ -182,4 +182,16 @@ public class Npc extends Unit {
 	public void setExit(Portal exit) {
 		this.exit = exit;
 	}
+
+	@Override
+	public void onMouseHover() {}
+
+	@Override
+	public void onMouseHolded() {}
+
+	@Override
+	public void onMouseClicked() {}
+
+	@Override
+	public void onMouseOut() {}
 }

@@ -1,5 +1,6 @@
 package org.game.towers.units;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.Serializable;
@@ -71,11 +72,28 @@ public abstract class Unit implements Serializable {
 				}
 			}
 		}
+		Rectangle mouseCoursor = new Rectangle((int)(((Game.getInstance().getScreen().getMousePosition().getX()/Config.SCALE)+Game.getInstance().getScreen().getxOffset())), (int)(((Game.getInstance().getScreen().getMousePosition().getY()/Config.SCALE)+Game.getInstance().getScreen().getyOffset())), Config.BOX_SIZE/3, Config.BOX_SIZE/3);
+		Rectangle unit = new Rectangle((int)(getX()+getMinCollisionBox().getX()), (int)(getY()+getMinCollisionBox().getY()), (int)(getMaxCollisionBox().getX() - getMinCollisionBox().getX()), (int)(getMaxCollisionBox().getY() - getMinCollisionBox().getY()));
+
+		if (unit.intersects(mouseCoursor)) {
+			if (Game.getInstance().getMouseHandler().isMouseBtnHolded()) {
+				onMouseHolded();
+			} else {
+				onMouseHover();
+			}
+		} else {
+			onMouseOut();
+		}
 	}
 
 	public abstract void render(Screen screen);
 
 	public abstract boolean hasCollided(int xa, int ya);
+
+	public abstract void onMouseHover();
+	public abstract void onMouseOut();
+	public abstract void onMouseHolded();
+	public abstract void onMouseClicked();
 
 	public Sprite getCurrentSprite() {
 		return getSprite(getSpriteIndex());
@@ -464,24 +482,5 @@ public abstract class Unit implements Serializable {
 
 	public void setHighlight(double highlight) {
 		this.highlight = highlight;
-	}
-
-	public int getPosition(int x, int y) {
-		int position = 0;
-		//0
-//		if ( getX() >= x && getY() > y ) return position;
-//		//1
-//		if ( getX() < x && getY() > y ) return 1;
-//		//2
-//		if ( getX() < x  && getY() >= y ) return 1;
-		//3
-		//4
-		//5
-		//6
-		//7
-
-
-
-		return position;
 	}
 }
