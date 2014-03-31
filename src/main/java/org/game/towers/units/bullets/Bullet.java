@@ -67,8 +67,8 @@ public class Bullet extends Unit {
             setMoving(false);
             return;
         }
-        radiusVector += speed;
-        double[] coordinates = LinearAlgorithms.shiftingByPolarSystem(radiusVector, direction);
+
+        double[] coordinates = LinearAlgorithms.shiftingByPolarSystem(speed, direction);
         setX(getX() + coordinates[0]);
         setY(getY() + coordinates[1]);
         setNumSteps(getNumSteps() + 1);
