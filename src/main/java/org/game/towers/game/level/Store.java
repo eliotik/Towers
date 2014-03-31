@@ -1,14 +1,11 @@
 package org.game.towers.game.level;
 
-import java.awt.Color;
 
 import org.game.towers.game.Config;
 import org.game.towers.gfx.Screen;
 import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
 import org.game.towers.gui.elements.FontRenderer;
-import org.game.towers.units.collections.TowersCollection;
-import org.game.towers.units.towers.Tower;
 
 public class Store {
 
@@ -51,16 +48,16 @@ public class Store {
 		}
 //		int width = (screen.getWidth() * Config.SCALE) - 5 + getX()*2;
 //		int height = screen.getHeight() * Config.SCALE + 7;
-		int white = 555;
-		int black = 000;
-		int fontScale = 2;
-		int yPos = Config.SCREEN_HEIGHT - sprite.getHeight();
-		int yBPos = yPos + 1;
-		int xPos = Config.SCREEN_WIDTH - sprite.getWidth() + 2;
-		int xBPos = xPos + 1;
-		String iconName = "$";
-		FontRenderer.drawString(iconName, xBPos, yBPos, black, fontScale);
-		FontRenderer.drawString(iconName, xPos, yPos, white, fontScale);
+//		int white = 555;
+//		int black = 000;
+//		int fontScale = 1;
+//		int yPos = Config.SCREEN_HEIGHT - sprite.getHeight();
+//		int yBPos = yPos + 1;
+//		int xPos = Config.SCREEN_WIDTH - sprite.getWidth() + 2;
+//		int xBPos = xPos + 1;
+//		String iconName = "$";
+//		FontRenderer.drawString(iconName, xBPos, yBPos, black, fontScale);
+//		FontRenderer.drawString(iconName, xPos, yPos, white, fontScale);
 	}
 
 	public int getX() {
