@@ -47,7 +47,6 @@ public class LinearAlgorithms {
         double x = radius * Math.cos(angle);
         double y = radius * Math.sin(angle);
 
-
         coordinates[0] = x;
         coordinates[1] = y;
         return coordinates;

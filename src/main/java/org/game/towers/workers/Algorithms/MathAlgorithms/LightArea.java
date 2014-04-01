@@ -12,115 +12,33 @@ class LightArea
     private int radius;
     private Coordinates coordinatesCenter;
     private int minX, maxX, minY, maxY;
-    private ArrayList<Coordinates> upperCircleLightEdge = new ArrayList<>();
-    private ArrayList<Coordinates> lowerCircleLightEdge = new ArrayList<>();
     private HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
-    private ArrayList<Coordinates> lightEdge = new ArrayList<>();
     private HashMap<String, Integer> checkOnUnique = new HashMap<>();
     private int uniqueSize = 0;
-    private double epsilon = 0.5;
-    private double delta = 0.1;
+    private double epsilon = 0.001;
 
     public LightArea(Coordinates coordinatesCenter, int radius) {
         setCoordinatesCenter(coordinatesCenter);
         setRadius(radius);
-        setMinX(getCoordinatesCenter().getX() - radius);
-        setMaxX(getCoordinatesCenter().getX() + radius);
-        setMinY(getCoordinatesCenter().getY() - radius);
-        setMaxY(getCoordinatesCenter().getY() + radius);
-    }
 
-    private void generateCircleLightEdge() {
-        for(double x = getMinX(); x <= getMaxX(); x+=delta) {
-            int y = (int)(java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinatesCenter().getX()), 2)) + getCoordinatesCenter().getY());
-
-            if (lowerCircleLightEdge.size() == 0) {
-                lowerCircleLightEdge.add(new Coordinates(x, y));
-                continue;
-            }
-
-            if (getRadiusVector(x, y, lowerCircleLightEdge.get(lowerCircleLightEdge.size() - 1)) > epsilon){
-                lowerCircleLightEdge.add(new Coordinates(x, y));
-            }
-        }
-//        System.out.println("lowerCircleLightEdge size " + lowerCircleLightEdge.size());
-
-        for(double x = getMaxX(); x > getMinX(); x-=delta) {
-            int y = (int)(getCoordinatesCenter().getY() - java.lang.Math.sqrt( java.lang.Math.pow(radius, 2) - java.lang.Math.pow((x - getCoordinatesCenter().getX()), 2)));
-
-            if (upperCircleLightEdge.size() == 0) {
-                upperCircleLightEdge.add(new Coordinates(x, y));
-                continue;
-            }
-
-            if (getRadiusVector(x, y, upperCircleLightEdge.get(upperCircleLightEdge.size() - 1)) > epsilon){
-                upperCircleLightEdge.add(new Coordinates(x, y));
-            }
-        }
-//        System.out.println("upperCircleLightEdge size " + upperCircleLightEdge.size());
-    }
-
-    private void generateLightEdge(){
-        generateCircleLightEdge();
-
-        for(Coordinates point : upperCircleLightEdge) {
-            if (point.getX() < coordinatesCenter.getX()){
-                for (double x = coordinatesCenter.getX(); x > point.getX(); x-=delta) {
-                    if (addPoints(x, point)) {
-                        break;
-                    }
-                }
-            } else {
-                for (double x = coordinatesCenter.getX(); x < point.getX(); x+=delta) {
-                    if (addPoints(x, point)) {
-                        break;
-                    }
-                }
-            }
+        setMinX(getCoordinatesCenter().getX() - getRadius());
+        if (getCoordinatesCenter().getX() - getRadius() < 0) {
+            setMinX(0);
         }
 
-        for(Coordinates point : lowerCircleLightEdge) {
-            if (point.getX() < coordinatesCenter.getX()){
-                for (double x = coordinatesCenter.getX(); x > point.getX(); x-=delta) {
-                    if (addPoints(x, point)) {
-                        break;
-                    }
-                }
-            } else {
-                for (double x = coordinatesCenter.getX(); x < point.getX(); x+=delta) {
-                    if (addPoints(x, point)) {
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    private boolean addPoints(double x, Coordinates point) {
-        int y, xa, ya;
-        y = (int)lineEquation(x, point);
-
-        if (x < 0 || y < 0 || x > Config.REAL_SCREEN_WIDTH || y > Config.REAL_SCREEN_HEIGHT) {
-            return false;
-        }
-        int newX = (int)x;
-        xa = newX >> Config.COORDINATES_SHIFTING;
-        ya = y >> Config.COORDINATES_SHIFTING;
-
-        if (Game.getInstance().getWorld().getLevel().getTile(xa, ya).isSolid()){
-            lightEdge.add(point);
-            return true;
+        setMaxX(getCoordinatesCenter().getX() + getRadius());
+        if (getCoordinatesCenter().getX() + getRadius() > Config.REAL_SCREEN_WIDTH) {
+            setMaxX(Config.REAL_SCREEN_WIDTH);
         }
 
-        putUniqueCoordinate(new Coordinates(newX, y), 2);
-
-        return false;
-    }
-
-    public HashMap<Coordinates, Integer> getInscribedCoordinates(){
-        generateLightEdge();
-
-        return inscribedCoordinates;
+        setMinY(getCoordinatesCenter().getY() - getRadius());
+        if (getCoordinatesCenter().getY() - getRadius() < 0) {
+            setMinY(0);
+        }
+        setMaxY(getCoordinatesCenter().getY() + getRadius());
+        if (getCoordinatesCenter().getY() + getRadius() > Config.REAL_SCREEN_HEIGHT) {
+            setMaxY(Config.REAL_SCREEN_HEIGHT);
+        }
     }
 
     private void putUniqueCoordinate(Coordinates coordinates, int status) {
@@ -142,14 +60,37 @@ class LightArea
         }
     }
 
-    private double lineEquation(double x, Coordinates item){
-        double aFactor = (x - item.getX()) / (coordinatesCenter.getX() - item.getX());
-        double y = coordinatesCenter.getY() + ( aFactor * (coordinatesCenter.getY() - item.getY()) );
-        return y;
+    private void generateLightMap() {
+        double deltaDegree = Math.PI /( 8 * 360 );
+        double deltaX, deltaY;
+        int xa, ya;
+        double radius = (double)getRadius();
+
+        for (double degree = 0; degree < 2 * Math.PI; degree+=deltaDegree) {
+            double currentX = (double)getCoordinatesCenter().getX();
+            double currentY = (double)getCoordinatesCenter().getY();
+            for (double r  = 0; r < radius; r+=epsilon) {
+                deltaX = r * Math.cos(degree);
+                deltaY = r * Math.sin(degree);
+                currentX += deltaX;
+                currentY += deltaY;
+                xa = (int)currentX >> Config.COORDINATES_SHIFTING;
+                ya = (int)currentY >> Config.COORDINATES_SHIFTING;
+
+                if (Game.getInstance().getWorld().getLevel().getTile(xa, ya).isSolid()){
+                    putUniqueCoordinate(new Coordinates((int)currentX, (int)currentY), 2);
+                    break;
+                }
+                putUniqueCoordinate(new Coordinates((int)currentX, (int)currentY), 2);
+
+            }
+        }
     }
 
-    private double getRadiusVector(double x, double y, Coordinates coordinate) {
-        return java.lang.Math.sqrt( java.lang.Math.pow(x - coordinate.getX(), 2) + java.lang.Math.pow(y - coordinate.getY(), 2) );
+    public HashMap<Coordinates, Integer> getInscribedCoordinates(){
+        generateLightMap();
+
+        return inscribedCoordinates;
     }
 
     public int getRadius() {
