@@ -32,13 +32,13 @@ public abstract class Gui implements GameActionListener {
 	private String splash = Config.GAME_NAME;
 
 	public Gui(Game game, int width, int height) {
-		this.setGame(game);
-		this.setInput(game.getInputHandler());
-		this.setFont(new SpriteSheet(Config.SPRITESHEET_FILE));
-		this.setWidth(width);
-		this.setHeight(height);
-		this.setPixels(new int[width * height]);
-		this.setTint(0.3D, 0.3D, 0.3D);
+		setGame(game);
+		setInput(game.getInputHandler());
+		setFont(new SpriteSheet(Config.SPRITESHEET_FILE));
+		setWidth(width);
+		setHeight(height);
+		setPixels(new int[width * height]);
+		setTint(0.3D, 0.3D, 0.3D);
 		if (game.getWorld() != null && game.getScreen().getPixels().length == Game.getInstance().getScreen().getPixels().length) {
 			setBkgPixels(game.getPixels().clone());
 		}

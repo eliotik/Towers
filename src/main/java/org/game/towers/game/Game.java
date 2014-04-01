@@ -189,6 +189,7 @@ public class Game extends Canvas implements Runnable, FocusListener {
 	private void tick() {
 		setTicksCount(getTicksCount() + 1);
 		getInputHandler().tick();
+		getMouseHandler().tick();
 		if (getGui() != null) {
 			getGui().tick(getTicksCount());
 			if (!getGui().pausesGame()) {

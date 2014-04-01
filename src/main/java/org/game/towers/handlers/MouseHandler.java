@@ -11,8 +11,6 @@ import org.game.towers.game.Game;
 
 public class MouseHandler implements MouseListener, MouseMotionListener {
 
-	private boolean mouseBtnHolded = false;
-
 	private MouseKey[] keys = new MouseKey[3];
 	private MouseKey left;
 	private MouseKey right;
@@ -48,7 +46,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 			if (getKeys()[j].gotPressed()) {
 				for (int i = 0; i < getListeners().size(); i++) {
 					if(!getNewListeners().contains(getListeners().get(i))) {
-						getListeners().get(i).actionPerformed(new MouseInputEvent(getKeys()[j], InputEventType.PRESSED));
+						getListeners().get(i).actionPerformed(new MouseInputEvent(getKeys()[j], getKeys()[j].getState()));
 					} else {
 						getNewListeners().remove(getListeners().get(i));
 					}
@@ -58,40 +56,26 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-
+		toggleKey(e.getButton(), InputEventType.CLICKED);
 	}
 
     public void mousePressed(MouseEvent e) {
-    	setMouseBtnHolded(true);
+    	toggleKey(e.getButton(), InputEventType.PRESSED);
     }
 
     public void mouseReleased(MouseEvent e) {
-    	setMouseBtnHolded(false);
+    	toggleKey(e.getButton(), InputEventType.RELEASED);
     }
 
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    public void mouseExited(MouseEvent e) {
-
-    }
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
 
     public void mouseMoved(MouseEvent e) {
-    	//System.out.println((e.getX()/Config.SCALE) +" : "+ (e.getY()/Config.SCALE) + " | " + Game.getInstance().getScreen().getxOffset()+" : "+Game.getInstance().getScreen().getyOffset());
     	Game.getInstance().getScreen().setMousePosition(new Point(e.getX(), e.getY()));
     }
 
 	public void mouseDragged(MouseEvent e) {
 		Game.getInstance().getScreen().setMousePosition(new Point(e.getX(), e.getY()));
-	}
-
-	public boolean isMouseBtnHolded() {
-		return mouseBtnHolded;
-	}
-
-	public void setMouseBtnHolded(boolean mouseBtnHolded) {
-		this.mouseBtnHolded = mouseBtnHolded;
 	}
 
 	public MouseKey[] getKeys() {
@@ -148,5 +132,39 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	public void setActionPerformed(boolean actionPerformed) {
 		this.actionPerformed = actionPerformed;
+	}
+
+	public void addListener(GameActionListener listener) {
+		addListener(listener, false);
+	}
+
+	public void removeListener(GameActionListener listener) {
+		getListeners().remove(listener);
+	}
+
+	public boolean isKeyPressed(MouseKey key) {
+		return false;//key.isPressed();
+	}
+
+	public void addListener(GameActionListener listener, boolean onlyListeners) {
+		if (!onlyListeners) {
+			getNewListeners().add(listener);
+		}
+		getListeners().add(listener);
+	}
+
+	public void toggleKey(int keyCode, InputEventType inputEventType) {
+		setActionPerformed(true);
+		switch(keyCode) {
+		case MouseEvent.BUTTON1:
+			getLeft().toggle(inputEventType);
+			break;
+		case MouseEvent.BUTTON3:
+			getRight().toggle(inputEventType);
+			break;
+		case MouseEvent.BUTTON2:
+			getCenter().toggle(inputEventType);
+			break;
+		}
 	}
 }

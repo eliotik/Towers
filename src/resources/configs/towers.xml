@@ -25,6 +25,7 @@
 		can_shoot="true"
 		shooting_delay="0.2"
 		modificator="none"
+		opacity="100"
 	/>
 
 	<tower
@@ -51,6 +52,7 @@
 		can_shoot="true"
 		shooting_delay="1.2"
 		modificator="snail"
+		opacity="100"
 	/>
 
 </towers>

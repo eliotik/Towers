@@ -50,6 +50,7 @@ public abstract class Unit implements Serializable {
 	private String modificator;
 	private long lastTimeShooted;
 	private double highlight = 1;
+	private double opacity = 100;
 
 	public Unit() {
 		setSpriteIndex(0);
@@ -75,11 +76,11 @@ public abstract class Unit implements Serializable {
 		Rectangle unit = getCollisionBox();
 
 		if (unit.intersects(mouseCoursor)) {
-			if (Game.getInstance().getMouseHandler().isMouseBtnHolded()) {
-				onMouseHolded();
-			} else {
+//			if (Game.getInstance().getMouseHandler().isMouseBtnHolded()) {
+//				onMouseHolded();
+//			} else {
 				onMouseHover();
-			}
+//			}
 		} else {
 			onMouseOut();
 		}
@@ -481,5 +482,13 @@ public abstract class Unit implements Serializable {
 
 	public void setHighlight(double highlight) {
 		this.highlight = highlight;
+	}
+
+	public double getOpacity() {
+		return opacity;
+	}
+
+	public void setOpacity(double opacity) {
+		this.opacity = opacity;
 	}
 }

@@ -7,11 +7,13 @@ import java.awt.Rectangle;
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.gfx.Screen;
-import org.game.towers.gfx.sprites.Sprite;
 import org.game.towers.gfx.sprites.SpritesData;
+import org.game.towers.handlers.GameActionListener;
+import org.game.towers.handlers.InputEvent;
+import org.game.towers.handlers.MouseInputEvent;
 import org.game.towers.workers.Utils;
 
-public class Store {
+public class Store implements GameActionListener{
 
 	private int x;
 	private int y;
@@ -22,10 +24,12 @@ public class Store {
 	private Screen screen;
 
 	public Store(Screen screen) {
-		setX(0);
-		setY(0);
 		setScreen(screen);
 		setVisible(true);
+		setX((getScreen().getWidth() - (SpritesData.STORE.getWidth() / 2)) - (0 << Config.COORDINATES_SHIFTING) - 10);
+		setY(getScreen().getHeight() - SpritesData.STORE.getHeight());
+		getCollisionBox().setRect(getX(), getY(), SpritesData.STORE.getWidth(), SpritesData.STORE.getHeight());
+		Game.getInstance().getMouseHandler().addListener(this, true);
 	}
 
 	public void tick() {
@@ -41,11 +45,7 @@ public class Store {
 
 	public void render() {
 		if (!isVisible()) return;
-		Sprite sprite = SpritesData.STORE;
-		int xp = (getScreen().getWidth() - (sprite.getWidth() / 2)) - (0 << Config.COORDINATES_SHIFTING) - 10 + getX();
-		int yp = getScreen().getHeight() - sprite.getHeight();
-		getScreen().renderIcon(sprite, xp, yp, getScale(), getHighlight());
-		getCollisionBox().setRect(xp, yp, SpritesData.STORE_BG_LEFT.getWidth(), SpritesData.STORE_BG_LEFT.getHeight());
+		getScreen().renderIcon(SpritesData.STORE, getX(), getY(), getScale(), getHighlight());
 	}
 
 	public int getX() {
@@ -102,5 +102,58 @@ public class Store {
 
 	public void setScreen(Screen screen) {
 		this.screen = screen;
+	}
+
+	@Override
+	public void actionPerformed(InputEvent event) {}
+
+	@Override
+	public void actionPerformed(MouseInputEvent event) {
+		switch(event.getType()) {
+		case CLICKED:
+			if (event.getKey().getId() == Game.getInstance().getMouseHandler().getLeft().getId()) {
+				System.out.println("mouse left clicked: "+event.getType());
+				break;
+			}
+			if (event.getKey().getId() == Game.getInstance().getMouseHandler().getRight().getId()) {
+				System.out.println("mouse right clicked: "+event.getType());
+				break;
+			}
+			if (event.getKey().getId() == Game.getInstance().getMouseHandler().getCenter().getId()) {
+				System.out.println("mouse center clicked: "+event.getType());
+				break;
+			}
+			break;
+		case PRESSED:
+			if (event.getKey().getId() == Game.getInstance().getMouseHandler().getLeft().getId()) {
+				System.out.println("mouse left pressed: "+event.getType());
+				break;
+			}
+			if (event.getKey().getId() == Game.getInstance().getMouseHandler().getRight().getId()) {
+				System.out.println("mouse right pressed: "+event.getType());
+				break;
+			}
+			if (event.getKey().getId() == Game.getInstance().getMouseHandler().getCenter().getId()) {
+				System.out.println("mouse center pressed: "+event.getType());
+				break;
+			}
+			break;
+		case RELEASED:
+			if (event.getKey().getId() == Game.getInstance().getMouseHandler().getLeft().getId()) {
+				System.out.println("mouse left released: "+event.getType());
+				break;
+			}
+			if (event.getKey().getId() == Game.getInstance().getMouseHandler().getRight().getId()) {
+				System.out.println("mouse right released: "+event.getType());
+				break;
+			}
+			if (event.getKey().getId() == Game.getInstance().getMouseHandler().getCenter().getId()) {
+				System.out.println("mouse center released: "+event.getType());
+				break;
+			}
+			break;
+		default:
+			break;
+		}
 	}
 }

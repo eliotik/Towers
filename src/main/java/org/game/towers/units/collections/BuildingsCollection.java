@@ -36,6 +36,7 @@ public class BuildingsCollection {
                 item.setArmour(Integer.parseInt(elemj.getAttribute("armour").toString()));
                 item.setSpeed(Double.parseDouble(elemj.getAttribute("speed").toString()));
                 item.setValue(Double.parseDouble(elemj.getAttribute("damage").toString()));
+                item.setOpacity(Double.parseDouble(elemj.getAttribute("opacity").toString()));
 
                 item.setGeo(new Rectangle(
                         0,
