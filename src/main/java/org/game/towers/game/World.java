@@ -35,7 +35,6 @@ public class World {
 		if (getLevel() != null) {
 			getLevel().render(Game.getInstance().getScreen());
 
-//            MathAlgorithms.getLightCoordinates(100, 100, 20);
 //			getLevel().renderStore(screen);
 		}
 	}

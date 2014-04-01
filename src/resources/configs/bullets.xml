@@ -5,7 +5,7 @@
 		id="base_dot"
 		type="base"
 		name="Base dot"
-		speed="0.6"
+		speed="0.01"
 		animation_switch_delay="100"
 		animation_start_delay="0"
 		collision_box_min_x="6"

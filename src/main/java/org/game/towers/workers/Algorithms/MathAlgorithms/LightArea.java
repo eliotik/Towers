@@ -15,6 +15,7 @@ class LightArea
     private HashMap<String, Integer> checkOnUnique = new HashMap<>();
     private int uniqueSize = 0;
     private double epsilon = 0.001;
+    private double deltaPenetration = 0.5;
 
     public LightArea(Coordinates coordinatesCenter, int radius) {
         setCoordinatesCenter(coordinatesCenter);
@@ -64,10 +65,12 @@ class LightArea
         double deltaX, deltaY;
         int xa, ya;
         double radius = (double)getRadius();
+        double transparency, tileWidth, tileDiagonal, maxPenetration;
 
         for (double degree = 0; degree < 2 * Math.PI; degree+=deltaDegree) {
             double currentX = (double)getCoordinatesCenter().getX();
             double currentY = (double)getCoordinatesCenter().getY();
+            double penetrationDepth = 0;
             for (double r  = 0; r < radius; r+=epsilon) {
                 deltaX = r * Math.cos(degree);
                 deltaY = r * Math.sin(degree);
@@ -77,8 +80,15 @@ class LightArea
                 ya = (int)currentY >> Config.COORDINATES_SHIFTING;
 
                 if (Game.getInstance().getWorld().getLevel().getTile(xa, ya).isSolid()){
-                    putUniqueCoordinate(new Coordinates((int)currentX, (int)currentY), 2);
-                    break;
+                    penetrationDepth+=deltaPenetration;
+                    transparency = 1 - Game.getInstance().getWorld().getLevel().getTile(xa, ya).getOpacity() / 100;
+                    tileWidth = (double)Game.getInstance().getWorld().getLevel().getTile(xa, ya).getSprite().getWidth();
+                    tileDiagonal = tileWidth * Math.sqrt(2);
+                    maxPenetration = tileDiagonal * transparency;
+                    if (penetrationDepth > maxPenetration) {
+                        putUniqueCoordinate(new Coordinates((int)currentX, (int)currentY), 1);
+                        break;
+                    }
                 }
                 putUniqueCoordinate(new Coordinates((int)currentX, (int)currentY), 2);
 
@@ -88,7 +98,6 @@ class LightArea
 
     public HashMap<Coordinates, Integer> getInscribedCoordinates(){
         generateLightMap();
-
         return inscribedCoordinates;
     }
 
