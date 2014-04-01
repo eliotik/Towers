@@ -30,7 +30,9 @@ public class JPS {
     }
 
     public synchronized ArrayList<Node> search(int xStart, int yStart, int unitId){
-        Node[][] tiles = Game.getInstance().getWorld().getLevel().generateGridForJSP(unitId);
+//        Node[][] tiles = Game.getInstance().getWorld().getLevel().generateGridForJSP(unitId);
+
+        Node[][] tiles = Game.getInstance().getWorld().getLevel().generateGridForJSP();
         Node[] possibleSuccessUnitId;
         Grid newGrid = new Grid(tiles);
         if (gridHashMap.get(unitId) == null) {

@@ -204,6 +204,19 @@ public class Level implements GameActionListener {
         return jpsTiles;
     }
 
+    public Node[][] generateGridForJSP() {
+        Node[][] jpsTiles = new Node[getWidth()*Config.BOX_SIZE][getHeight()*Config.BOX_SIZE];
+        for(int y = 0; y < getHeight()*Config.BOX_SIZE; y++) {
+            for(int x = 0; x < getWidth()*Config.BOX_SIZE; x++) {
+                int xa = x >> Config.COORDINATES_SHIFTING;
+                int ya = y >> Config.COORDINATES_SHIFTING;
+                jpsTiles[x][y] = new Node(x, y);
+                jpsTiles[x][y].setPass(!getTile(xa, ya).isSolid());
+            }
+        }
+        return jpsTiles;
+    }
+
 	public synchronized void alterTile(int x, int y, Tile newTile) {
 		getTiles()[x + y * getWidth()] = newTile;
 		getImage().setRGB(x, y, newTile.getLevelColor());
