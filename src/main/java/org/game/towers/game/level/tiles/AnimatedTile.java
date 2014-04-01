@@ -13,8 +13,8 @@ public class AnimatedTile extends BasicTile{
 
 	public AnimatedTile(Level level, Sprite[] sprites, String name,
 			int levelColor, boolean isSolid, boolean isEmitter, int x, int y,
-			int animationSwitchDelay) {
-		super(level, null, name, levelColor, isSolid, isEmitter, x, y);
+			int animationSwitchDelay, double opacity) {
+		super(level, null, name, levelColor, isSolid, isEmitter, x, y, opacity);
 
 		setSprites(sprites);
 		setCurrentAnimationIndex(0);
@@ -26,8 +26,8 @@ public class AnimatedTile extends BasicTile{
 
 	public AnimatedTile(Level level, Sprite[] sprites, String name,
 			int levelColor, boolean isSolid, boolean isEmitter, int x, int y,
-			int animationSwitchDelay, int animationStartDelay) {
-		super(level, null, name, levelColor, isSolid, isEmitter, x, y);
+			int animationSwitchDelay, int animationStartDelay, double opacity) {
+		super(level, null, name, levelColor, isSolid, isEmitter, x, y, opacity);
 
 		setSprites(sprites);
 		setCurrentAnimationIndex(0);

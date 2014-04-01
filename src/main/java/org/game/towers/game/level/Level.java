@@ -151,7 +151,7 @@ public class Level implements GameActionListener {
 	}
 
 	private Tile parseTileFromColor(int color, int x, int y) {
-		for (TileTypes tt : TileTypes.types) {
+		for (TileTypes tt : TileTypes.getTypes()) {
 			if (tt.get().getLevelColor() == color) {
 				return tt.get(this, x, y, false);
 			}

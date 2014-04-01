@@ -11,6 +11,7 @@ public abstract class Tile {
 	private Sprite sprite;
 	private boolean solid;
 	private boolean emitter;
+	private double opacity = 100;
 	private int levelColor;
 	private int x;
 	private int y;
@@ -18,7 +19,7 @@ public abstract class Tile {
 	private double highlight = 1;
 
 	public Tile(Level level, Sprite sprite, String name, int levelColor,
-			boolean isSolid, boolean isEmitter, int x, int y) {
+			boolean isSolid, boolean isEmitter, int x, int y, double opacity) {
 	    setLevel(level);
 	    setName(name);
 	    setSprite(sprite);
@@ -27,6 +28,7 @@ public abstract class Tile {
 	    setLevelColor(levelColor);
 	    setX(x);
 	    setY(y);
+	    setOpacity(opacity);
 	}
 
 	public abstract void render(Screen screen);
@@ -110,5 +112,13 @@ public abstract class Tile {
 
 	public void setHighlight(double highlight) {
 		this.highlight = highlight;
+	}
+
+	public double getOpacity() {
+		return opacity;
+	}
+
+	public void setOpacity(double opacity) {
+		this.opacity = opacity;
 	}
 }
