@@ -6,7 +6,6 @@ import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.game.level.Level;
 import org.game.towers.handlers.InputHandler;
-import org.game.towers.units.collections.TowersCollection;
 
 public class Camera {
 
@@ -46,13 +45,12 @@ public class Camera {
             setRight(new Rectangle(Config.REAL_SCREEN_WIDTH-Config.BOX_SIZE * 2,
             						0,
             						Config.BOX_SIZE * 2,
-            						Config.REAL_SCREEN_HEIGHT - TowersCollection.getItems().size()*Config.BOX_SIZE));
+            						Config.REAL_SCREEN_HEIGHT - Config.BOX_SIZE*4));
 
             setBottom(new Rectangle(0,
             						Config.REAL_SCREEN_HEIGHT-Config.BOX_SIZE * 2,
-            						Config.SCREEN_WIDTH - TowersCollection.getItems().size()*Config.BOX_SIZE,
+            						Config.REAL_SCREEN_WIDTH - Config.BOX_SIZE*4,
             						Config.BOX_SIZE * 2));
-            //System.out.println(Config.REAL_SCREEN_WIDTH);
         }
 
         public Rectangle getTop() {
@@ -91,20 +89,21 @@ public class Camera {
     public void tick() {
         int xa = 0;
         int ya = 0;
-        if (getInputHandler().getLeft().isPressed() ||
-    		getMouseBounds().getLeft().contains(Game.getInstance().getScreen().getMousePosition())) {
+        Screen screen = Game.getInstance().getScreen();
+		if (getInputHandler().getLeft().isPressed() ||
+    		getMouseBounds().getLeft().contains(screen.getMousePosition())) {
             xa--;
         }
         if (getInputHandler().getRight().isPressed() ||
-    		getMouseBounds().getRight().contains(Game.getInstance().getScreen().getMousePosition())) {
+    		getMouseBounds().getRight().contains(screen.getMousePosition())) {
             xa++;
         }
         if (getInputHandler().getUp().isPressed() ||
-    		getMouseBounds().getTop().contains(Game.getInstance().getScreen().getMousePosition())) {
+    		getMouseBounds().getTop().contains(screen.getMousePosition())) {
             ya--;
         }
         if (getInputHandler().getDown().isPressed() ||
-    		getMouseBounds().getBottom().contains(Game.getInstance().getScreen().getMousePosition())) {
+    		getMouseBounds().getBottom().contains(screen.getMousePosition())) {
             ya++;
         }
 
@@ -114,14 +113,14 @@ public class Camera {
         if (getX() < 0) {
             setX(0);
         }
-        if (getX() > (getLevel().getWidth() << Config.COORDINATES_SHIFTING) - Game.getInstance().getScreen().getWidth()) {
-            setX((getLevel().getWidth() << Config.COORDINATES_SHIFTING) - Game.getInstance().getScreen().getWidth());
+        if (getX() > (getLevel().getWidth() << Config.COORDINATES_SHIFTING) - screen.getWidth()) {
+            setX((getLevel().getWidth() << Config.COORDINATES_SHIFTING) - screen.getWidth());
         }
         if (getY() < 0) {
             setY(0);
         }
-        if (getY() > (getLevel().getHeight() << Config.COORDINATES_SHIFTING) - Game.getInstance().getScreen().getHeight()) {
-            setY((getLevel().getHeight() << Config.COORDINATES_SHIFTING) - Game.getInstance().getScreen().getHeight());
+        if (getY() > (getLevel().getHeight() << Config.COORDINATES_SHIFTING) - screen.getHeight()) {
+            setY((getLevel().getHeight() << Config.COORDINATES_SHIFTING) - screen.getHeight());
         }
     }
 

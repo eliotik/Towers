@@ -43,6 +43,7 @@ public class TowersCollection {
                 item.setDamage(Integer.parseInt(elemj.getAttribute("damage").toString()));
                 item.setAnimationSwitchDelay(Integer.parseInt(elemj.getAttribute("animation_switch_delay").toString()));
                 item.setAnimationStartDelay(Integer.parseInt(elemj.getAttribute("animation_start_delay").toString()));
+                item.setOpacity(Double.parseDouble(elemj.getAttribute("opacity").toString()));
 
                 item.setGeo(new Rectangle(
                         0,

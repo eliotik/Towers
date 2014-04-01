@@ -16,6 +16,7 @@
 		collision_box_max_x="12"
 		collision_box_min_y="4"
 		collision_box_max_y="12"
+		opacity="100"
 		/>
 
 </buildings>
