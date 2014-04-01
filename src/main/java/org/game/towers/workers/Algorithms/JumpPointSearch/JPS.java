@@ -1,9 +1,7 @@
 package org.game.towers.workers.Algorithms.JumpPointSearch;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;

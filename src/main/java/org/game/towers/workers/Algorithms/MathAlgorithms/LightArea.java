@@ -4,7 +4,6 @@ import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.workers.geo.Coordinates;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 class LightArea
