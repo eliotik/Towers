@@ -291,7 +291,7 @@ public class Level implements GameActionListener {
 				for (Iterator<Unit> bulletIt = getBullets().iterator(); bulletIt.hasNext();) {
 					Unit bulletUnit = (Unit) bulletIt.next();
 					bulletUnit.tick();
-					if (bulletUnit instanceof Bullet && unit instanceof Npc && !unit.isDead()) {
+					if (bulletUnit instanceof Bullet && unit instanceof Npc && !unit.isDead() && ((Bullet) bulletUnit).doCheckCollision(unit)) {
 						Bullet bullet = (Bullet) bulletUnit;
 //						if (bullet.getTileX() == unit.getTileX() && bullet.getTileY() == unit.getTileY()) {
 						if (bullet.hasCollision(unit)) {

@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 
 import org.game.towers.game.Config;
 import org.game.towers.gfx.Screen;
+import org.game.towers.units.ShootingUnit;
 import org.game.towers.units.Unit;
 import org.game.towers.units.towers.Tower;
 import org.game.towers.workers.Algorithms.MathAlgorithms.LinearAlgorithms;
@@ -15,7 +16,7 @@ public class Bullet extends Unit {
 	private static final long serialVersionUID = 1L;
 
 	private double distance;
-	private Unit owner;
+	private ShootingUnit owner;
 	private Unit target;
 	private Point endPoint;
 	private Point startPoint;
@@ -68,6 +69,10 @@ public class Bullet extends Unit {
 		return false;
 	}
 
+	public boolean doCheckCollision(Unit unit){
+		return Utils.getLineLength(getX(), getY(), (int)unit.getX(), (int)unit.getY()) <= getOwner().getRadius();
+	}
+
 	public boolean hasCollision(Unit unit) {
 		int bXMin = (int) getMinCollisionBox().getX();
 		int bXMax = (int) getMaxCollisionBox().getX();
@@ -98,11 +103,11 @@ public class Bullet extends Unit {
 		this.distance = distance;
 	}
 
-	public void setOwner(Unit owner) {
+	public void setOwner(ShootingUnit owner) {
 		this.owner = owner;
 	}
 
-	public Unit getOwner() {
+	public ShootingUnit getOwner() {
 		return owner;
 	}
 

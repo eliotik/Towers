@@ -87,4 +87,8 @@ public class Utils {
 		case Config.VIEW_TYPE_CIRCLE: return MathAlgorithms.getInscribedCoordinates(x, y, radarSize);
 		}
 	}
+
+	public static int getLineLength(double fromX, double fromY, int toX, int toY) {
+		return (int) Math.abs(Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2)));
+	}
 }

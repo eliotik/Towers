@@ -8,6 +8,7 @@ import org.game.towers.game.level.Level;
 import org.game.towers.gfx.Screen;
 import org.game.towers.units.bullets.Bullet;
 import org.game.towers.units.npcs.Npc;
+import org.game.towers.workers.Utils;
 
 public class ShootingUnit extends Unit {
 
@@ -47,24 +48,6 @@ public class ShootingUnit extends Unit {
 		int halfBox = (int) (Config.BOX_SIZE/2 + (Config.BOX_SIZE/2)*unit.getSpeed());
 		Bullet bullet = UnitFactory.getBullet(getBulletType(), this, unit);
 
-//		switch(unit.getMovingDirection()) {
-//		case 0:
-//
-//			y -= halfBox + bullet.getMaxCollisionBox().getY();
-//			if (y < 0) y = 0;
-//			break;
-//		case 1:
-//			y += halfBox - bullet.getMaxCollisionBox().getY();
-//			break;
-//		case 2:
-//			x -= halfBox + bullet.getMaxCollisionBox().getX();
-//			if (x < 0) x = 0;
-//			break;
-//		case 3:
-//			x += halfBox -  bullet.getMaxCollisionBox().getX();
-//			break;
-//		}
-
 		bullet.setEndPoint(new Point(x + halfBox, y + halfBox));
 		bullet.setStartPoint(new Point((int) getX(), (int) getY()));
 		bullet.setX(getX());
@@ -75,7 +58,8 @@ public class ShootingUnit extends Unit {
 	}
 
 	private int getDistanceToTarget(int x, int y) {
-		return (int) Math.abs(Math.sqrt(Math.pow(x - getX(), 2) + Math.pow(y - getY(), 2)));
+
+		return Utils.getLineLength(getX(), getY(), x, y);
 	}
 
 	@Override

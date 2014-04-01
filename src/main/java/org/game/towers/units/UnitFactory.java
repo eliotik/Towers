@@ -61,7 +61,7 @@ public class UnitFactory {
 		return null;
 	}
 
-	public static Bullet getBullet(String type, Unit owner, Unit target){
+	public static Bullet getBullet(String type, ShootingUnit owner, Unit target){
 		try {
 			List<Bullet> types = filter(having(on(Bullet.class).getId(), Matchers.equalTo(type)),
 					BulletsCollection.getItems());
