@@ -1,7 +1,9 @@
 package org.game.towers.workers.Algorithms.JumpPointSearch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.game.towers.game.Config;
 import org.game.towers.game.Game;
@@ -30,8 +32,6 @@ public class JPS {
     }
 
     public synchronized ArrayList<Node> search(int xStart, int yStart, int unitId){
-//        Node[][] tiles = Game.getInstance().getWorld().getLevel().generateGridForJSP(unitId);
-
         Node[][] tiles = Game.getInstance().getWorld().getLevel().generateGridForJSP();
         Node[] possibleSuccessUnitId;
         Grid newGrid = new Grid(tiles);
@@ -67,6 +67,7 @@ public class JPS {
                 return null;
             }
         }
+        extricationMemory(tiles);
         return trailNodes;
     }
 
@@ -250,5 +251,13 @@ public class JPS {
 
     public void setEndY(int endY) {
         this.endY = endY;
+    }
+
+    private void extricationMemory(Node[][] tiles) {
+        for(int i = 0; i < tiles.length; i++) {
+            for(int j = 0; j < tiles[i].length; j++) {
+                tiles[i][j] = null;
+            }
+        }
     }
 }
