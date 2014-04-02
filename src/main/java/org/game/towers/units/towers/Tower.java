@@ -13,47 +13,47 @@ public class Tower extends ShootingUnit {
 	private int radarViewSize;
 	private int resources;
 
-	double maxX = 240 + 30;
-	double minX = 240 - 30;
+//	double maxX = 240 + 30;
+//	double minX = 240 - 30;
 
 	@Override
 	public void tick() {
 		super.tick();
-
-		int xa = 0;
-
-		if (getX() < maxX && getMovingDirection() == 1) {
-			xa += 1;
-		}
-
-		if (getX() < maxX && getMovingDirection() == 3) {
-			xa += 1;
-		}
-		if (getX() >= maxX && getMovingDirection() == 3) {
-			xa -= 1;
-		}
-		if (getX() > minX && getMovingDirection() == 2) {
-			xa -= 1;
-		}
-		if (getX() <= minX && getMovingDirection() == 2) {
-			xa += 1;
-		}
-
-		if (xa != 0) {
-			if (xa < 0) {
-				setMovingDirection(2);
-			}
-			if (xa > 0) {
-				setMovingDirection(3);
-			}
-			setX(getX() + xa * (getSpeed()-4.5));
-			setNumSteps(getNumSteps() + 1);
-			setMoving(true);
-			Game.getInstance().getScreen().restoreFogLayer();
-			Game.getInstance().getScreen().refineFogLayer(getX()+Config.BOX_SIZE/2, getY()+Config.BOX_SIZE/2, getRadarViewSize());
-		} else {
-			setMoving(false);
-		}
+//		return;
+//		int xa = 0;
+//
+//		if (getX() < maxX && getMovingDirection() == 1) {
+//			xa += 1;
+//		}
+//
+//		if (getX() < maxX && getMovingDirection() == 3) {
+//			xa += 1;
+//		}
+//		if (getX() >= maxX && getMovingDirection() == 3) {
+//			xa -= 1;
+//		}
+//		if (getX() > minX && getMovingDirection() == 2) {
+//			xa -= 1;
+//		}
+//		if (getX() <= minX && getMovingDirection() == 2) {
+//			xa += 1;
+//		}
+//
+//		if (xa != 0) {
+//			if (xa < 0) {
+//				setMovingDirection(2);
+//			}
+//			if (xa > 0) {
+//				setMovingDirection(3);
+//			}
+//			setX(getX() + xa * (getSpeed()-4.5));
+//			setNumSteps(getNumSteps() + 1);
+//			setMoving(true);
+//			Game.getInstance().getScreen().restoreFogLayer();
+//			Game.getInstance().getScreen().refineFogLayer(getX()+Config.BOX_SIZE/2, getY()+Config.BOX_SIZE/2, getRadarViewSize());
+//		} else {
+//			setMoving(false);
+//		}
 	}
 
 	@Override

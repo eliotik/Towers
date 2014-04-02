@@ -444,7 +444,7 @@ public class Screen {
 
 	public void refineFogLayer(double x, double y, int radarSize) {
 		synchronized (getFog()) {
-			HashMap<Coordinates, Integer> circle = Utils.getVisiblePixels(Config.VIEW_TYPE_CIRCLE, x, y, radarSize);
+			HashMap<Coordinates, Integer> circle = Utils.getVisiblePixels(Config.VIEW_TYPE_LIGHT, x, y, radarSize);
 			Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
 			while (it.hasNext()) {
 			    @SuppressWarnings("rawtypes")
