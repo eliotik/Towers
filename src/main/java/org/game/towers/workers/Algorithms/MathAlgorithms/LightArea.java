@@ -66,7 +66,7 @@ class LightArea
         double deltaDegree = Math.PI /( 8 * 360 );
         double deltaX, deltaY;
         int xa, ya;
-        double radius = (double)getRadius();
+        double radius = (double)getRadius() * epsilon * 10;
         double transparency, tileWidth, tileDiagonal, maxPenetration;
 
         for (double degree = 0; degree < 2 * Math.PI; degree+=deltaDegree) {

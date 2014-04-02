@@ -30,7 +30,8 @@ public class Screen {
 	public static final byte BIT_MIRROR_Y = 0x02;
 
 	private int[] pixels;
-	private HashMap<String, Integer> fog;
+	private volatile HashMap<String, Integer> fog;
+	private volatile HashMap<String, Integer> canonicalFog;
 	private Graphics graphics;
 
 	private int xOffset = 0;
@@ -442,20 +443,22 @@ public class Screen {
 	}
 
 	public void refineFogLayer(double x, double y, int radarSize) {
-		HashMap<Coordinates, Integer> circle = Utils.getVisiblePixels(Config.VIEW_TYPE_LIGHT, x, y, radarSize);
-		Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
-		while (it.hasNext()) {
-		    @SuppressWarnings("rawtypes")
-			Map.Entry data = (Map.Entry)it.next();
-		    Coordinates coordinates = (Coordinates) data.getKey();
-		    String key = "x"+coordinates.getX()+"y"+coordinates.getY();
-		    int value = (int) data.getValue();
-		    if (getFog().containsKey(key)) {
-		    	int oldValue = getFog().get(key);
-		    	if (value == 0 && oldValue != 0) value = oldValue;
-		    	if (value == 1 && oldValue > 1 ) value = oldValue;
-		    }
-		    getFog().put(key, value);
+		synchronized (getFog()) {
+			HashMap<Coordinates, Integer> circle = Utils.getVisiblePixels(Config.VIEW_TYPE_CIRCLE, x, y, radarSize);
+			Iterator<Entry<Coordinates, Integer>> it = circle.entrySet().iterator();
+			while (it.hasNext()) {
+			    @SuppressWarnings("rawtypes")
+				Map.Entry data = (Map.Entry)it.next();
+			    Coordinates coordinates = (Coordinates) data.getKey();
+			    String key = "x"+coordinates.getX()+"y"+coordinates.getY();
+			    int value = (int) data.getValue();
+			    if (getFog().containsKey(key)) {
+			    	int oldValue = getFog().get(key);
+			    	if (value == 0 && oldValue != 0) value = oldValue;
+			    	if (value == 1 && oldValue > 1 ) value = oldValue;
+			    }
+			    getFog().put(key, value);
+			}
 		}
 	}
 
@@ -465,5 +468,41 @@ public class Screen {
 
 	public void setFog(HashMap<String, Integer> fog) {
 		this.fog = fog;
+		if (getCanonicalFog() == null || getCanonicalFog().size() == 0) {
+			setCanonicalFog(new HashMap<String, Integer>());
+			Iterator<Entry<String, Integer>> it = fog.entrySet().iterator();
+			while (it.hasNext()) {
+			    @SuppressWarnings("rawtypes")
+				Map.Entry data = (Map.Entry)it.next();
+			    getCanonicalFog().put((String)data.getKey(), 0);
+			}
+		}
+	}
+
+	public void restoreFogLayer() {
+		synchronized (getFog()) {
+			Iterator<Entry<String, Integer>> it = getCanonicalFog().entrySet().iterator();
+			while (it.hasNext()) {
+			    @SuppressWarnings("rawtypes")
+				Map.Entry data = (Map.Entry)it.next();
+			    int value = (int) data.getValue();
+			    String key = (String)data.getKey();
+//			    if (getFog().containsKey(key)) {
+//			    	int oldValue = getFog().get(key);
+//			    	if (value == 0 && oldValue != 0) value = oldValue;
+////			    	if (value == 1 && oldValue > 1 ) value = oldValue;
+//			    	if (oldValue > 1) value = 1;
+//			    }
+			    getFog().put(key, value);
+			}
+		}
+	}
+
+	private HashMap<String, Integer> getCanonicalFog() {
+		return canonicalFog;
+	}
+
+	private void setCanonicalFog(HashMap<String, Integer> canonicalFog) {
+		this.canonicalFog = canonicalFog;
 	}
 }

@@ -34,6 +34,7 @@ public class Level implements GameActionListener {
 	private String name;
     private HashMap<Integer, Node[][]>  jpsTilesHashMap = new HashMap<Integer, Node[][]>();
 	private Tile[] tiles;
+	private List<Tile> radiants = new ArrayList<Tile>();
 	private int width;
 	private int height;
 	private int xOffset = 0;
@@ -43,6 +44,7 @@ public class Level implements GameActionListener {
 	private volatile List<Unit> units = new ArrayList<Unit>();
 	private volatile List<Unit> bullets = new ArrayList<Unit>();
 	private Store store;
+	private Screen screen;
 	private Camera camera;
 	private long nextWave = System.currentTimeMillis() + Config.LEVEL_WAVE_TIMEOUT;
 	private volatile TileTypes backgroundTileTypes;
@@ -54,7 +56,8 @@ public class Level implements GameActionListener {
 
     private Wave currentWave;
 
-    public Level(String imagePath) {
+    public Level(Screen screen, String imagePath) {
+    	setScreen(screen);
 		setImagePath(imagePath);
 		loadLevelFromFile();
 		setBackgroundTileTypes(TileTypes.get(Config.TILE_GRASS));
@@ -114,11 +117,32 @@ public class Level implements GameActionListener {
 				}
 			}
 			screen.setFog(fog);
-			screen.refineFogLayer(
-				Portals.getExit().getCoordinates().getX() + Config.BOX_SIZE/2,
-				Portals.getExit().getCoordinates().getY() + Config.BOX_SIZE/2,
-				Config.DEFAULT_LEVEL_ENTRANCE_RADAR_VIEW_SIZE
-			);
+			initRadiants();
+//			Tile tile = TileTypes.get(Config.TILE_EXIT).get(this, 0, 0, false);
+//			for(int i = 0, l = Portals.getExits().size(); i < l; ++i) {
+//				if (tile.isRadiant())
+//				screen.refineFogLayer(
+//						Portals.getExits().get(i).getCoordinates().getX() + Config.BOX_SIZE/2,
+//						Portals.getExits().get(i).getCoordinates().getY() + Config.BOX_SIZE/2,
+//						tile.getRadiantRadius()
+//					);
+//			}
+		}
+	}
+
+	private void initRadiants() {
+		if (getRadiants().size() > 0) {
+			for(int i = 0, l = getRadiants().size(); i < l; ++i){
+				Tile tile = getRadiants().get(i);
+				if (tile.isRadiant() && !tile.isRadiantRepeater()) {
+					int halfBox = Config.BOX_SIZE/2;
+					getScreen().refineFogLayer(
+							tile.getX() << Config.COORDINATES_SHIFTING + halfBox,
+							tile.getY() << Config.COORDINATES_SHIFTING + halfBox,
+							tile.getRadiantRadius()
+						);
+				}
+			}
 		}
 	}
 
@@ -166,6 +190,9 @@ public class Level implements GameActionListener {
 			for (int x = 0; x < getWidth(); x++) {
 				Tile tile = parseTileFromColor(tiles[x + y * getWidth()], x, y);
 				getTiles()[x + y * getWidth()] = tile;
+				if (tile.isRadiant()) {
+					getRadiants().add(tile);
+				}
 			}
 		}
         locatePortals();
@@ -291,10 +318,9 @@ public class Level implements GameActionListener {
 				for (Iterator<Unit> bulletIt = getBullets().iterator(); bulletIt.hasNext();) {
 					Unit bulletUnit = (Unit) bulletIt.next();
 					bulletUnit.tick();
-					if (bulletUnit instanceof Bullet && unit instanceof Npc && !unit.isDead() && ((Bullet) bulletUnit).doCheckCollision(unit)) {
+					if (bulletUnit instanceof Bullet && unit instanceof Npc && !unit.isDead()) {
 						Bullet bullet = (Bullet) bulletUnit;
-//						if (bullet.getTileX() == unit.getTileX() && bullet.getTileY() == unit.getTileY()) {
-						if (bullet.hasCollision(unit)) {
+						if (bullet.doCheckCollision(unit) && bullet.hasCollision(unit)) {
 							Npc npc = (Npc) unit;
 							npc.setHealth(npc.getHealth() - bullet.getDamage());
 							if (!bullet.getOwner().getModificator().equals(Modificators.NONE)) {
@@ -534,5 +560,21 @@ public class Level implements GameActionListener {
 
 	public void setVoidTileTypes(TileTypes voidTileTypes) {
 		this.voidTileTypes = voidTileTypes;
+	}
+
+	public Screen getScreen() {
+		return screen;
+	}
+
+	public void setScreen(Screen screen) {
+		this.screen = screen;
+	}
+
+	public List<Tile> getRadiants() {
+		return radiants;
+	}
+
+	public void setRadiants(List<Tile> radiants) {
+		this.radiants = radiants;
 	}
 }

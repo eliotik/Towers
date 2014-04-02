@@ -14,9 +14,10 @@ public class World {
 	private Game game;
 	private String name;
 
-	public World(String name) {
-		this.name = name;
-		setLevel(new Level(format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME)));
+	public World(Game game, String name) {
+		setName(name);
+		setGame(game);
+		setLevel(new Level(getGame().getScreen(), format("%s%s", Config.DEFAULT_LEVELS_PATH, Config.DEFAULT_LEVEL_FILENAME)));
 		Game.getInstance().getInputHandler().addListener(getLevel(), true);
 	}
 
@@ -53,5 +54,13 @@ public class World {
 
 	public void setLevel(Level level) {
 		this.level = level;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
