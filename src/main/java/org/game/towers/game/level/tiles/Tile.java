@@ -17,9 +17,13 @@ public abstract class Tile {
 	private int y;
 	private int mirrorMask = 0x00;
 	private double highlight = 1;
+	private boolean radiant = false;
+	private int radiantRadius;
+	private boolean radiantRepeater = false;
 
 	public Tile(Level level, Sprite sprite, String name, int levelColor,
-			boolean isSolid, boolean isEmitter, int x, int y, double opacity) {
+			boolean isSolid, boolean isEmitter, int x, int y, double opacity,
+			boolean radiant, int radiantRadius, boolean radiantRepeater) {
 	    setLevel(level);
 	    setName(name);
 	    setSprite(sprite);
@@ -29,6 +33,9 @@ public abstract class Tile {
 	    setX(x);
 	    setY(y);
 	    setOpacity(opacity);
+	    setRadiant(radiant);
+	    setRadiantRadius(radiantRadius);
+	    setRadiantRepeater(radiantRepeater);
 	}
 
 	public abstract void render(Screen screen);
@@ -120,5 +127,29 @@ public abstract class Tile {
 
 	public void setOpacity(double opacity) {
 		this.opacity = opacity;
+	}
+
+	public boolean isRadiant() {
+		return radiant;
+	}
+
+	public void setRadiant(boolean radiant) {
+		this.radiant = radiant;
+	}
+
+	public int getRadiantRadius() {
+		return radiantRadius;
+	}
+
+	public void setRadiantRadius(int radiantRadius) {
+		this.radiantRadius = radiantRadius;
+	}
+
+	public boolean isRadiantRepeater() {
+		return radiantRepeater;
+	}
+
+	public void setRadiantRepeater(boolean radiantRepeater) {
+		this.radiantRepeater = radiantRepeater;
 	}
 }
