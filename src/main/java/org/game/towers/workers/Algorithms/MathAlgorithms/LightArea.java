@@ -4,6 +4,7 @@ import org.game.towers.game.Config;
 import org.game.towers.game.Game;
 import org.game.towers.workers.geo.Coordinates;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 class LightArea
@@ -13,6 +14,7 @@ class LightArea
     private int minX, maxX, minY, maxY;
     private HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
     private HashMap<String, Integer> checkOnUnique = new HashMap<>();
+    private ArrayList<Coordinates> lightExtremePoints = new ArrayList<>();
     private int uniqueSize = 0;
     private double epsilon = 0.001;
     private double deltaPenetration = 0.5;
@@ -60,7 +62,7 @@ class LightArea
         }
     }
 
-    private void generateLightMap() {
+    private void generateLightMap(double coordinatesCenterX, double coordinatesCenterY, int status) {
         double deltaDegree = Math.PI /( 8 * 360 );
         double deltaX, deltaY;
         int xa, ya;
@@ -68,8 +70,10 @@ class LightArea
         double transparency, tileWidth, tileDiagonal, maxPenetration;
 
         for (double degree = 0; degree < 2 * Math.PI; degree+=deltaDegree) {
-            double currentX = (double)getCoordinatesCenter().getX();
-            double currentY = (double)getCoordinatesCenter().getY();
+//            double currentX = (double)getCoordinatesCenter().getX();
+//            double currentY = (double)getCoordinatesCenter().getY();
+            double currentX = coordinatesCenterX;
+            double currentY = coordinatesCenterY;
             double penetrationDepth = 0;
             for (double r  = 0; r < radius; r+=epsilon) {
                 deltaX = r * Math.cos(degree);
@@ -90,14 +94,34 @@ class LightArea
                         break;
                     }
                 }
-                putUniqueCoordinate(new Coordinates((int)currentX, (int)currentY), 2);
+                putUniqueCoordinate(new Coordinates((int)currentX, (int)currentY), status);
 
             }
         }
     }
 
+    private void generateLightExtremePoints() {
+        lightExtremePoints.add(new Coordinates(getCoordinatesCenter().getX() - Config.BOX_SIZE/2, getCoordinatesCenter().getY()));
+        lightExtremePoints.add(new Coordinates(getCoordinatesCenter().getX(), getCoordinatesCenter().getY() - Config.BOX_SIZE/2));
+        lightExtremePoints.add(new Coordinates(getCoordinatesCenter().getX() + Config.BOX_SIZE/2, getCoordinatesCenter().getY()));
+        lightExtremePoints.add(new Coordinates(getCoordinatesCenter().getX(), getCoordinatesCenter().getY() + Config.BOX_SIZE/2));
+    }
+
+    private void generateLightDiffraction() {
+        generateLightExtremePoints();
+
+        for (Coordinates point : lightExtremePoints) {
+            generateLightMap((double)point.getX(), (double)point.getY(), 1);
+        }
+    }
+
     public HashMap<Coordinates, Integer> getInscribedCoordinates(){
-        generateLightMap();
+        generateLightMap((double)getCoordinatesCenter().getX(), (double)getCoordinatesCenter().getY(), 2);
+
+        if (Config.USE_LIGHT_DIFFRACTION) {
+            generateLightDiffraction();
+        }
+
         return inscribedCoordinates;
     }
 
