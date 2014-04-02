@@ -21,9 +21,11 @@ class Circle {
     private ArrayList<Coordinates> circle = new ArrayList<Coordinates>();
     private ArrayList<Coordinates> externalCircle = new ArrayList<Coordinates>();
     private ArrayList<Coordinates> internalCircle = new ArrayList<Coordinates>();
+    private HashMap<String, Integer> checkOnUnique = new HashMap<>();
     private HashMap<Coordinates, Integer> inscribedCoordinates = new HashMap<Coordinates, Integer>();
     private Coordinates[][] circleEqual;
     private double epsilon = 0.5;
+    private int uniqueSize = 0;
 
 
     public Circle(Coordinates coordinatesCenter, int radius) {
@@ -128,10 +130,51 @@ class Circle {
     }
 
     public HashMap<Coordinates, Integer> getInscribedCoordinates(){
-        generateExternalCoordinates();
-        generateInternalCoordinates();
-
+//        generateExternalCoordinates();
+//        generateInternalCoordinates();
+        generateCircleLightMap((double)getCoordinates().getX(), (double)getCoordinates().getY(), 0, 2);
+        generateCircleLightMap((double)getCoordinates().getX(), (double)getCoordinates().getY(), Config.EDGE_SIZE, 1);
         return inscribedCoordinates;
+    }
+
+    private void generateCircleLightMap(double coordinatesCenterX, double coordinatesCenterY, int edge, int status) {
+        double radius = (double)getRadius() + edge;
+        double deltaDegree = LinearAlgorithms.angleByCoordinate(0, radius, 0, 0.5);
+        double degreeMultiplier = (2 * Math.PI)/ deltaDegree;
+        double deltaX, deltaY;
+        double epsilon = 1;
+        double currentX, currentY;
+        double centerX = coordinatesCenterX;
+        double centerY = coordinatesCenterY;
+        for (double degree = 0; degree < degreeMultiplier * deltaDegree; degree+=deltaDegree) {
+            for (double r  = 0; r < radius; r += epsilon) {
+                deltaX = r * Math.cos(degree);
+                deltaY = r * Math.sin(degree);
+                currentX = centerX + deltaX;
+                currentY = centerY + deltaY;
+                putUniqueCoordinate(new Coordinates((int)currentX, (int)currentY), status);
+
+            }
+        }
+    }
+
+    private void putUniqueCoordinate(Coordinates coordinates, int status) {
+        boolean unique = false;
+        if (checkOnUnique.size() == 0) {
+            checkOnUnique.put(coordinates.getX() + "-" + coordinates.getY(), 0);
+            uniqueSize = checkOnUnique.size();
+            unique = true;
+        }
+
+        checkOnUnique.put(coordinates.getX() + "-" + coordinates.getY(), 0);
+        if (uniqueSize != checkOnUnique.size())   {
+            uniqueSize = checkOnUnique.size();
+            unique = true;
+        }
+
+        if (unique) {
+            inscribedCoordinates.put(coordinates, status);
+        }
     }
 
 	public Coordinates getCoordinates() {

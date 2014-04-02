@@ -16,7 +16,7 @@ class LightArea
     private HashMap<String, Integer> checkOnUnique = new HashMap<>();
     private ArrayList<Coordinates> lightExtremePoints = new ArrayList<>();
     private int uniqueSize = 0;
-    private double epsilon = 0.001;
+//    private double epsilon = 0.1;
     private double deltaPenetration = 0.5;
 
     public LightArea(Coordinates coordinatesCenter, int radius) {
@@ -63,28 +63,30 @@ class LightArea
     }
 
     private void generateLightMap(double coordinatesCenterX, double coordinatesCenterY, int status) {
-        double deltaDegree = Math.PI /( 8 * 360 );
+        double deltaDegree = LinearAlgorithms.angleByCoordinate(0, radius, 0, 0.5);
+        double degreeMultiplier = (2 * Math.PI)/ deltaDegree;
         double deltaX, deltaY;
         int xa, ya;
         double radius = (double)getRadius();
+        double epsilon = 1;
         double transparency, tileWidth, tileDiagonal, maxPenetration;
-
-        for (double degree = 0; degree < 2 * Math.PI; degree+=deltaDegree) {
-//            double currentX = (double)getCoordinatesCenter().getX();
-//            double currentY = (double)getCoordinatesCenter().getY();
-            double currentX = coordinatesCenterX;
-            double currentY = coordinatesCenterY;
+        double currentX;
+        double currentY;
+        double centerX = coordinatesCenterX;
+        double centerY = coordinatesCenterY;
+        for (double degree = 0; degree < degreeMultiplier*deltaDegree/*2 * Math.PI*/; degree+=deltaDegree) {
             double penetrationDepth = 0;
-            for (double r  = 0; r < radius; r+=epsilon) {
+            for (double r  = 0; r < radius; r += epsilon) {
                 deltaX = r * Math.cos(degree);
                 deltaY = r * Math.sin(degree);
-                currentX += deltaX;
-                currentY += deltaY;
+                currentX = centerX + deltaX;
+                currentY = centerY + deltaY;
+
                 xa = (int)currentX >> Config.COORDINATES_SHIFTING;
                 ya = (int)currentY >> Config.COORDINATES_SHIFTING;
 
                 if (Game.getInstance().getWorld().getLevel().getTile(xa, ya).isSolid()){
-                    penetrationDepth+=deltaPenetration;
+                    penetrationDepth+=epsilon;
                     transparency = 1 - Game.getInstance().getWorld().getLevel().getTile(xa, ya).getOpacity() / 100;
                     tileWidth = (double)Game.getInstance().getWorld().getLevel().getTile(xa, ya).getSprite().getWidth();
                     tileDiagonal = tileWidth * Math.sqrt(2);
@@ -94,6 +96,7 @@ class LightArea
                         break;
                     }
                 }
+
                 putUniqueCoordinate(new Coordinates((int)currentX, (int)currentY), status);
 
             }
