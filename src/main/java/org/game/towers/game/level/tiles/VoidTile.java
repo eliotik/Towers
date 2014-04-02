@@ -8,7 +8,7 @@ import org.game.towers.gfx.sprites.Sprite;
 public class VoidTile extends Tile {
 
 	public VoidTile(Level level, Sprite sprite, int x, int y) {
-		super(level, sprite, Config.TILE_VOID, 0x000000, true, false, x, y, 0);
+		super(level, sprite, Config.TILE_VOID, 0x000000, true, false, x, y, 0, false, 0, false);
 	}
 
 	public void render(Screen screen) {

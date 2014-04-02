@@ -7,13 +7,15 @@ import org.game.towers.gfx.sprites.Sprite;
 public class BasicTile extends Tile {
 
 	public BasicTile(Level level, Sprite sprite, String name,
-			int levelColor, boolean isSolid, boolean isEmitter, int x, int y, double opacity) {
-		super(level, sprite, name, levelColor, isSolid, isEmitter, x, y, opacity);
+			int levelColor, boolean isSolid, boolean isEmitter, int x, int y, double opacity,
+			boolean radiant, int radiantRadius, boolean radiantRepeater) {
+		super(level, sprite, name, levelColor, isSolid, isEmitter, x, y, opacity, radiant, radiantRadius, radiantRepeater);
 	}
 
 	public BasicTile(Level level, Sprite sprite, String name, int levelColor,
-			boolean isSolid, boolean isEmitter, int x, int y, int mirrorMask, double opacity) {
-		super(level, sprite, name, levelColor, isSolid, isEmitter, x, y, opacity);
+			boolean isSolid, boolean isEmitter, int x, int y, int mirrorMask, double opacity,
+			boolean radiant, int radiantRadius, boolean radiantRepeater) {
+		super(level, sprite, name, levelColor, isSolid, isEmitter, x, y, opacity, radiant, radiantRadius, radiantRepeater);
 		setMirrorMask(mirrorMask);
 	}
 
